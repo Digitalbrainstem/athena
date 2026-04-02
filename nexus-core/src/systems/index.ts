@@ -28,3 +28,4 @@ export { FlowEngine } from './flow.js';
 export { CalibrationSystem } from './calibration.js';
 export { ScreenTimeSystem } from './screen-time.js';
 export { FocusModeSystem } from './focus.js';
+export { CodeForgeSystem } from './code-forge.js';

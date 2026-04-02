@@ -45,13 +45,13 @@ server/               ← Optional FastAPI sync layer
 | World/biomes | ✅ | 27/27 biomes (all built) |
 | Foundation quests | ✅ | 37 quests across 3 biomes (workshop/forest/caverns) |
 | Client renderer | ✅ | Three.js scene graph renderer, material caching, disposal |
-| Input (kbd+touch) | ✅ | Keyboard + touch. NO gamepad, NO voice input |
+| Input (kbd+touch) | ✅ | Keyboard + touch + gamepad + voice input |
 | Audio engine | ✅ | Spatial, adaptive music, TTS, captions, haptics |
 | Accessibility | ✅ | Screen reader, color blind, reduced motion, one-switch, captions |
 | Profile flow | ✅ | Create → select → load → play (end-to-end) |
 | Offline/PWA | ✅ | Service worker, IndexedDB cache, sync queue, manifest |
 | Server sync | ✅ | Auth, profiles, multi-device merge, parent dashboard |
-| Total tests | 1,979 | nexus-core: 1,633 / client: 277 / server: 69 |
+| Total tests | 2,398 | nexus-core: 1,695 / client: 357 / server: 69 |
 
 ### What's Missing
 | Feature | Priority | Notes |
@@ -65,10 +65,10 @@ server/               ← Optional FastAPI sync layer
 | Interest tracking system | HIGH | 0% — blocks world adaptation |
 | Story/narrative system | ✅ | Codex system, 101 fragments, 12 mysteries, 5 story threads |
 | Procedural quest engine | ✅ | 51 templates, 23 mechanics, anti-repetition tracker |
-| Gamepad input | HIGH | Specified as first-class |
-| Voice input (STT) | MEDIUM | Web Speech API |
+| Gamepad input | ✅ | Xbox, PlayStation, Switch, adaptive controller |
+| Voice input (STT) | ✅ | Web Speech API, fuzzy matching, child speech |
 | Economy/trading system | MEDIUM | Trading Post biome |
-| Code Forge system | MEDIUM | Programming environment |
+| Code Forge system | ✅ | Block + text programming, robot control |
 | Travel system | MEDIUM | Cross-biome travel, vehicles |
 | Calibration system | MEDIUM | New player assessment |
 | Screen time enforcement | LOW | DB exists, no enforcement |

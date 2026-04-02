@@ -264,3 +264,19 @@ export {
   MAX_FOCUS_SKILLS,
   validateFocusRequest,
 } from './focus.js';
+
+export type {
+  BlockCategory,
+  BlockInputDef,
+  BlockDefinition,
+  BlockInstance,
+  BlockProgram,
+  RobotState,
+  TrailSegment,
+  SensorData,
+  ExecutionResult,
+  CodeLanguage,
+  CodeExecutionInput,
+  GridCell,
+  GridWorld,
+} from './code-forge.js';
