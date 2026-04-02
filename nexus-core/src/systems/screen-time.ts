@@ -180,6 +180,7 @@ export class ScreenTimeSystem {
   private sessions = new Map<string, SessionState>();
   private configs = new Map<string, ScreenTimeConfig>();
   private tiers = new Map<string, MasteryTier>();
+  private dailyTotals = new Map<string, { minutes: number; date: string }>();
   private nowFn: () => number;
 
   constructor(nowFn?: () => number) {
@@ -206,16 +207,35 @@ export class ScreenTimeSystem {
     this.tiers.set(profileId, tier);
   }
 
+  /** Get accumulated daily minutes for a profile. */
+  private getDailyAccumulated(profileId: string): number {
+    const today = getDateString(this.nowFn());
+    const record = this.dailyTotals.get(profileId);
+    if (!record || record.date !== today) return 0;
+    return record.minutes;
+  }
+
+  /** Add minutes to the daily total for a profile. */
+  private addDailyMinutes(profileId: string, minutes: number): void {
+    const today = getDateString(this.nowFn());
+    const record = this.dailyTotals.get(profileId);
+    if (record && record.date === today) {
+      this.dailyTotals.set(profileId, { minutes: record.minutes + minutes, date: today });
+    } else {
+      this.dailyTotals.set(profileId, { minutes, date: today });
+    }
+  }
+
   /** Start a new play session for a profile. */
   startSession(profileId: string): void {
     const now = this.nowFn();
-    const today = getDateString(now);
     const existing = this.sessions.get(profileId);
 
-    const dailyCarry = existing && existing.dailyResetDate === today
-      ? existing.dailyAccumulatedMinutes +
-        (existing.pausedUntil === null ? minutesSince(existing.startTime, now) : 0)
-      : 0;
+    // If there was already an active session, flush its time to daily totals
+    if (existing) {
+      const played = minutesSince(existing.startTime, now);
+      this.addDailyMinutes(profileId, played);
+    }
 
     this.sessions.set(profileId, {
       profileId,
@@ -223,8 +243,8 @@ export class ScreenTimeSystem {
       breaksTaken: 0,
       lastBreakTime: now,
       pausedUntil: null,
-      dailyAccumulatedMinutes: dailyCarry,
-      dailyResetDate: today,
+      dailyAccumulatedMinutes: this.getDailyAccumulated(profileId),
+      dailyResetDate: getDateString(now),
     });
   }
 
@@ -234,19 +254,8 @@ export class ScreenTimeSystem {
     if (!session) return;
 
     const now = this.nowFn();
-    const today = getDateString(now);
     const played = minutesSince(session.startTime, now);
-
-    // Preserve daily accumulation so it carries across sessions
-    this.sessions.set(profileId, {
-      ...session,
-      startTime: now,
-      dailyAccumulatedMinutes: session.dailyResetDate === today
-        ? session.dailyAccumulatedMinutes + played
-        : played,
-      dailyResetDate: today,
-      pausedUntil: null,
-    });
+    this.addDailyMinutes(profileId, played);
     this.sessions.delete(profileId);
   }
 

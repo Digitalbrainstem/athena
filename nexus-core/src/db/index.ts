@@ -10,3 +10,4 @@ export { QuestRepository } from './repositories/quest.js';
 export { LearningEventRepository } from './repositories/learning-event.js';
 export { WorldStateRepository } from './repositories/world-state.js';
 export { CompanionRepository } from './repositories/companion.js';
+export { InterestRepository } from '../systems/interest.js';

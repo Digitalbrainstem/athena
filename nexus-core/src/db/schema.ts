@@ -114,6 +114,23 @@ CREATE TABLE IF NOT EXISTS devices (
     cached_content_version TEXT
 );
 
+CREATE TABLE IF NOT EXISTS interest_signals (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+    signal_type TEXT NOT NULL,
+    category TEXT NOT NULL,
+    weight REAL NOT NULL,
+    timestamp TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS interest_weights (
+    profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+    category TEXT NOT NULL,
+    weight REAL DEFAULT 0.0,
+    updated_at TEXT DEFAULT (datetime('now')),
+    PRIMARY KEY (profile_id, category)
+);
+
 -- Indexes
 CREATE INDEX IF NOT EXISTS idx_mastery_profile ON mastery(profile_id);
 CREATE INDEX IF NOT EXISTS idx_mastery_skill ON mastery(skill_id);
@@ -122,6 +139,8 @@ CREATE INDEX IF NOT EXISTS idx_events_profile_time ON learning_events(profile_id
 CREATE INDEX IF NOT EXISTS idx_events_skill ON learning_events(skill_id);
 CREATE INDEX IF NOT EXISTS idx_quests_biome_tier ON quests(biome, mastery_tier);
 CREATE INDEX IF NOT EXISTS idx_quest_progress_profile ON quest_progress(profile_id, status);
+CREATE INDEX IF NOT EXISTS idx_interest_signals_profile ON interest_signals(profile_id, timestamp);
+CREATE INDEX IF NOT EXISTS idx_interest_weights_profile ON interest_weights(profile_id);
 
 -- Schema version tracking
 CREATE TABLE IF NOT EXISTS schema_version (

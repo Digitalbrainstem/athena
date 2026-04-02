@@ -25,3 +25,22 @@ export {
   foundationForestQuests,
   foundationCavernsQuests,
 } from './quests/index.js';
+export {
+  MATERIAL_INTERACTIONS, getInteraction, findInteraction,
+  interactionsForTier, interactionsWithMaterial,
+} from './material-interactions.js';
+export {
+  WEATHER_EFFECTS, WEATHER_TRANSITIONS,
+  getWeatherEffect, getTransitionsFrom, nextWeather,
+} from './weather-effects.js';
+export type { WeatherTransition } from './weather-effects.js';
+export {
+  TRAVEL_METHODS, BIOME_ROUTES, VEHICLE_RECIPES,
+  getTravelMethod, travelMethodsForTier, getRoute, routesFrom,
+  getVehicleRecipe, vehicleRecipesForTier,
+} from './travel-methods.js';
+export {
+  DIALOGUE_TEMPLATES,
+  getTemplatesForTrigger,
+  getTemplateCount,
+} from './dialogue-templates.js';

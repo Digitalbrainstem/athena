@@ -116,7 +116,7 @@ export class FocusModeSystem {
    */
   recordQuestCompletion(
     profileId: string,
-    skillsUsed: string[],
+    _skillsUsed: string[],
     masteryDeltas: Record<string, number>,
   ): boolean {
     const session = this.activeSessions.get(profileId);
