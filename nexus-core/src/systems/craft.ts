@@ -139,8 +139,8 @@ export class CraftSystem implements System {
 
       switch (el.type) {
         case 'column': {
-          // Simplified Euler buckling: Pcr = π² E I / L²
-          // I = (width * height³) / 12 for a rectangle
+          // Euler buckling: Pcr = π²EI/(KL)² where K=1.0 (pinned-pinned assumed)
+          // I = (width * height³) / 12 for a rectangular cross-section
           const I = (width * Math.pow(height, 3)) / 12;
           const bucklingLoad = (Math.PI * Math.PI * mat.properties.elasticity * 1e9 * I) /
             (length * length);

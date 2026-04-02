@@ -45,8 +45,9 @@ export class DatabaseConnection {
       this.db = new this.sqlJs.Database();
     }
 
-    // Enable WAL mode for better concurrent read performance
-    this.exec('PRAGMA journal_mode = WAL');
+    // sql.js runs entirely in-memory — WAL mode is not applicable.
+    // The journal_mode pragma is a no-op for in-memory databases.
+    // We intentionally skip it to avoid misleading configuration.
     this.exec('PRAGMA foreign_keys = ON');
   }
 

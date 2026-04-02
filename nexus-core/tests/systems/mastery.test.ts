@@ -95,6 +95,51 @@ describe('SM-2 Algorithm', () => {
     const high = sm2(10, 2.5, 0, 0);
     expect(high.streak).toBe(1); // Treated as q=5 (success)
   });
+
+  // --- Research-informed edge cases ---
+
+  it('EF unchanged on failure (original SM-2 spec)', () => {
+    // Research: "If recall quality < 3, EF remains unchanged"
+    const result1 = sm2(1, 1.8, 3, 15);
+    expect(result1.easeFactor).toBe(1.8);
+    const result2 = sm2(0, 1.3, 0, 1);
+    expect(result2.easeFactor).toBe(1.3);
+  });
+
+  it('recovery after lapse follows correct progression (1→6→EF*prev)', () => {
+    // Research: After lapse, card restarts rep1=1, rep2=6, rep3+=prev*EF
+    const lapsed = sm2(2, 2.0, 5, 30); // failure
+    expect(lapsed.streak).toBe(0);
+    expect(lapsed.intervalDays).toBe(1);
+
+    const rep1 = sm2(4, lapsed.easeFactor, lapsed.streak, lapsed.intervalDays);
+    expect(rep1.intervalDays).toBe(1);
+    expect(rep1.streak).toBe(1);
+
+    const rep2 = sm2(4, rep1.easeFactor, rep1.streak, rep1.intervalDays);
+    expect(rep2.intervalDays).toBe(6);
+    expect(rep2.streak).toBe(2);
+
+    const rep3 = sm2(4, rep2.easeFactor, rep2.streak, rep2.intervalDays);
+    expect(rep3.intervalDays).toBe(Math.round(6 * rep2.easeFactor));
+    expect(rep3.streak).toBe(3);
+  });
+
+  it('EF converges toward 1.3 with repeated q=3 reviews', () => {
+    // Research: quality 3 steadily decreases EF; floors at 1.3
+    let ef = 2.5;
+    for (let i = 0; i < 50; i++) {
+      const r = sm2(3, ef, i + 1, 6);
+      ef = r.easeFactor;
+    }
+    expect(ef).toBe(1.3);
+  });
+
+  it('q=5 walkthrough matches manual calculation', () => {
+    // EF' = 2.5 + (0.1 - 0*(0.08 + 0*0.02)) = 2.5 + 0.1 = 2.6
+    const r = sm2(5, 2.5, 1, 1);
+    expect(r.easeFactor).toBe(2.6);
+  });
 });
 
 describe('Mastery Dimensions', () => {
