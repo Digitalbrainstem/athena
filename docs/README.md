@@ -1,0 +1,69 @@
+# Nexus Academy — Design Specification Index
+
+> Complete design specification for Project Athena (codename) / Nexus Academy.
+> Each document is self-contained, focused, and independently readable.
+
+## Documents
+
+| # | Document | Description |
+|---|----------|-------------|
+| 01 | [VISION.md](01-VISION.md) | Vision statement, inspirations, design pillars, what this game IS and ISN'T |
+| 02 | [WORLD_DESIGN.md](02-WORLD_DESIGN.md) | The Nexus: biomes, world morphing, environment rules, procedural generation |
+| 03 | [TRAVEL_MECHANICS.md](03-TRAVEL_MECHANICS.md) | Travel expansion from village to galaxy: vehicles, FTL, wormholes, fuel chemistry |
+| 04 | [AGE_TIERS.md](04-AGE_TIERS.md) | Five tiers from Little Learner (2–5) to Master (18–24), detailed gameplay per tier |
+| 05 | [GAMEPLAY_LOOPS.md](05-GAMEPLAY_LOOPS.md) | Core loops, quest structure, crafting, building, economy, Code Forge |
+| 06 | [MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md) | The Ender Protocol: spaced repetition, gap detection, impossible challenges, flow |
+| 07 | [SUBJECT_MAPPING.md](07-SUBJECT_MAPPING.md) | Every subject mapped to game mechanics at every age tier, with examples |
+| 08 | [ATLAS_INTEGRATION.md](08-ATLAS_INTEGRATION.md) | Atlas as the invisible architect: nightly batch, world shaping, what it does and doesn't do |
+| 09 | [CONTENT_PIPELINE.md](09-CONTENT_PIPELINE.md) | How content is authored, generated, validated, cached, and distributed |
+| 10 | [STORY_NARRATIVE.md](10-STORY_NARRATIVE.md) | The Founders, the overarching mystery, story threads per tier, the endgame revelation |
+| 11 | [COMPANION_SYSTEM.md](11-COMPANION_SYSTEM.md) | Companion character arc, personality, customization, voice, teaching-as-mastery |
+| 12 | [VOICE_GAMEPLAY.md](12-VOICE_GAMEPLAY.md) | Zero-screen mode for satellite speakers: full audio-only game experience |
+| 13 | [INPUT_CONTROLS.md](13-INPUT_CONTROLS.md) | Touch, voice, keyboard+mouse, gamepad — all first-class input methods |
+| 14 | [MULTIPLAYER.md](14-MULTIPLAYER.md) | Same-network co-op, classroom mode, sibling play, child protection |
+| 15 | [PROFILES_PROGRESSION.md](15-PROFILES_PROGRESSION.md) | Player profiles, calibration zone, multi-device sync, progression tracking |
+| 16 | [ART_DIRECTION.md](16-ART_DIRECTION.md) | Visual style per tier, 3D approach, color palette, age-adaptive rendering |
+| 17 | [AUDIO_DESIGN.md](17-AUDIO_DESIGN.md) | TTS companion voice, sound effects, adaptive music, spatial audio |
+| 18 | [TECHNICAL_ARCHITECTURE.md](18-TECHNICAL_ARCHITECTURE.md) | Three.js client, FastAPI server, database schema, offline/sync, deployment |
+| 19 | [ACCESSIBILITY.md](19-ACCESSIBILITY.md) | Visual, motor, cognitive, and auditory accessibility — full spec |
+| 20 | [SCREEN_TIME_SAFETY.md](20-SCREEN_TIME_SAFETY.md) | Parental controls, screen time philosophy, COPPA compliance, child protection |
+
+## Suggested Reading Order
+
+**First time? Start here:**
+
+1. **[01-VISION.md](01-VISION.md)** — What this game is and why it exists
+2. **[04-AGE_TIERS.md](04-AGE_TIERS.md)** — How the game adapts from toddler to college
+3. **[02-WORLD_DESIGN.md](02-WORLD_DESIGN.md)** — The living world that teaches through play
+4. **[06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md)** — How learning is tracked invisibly
+
+**Building the game?**
+
+5. **[05-GAMEPLAY_LOOPS.md](05-GAMEPLAY_LOOPS.md)** — Core gameplay mechanics
+6. **[07-SUBJECT_MAPPING.md](07-SUBJECT_MAPPING.md)** — What the game teaches and how
+7. **[18-TECHNICAL_ARCHITECTURE.md](18-TECHNICAL_ARCHITECTURE.md)** — How to build it
+8. **[13-INPUT_CONTROLS.md](13-INPUT_CONTROLS.md)** — Input handling across devices
+
+**Understanding the ecosystem?**
+
+9. **[08-ATLAS_INTEGRATION.md](08-ATLAS_INTEGRATION.md)** — Atlas as the invisible architect
+10. **[09-CONTENT_PIPELINE.md](09-CONTENT_PIPELINE.md)** — Content generation and distribution
+11. **[11-COMPANION_SYSTEM.md](11-COMPANION_SYSTEM.md)** — The companion character
+
+**Everything else:**
+
+12. Remaining docs in any order — each is self-contained.
+
+## Conventions
+
+- Documents cross-reference each other by number: "See [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md)"
+- Each document starts with a one-paragraph summary
+- Examples are concrete and specific, not abstract
+- All subjects covered through college level (ages 2–24)
+- "The player" is always gender-neutral
+
+---
+
+**Version:** 2.0 — Spec suite restructure
+**Date:** July 2025
+**Author:** Derek Thomas + Atlas Copilot
