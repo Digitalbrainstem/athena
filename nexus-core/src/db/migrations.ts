@@ -10,12 +10,19 @@ export interface Migration {
 }
 
 const migrations: Migration[] = [
-  // Future migrations go here
-  // {
-  //   version: 2,
-  //   description: 'Add some new table',
-  //   up(db) { db.exec('ALTER TABLE ...'); }
-  // },
+  {
+    version: 2,
+    description: 'Add accessibility_settings to profiles',
+    up(db) {
+      // Column may already exist in schema — check before adding
+      const columns = db.query<{ name: string }>(
+        "PRAGMA table_info('profiles')",
+      );
+      if (!columns.some((c) => c.name === 'accessibility_settings')) {
+        db.exec('ALTER TABLE profiles ADD COLUMN accessibility_settings TEXT');
+      }
+    },
+  },
 ];
 
 export function runMigrations(db: DatabaseConnection): number {

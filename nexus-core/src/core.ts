@@ -22,6 +22,7 @@ import type { SceneGraph } from './types/scene.js';
 import type { Profile, CreateProfileInput, MasteryRecord } from './types/profile.js';
 import type { QuestProgress } from './types/quest.js';
 import type { CompanionState } from './types/companion.js';
+import { allQuests } from './data/quests/index.js';
 
 export interface NexusCoreConfig {
   /** URL to sql.js WASM file */
@@ -122,7 +123,9 @@ export class NexusCore {
     createSchema(db);
     runMigrations(db);
 
-    return new NexusCore(db, config.debug ?? false);
+    const core = new NexusCore(db, config.debug ?? false);
+    core.seedQuests();
+    return core;
   }
 
   /** Shut down the engine and release resources */
@@ -226,6 +229,16 @@ export class NexusCore {
     this.db.close();
     await this.db.open({ data });
     this.activeProfileId = null;
+  }
+
+  /** Seed hand-crafted quests into the DB if not already present */
+  private seedQuests(): void {
+    for (const quest of allQuests) {
+      const existing = this.quests.getById(quest.id);
+      if (!existing) {
+        this.quests.create(quest);
+      }
+    }
   }
 
   get isDebug(): boolean {

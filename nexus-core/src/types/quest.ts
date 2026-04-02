@@ -19,15 +19,29 @@ export interface QuestContent {
   description: string;
   steps: QuestStep[];
   rewards?: QuestReward[];
+  companionIntro?: string;
+  companionOutro?: string;
+  estimatedMinutes?: number;
 }
 
 export interface QuestStep {
   index: number;
   instruction: string;
-  objectiveType: 'interact' | 'collect' | 'build' | 'craft' | 'navigate' | 'observe' | 'teach';
+  /** What the companion says aloud (audio) — auto-generated from instruction if omitted */
+  spokenInstruction?: string;
+  /** What a screen reader announces — auto-generated from instruction if omitted */
+  screenReaderText?: string;
+  /** Simplified restatement for "say that again" — auto-generated from instruction if omitted */
+  companionRepeat?: string;
+  objectiveType: 'interact' | 'collect' | 'build' | 'craft' | 'navigate' | 'observe' | 'teach'
+    | 'count' | 'match' | 'sort' | 'find' | 'mix' | 'measure' | 'pattern';
   targetId?: string;
+  targetValue?: unknown;
   requiredCount?: number;
-  hint?: string;
+  hints: string[];
+  successResponse: string;
+  /** Gentle, never punishing */
+  failureResponse: string;
 }
 
 export interface QuestReward {

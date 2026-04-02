@@ -4,6 +4,15 @@
 export { NexusCore } from './core.js';
 export type { NexusCoreConfig } from './core.js';
 
+// Quest Data
+export {
+  allQuests,
+  allFoundationQuests,
+  foundationWorkshopQuests,
+  foundationForestQuests,
+  foundationCavernsQuests,
+} from './data/quests/index.js';
+
 // ECS
 export { EntityManager, ComponentStorage, World, createSystem } from './ecs/index.js';
 export type { System, WorldEvent } from './ecs/index.js';
@@ -48,7 +57,7 @@ export type {
   WorldState, BuiltStructure, InventoryEntry, LightingPreset, WorldObjectTemplate, BiomeDefinition,
   CompanionState, CompanionMemory, CompanionConfig, PersonalityStage,
   Element, ElementCategory, ElementRef, Compound, CompoundProperties,
-  ChemicalReaction, ReactionComponent,
+  ChemicalReaction, ReactionComponent, AccessibilityMeta,
   BuildingMaterial, MaterialProperties,
   StructuralElement, StructuralElementType, StructuralAnalysis, FailureMode,
   RecipeInput, RecipeInputType, RecipeOutput, RecipeOutputType,
