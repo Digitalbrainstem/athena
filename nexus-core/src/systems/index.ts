@@ -8,3 +8,9 @@ export { CompanionSystem, getNextStage, shouldAdvanceStage, getDialogueStyle } f
 export type { CompanionInteraction, DialogueStyle } from './companion.js';
 export { InventorySystem } from './inventory.js';
 export type { InventoryAction } from './inventory.js';
+export { CraftSystem,
+  ELEMENTS, getElement, getElementByNumber, elementsForTier,
+  COMPOUNDS, REACTIONS, getCompound, getReaction, reactionsForTier,
+  RECIPES, getRecipe, recipesForTierAndBiome,
+  BUILDING_MATERIALS, getMaterial, materialsForTier,
+} from './craft.js';

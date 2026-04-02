@@ -74,3 +74,25 @@ export type {
 } from './companion.js';
 
 export { DEFAULT_COMPANION_CONFIG } from './companion.js';
+
+export type {
+  Element,
+  ElementCategory,
+  ElementRef,
+  Compound,
+  CompoundProperties,
+  ChemicalReaction,
+  ReactionComponent,
+  BuildingMaterial,
+  MaterialProperties,
+  StructuralElement,
+  StructuralElementType,
+  StructuralAnalysis,
+  FailureMode,
+  RecipeInput,
+  RecipeInputType,
+  RecipeOutput,
+  RecipeOutputType,
+  CraftRecipe,
+  CraftResult,
+} from './craft.js';

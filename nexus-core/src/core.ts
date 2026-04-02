@@ -15,6 +15,7 @@ import { QuestSystem } from './systems/quest.js';
 import { WorldSystem } from './systems/world.js';
 import { CompanionSystem } from './systems/companion.js';
 import { InventorySystem } from './systems/inventory.js';
+import { CraftSystem } from './systems/craft.js';
 import { createEmptySceneGraph } from './scene/graph.js';
 import type { GameAction } from './types/actions.js';
 import type { SceneGraph } from './types/scene.js';
@@ -54,6 +55,7 @@ export class NexusCore {
   readonly worldSystem: WorldSystem;
   readonly companionSystem: CompanionSystem;
   readonly inventorySystem: InventorySystem;
+  readonly craftSystem: CraftSystem;
 
   private constructor(db: DatabaseConnection, debug: boolean) {
     this.db = db;
@@ -97,12 +99,15 @@ export class NexusCore {
 
     this.inventorySystem = new InventorySystem();
 
+    this.craftSystem = new CraftSystem();
+
     // Add systems to world
     this.world.addSystem(this.worldSystem);
     this.world.addSystem(this.masterySystem);
     this.world.addSystem(this.questSystem);
     this.world.addSystem(this.inventorySystem);
     this.world.addSystem(this.companionSystem);
+    this.world.addSystem(this.craftSystem);
   }
 
   /** Create a new NexusCore instance */

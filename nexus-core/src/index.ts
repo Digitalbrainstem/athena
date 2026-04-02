@@ -18,7 +18,11 @@ export type { DatabaseConfig } from './db/index.js';
 export { MasterySystem, sm2, calculateMasteryLevel, updateRetention, updateTransfer,
   updateDepth, detectGaps, QuestSystem, canTransition, WorldSystem, BIOME_DEFINITIONS,
   getBiomeDefinition, CompanionSystem, getNextStage, shouldAdvanceStage, getDialogueStyle,
-  InventorySystem,
+  InventorySystem, CraftSystem,
+  ELEMENTS, getElement, getElementByNumber, elementsForTier,
+  COMPOUNDS, REACTIONS, getCompound, getReaction, reactionsForTier,
+  RECIPES, getRecipe, recipesForTierAndBiome,
+  BUILDING_MATERIALS, getMaterial, materialsForTier,
 } from './systems/index.js';
 export type { MasteryDimensions, GapAnalysis, GapDetail, SkillPrerequisites,
   PendingLearningEvent, QuestAction, QuestSelectionCriteria, CompanionInteraction,
@@ -43,5 +47,11 @@ export type {
   Quest, QuestContent, QuestStep, QuestReward, QuestProgress, QuestStatus, CreateQuestInput,
   WorldState, BuiltStructure, InventoryEntry, LightingPreset, WorldObjectTemplate, BiomeDefinition,
   CompanionState, CompanionMemory, CompanionConfig, PersonalityStage,
+  Element, ElementCategory, ElementRef, Compound, CompoundProperties,
+  ChemicalReaction, ReactionComponent,
+  BuildingMaterial, MaterialProperties,
+  StructuralElement, StructuralElementType, StructuralAnalysis, FailureMode,
+  RecipeInput, RecipeInputType, RecipeOutput, RecipeOutputType,
+  CraftRecipe, CraftResult,
 } from './types/index.js';
 export { DEFAULT_COMPANION_CONFIG } from './types/index.js';
