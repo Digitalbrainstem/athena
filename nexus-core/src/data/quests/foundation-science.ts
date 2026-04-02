@@ -878,7 +878,7 @@ export const foundationScienceQuests: CreateQuestInput[] = [
           objectiveType: 'sort',
           hints: ['Green is a middle rainbow color!', 'It goes below red!'],
           successResponse: 'Red then green! The rainbow is taking shape!',
-          failureResponse: 'The green band goes right under the red one!',
+          failureResponse: 'The green band goes right under the red band at the top!',
         },
         {
           index: 2,
