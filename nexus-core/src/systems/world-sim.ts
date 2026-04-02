@@ -518,7 +518,8 @@ export class WorldSimulation implements System {
     state.changeIn -= dt;
     if (state.changeIn <= 0) {
       const oldWeather = state.current;
-      const newWeatherType = nextWeather(state.current, Math.abs(state.changeIn) + dt, this._rng);
+      // Pass a long elapsed time — the weather has been active for its full duration
+      const newWeatherType = nextWeather(state.current, 600, this._rng);
 
       if (newWeatherType !== oldWeather) {
         state.current = newWeatherType;
