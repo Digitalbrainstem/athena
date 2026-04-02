@@ -1,4 +1,13 @@
-import * as THREE from 'three';
+// Client-only types — renderer / input / lifecycle
+// Game types (GameAction, SceneGraph, etc.) are imported from @nexus-academy/core
+
+// Re-export core types used across the client
+export type {
+  GameAction, ActionType, ActionSource,
+  MovePayload, LookPayload, SelectPayload, SpeakPayload,
+  SceneGraph, SceneObject, SceneLight, CameraDescriptor,
+  SkyDescriptor, GroundDescriptor, UIState, UIElement, AudioCue, Vec3,
+} from '@nexus-academy/core';
 
 // ---------------------------------------------------------------------------
 // Lifecycle
@@ -10,86 +19,25 @@ export interface Disposable {
 }
 
 // ---------------------------------------------------------------------------
-// Collision primitives
+// Input system (client-side abstractions)
 // ---------------------------------------------------------------------------
 
-/** Axis-aligned bounding box used for world-object collision */
-export interface AABB {
-  readonly min: THREE.Vector3;
-  readonly max: THREE.Vector3;
-}
-
-// ---------------------------------------------------------------------------
-// World objects
-// ---------------------------------------------------------------------------
-
-export const WORLD_OBJECT_TYPES = [
-  'npc', 'item', 'structure', 'portal', 'puzzle', 'vehicle',
-] as const;
-export type WorldObjectType = typeof WORLD_OBJECT_TYPES[number];
-
-/** Every interactable thing in the world */
-export interface WorldObject {
-  id: string;
-  type: WorldObjectType;
-  position: THREE.Vector3;
-  mesh?: THREE.Mesh;
-  aabb?: AABB;
-  interactionRadius: number;
-  requiredKnowledge?: string[];
-  teaches?: string[];
-}
-
-// ---------------------------------------------------------------------------
-// Biome chunks
-// ---------------------------------------------------------------------------
-
-/** Biome chunk — a loadable section of the world */
-export interface BiomeChunk {
-  id: string;
-  biomeType: string;
-  objects: WorldObject[];
-}
-
-// ---------------------------------------------------------------------------
-// Input system
-// ---------------------------------------------------------------------------
-
-export const GAME_ACTION_TYPES = [
-  'move', 'interact', 'select', 'back', 'inventory',
-  'speak', 'craft', 'map', 'companion', 'pause',
-] as const;
-export type GameActionType = typeof GAME_ACTION_TYPES[number];
-
-export type InputMethod = 'keyboard' | 'mouse' | 'touch' | 'voice' | 'gamepad';
-
-/** Unified input action — the core abstraction */
-export interface GameAction {
-  type: GameActionType;
-  source: InputMethod;
-  payload?: unknown;
-}
-
-/** Movement vector payload for 'move' actions */
-export interface MovePayload {
-  x: number;
-  z: number;
-}
+import type { GameAction, ActionSource } from '@nexus-academy/core';
 
 export type ActionCallback = (action: GameAction) => void;
 
 /** Every input source implements this to feed actions into InputManager */
 export interface InputProvider extends Disposable {
-  readonly name: InputMethod;
+  readonly name: ActionSource;
   attach(emit: ActionCallback): void;
   detach(): void;
 }
 
 // ---------------------------------------------------------------------------
-// Game loop
+// Game loop callback signatures
 // ---------------------------------------------------------------------------
 
-/** Called at a fixed rate for deterministic physics / game logic */
+/** Called at a fixed rate for deterministic game logic */
 export type FixedUpdateCallback = (fixedDt: number) => void;
 
 /** Called once per frame with wall-clock delta and interpolation alpha */
@@ -99,7 +47,7 @@ export type FrameUpdateCallback = (dt: number, alpha: number) => void;
 export type RenderCallback = (alpha: number) => void;
 
 // ---------------------------------------------------------------------------
-// API types
+// API types (kept for the networking layer)
 // ---------------------------------------------------------------------------
 
 export interface Profile {

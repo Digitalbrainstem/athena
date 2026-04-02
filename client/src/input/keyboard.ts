@@ -1,4 +1,5 @@
-import type { InputProvider, ActionCallback, GameAction, MovePayload } from '../types.js';
+import type { GameAction, MovePayload } from '@nexus-academy/core';
+import type { InputProvider, ActionCallback } from '../types.js';
 
 interface KeyState { forward: boolean; backward: boolean; left: boolean; right: boolean; }
 const INITIAL_KEY_STATE: KeyState = Object.freeze({ forward: false, backward: false, left: false, right: false });
@@ -45,10 +46,9 @@ export class KeyboardInput implements InputProvider {
   private emitMovement = (): void => {
     const { forward, backward, left, right } = this.keys;
     if (!forward && !backward && !left && !right) return;
-    const payload: MovePayload = {
-      x: (left ? -1 : 0) + (right ? 1 : 0),
-      z: (forward ? -1 : 0) + (backward ? 1 : 0),
-    };
+    const dx = (left ? -1 : 0) + (right ? 1 : 0);
+    const dz = (forward ? -1 : 0) + (backward ? 1 : 0);
+    const payload: MovePayload = { direction: { x: dx, z: dz }, running: false };
     this.emit?.({ type: 'move', source: 'keyboard', payload });
   };
 

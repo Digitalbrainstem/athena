@@ -12,6 +12,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@nexus-academy/core": "file:../nexus-core",
     "three": "^0.170.0"
   },
   "devDependencies": {

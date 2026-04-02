@@ -42,8 +42,8 @@ describe('InputManager', () => {
   it('handles actions with payloads', () => {
     const received: GameAction[] = [];
     manager.onAction((a) => received.push(a));
-    manager.emit({ type: 'move', source: 'keyboard', payload: { x: 1, z: 0 } });
-    expect(received[0].payload).toEqual({ x: 1, z: 0 });
+    manager.emit({ type: 'move', source: 'keyboard', payload: { direction: { x: 1, z: 0 }, running: false } });
+    expect(received[0].payload).toEqual({ direction: { x: 1, z: 0 }, running: false });
   });
 
   it('registers an input provider and receives its actions', () => {
@@ -105,5 +105,15 @@ describe('InputManager', () => {
     expect(goodResults).toHaveLength(1);
     expect(errSpy).toHaveBeenCalledOnce();
     errSpy.mockRestore();
+  });
+
+  it('flush returns and clears pending actions', () => {
+    manager.emit({ type: 'interact', source: 'keyboard' });
+    manager.emit({ type: 'pause', source: 'keyboard' });
+    const flushed = manager.flush();
+    expect(flushed).toHaveLength(2);
+    expect(flushed[0].type).toBe('interact');
+    expect(flushed[1].type).toBe('pause');
+    expect(manager.flush()).toHaveLength(0);
   });
 });

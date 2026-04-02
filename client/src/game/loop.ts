@@ -1,4 +1,10 @@
-import type { Disposable, FixedUpdateCallback, FrameUpdateCallback, RenderCallback } from '../types.js';
+import type { NexusCore, SceneGraph, GameAction } from '@nexus-academy/core';
+import type { Disposable } from '../types.js';
+import type { InputManager } from '../input/manager.js';
+import type { SceneRenderer } from '../renderer/scene-renderer.js';
+import type { FirstPersonCamera } from '../camera/first-person.js';
+import type { AudioManager } from '../audio/audio-manager.js';
+import type { HUD } from '../ui/hud.js';
 
 const DEFAULT_FIXED_DT = 1 / 60;
 const MAX_FRAME_TIME = 0.25;
@@ -15,19 +21,28 @@ export class GameLoop implements Disposable {
   private _fps = 0;
 
   private readonly fixedDt: number;
-  private readonly onFixedUpdate: FixedUpdateCallback;
-  private readonly onFrameUpdate: FrameUpdateCallback;
-  private readonly onRender: RenderCallback;
+  private readonly core: NexusCore;
+  private readonly inputManager: InputManager;
+  private readonly fpCam: FirstPersonCamera;
+  private readonly sceneRenderer: SceneRenderer;
+  private readonly audioManager: AudioManager;
+  private readonly hud: HUD;
 
   constructor(
-    onFixedUpdate: FixedUpdateCallback,
-    onFrameUpdate: FrameUpdateCallback,
-    onRender: RenderCallback,
+    core: NexusCore,
+    inputManager: InputManager,
+    fpCam: FirstPersonCamera,
+    sceneRenderer: SceneRenderer,
+    audioManager: AudioManager,
+    hud: HUD,
     fixedDt = DEFAULT_FIXED_DT,
   ) {
-    this.onFixedUpdate = onFixedUpdate;
-    this.onFrameUpdate = onFrameUpdate;
-    this.onRender = onRender;
+    this.core = core;
+    this.inputManager = inputManager;
+    this.fpCam = fpCam;
+    this.sceneRenderer = sceneRenderer;
+    this.audioManager = audioManager;
+    this.hud = hud;
     this.fixedDt = fixedDt;
   }
 
@@ -75,15 +90,21 @@ export class GameLoop implements Disposable {
 
     let steps = 0;
     while (this.accumulator >= this.fixedDt && steps < MAX_STEPS_PER_FRAME) {
-      this.onFixedUpdate(this.fixedDt);
+      const actions: GameAction[] = [
+        ...this.inputManager.flush(),
+        ...this.fpCam.flushLookActions(),
+      ];
+      this.core.update(this.fixedDt, actions);
       this.accumulator -= this.fixedDt;
       steps++;
     }
 
     if (steps >= MAX_STEPS_PER_FRAME) this.accumulator = 0;
 
-    const alpha = this.accumulator / this.fixedDt;
-    this.onFrameUpdate(frameDt, alpha);
-    this.onRender(alpha);
+    const sceneGraph: SceneGraph = this.core.getSceneGraph();
+    this.sceneRenderer.render(sceneGraph);
+    this.audioManager.process(sceneGraph.audio);
+    this.hud.update(sceneGraph.ui);
+    this.hud.updateFPS(this._fps);
   };
 }

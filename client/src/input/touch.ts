@@ -1,4 +1,5 @@
-import type { InputProvider, ActionCallback, GameAction, MovePayload } from '../types.js';
+import type { GameAction, MovePayload } from '@nexus-academy/core';
+import type { InputProvider, ActionCallback } from '../types.js';
 
 const DEAD_ZONE = 0.15;
 const MAX_RADIUS = 60;
@@ -12,7 +13,7 @@ export class TouchInput implements InputProvider {
   private joystickOrigin = { x: 0, y: 0 };
   private joystickTouchId: number | null = null;
   private moveInterval: ReturnType<typeof setInterval> | null = null;
-  private currentMove: MovePayload = { x: 0, z: 0 };
+  private currentDir = { x: 0, z: 0 };
   private rightTouchStart = new Map<number, number>();
 
   attach(emit: ActionCallback): void {
@@ -33,7 +34,7 @@ export class TouchInput implements InputProvider {
     if (this.moveInterval !== null) { clearInterval(this.moveInterval); this.moveInterval = null; }
     this.joystickActive = false;
     this.joystickTouchId = null;
-    this.currentMove = { x: 0, z: 0 };
+    this.currentDir = { x: 0, z: 0 };
     this.rightTouchStart.clear();
     this.emit = null;
   }
@@ -63,12 +64,12 @@ export class TouchInput implements InputProvider {
         const dy = t.clientY - this.joystickOrigin.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < MAX_RADIUS * DEAD_ZONE) {
-          this.currentMove = { x: 0, z: 0 };
+          this.currentDir = { x: 0, z: 0 };
         } else {
           const clamped = Math.min(dist, MAX_RADIUS);
           const scale = clamped / MAX_RADIUS;
           const angle = Math.atan2(dy, dx);
-          this.currentMove = { x: Math.cos(angle) * scale, z: Math.sin(angle) * scale };
+          this.currentDir = { x: Math.cos(angle) * scale, z: Math.sin(angle) * scale };
         }
       }
     }
@@ -80,7 +81,7 @@ export class TouchInput implements InputProvider {
       if (t.identifier === this.joystickTouchId) {
         this.joystickActive = false;
         this.joystickTouchId = null;
-        this.currentMove = { x: 0, z: 0 };
+        this.currentDir = { x: 0, z: 0 };
       } else {
         const startX = this.rightTouchStart.get(t.identifier);
         this.rightTouchStart.delete(t.identifier);
@@ -98,15 +99,19 @@ export class TouchInput implements InputProvider {
       if (t.identifier === this.joystickTouchId) {
         this.joystickActive = false;
         this.joystickTouchId = null;
-        this.currentMove = { x: 0, z: 0 };
+        this.currentDir = { x: 0, z: 0 };
       }
       this.rightTouchStart.delete(t.identifier);
     }
   };
 
   private emitMovement = (): void => {
-    if (this.currentMove.x === 0 && this.currentMove.z === 0) return;
-    this.fire({ type: 'move', source: 'touch', payload: { ...this.currentMove } });
+    if (this.currentDir.x === 0 && this.currentDir.z === 0) return;
+    const payload: MovePayload = {
+      direction: { ...this.currentDir },
+      running: false,
+    };
+    this.fire({ type: 'move', source: 'touch', payload });
   };
 
   private fire(action: GameAction): void { this.emit?.(action); }
