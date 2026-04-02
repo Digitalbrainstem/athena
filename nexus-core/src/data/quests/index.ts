@@ -5,6 +5,10 @@ import type { CreateQuestInput } from '../../types/quest.js';
 import { foundationWorkshopQuests } from './foundation-workshop.js';
 import { foundationForestQuests } from './foundation-forest.js';
 import { foundationCavernsQuests } from './foundation-caverns.js';
+import { foundationScienceQuests } from './foundation-science.js';
+import { foundationSocialQuests } from './foundation-social.js';
+import { foundationEngineeringQuests } from './foundation-engineering.js';
+import { foundationHumanitiesQuests } from './foundation-humanities.js';
 
 import { innovatorWorkshopQuests } from './innovator/innovator-workshop.js';
 import { innovatorAlchemistLabQuests } from './innovator/innovator-alchemist-lab.js';
@@ -65,6 +69,10 @@ import { creatorMusicHallQuests } from './creator/creator-music-hall.js';
 export { foundationWorkshopQuests } from './foundation-workshop.js';
 export { foundationForestQuests } from './foundation-forest.js';
 export { foundationCavernsQuests } from './foundation-caverns.js';
+export { foundationScienceQuests } from './foundation-science.js';
+export { foundationSocialQuests } from './foundation-social.js';
+export { foundationEngineeringQuests } from './foundation-engineering.js';
+export { foundationHumanitiesQuests } from './foundation-humanities.js';
 
 export { innovatorWorkshopQuests } from './innovator/innovator-workshop.js';
 export { innovatorAlchemistLabQuests } from './innovator/innovator-alchemist-lab.js';
@@ -127,6 +135,10 @@ export const allFoundationQuests: CreateQuestInput[] = [
   ...foundationWorkshopQuests,
   ...foundationForestQuests,
   ...foundationCavernsQuests,
+  ...foundationScienceQuests,
+  ...foundationSocialQuests,
+  ...foundationEngineeringQuests,
+  ...foundationHumanitiesQuests,
 ];
 
 /** All hand-crafted Innovator tier quests across every biome */
