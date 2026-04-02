@@ -146,6 +146,55 @@ CREATE INDEX IF NOT EXISTS idx_events_profile_time ON learning_events(profile_id
 CREATE INDEX IF NOT EXISTS idx_events_skill ON learning_events(skill_id);
 CREATE INDEX IF NOT EXISTS idx_quests_biome_tier ON quests(biome, mastery_tier);
 CREATE INDEX IF NOT EXISTS idx_quest_progress_profile ON quest_progress(profile_id, status);
+
+-- Classrooms
+CREATE TABLE IF NOT EXISTS classrooms (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    teacher_profile_id TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'active',
+    time_limit_minutes INTEGER,
+    created_at TEXT DEFAULT (datetime('now')),
+    last_activity TEXT
+);
+
+-- Classroom students
+CREATE TABLE IF NOT EXISTS classroom_students (
+    classroom_id TEXT NOT NULL REFERENCES classrooms(id) ON DELETE CASCADE,
+    student_profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+    joined_at TEXT DEFAULT (datetime('now')),
+    PRIMARY KEY (classroom_id, student_profile_id)
+);
+
+-- Classroom groups
+CREATE TABLE IF NOT EXISTS classroom_groups (
+    id TEXT PRIMARY KEY,
+    classroom_id TEXT NOT NULL REFERENCES classrooms(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    created_at TEXT DEFAULT (datetime('now'))
+);
+
+-- Classroom group members
+CREATE TABLE IF NOT EXISTS classroom_group_members (
+    group_id TEXT NOT NULL REFERENCES classroom_groups(id) ON DELETE CASCADE,
+    student_profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+    PRIMARY KEY (group_id, student_profile_id)
+);
+
+-- Classroom assignments
+CREATE TABLE IF NOT EXISTS classroom_assignments (
+    id TEXT PRIMARY KEY,
+    classroom_id TEXT NOT NULL REFERENCES classrooms(id) ON DELETE CASCADE,
+    assignment_type TEXT NOT NULL,
+    quest_id TEXT,
+    skills_json TEXT,
+    group_id TEXT REFERENCES classroom_groups(id),
+    assigned_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_classroom_students ON classroom_students(classroom_id);
+CREATE INDEX IF NOT EXISTS idx_classroom_groups ON classroom_groups(classroom_id);
+CREATE INDEX IF NOT EXISTS idx_classroom_assignments ON classroom_assignments(classroom_id);
 """
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3

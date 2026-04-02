@@ -280,3 +280,74 @@ export type {
   GridCell,
   GridWorld,
 } from './code-forge.js';
+
+export type {
+  PlayerView,
+  ChallengeDifficulty,
+  Discovery,
+  DiscoveryType,
+  SharedStructure,
+  SiblingCompanionMessage,
+  SiblingMessageType,
+  SharedWorld,
+  SiblingProfile,
+  TeachingMoment,
+  CollaborationTask,
+  CollaborationParticipant,
+} from './sibling.js';
+
+export type {
+  Classroom,
+  ClassroomStatus,
+  ClassroomSettings,
+  ClassroomStudent,
+  StudentGroup,
+  QuestAssignment,
+  FocusAssignment,
+  SubjectProgress,
+  ClassProgress,
+  StudentProgress,
+  EngagementLevel,
+  ClassEngagement,
+  ClassMasteryReport,
+  ScreenTimeOverview,
+  TeacherVisibleData,
+  CreateClassroomInput,
+  AssignQuestInput,
+  AssignFocusInput,
+  CreateGroupInput,
+  UpdateClassroomSettingsInput,
+} from './classroom.js';
+
+export { DEFAULT_CLASSROOM_SETTINGS } from './classroom.js';
+
+export type {
+  LANSession,
+  SessionStatus,
+  MultiplayerSessionState,
+  PlayerSessionState,
+  SharedQuestState,
+  SharedObjective,
+  MultiplayerMessageType,
+  MultiplayerMessage,
+  JoinRequestPayload,
+  JoinAcceptedPayload,
+  JoinRejectedPayload,
+  PlayerJoinedPayload,
+  PlayerLeftPayload,
+  GameActionPayload,
+  QuestStartPayload,
+  QuestUpdatePayload,
+  ObjectiveClaimPayload,
+  ObjectiveCompletePayload,
+  CompanionAnnouncementKind,
+  CompanionAnnouncementPayload,
+} from './multiplayer.js';
+
+export {
+  MAX_PLAYERS_PER_SESSION,
+  SESSION_BEACON_PORT,
+  SESSION_BEACON_INTERVAL_MS,
+  SESSION_TIMEOUT_MS,
+  STATE_SYNC_INTERVAL_MS,
+} from './multiplayer.js';

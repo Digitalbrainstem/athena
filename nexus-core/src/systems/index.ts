@@ -29,3 +29,14 @@ export { CalibrationSystem } from './calibration.js';
 export { ScreenTimeSystem } from './screen-time.js';
 export { FocusModeSystem } from './focus.js';
 export { CodeForgeSystem } from './code-forge.js';
+export { SiblingPlaySystem } from './sibling.js';
+export { ClassroomSystem } from './classroom.js';
+export { MultiplayerSystem,
+  announcePlayerAction, suggestCollaboration, celebrateTeamwork,
+  announcePlayerJoined, announcePlayerLeft, announceObjectiveAssigned, announceQuestProgress,
+  createSessionState, canJoinSession, addPlayerToSession, removePlayerFromSession,
+  getConnectedPlayers, isSessionEmpty,
+  startSharedQuest, claimObjective, completeObjective, isQuestComplete,
+  getCompletedObjectiveCount, getPendingObjectives,
+  createMessage,
+} from './multiplayer.js';

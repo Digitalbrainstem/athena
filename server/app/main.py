@@ -84,6 +84,8 @@ def create_app() -> FastAPI:
 
     # Routers
     from app.api.auth import router as auth_router
+    from app.api.classroom import router as classroom_router
+    from app.api.multiplayer import router as multiplayer_router
     from app.api.parent import router as parent_router
     from app.api.profiles import router as profiles_router
     from app.api.sync import router as sync_router
@@ -92,6 +94,8 @@ def create_app() -> FastAPI:
     app.include_router(profiles_router)
     app.include_router(sync_router)
     app.include_router(parent_router)
+    app.include_router(multiplayer_router)
+    app.include_router(classroom_router)
 
     return app
 
