@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   allFoundationQuests,
+  allBuilderQuests,
   allInnovatorQuests,
   allCreatorQuests,
   allQuests,
@@ -581,6 +582,103 @@ function collectAllTextGeneric(quest: (typeof allQuests)[number]): string {
 }
 
 // ============================================================================
+// BUILDER TIER — Middle school content (ages 11-14)
+// ============================================================================
+
+describe('Builder Quest Data — Counts', () => {
+  it('has at least 900 total Builder quests', () => {
+    expect(allBuilderQuests.length).toBeGreaterThanOrEqual(900);
+  });
+
+  it('covers all 27 biomes', () => {
+    const biomes = new Set(allBuilderQuests.map((q) => q.biome));
+    expect(biomes.size).toBe(27);
+    for (const id of ALL_VALID_BIOMES) {
+      expect(biomes.has(id), `Missing builder quests for biome: ${id}`).toBe(true);
+    }
+  });
+
+  it('allQuests contains every Builder quest', () => {
+    for (const q of allBuilderQuests) {
+      expect(allQuests.find((a) => a.id === q.id)).toBeDefined();
+    }
+  });
+});
+
+describe('Builder Quest Data — Structure', () => {
+  for (const quest of allBuilderQuests) {
+    describe(`Quest "${quest.id}"`, () => {
+      it('has required fields and builder tier', () => {
+        expect(quest.id).toBeTruthy();
+        expect(quest.title).toBeTruthy();
+        expect(ALL_VALID_BIOMES).toContain(quest.biome);
+        expect(quest.masteryTier).toBe('builder');
+        expect(quest.content.description).toBeTruthy();
+        expect(quest.content.companionIntro).toBeTruthy();
+        expect(quest.content.companionOutro).toBeTruthy();
+        expect(quest.content.estimatedMinutes).toBeGreaterThanOrEqual(15);
+        expect(quest.content.estimatedMinutes).toBeLessThanOrEqual(25);
+        expect((quest.skillsTaught ?? []).length).toBeGreaterThanOrEqual(2);
+        for (const skill of (quest.skillsTaught ?? [])) {
+          expect(skill).toMatch(/^[a-z]+\.[a-z0-9-]+$/);
+        }
+      });
+
+      it('has at least 3 steps with triple instruction', () => {
+        expect(quest.content.steps.length).toBeGreaterThanOrEqual(3);
+        for (const step of quest.content.steps) {
+          expect(step.instruction).toBeTruthy();
+          expect(step.spokenInstruction).toBeTruthy();
+          expect(step.screenReaderText).toBeTruthy();
+          expect(step.companionRepeat).toBeTruthy();
+          expect(step.hints!.length).toBeGreaterThan(0);
+          expect(step.successResponse).toBeTruthy();
+          expect(step.failureResponse).toBeTruthy();
+          for (const pattern of HARSH_WORDS) {
+            expect(step.failureResponse).not.toMatch(pattern);
+          }
+        }
+      });
+    });
+  }
+});
+
+describe('Builder Quest Data — Content Quality', () => {
+  it('uses no quiz-style language', () => {
+    for (const quest of allBuilderQuests) {
+      const text = collectAllTextGeneric(quest);
+      for (const pattern of QUIZ_PATTERNS) {
+        expect(text.match(pattern), `"${quest.id}" quiz: "${text.match(pattern)?.[0]}"`).toBeNull();
+      }
+    }
+  });
+
+  it('uses gender-neutral language', () => {
+    for (const quest of allBuilderQuests) {
+      const text = collectAllTextGeneric(quest);
+      for (const pattern of GENDERED_TERMS) {
+        expect(text.match(pattern), `"${quest.id}" gendered: "${text.match(pattern)?.[0]}"`).toBeNull();
+      }
+    }
+  });
+
+  it('has unique quest IDs starting with b-', () => {
+    const ids = allBuilderQuests.map((q) => q.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const quest of allBuilderQuests) {
+      expect(quest.id).toMatch(/^b-/);
+      expect(quest.id).toMatch(/^[a-z0-9-]+$/);
+    }
+  });
+
+  it('step indices are sequential starting from 0', () => {
+    for (const quest of allBuilderQuests) {
+      quest.content.steps.forEach((step, i) => { expect(step.index).toBe(i); });
+    }
+  });
+});
+
+// ============================================================================
 // INNOVATOR TIER — AP-level content (ages 15-18)
 // ============================================================================
 
@@ -772,8 +870,8 @@ describe('Creator Quest Data — Content Quality', () => {
 // Cross-tier integrity
 // ============================================================================
 describe('Cross-Tier Quest Integrity', () => {
-  it('total quest count is at least 1600', () => {
-    expect(allQuests.length).toBeGreaterThanOrEqual(1600);
+  it('total quest count is at least 2500', () => {
+    expect(allQuests.length).toBeGreaterThanOrEqual(2500);
   });
 
   it('no duplicate IDs across all tiers', () => {

@@ -38,6 +38,34 @@ import { innovatorTradingPostQuests } from './innovator/innovator-trading-post.j
 import { innovatorArenaQuests } from './innovator/innovator-arena.js';
 import { innovatorMusicHallQuests } from './innovator/innovator-music-hall.js';
 
+import { builderWorkshopQuests } from './builder/builder-workshop.js';
+import { builderAlchemistLabQuests } from './builder/builder-alchemist-lab.js';
+import { builderCrystalCavernsQuests } from './builder/builder-crystal-caverns.js';
+import { builderLivingForestQuests } from './builder/builder-living-forest.js';
+import { builderLibraryEchoesQuests } from './builder/builder-library-echoes.js';
+import { builderObservatoryQuests } from './builder/builder-observatory.js';
+import { builderAncientRuinsQuests } from './builder/builder-ancient-ruins.js';
+import { builderTradingPostQuests } from './builder/builder-trading-post.js';
+import { builderArchitectsDomainQuests } from './builder/builder-architects-domain.js';
+import { builderCodeForgeQuests } from './builder/builder-code-forge.js';
+import { builderHealersSanctuaryQuests } from './builder/builder-healers-sanctuary.js';
+import { builderHospitalQuests } from './builder/builder-hospital.js';
+import { builderFarmQuests } from './builder/builder-farm.js';
+import { builderLaboratoryQuests } from './builder/builder-laboratory.js';
+import { builderExplorersMapQuests } from './builder/builder-explorers-map.js';
+import { builderTimeRiftQuests } from './builder/builder-time-rift.js';
+import { builderStormTowerQuests } from './builder/builder-storm-tower.js';
+import { builderArenaQuests } from './builder/builder-arena.js';
+import { builderShipyardQuests } from './builder/builder-shipyard.js';
+import { builderMusicHallQuests } from './builder/builder-music-hall.js';
+import { builderDigitalWorldQuests } from './builder/builder-digital-world.js';
+import { builderSpaceStationQuests } from './builder/builder-space-station.js';
+import { builderDebateHallQuests } from './builder/builder-debate-hall.js';
+import { builderGalleryQuests } from './builder/builder-gallery.js';
+import { builderNewsroomQuests } from './builder/builder-newsroom.js';
+import { builderTheaterQuests } from './builder/builder-theater.js';
+import { builderMarketplaceQuests } from './builder/builder-marketplace.js';
+
 import { creatorWorkshopQuests } from './creator/creator-workshop.js';
 import { creatorAlchemistLabQuests } from './creator/creator-alchemist-lab.js';
 import { creatorCrystalCavernsQuests } from './creator/creator-crystal-caverns.js';
@@ -130,6 +158,34 @@ export { creatorTradingPostQuests } from './creator/creator-trading-post.js';
 export { creatorArenaQuests } from './creator/creator-arena.js';
 export { creatorMusicHallQuests } from './creator/creator-music-hall.js';
 
+export { builderWorkshopQuests } from './builder/builder-workshop.js';
+export { builderAlchemistLabQuests } from './builder/builder-alchemist-lab.js';
+export { builderCrystalCavernsQuests } from './builder/builder-crystal-caverns.js';
+export { builderLivingForestQuests } from './builder/builder-living-forest.js';
+export { builderLibraryEchoesQuests } from './builder/builder-library-echoes.js';
+export { builderObservatoryQuests } from './builder/builder-observatory.js';
+export { builderAncientRuinsQuests } from './builder/builder-ancient-ruins.js';
+export { builderTradingPostQuests } from './builder/builder-trading-post.js';
+export { builderArchitectsDomainQuests } from './builder/builder-architects-domain.js';
+export { builderCodeForgeQuests } from './builder/builder-code-forge.js';
+export { builderHealersSanctuaryQuests } from './builder/builder-healers-sanctuary.js';
+export { builderHospitalQuests } from './builder/builder-hospital.js';
+export { builderFarmQuests } from './builder/builder-farm.js';
+export { builderLaboratoryQuests } from './builder/builder-laboratory.js';
+export { builderExplorersMapQuests } from './builder/builder-explorers-map.js';
+export { builderTimeRiftQuests } from './builder/builder-time-rift.js';
+export { builderStormTowerQuests } from './builder/builder-storm-tower.js';
+export { builderArenaQuests } from './builder/builder-arena.js';
+export { builderShipyardQuests } from './builder/builder-shipyard.js';
+export { builderMusicHallQuests } from './builder/builder-music-hall.js';
+export { builderDigitalWorldQuests } from './builder/builder-digital-world.js';
+export { builderSpaceStationQuests } from './builder/builder-space-station.js';
+export { builderDebateHallQuests } from './builder/builder-debate-hall.js';
+export { builderGalleryQuests } from './builder/builder-gallery.js';
+export { builderNewsroomQuests } from './builder/builder-newsroom.js';
+export { builderTheaterQuests } from './builder/builder-theater.js';
+export { builderMarketplaceQuests } from './builder/builder-marketplace.js';
+
 /** All hand-crafted Foundation tier quests across every biome */
 export const allFoundationQuests: CreateQuestInput[] = [
   ...foundationWorkshopQuests,
@@ -139,6 +195,37 @@ export const allFoundationQuests: CreateQuestInput[] = [
   ...foundationSocialQuests,
   ...foundationEngineeringQuests,
   ...foundationHumanitiesQuests,
+];
+
+/** All hand-crafted Builder tier quests across every biome */
+export const allBuilderQuests: CreateQuestInput[] = [
+  ...builderWorkshopQuests,
+  ...builderAlchemistLabQuests,
+  ...builderCrystalCavernsQuests,
+  ...builderLivingForestQuests,
+  ...builderLibraryEchoesQuests,
+  ...builderObservatoryQuests,
+  ...builderAncientRuinsQuests,
+  ...builderTradingPostQuests,
+  ...builderArchitectsDomainQuests,
+  ...builderCodeForgeQuests,
+  ...builderHealersSanctuaryQuests,
+  ...builderHospitalQuests,
+  ...builderFarmQuests,
+  ...builderLaboratoryQuests,
+  ...builderExplorersMapQuests,
+  ...builderTimeRiftQuests,
+  ...builderStormTowerQuests,
+  ...builderArenaQuests,
+  ...builderShipyardQuests,
+  ...builderMusicHallQuests,
+  ...builderDigitalWorldQuests,
+  ...builderSpaceStationQuests,
+  ...builderDebateHallQuests,
+  ...builderGalleryQuests,
+  ...builderNewsroomQuests,
+  ...builderTheaterQuests,
+  ...builderMarketplaceQuests,
 ];
 
 /** All hand-crafted Innovator tier quests across every biome */
@@ -206,6 +293,7 @@ export const allCreatorQuests: CreateQuestInput[] = [
 /** Every hand-crafted quest in the game, all tiers */
 export const allQuests: CreateQuestInput[] = [
   ...allFoundationQuests,
+  ...allBuilderQuests,
   ...allInnovatorQuests,
   ...allCreatorQuests,
 ];
