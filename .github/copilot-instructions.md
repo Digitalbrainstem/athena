@@ -4,7 +4,7 @@
 
 **Codename:** Athena (the game)
 **Public name:** Nexus Academy
-**What it is:** An open-world adaptive learning game for ages 2-24. The OASIS school
+**What it is:** An open-world adaptive learning game for ages 2 and up. The OASIS school
 from Ready Player One meets the Mind Game from Ender's Game. Playing IS learning —
 no quizzes, no tests, no essays. The world demands knowledge and rewards mastery.
 
@@ -120,7 +120,7 @@ python -m pytest server/tests/                 # Tests
   This is a gift to the world. Knowledge is free.
 - **Target hardware:** Surface Go (kiosk mode) as primary, browser secondary,
   satellite speakers (audio-only) tertiary
-- **Art direction:** Stylized 3D — playful and colorful for Little Learners,
+- **Art direction:** Stylized 3D — playful and colorful for Foundation tier,
   increasingly stunning and immersive for older tiers. NOT realistic. Think
   Breath of the Wild meets Monument Valley meets Spiderverse.
 
@@ -156,7 +156,7 @@ the full index and reading order.
 
 **Start here:**
 - [01-VISION.md](../docs/01-VISION.md) — What this game is and why
-- [04-AGE_TIERS.md](../docs/04-AGE_TIERS.md) — The five tiers in detail
+- [04-AGE_TIERS.md](../docs/04-AGE_TIERS.md) — The five mastery tiers in detail
 - [02-WORLD_DESIGN.md](../docs/02-WORLD_DESIGN.md) — The living world
 - [06-MASTERY_SYSTEM.md](../docs/06-MASTERY_SYSTEM.md) — The Ender Protocol
 

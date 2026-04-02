@@ -31,7 +31,7 @@ a course. Knowledge is the key to the universe — literally.
 
 ---
 
-## Stage 1 — Local (Little Learner, Ages 2–5)
+## Stage 1 — Local (Foundation, typically ages 2–5)
 
 **Range:** The village, the garden, the companion's home, and a few nearby landmarks.
 
@@ -66,7 +66,7 @@ One... two... three... four... five! Five steps!"
 
 ---
 
-## Stage 2 — Regional (Explorer, Ages 6–10)
+## Stage 2 — Regional (Discovery, typically ages 6–10)
 
 **Range:** Multiple biomes connected by paths, roads, rivers, and coastline.
 
@@ -105,7 +105,7 @@ that avoids the mountains..."
 
 ---
 
-## Stage 3 — Continental (Adventurer, Ages 11–14)
+## Stage 3 — Continental (Builder, typically ages 11–14)
 
 **Range:** Entire continents, oceans, and diverse climate zones.
 
@@ -165,7 +165,7 @@ COMPANION: "That's the MINIMUM. In practice, we want at least
 
 ---
 
-## Stage 4 — Planetary (Scholar, Ages 15–18)
+## Stage 4 — Planetary (Innovator, typically ages 15–18)
 
 **Range:** Entire planet surface, atmosphere, low orbit.
 
@@ -219,7 +219,7 @@ Tsiolkovsky equation over several quest steps]
 
 ---
 
-## Stage 5 — Interplanetary (Scholar–Master, Ages 17–24)
+## Stage 5 — Interplanetary (Innovator–Creator, typically ages 17+)
 
 **Range:** The solar system — moons, planets, asteroid belt, gas giants.
 
@@ -283,7 +283,7 @@ gravity assist past the inner moon, or build a refueling station]
 
 ---
 
-## Stage 6 — Interstellar (Master, Ages 18–24)
+## Stage 6 — Interstellar (Creator, ages 18+)
 
 **Range:** Nearby star systems, then across the galaxy to the Nexus Core.
 
@@ -401,8 +401,8 @@ calculation." The failure IS the lesson.
 | 5 — Interplanetary | Orbital computer, patched conics | Must calculate transfer orbits |
 | 6 — Interstellar | Relativistic nav, spacetime mapping | Tensor-level coordinate transforms |
 
-At each stage, the player can use the simpler tools from previous stages too. A Scholar
-navigating by stars on the ocean is using the same trigonometry as a Master plotting a
+At each stage, the player can use the simpler tools from previous stages too. An Innovator-tier player
+navigating by stars on the ocean is using the same trigonometry as a Creator-tier player plotting a
 gravity assist — just at different scale.
 
 ---
@@ -422,7 +422,7 @@ mapping (see [07-SUBJECT_MAPPING.md](07-SUBJECT_MAPPING.md)):
 | "Build a wormhole to a distant star" | General relativity, Quantum field theory, Advanced math |
 
 Every trip is a learning opportunity. Even "walk to the next biome" teaches spatial
-reasoning at the Little Learner tier. The game never wastes travel time — the journey
+reasoning at the Foundation tier. The game never wastes travel time — the journey
 itself is education.
 
 ---
@@ -436,9 +436,9 @@ Before building against this document, complete the following research:
 - [ ] **Simplified N-body physics** — Evaluate approaches for real-time gravitational simulation in JavaScript: Euler integration, Verlet integration, RK4. Performance benchmarks for web.
 - [ ] **Age-appropriate vehicle design** — Study how children at different ages conceptualize vehicles and transportation. Review LEGO's age-tier design philosophy for building complexity.
 - [ ] **FTL and wormhole science communication** — Review PBS Space Time, Kurzgesagt, and Veritasium videos on wormholes and Alcubierre drives. Identify accurate-but-accessible explanations suitable for game framing.
-- [ ] **Navigation history** — Research historical navigation techniques (Polynesian wayfinding, celestial navigation, dead reckoning) for authentic Explorer-tier quests.
+- [ ] **Navigation history** — Research historical navigation techniques (Polynesian wayfinding, celestial navigation, dead reckoning) for authentic Discovery-tier quests.
 
 ---
 
 *Previous: [02-WORLD_DESIGN.md](02-WORLD_DESIGN.md) — The Nexus world and biomes.*
-*Next: [04-AGE_TIERS.md](04-AGE_TIERS.md) — The five age tiers in detail.*
+*Next: [04-AGE_TIERS.md](04-AGE_TIERS.md) — The five mastery tiers in detail.*

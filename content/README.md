@@ -10,18 +10,18 @@ in nightly batches, stored here for the game server to serve.
 - **Dialogue** — Companion character scripts, NPC dialogue trees
 - **Audio** — Pre-rendered TTS audio for companion voice lines
 - **Assets** — Procedurally generated textures, models, sound effects
-- **Curriculum Maps** — Subject → game mechanic mappings per age tier
+- **Curriculum Maps** — Subject → game mechanic mappings per mastery tier
 
 ## Structure
 
 ```
 content/
 ├── quests/            # Quest definitions (JSON/YAML)
-│   ├── little-learner/
-│   ├── explorer/
-│   ├── adventurer/
-│   ├── scholar/
-│   └── master/
+│   ├── foundation/
+│   ├── discovery/
+│   ├── builder/
+│   ├── innovator/
+│   └── creator/
 ├── biomes/            # Biome generation templates
 ├── dialogue/          # Character dialogue trees
 ├── audio/             # Pre-rendered TTS audio

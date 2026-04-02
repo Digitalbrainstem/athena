@@ -1,7 +1,7 @@
 # 07 — Subject Mapping
 
 > Every subject taught from preschool through college, mapped to specific game
-> mechanics at each age tier, with concrete examples. Nothing is a quiz. Everything
+> mechanics at each mastery tier, with concrete examples. Nothing is a quiz. Everything
 > is the world demanding knowledge. This document is the educational backbone of
 > Nexus Academy — it defines WHAT the game teaches and HOW each concept becomes gameplay.
 
@@ -9,7 +9,7 @@
 
 ## How to Read This Document
 
-Each subject section lists concepts by age tier with:
+Each subject section lists concepts by mastery tier with:
 - **Concept** — The educational content
 - **Game mechanic** — How it manifests in gameplay
 - **Example** — A specific in-game scenario
@@ -22,7 +22,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 
 ## Mathematics
 
-### Counting & Number Sense (Little Learner, 2–5)
+### Counting & Number Sense (Foundation, typically 2–5)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -37,7 +37,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 | Skip counting | Stair climbing | "Count by 2s as we climb! 2, 4, 6, 8…" |
 | Estimation | Jar guessing | "How many acorns in the jar? More or less than 20?" |
 
-### Arithmetic (Explorer, 6–10)
+### Arithmetic (Discovery, typically 6–10)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -52,7 +52,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 | Prime numbers | Lock combinations | "Only prime-numbered keys work. Which ones: 2,3,4,5,6,7?" |
 | Ratios | Potion mixing | "The antidote is 2 parts herb to 5 parts water. You have 15 mL water…" |
 
-### Pre-Algebra & Algebra (Explorer–Adventurer, 8–14)
+### Pre-Algebra & Algebra (Discovery–Builder, typically 8–14)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -65,7 +65,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 | Polynomials | Terrain modeling | "Hill shape: h = -x² + 4x. Where's the peak?" |
 | Exponents | Population growth | "Rabbits double each season. Start with 2. After 5 seasons?" |
 
-### Geometry (Explorer–Scholar, 6–18)
+### Geometry (Discovery–Innovator, typically 6–18)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -80,7 +80,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 | Coordinate geometry | Map navigation | "Treasure at (7,3). You're at (2,1). Plot your course." |
 | Conic sections | Orbital paths | "The orbit is an ellipse. Semi-major axis = 150 million km…" |
 
-### Trigonometry (Adventurer–Scholar, 11–18)
+### Trigonometry (Builder–Innovator, typically 11–18)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -91,7 +91,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 | Inverse trig | Architecture | "Ramp rises 3m over 5m. What angle?" |
 | Polar coordinates | Radar/sonar | "Ship at r=500, θ=2.1 rad. Convert to map grid." |
 
-### Calculus (Scholar–Master, 15–24)
+### Calculus (Innovator–Creator, typically 15+)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -102,7 +102,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 | Multivariable calculus | 3D terrain | "Steepest path up this mountain. Gradient vector?" |
 | Series/sequences | Signal analysis | "Decompose alien transmission into frequency components." |
 
-### Linear Algebra (Master, 18–24)
+### Linear Algebra (Creator, typically 18+)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -116,7 +116,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 
 ## Chemistry
 
-### Introduction (Little Learner–Explorer, 2–10)
+### Introduction (Foundation–Discovery, typically 2–10)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -126,7 +126,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 | Mixtures vs compounds | Lab experiments | "Sand + iron = separable. Acid + base = new substance!" (age 8–10) |
 | Element discovery | Collection game | "Find elements in this cave. Fill your periodic table!" (age 9–10) |
 
-### General Chemistry (Adventurer, 11–14)
+### General Chemistry (Builder, typically 11–14)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -137,7 +137,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 | Conservation of mass | Before/after weighing | "50g in. 48g out. Where did the 2g go? (gas)" |
 | Gas laws | Pressure/volume | "Inflate balloon in cave. Deeper = more pressure = ?" |
 
-### Advanced Chemistry (Scholar–Master, 15–24)
+### Advanced Chemistry (Innovator–Creator, typically 15+)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -153,7 +153,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 
 ## Physics
 
-### Foundations (Little Learner–Explorer, 2–10)
+### Foundations (Foundation–Discovery, typically 2–10)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -164,7 +164,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 | Sound | Instrument puzzles | "Longer string = lower pitch. Tune the harp." |
 | Light | Mirror/lens puzzles | "Angle the mirror to redirect sunlight into the cave." |
 
-### Mechanics (Adventurer–Scholar, 11–18)
+### Mechanics (Builder–Innovator, typically 11–18)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -175,7 +175,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 | Waves | Signal transmission | "Transmit message via wave. Adjust frequency, amplitude." |
 | Fluid dynamics | Ship design | "Why does the ship float but anchor sinks? Design a sub." |
 
-### Electromagnetism (Scholar, 15–18)
+### Electromagnetism (Innovator, typically 15–18)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -185,7 +185,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 | EM waves | Communication | "Build a radio. Frequency determines range." |
 | Induction | Generator design | "Spin coil in magnetic field. More turns = more voltage." |
 
-### Modern Physics (Master, 18–24)
+### Modern Physics (Creator, typically 18+)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -199,7 +199,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 
 ## Biology
 
-### Life Science (Little Learner–Explorer, 2–10)
+### Life Science (Foundation–Discovery, typically 2–10)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -209,7 +209,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 | Food chains | Ecosystem building | "Rabbits eat grass. Foxes eat rabbits. Remove foxes = ?" |
 | Life cycles | Creature raising | "Caterpillar is changing! What comes next?" |
 
-### Biology (Adventurer–Scholar, 11–18)
+### Biology (Builder–Innovator, typically 11–18)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -220,7 +220,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 | Anatomy | Healer quests | "Patient has symptoms. Which organ system?" |
 | Microbiology | Disease/cure quests | "Identify pathogen. Design treatment. Test it." |
 
-### Advanced Biology (Master, 18–24)
+### Advanced Biology (Creator, typically 18+)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -233,7 +233,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 
 ## Computer Science
 
-### Logic Foundations (Explorer, 6–10)
+### Logic Foundations (Discovery, typically 6–10)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -242,7 +242,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 | Loops | Pattern automation | "Plant 10 trees. Don't do one by one — use a loop!" |
 | Debugging | Broken machine repair | "Machine does wrong thing. Find the broken step." |
 
-### Programming (Adventurer, 11–14)
+### Programming (Builder, typically 11–14)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -252,7 +252,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 | Algorithms | Optimization | "Sort 1000 packages. Bubble sort is slow. Better way?" |
 | Data structures | World mapping | "Map dungeon as graph. Shortest path to exit." |
 
-### Advanced CS (Scholar–Master, 15–24)
+### Advanced CS (Innovator–Creator, typically 15+)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -268,7 +268,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 
 ## Electrical Engineering
 
-### Circuits (Adventurer, 11–14)
+### Circuits (Builder, typically 11–14)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -277,7 +277,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 | Ohm's law | Resistor puzzles | "V=IR. 12V battery, need 2A. What resistance?" |
 | Capacitors | Energy storage | "Store energy by day, release at night. Size the cap." |
 
-### Advanced EE (Scholar–Master, 15–24)
+### Advanced EE (Innovator–Creator, typically 15+)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -291,7 +291,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 
 ## History & Social Studies
 
-### Early History (Explorer, 6–10)
+### Early History (Discovery, typically 6–10)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -300,7 +300,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 | Cultures | Trading encounters | "Merchant from the East has silk. What can you trade?" |
 | Timelines | Event ordering | "Wheel or writing — which came first?" |
 
-### World History (Adventurer–Scholar, 11–18)
+### World History (Builder–Innovator, typically 11–18)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -313,7 +313,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 
 ## Language Arts
 
-### Literacy Foundations (Little Learner, 2–5)
+### Literacy Foundations (Foundation, typically 2–5)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -322,7 +322,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 | First words | Label the world | "That's a TREE! T-R-E-E. Can you say tree?" |
 | Rhyming | Song puzzles | "Cat, bat, hat, ___?" |
 
-### Reading & Writing (Explorer–Adventurer, 6–14)
+### Reading & Writing (Discovery–Builder, typically 6–14)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -332,7 +332,7 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 | Creative writing | World-building journals | "Document discoveries. Other explorers read your notes." |
 | Persuasion | Debate/negotiation | "Convince the council. Make your case." |
 
-### Literature & Rhetoric (Scholar–Master, 15–24)
+### Literature & Rhetoric (Innovator–Creator, typically 15+)
 
 | Concept | Game Mechanic | Example |
 |---------|--------------|---------|
@@ -346,14 +346,14 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 
 | Concept | Tier | Game Mechanic | Example |
 |---------|------|--------------|---------|
-| Money/value | Explorer | Trading post | "3 apples worth 1 sword? What makes things valuable?" |
-| Supply/demand | Explorer | Market prices | "Lots of wheat = low price. Drought = high price." |
-| Saving/spending | Explorer | Resource management | "Save for the map or buy supplies now?" |
-| Inflation | Adventurer | Currency management | "Too much gold minted. Prices rising. Solution?" |
-| Investment | Adventurer | Long-term planning | "Build mine (costs 500, earns 50/month) or trade goods?" |
-| Game theory | Scholar | Multiplayer trading | "Cooperate or compete? Prisoner's dilemma." |
-| Macroeconomics | Scholar | Kingdom management | "GDP, trade balance, employment. Keep prosperity." |
-| Monetary policy | Master | Central bank | "Interest rates. Too low = inflation. Too high = recession." |
+| Money/value | Discovery | Trading post | "3 apples worth 1 sword? What makes things valuable?" |
+| Supply/demand | Discovery | Market prices | "Lots of wheat = low price. Drought = high price." |
+| Saving/spending | Discovery | Resource management | "Save for the map or buy supplies now?" |
+| Inflation | Builder | Currency management | "Too much gold minted. Prices rising. Solution?" |
+| Investment | Builder | Long-term planning | "Build mine (costs 500, earns 50/month) or trade goods?" |
+| Game theory | Innovator | Multiplayer trading | "Cooperate or compete? Prisoner's dilemma." |
+| Macroeconomics | Innovator | Kingdom management | "GDP, trade balance, employment. Keep prosperity." |
+| Monetary policy | Creator | Central bank | "Interest rates. Too low = inflation. Too high = recession." |
 
 ---
 
@@ -363,21 +363,21 @@ tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, 
 
 | Concept | Tier | Mechanic | Example |
 |---------|------|----------|---------|
-| Rhythm | Little Learner | Drum circles | "Tap along! Fast, slow, fast, slow." |
-| Pitch | Explorer | Instrument tuning | "Higher string = higher pitch. Match the sample." |
-| Scales/chords | Adventurer | Composition | "Major = happy, minor = sad. Build a melody." |
-| Music theory | Scholar | Full composition | "Compose in 3/4 time. Harmonize in fourths." |
-| Acoustics | Scholar | Concert hall design | "Reflection, absorption, resonance." |
+| Rhythm | Foundation | Drum circles | "Tap along! Fast, slow, fast, slow." |
+| Pitch | Discovery | Instrument tuning | "Higher string = higher pitch. Match the sample." |
+| Scales/chords | Builder | Composition | "Major = happy, minor = sad. Build a melody." |
+| Music theory | Innovator | Full composition | "Compose in 3/4 time. Harmonize in fourths." |
+| Acoustics | Innovator | Concert hall design | "Reflection, absorption, resonance." |
 
 ### Visual Art
 
 | Concept | Tier | Mechanic | Example |
 |---------|------|----------|---------|
-| Colors | Little Learner | Painting | "Red + blue = ? Paint the sunset!" |
-| Symmetry | Explorer | Banner design | "Design with bilateral symmetry." |
-| Perspective | Adventurer | Architecture drawing | "Building from 3 angles. Vanishing point?" |
-| Color theory | Scholar | Mural design | "Complementary colors. Warm vs cool." |
-| Art history | Scholar | Museum quests | "Renaissance or Baroque? Why?" |
+| Colors | Foundation | Painting | "Red + blue = ? Paint the sunset!" |
+| Symmetry | Discovery | Banner design | "Design with bilateral symmetry." |
+| Perspective | Builder | Architecture drawing | "Building from 3 angles. Vanishing point?" |
+| Color theory | Innovator | Mural design | "Complementary colors. Warm vs cool." |
+| Art history | Innovator | Museum quests | "Renaissance or Baroque? Why?" |
 
 ---
 
@@ -403,10 +403,10 @@ See [05-GAMEPLAY_LOOPS.md](05-GAMEPLAY_LOOPS.md) for detailed cross-subject ques
 Before building against this document, complete the following research:
 
 - [ ] **Common Core State Standards (K-12)** — Download and map the full CCSS for Mathematics and ELA/Literacy. Create a spreadsheet mapping each standard to game mechanics. Identify gaps in our coverage.
-- [ ] **AP curriculum frameworks** — Obtain College Board AP course descriptions for: Calculus AB/BC, Physics 1/2/C, Chemistry, Biology, CS A, CS Principles, US/World History, Economics (Micro/Macro). Map to Scholar-tier content.
+- [ ] **AP curriculum frameworks** — Obtain College Board AP course descriptions for: Calculus AB/BC, Physics 1/2/C, Chemistry, Biology, CS A, CS Principles, US/World History, Economics (Micro/Macro). Map to Innovator-tier content.
 - [ ] **IB Middle Years and Diploma Programme** — Review the IB MYP (ages 11-16) and DP (ages 16-19) subject guides. Identify concepts not covered by Common Core or AP that should be in the game.
 - [ ] **Khan Academy skill trees** — Export or map KA's complete skill tree for Math, Science, and Computing. Compare to our subject taxonomy. Identify missing nodes.
-- [ ] **University course progressions** — Obtain syllabi for standard sequences: Calc I→III, Linear Algebra, Diff Eq (MIT OCW); Physics I→II + Modern (Feynman Lectures); Gen Chem → Organic → Biochem; CS intro → Data Structures → Algorithms → Systems. Map to Master-tier content.
+- [ ] **University course progressions** — Obtain syllabi for standard sequences: Calc I→III, Linear Algebra, Diff Eq (MIT OCW); Physics I→II + Modern (Feynman Lectures); Gen Chem → Organic → Biochem; CS intro → Data Structures → Algorithms → Systems. Map to Creator-tier content.
 - [ ] **Next Generation Science Standards** — Review NGSS for K-12 science. Crosswalk with our biology, chemistry, physics, and earth science content.
 - [ ] **Real-world math applications** — Research "when will I ever use this?" resources. Build a database of real-world applications for every math concept to use as quest inspiration.
 

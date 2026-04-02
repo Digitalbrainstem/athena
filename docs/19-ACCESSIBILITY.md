@@ -121,7 +121,7 @@ Scanning patterns:
 
 | Feature | Default | Accessible Range |
 |---------|---------|-----------------|
-| Response timeout | Per age tier | Disabled (infinite) – 60s |
+| Response timeout | Per mastery tier | Disabled (infinite) – 60s |
 | Challenge time limits | None by default | Always optional, never required |
 | Input debounce | 100ms | 100ms – 1000ms |
 | Double-tap window | 300ms | 300ms – 2000ms |
@@ -144,9 +144,9 @@ Already designed into the base game (see [13-INPUT_CONTROLS.md](13-INPUT_CONTROL
 
 | Tier | Minimum Size | Accessibility Mode Size |
 |------|-------------|------------------------|
-| Little Learner | 80×80dp | 100×100dp |
-| Explorer | 56×56dp | 80×80dp |
-| Adventurer+ | 44×44dp | 64×64dp |
+| Foundation | 80×80dp | 100×100dp |
+| Discovery | 56×56dp | 80×80dp |
+| Builder+ | 44×44dp | 64×64dp |
 
 ### Sticky Keys / Hold Instead of Press
 
@@ -174,8 +174,8 @@ When enabled:
 | Feature | Default | Accessible |
 |---------|---------|-----------|
 | Companion speech speed | Normal | 50% – 150% |
-| Time between events | Per age tier | Extended (2x – 5x) |
-| Information density | Per age tier | Reduced |
+| Time between events | Per mastery tier | Extended (2x – 5x) |
+| Information density | Per mastery tier | Reduced |
 | Number of choices | 2-4 | 2 (binary only if needed) |
 | Quest complexity | Per mastery | Simplified branches |
 

@@ -2,7 +2,7 @@
 
 > *"The OASIS school from Ready Player One, but real."*
 
-An open-world adaptive learning game for ages 2–24. No quizzes. No tests. No essays.
+An open-world adaptive learning game for ages 2 and up. No quizzes. No tests. No essays.
 The world demands knowledge and rewards mastery. Playing IS learning.
 
 Powered by [Atlas Cortex](https://github.com/Betanu701/atlas-cortex). Built by
@@ -50,15 +50,15 @@ graph TB
 
 ## The Game
 
-Five age tiers, one seamless world that grows with the player:
+Five mastery tiers, one seamless world that grows with the player:
 
 | Tier | Ages | Experience |
 |------|------|-----------|
-| **Little Learner** | 2–5 | Dora-style companion talks directly to the child. Touch + voice. Colors, counting, shapes, phonics. |
-| **Explorer** | 6–10 | Open world unlocks. Companion becomes adventure partner. Quests teach arithmetic through calculus foundations. |
-| **Adventurer** | 11–14 | Full crafting, Code Forge, Time Rift missions. Real chemistry formulas, structural physics, economy systems. |
-| **Scholar** | 15–18 | Physics simulations, chemistry labs, historical debates. AP/college-prep level content. |
-| **Master** | 18–24 | Research-grade tools. Calc 3, organic chemistry, quantum mechanics, ML, distributed systems. |
+| **Foundation** | 2–5 | Dora-style companion talks directly to the child. Touch + voice. Colors, counting, shapes, phonics. |
+| **Discovery** | 6–10 | Open world unlocks. Companion becomes adventure partner. Quests teach arithmetic through calculus foundations. |
+| **Builder** | 11–14 | Full crafting, Code Forge, Time Rift missions. Real chemistry formulas, structural physics, economy systems. |
+| **Innovator** | 15–18 | Physics simulations, chemistry labs, historical debates. AP/college-prep level content. |
+| **Creator** | 18+ | Research-grade tools. Calc 3, organic chemistry, quantum mechanics, ML, distributed systems. |
 
 **Knowledge is the only currency.** No microtransactions. No ads. No pay-to-play. Ever.
 
@@ -71,7 +71,7 @@ Five age tiers, one seamless world that grows with the player:
 | 01 | [Vision](docs/01-VISION.md) | Design pillars, inspirations, what this IS and ISN'T |
 | 02 | [World Design](docs/02-WORLD_DESIGN.md) | Biomes, morphing, procedural generation |
 | 03 | [Travel Mechanics](docs/03-TRAVEL_MECHANICS.md) | Village → galaxy, ships, FTL, fuel chemistry |
-| 04 | [Age Tiers](docs/04-AGE_TIERS.md) | Little Learner through Master — detailed gameplay |
+| 04 | [Mastery Tiers](docs/04-AGE_TIERS.md) | Foundation through Creator — detailed mastery-level gameplay |
 | 05 | [Gameplay Loops](docs/05-GAMEPLAY_LOOPS.md) | Quests, crafting, building, Code Forge, economy |
 | 06 | [Mastery System](docs/06-MASTERY_SYSTEM.md) | Ender Protocol: spaced repetition, gap detection |
 | 07 | [Subject Mapping](docs/07-SUBJECT_MAPPING.md) | Every subject → game mechanic, all tiers |

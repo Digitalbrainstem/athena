@@ -57,9 +57,9 @@ satellite speaker at breakfast and continue it on the Surface Go after school.
 
 ---
 
-## Age-Tier Voice Experiences
+## Voice Experiences by Mastery Tier
 
-### Little Learner (Ages 2–5)
+### Foundation (typically ages 2–5)
 
 **Style:** Dora meets bedtime story. Companion talks directly to child, asks questions,
 celebrates, uses repetition and rhythm.
@@ -106,7 +106,7 @@ COMPANION: "One! Here comes another... [digging sound]"
 - Shape descriptions ("I'm round like a ball. What shape am I?")
 - Turns/rotation ("Do a quarter turn! Now clap!")
 
-### Explorer (Ages 6–10)
+### Discovery (typically ages 6–10)
 
 **Style:** Choose-your-own-adventure with puzzles. Companion is adventure partner.
 Narration is vivid and immersive.
@@ -174,7 +174,7 @@ Want to try decoding it?"
 - Geography through travel narration
 - Science through observation
 
-### Adventurer (Ages 11–14)
+### Builder (typically ages 11–14)
 
 **Style:** Audio RPG. Complex narratives, multi-step problems, consequences.
 
@@ -221,7 +221,7 @@ in the Crystal Caverns.
 What do you want to do?"
 ```
 
-### Scholar (Ages 15–18)
+### Innovator (typically ages 15–18)
 
 **Style:** Intellectual challenge. Companion is a peer. Problems are genuinely hard.
 
@@ -267,7 +267,7 @@ One more: we assumed surface gravity at altitude.
 Should we recalculate with actual local g?"
 ```
 
-### Master (Ages 18–24)
+### Creator (ages 18+)
 
 **Style:** Research partnership. Open-ended. May not have clean answers.
 

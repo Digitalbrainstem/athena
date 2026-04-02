@@ -15,7 +15,7 @@
 
 | Category | Data | Example |
 |----------|------|---------|
-| **Identity** | Name, avatar, age tier | "Emma, bear avatar, Explorer" |
+| **Identity** | Name, avatar, mastery tier | "Emma, bear avatar, Discovery" |
 | **World state** | Active biome, discovered biomes, structures, inventory | "Crystal Caverns, 3 biomes discovered, 2 bridges built" |
 | **Interests** | Behavior-detected interest profile, theme weights | "animals: 0.7, sparkly: 0.4, machines: 0.2" |
 | **Mastery** | Per-skill mastery levels across all subjects | "math.fractions: 0.72, physics.forces: 0.45" |
@@ -57,13 +57,13 @@ Themes blend — the world reflects ALL interests proportionally, not just the t
 
 ### Profile Creation
 
-**Little Learner (2–5):**
+**Foundation (typically 2–5):**
 - Parent creates the profile
 - Child picks avatar from large, colorful options (no typing required)
 - Child picks companion form and names it (voice or parent types)
 - Calibration zone runs automatically on first play
 
-**Explorer+ (6+):**
+**Discovery+ (6+):**
 - Player creates with parent oversight
 - Avatar builder with customization options
 - Companion selection and naming
@@ -74,9 +74,9 @@ Themes blend — the world reflects ALL interests proportionally, not just the t
 
 | Actor | Method | Details |
 |-------|--------|---------|
-| Little Learner (2–5) | Avatar tap | Big avatar icons on home screen. Tap to play. No auth. |
-| Explorer (6–10) | PIN (4 digits) | Simple, child-friendly. Set by parent. |
-| Adventurer+ (11+) | PIN (4-6 digits) or password | Player chooses. |
+| Foundation (typically 2–5) | Avatar tap | Big avatar icons on home screen. Tap to play. No auth. |
+| Discovery (typically 6–10) | PIN (4 digits) | Simple, child-friendly. Set by parent. |
+| Builder+ (11+) | PIN (4-6 digits) or password | Player chooses. |
 | Parent | Password or passkey | Full access to settings, reports, all profiles. |
 
 ---
@@ -138,13 +138,13 @@ profile covering every subject area. The player has been having fun the entire t
 | Entry Age | Calibration Focus | Starting Point |
 |-----------|------------------|---------------|
 | 2-3 | Colors, counting 1-5, shapes, animal sounds | Lowest level |
-| 4-5 | Counting 1-20, letters, phonics, patterns | Little Learner mid |
-| 6-8 | Arithmetic, reading, basic science, logic | Explorer start |
-| 9-10 | All arithmetic, fractions, pre-algebra, geography | Explorer mid |
-| 11-13 | Algebra, basic sciences, history, programming | Adventurer start |
-| 14-16 | Geometry, trig, chemistry, physics, CS | Adventurer-Scholar |
-| 17-18 | Pre-calc/calc, advanced sciences, literature | Scholar |
-| 19-24 | College-level math, sciences, engineering | Scholar-Master |
+| 4-5 | Counting 1-20, letters, phonics, patterns | Foundation mid |
+| 6-8 | Arithmetic, reading, basic science, logic | Discovery start |
+| 9-10 | All arithmetic, fractions, pre-algebra, geography | Discovery mid |
+| 11-13 | Algebra, basic sciences, history, programming | Builder start |
+| 14-16 | Geometry, trig, chemistry, physics, CS | Builder–Innovator |
+| 17-18 | Pre-calc/calc, advanced sciences, literature | Innovator |
+| 19-24 | College-level math, sciences, engineering | Innovator–Creator |
 
 ### Re-Calibration
 

@@ -1,6 +1,6 @@
 # 11 — Companion System
 
-> The companion is the player's constant presence from age 2 to 24. More than an NPC —
+> The companion is the player's constant presence from age 2 and up. More than an NPC —
 > it's a character that grows, changes personality, remembers shared history, and deepens
 > its relationship with the player over years. At age 3, it's a Dora-style best friend.
 > At age 20, it's an intellectual peer and research partner. This document covers the
@@ -25,7 +25,7 @@ The companion serves five roles simultaneously:
 The companion's personality, communication style, and role evolve continuously as the
 player grows. These aren't separate modes — they're a gradual, seamless shift.
 
-### Phase 1: Best Friend (Little Learner, 2–5)
+### Phase 1: Best Friend (Foundation, typically 2–5)
 
 **Voice style:** Warm, enthusiastic, simple vocabulary, musical prosody, lots of repetition.
 
@@ -47,7 +47,7 @@ name constantly.
 - Full credit to the child for successes ("YOU did it!")
 - Suggests breaks naturally ("I'm sleepy! See you next time?")
 
-### Phase 2: Adventure Partner (Explorer, 6–10)
+### Phase 2: Adventure Partner (Discovery, typically 6–10)
 
 **Voice style:** Excited, curious, slightly more complex vocabulary, genuine reactions.
 
@@ -68,7 +68,7 @@ They're a sidekick — capable but deferring to the player's choices.
 - Makes mistakes sometimes (player corrects them — teaching moment)
 - Suggests exploration: "I heard there's something interesting to the north…"
 
-### Phase 3: Trusted Ally (Adventurer, 11–14)
+### Phase 3: Trusted Ally (Builder, typically 11–14)
 
 **Voice style:** Conversational, respectful, growing vocabulary, debates ideas.
 
@@ -89,7 +89,7 @@ but don't insist. They debate ideas as equals-in-training.
 - Shows genuine learning: "OH. I see. Because the force equals mass times acceleration."
 - Shares relevant information: "I read in the ancient journal that this material is heat-resistant."
 
-### Phase 4: Peer (Scholar, 15–18)
+### Phase 4: Peer (Innovator, typically 15–18)
 
 **Voice style:** Intellectual equal, sophisticated vocabulary, collaborative tone.
 
@@ -110,7 +110,7 @@ their own. Conversations are genuine intellectual exchanges.
 - Acknowledges the player's expertise in their strong areas
 - Introduces new perspectives: "I read about a technique from another field that might apply…"
 
-### Phase 5: Research Partner (Master, 18–24)
+### Phase 5: Research Partner (Creator, ages 18+)
 
 **Voice style:** Collegial, precise, occasionally awed, deeply thoughtful.
 
@@ -251,11 +251,11 @@ Fish Audio TTS provides the companion voice with selectable profiles:
 
 | Profile | Description | Best For |
 |---------|-------------|----------|
-| Warm | Gentle, nurturing, even pace | Little Learner, anxious players |
-| Energetic | Enthusiastic, fast, excitable | Explorer, engagement recovery |
-| Calm | Steady, reassuring, thoughtful | Adventurer, complex problems |
+| Warm | Gentle, nurturing, even pace | Foundation, anxious players |
+| Energetic | Enthusiastic, fast, excitable | Discovery, engagement recovery |
+| Calm | Steady, reassuring, thoughtful | Builder, complex problems |
 | Playful | Witty, varied pitch, fun | Any age, humor-responsive players |
-| Scholarly | Precise, articulate, measured | Scholar, Master |
+| Scholarly | Precise, articulate, measured | Innovator, Creator |
 
 Voice profiles can be changed anytime. Atlas may suggest a profile shift as the
 player matures: "Would you like me to sound a bit different? I've been practicing

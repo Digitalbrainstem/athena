@@ -273,7 +273,7 @@ Everything needed for a complete educational experience, with no AI dependency:
 | **World theming** | Responds to interest heuristics, but without cross-session reshaping |
 | **Profiles** | Local profiles on device, progress tracked per skill |
 | **Companion** | Pre-scripted dialogue library, personality stage based on tier |
-| **All subjects** | Full coverage, all age tiers, all biomes — nothing gated behind Atlas |
+| **All subjects** | Full coverage, all mastery tiers, all biomes — nothing gated behind Atlas |
 | **Multiplayer** | Same-network co-op, classroom mode — fully functional |
 | **Voice mode** | Pre-rendered TTS audio, local STT if hardware supports it |
 | **Parent dashboard** | Local progress reports from tracked mastery data |

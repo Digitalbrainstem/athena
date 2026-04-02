@@ -54,7 +54,7 @@ two. What fits here?"
 
 ## Story Threads by Tier
 
-### Little Learner (Ages 2–5): "The Star Trail"
+### Foundation (typically ages 2–5): "The Star Trail"
 
 **Theme:** Wonder and treasure hunt.
 
@@ -74,7 +74,7 @@ friendly. They existed a long time ago. Their stars are EVERYWHERE.
 
 **Emotional tone:** Pure wonder and excitement. No fear, no urgency. Just discovery.
 
-### Explorer (Ages 6–10): "The Journal"
+### Discovery (typically ages 6–10): "The Journal"
 
 **Theme:** Discovery and following clues.
 
@@ -95,7 +95,7 @@ teach something specific. They cared about whoever would come after them.
 
 **Emotional tone:** Curiosity, warmth, growing respect for the mysterious builders.
 
-### Adventurer (Ages 11–14): "The Machines"
+### Builder (typically ages 11–14): "The Machines"
 
 **Theme:** Engineering mystery and reconstruction.
 
@@ -122,7 +122,7 @@ Their technology was advanced. They built The Nexus as a TEACHING tool.
 **Emotional tone:** Growing understanding, increasing sophistication, the first hints
 that the story has deeper implications.
 
-### Scholar (Ages 15–18): "The Equations"
+### Innovator (typically ages 15–18): "The Equations"
 
 **Theme:** Scientific revelation and philosophical questioning.
 
@@ -149,7 +149,7 @@ been learning are the same subjects The Founders mastered.
 **Emotional tone:** Awe, intellectual challenge, the first sense that reaching the
 Nexus Core is actually possible — and deeply meaningful.
 
-### Master (Ages 18–24): "The Truth"
+### Creator (ages 18+): "The Truth"
 
 **Theme:** Identity, purpose, and legacy.
 
@@ -221,7 +221,7 @@ Reaching the Core is not "finishing the game." It's a transformation:
 - Their creations (after Atlas validation) enter the content pool for other players
 - They can mentor younger players through the companion system
 - They can continue exploring — the galaxy is vast, and there's always more to learn
-- Master-tier subjects continue — there's no cap on how deep you can go
+- Creator-tier subjects continue — there's no cap on how deep you can go
 
 ---
 
@@ -238,8 +238,8 @@ Reaching the Core is not "finishing the game." It's a transformation:
 3. **The story never breaks immersion.** No cutscenes. No exposition dumps. Fragments
    are discovered through gameplay. Recordings play IN the world, not in a menu.
 
-4. **The story ages with the player.** Little Learners get stars and treasure.
-   Masters get philosophy and existential reflection. Same story, different depth.
+4. **The story ages with the player.** Foundation-tier players get stars and treasure.
+   Creator-tier players get philosophy and existential reflection. Same story, different depth.
 
 5. **The revelation earns its moment.** "The Founders are future humans" only hits
    hard because the player has spent YEARS discovering fragments, repairing machines,
@@ -255,11 +255,11 @@ Reaching the Core is not "finishing the game." It's a transformation:
 
 The companion doesn't KNOW the story in advance. They discover it alongside the player:
 
-- At Little Learner tier: "Wow, stars! I love finding these!"
-- At Explorer tier: "This journal is amazing. Who wrote it?"
-- At Adventurer tier: "I'm starting to think The Nexus was built for a reason…"
-- At Scholar tier: "These equations describe something I can't fully understand yet."
-- At Master tier: "I think I finally understand. And I think you do too."
+- At Foundation tier: "Wow, stars! I love finding these!"
+- At Discovery tier: "This journal is amazing. Who wrote it?"
+- At Builder tier: "I'm starting to think The Nexus was built for a reason…"
+- At Innovator tier: "These equations describe something I can't fully understand yet."
+- At Creator tier: "I think I finally understand. And I think you do too."
 
 The companion's journey of understanding parallels the player's. This creates a
 sense of shared discovery — the most powerful bonding tool available.

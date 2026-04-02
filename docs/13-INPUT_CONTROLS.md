@@ -47,17 +47,17 @@ Gamepad button     ─┘
 
 ## Touch Input
 
-**Primary for:** Little Learner, mobile, Surface Go (kiosk)
+**Primary for:** Foundation tier, mobile, Surface Go (kiosk)
 
 ### Touch Targets
 
-| Age Tier | Minimum Target Size | Spacing |
+| Mastery Tier | Minimum Target Size | Spacing |
 |----------|-------------------|---------|
-| Little Learner (2–5) | 80×80dp | 16dp gap |
-| Explorer (6–10) | 56×56dp | 12dp gap |
-| Adventurer+ (11+) | 44×44dp | 8dp gap |
+| Foundation (typically 2–5) | 80×80dp | 16dp gap |
+| Discovery (typically 6–10) | 56×56dp | 12dp gap |
+| Builder+ (11+) | 44×44dp | 8dp gap |
 
-Standard mobile guidelines require 48dp minimum. Little Learner goes to 80dp because
+Standard mobile guidelines require 48dp minimum. Foundation tier goes to 80dp because
 small children have less motor precision and often use their whole palm.
 
 ### Gesture Recognition
@@ -65,16 +65,16 @@ small children have less motor precision and often use their whole palm.
 | Gesture | Action | Tier |
 |---------|--------|------|
 | Tap | Select / interact | All |
-| Long press | Inspect / info | Explorer+ |
-| Drag | Place / move objects | All (forgiving snapping for Little Learner) |
-| Pinch zoom | Map zoom | Explorer+ |
-| Swipe | Navigation / page turn | Explorer+ |
-| Two-finger rotate | Rotate object | Adventurer+ |
-| Shake (accelerometer) | Special actions | Little Learner (optional) |
+| Long press | Inspect / info | Discovery+ |
+| Drag | Place / move objects | All (forgiving snapping for Foundation) |
+| Pinch zoom | Map zoom | Discovery+ |
+| Swipe | Navigation / page turn | Discovery+ |
+| Two-finger rotate | Rotate object | Builder+ |
+| Shake (accelerometer) | Special actions | Foundation (optional) |
 
 ### Touch-Specific Design
 
-- **Forgiving tap zones:** Hit detection extends 20% beyond visual boundaries for Little Learner
+- **Forgiving tap zones:** Hit detection extends 20% beyond visual boundaries for Foundation tier
 - **Snap-to-target:** When dragging, objects snap to valid positions within 30dp
 - **No precision dragging for young tiers:** Large targets, generous snapping
 - **Visual feedback:** Every touchable object has a highlight/glow on approach
@@ -84,7 +84,7 @@ small children have less motor precision and often use their whole palm.
 
 ## Voice Input
 
-**Primary for:** Satellite speakers (voice-only), Little Learner, accessibility
+**Primary for:** Satellite speakers (voice-only), Foundation tier, accessibility
 
 ### Speech Recognition
 
@@ -136,9 +136,9 @@ Natural language processing maps speech to game actions:
 
 | Scenario | Wait Time Before Re-Prompt |
 |----------|--------------------------|
-| Little Learner | 5 seconds ("Can you say it?") |
-| Explorer | 8 seconds ("Take your time!") |
-| Adventurer+ | 15 seconds ("Still thinking? No rush.") |
+| Foundation | 5 seconds ("Can you say it?") |
+| Discovery | 8 seconds ("Take your time!") |
+| Builder+ | 15 seconds ("Still thinking? No rush.") |
 | Complex problem | 30+ seconds (companion waits silently) |
 
 The companion NEVER says "I didn't hear you" in a way that implies the child failed.
@@ -148,7 +148,7 @@ Instead: "Hmm, it's noisy! Can you say that one more time?"
 
 ## Keyboard & Mouse
 
-**Primary for:** Explorer+ on desktop/laptop, classroom mode
+**Primary for:** Discovery+ on desktop/laptop, classroom mode
 
 ### Default Key Bindings
 
@@ -158,8 +158,8 @@ Instead: "Hmm, it's noisy! Can you say that one more time?"
 | Interact | E | Or left-click on object |
 | Inventory | I | |
 | Map | M | |
-| Quest log | J (journal) | Adventurer+ |
-| Crafting | K | Adventurer+ |
+| Quest log | J (journal) | Builder+ |
+| Crafting | K | Builder+ |
 | Companion | C | Calls companion |
 | Pause | Escape | |
 | Quick save | F5 | |
@@ -210,12 +210,12 @@ All bindings are fully remappable through settings. Presets for:
 | LB | Companion |
 | RB | Map |
 | Left stick | Move |
-| Right stick | Camera (Explorer+) |
+| Right stick | Camera (Discovery+) |
 | D-pad | Navigate menus / select from choices |
 | Start/Menu | Pause |
 | Select/View | Quest log |
-| Left trigger | Sprint (Explorer+) |
-| Right trigger | Use tool (Explorer+) |
+| Left trigger | Sprint (Discovery+) |
+| Right trigger | Use tool (Discovery+) |
 
 ### Gamepad-Specific Design
 
@@ -256,14 +256,14 @@ Touch the screen → touch mode. No settings required.
 
 | Tier | Primary | Secondary | Notes |
 |------|---------|-----------|-------|
-| Little Learner (2–5) | Touch + Voice | Gamepad (simplified) | Max 4 buttons used on gamepad |
-| Explorer (6–10) | Touch or K+M | Voice, Gamepad | Full gamepad support begins |
-| Adventurer (11–14) | K+M or Gamepad | Touch, Voice | Complex crafting benefits from K+M |
-| Scholar (15–18) | K+M | Gamepad, Voice | Equation entry, graphing need keyboard |
-| Master (18–24) | K+M | Voice (dictation) | Research tools optimized for keyboard |
+| Foundation (typically 2–5) | Touch + Voice | Gamepad (simplified) | Max 4 buttons used on gamepad |
+| Discovery (typically 6–10) | Touch or K+M | Voice, Gamepad | Full gamepad support begins |
+| Builder (typically 11–14) | K+M or Gamepad | Touch, Voice | Complex crafting benefits from K+M |
+| Innovator (typically 15–18) | K+M | Gamepad, Voice | Equation entry, graphing need keyboard |
+| Creator (18+) | K+M | Voice (dictation) | Research tools optimized for keyboard |
 
-These are recommendations, not requirements. A Scholar can play entirely by voice on
-a satellite speaker. A Little Learner can use a gamepad. Every combination works.
+These are recommendations, not requirements. An Innovator can play entirely by voice on
+a satellite speaker. A Foundation-tier player can use a gamepad. Every combination works.
 
 ---
 

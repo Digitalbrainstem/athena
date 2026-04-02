@@ -17,7 +17,7 @@ is woven into the fabric of reality. The world generates environments based on:
 - **Player progress** — new areas unlock as skills develop, existing areas deepen
 - **Player engagement** — bored? the world changes. In flow? it deepens
 - **Player choices** — explore a cave → underground theme. Find a telescope → space theme
-- **Player age tier** — world complexity scales with cognitive development
+- **Player mastery tier** — world complexity scales with cognitive development
 
 The world looks and feels different for every player. Two 10-year-olds starting on the
 same day will have entirely different experiences within an hour. One might be exploring
@@ -208,31 +208,31 @@ and a reference shelf of element samples.
 
 **What happens here (by tier):**
 
-**Little Learner (2–5):**
+**Foundation (typically ages 2–5):**
 - Mix colors: "Put the RED liquid and the BLUE liquid together — what color?"
 - Count ingredients: "The recipe needs 3 mushrooms. Let's count them!"
 - Sort by property: "Which bottles are cold? Which are warm?"
 - Grow flowers: "Plant the seed, water it, wait — it's growing!"
 
-**Explorer (6–10):**
+**Discovery (typically ages 6–10):**
 - Simple recipes: "Mix 2 parts water + 1 part salt. Stir. What happens?"
 - Temperature experiments: "Heat the ice. What happens at each stage?"
 - Plant biology: "This plant needs sunlight and water. What happens without light?"
 - Measurement: "The recipe says 250 ml. This beaker shows 100 ml. How many times?"
 
-**Adventurer (11–14):**
+**Builder (typically ages 11–14):**
 - Stoichiometry: "2H₂ + O₂ → 2H₂O. You have 6 mol of hydrogen. How much oxygen?"
 - pH and acids/bases: "The lake water is pH 4. How much base to reach pH 7?"
 - Genetics: "Cross red-flower and white-flower plants. Predict the offspring colors."
 - Conservation of mass: "Reactants weigh 50g. Products weigh 48g. Where did 2g go?"
 
-**Scholar (15–18):**
+**Innovator (typically ages 15–18):**
 - Equilibrium: "Le Chatelier's principle — add more reactant, which way does equilibrium shift?"
 - Organic chemistry: "Synthesize aspirin. What functional groups are involved?"
 - Enzyme kinetics: "The reaction rate peaks at 37°C. Why? Model it."
 - Thermodynamics: "Is this reaction exothermic or endothermic? Calculate ΔH."
 
-**Master (18–24):**
+**Creator (ages 18+):**
 - Biochemistry: "The protein misfolded. Analyze the amino acid sequence. Find the error."
 - Quantum chemistry: "Place electrons in orbitals. Predict the molecule's reactivity."
 - Analytical chemistry: "Identify the unknown compound using spectroscopy data."
@@ -294,20 +294,20 @@ The game monitors engagement in real-time (logged for Atlas to analyze between s
 
 ## Environment Physics
 
-The world uses real physics, simplified per age tier but always honest.
+The world uses real physics, simplified per mastery tier but always honest.
 
 ### Physics Tiers
 
 | Tier | Physics Level | Examples |
 |------|-------------|---------|
-| Little Learner | Intuitive | Things fall down. Heavy things are harder to push. Water flows downhill. |
-| Explorer | Qualitative | Larger forces move heavier objects. Bridges need support. Heat melts ice. |
-| Adventurer | Quantitative basics | F=ma for simple cases. Buoyancy calculations. Ohm's law in circuits. |
-| Scholar | Full Newtonian + intro modern | Vector forces, torque, wave equations, basic E&M, thermodynamics. |
-| Master | Advanced | Quantum mechanics, statistical mechanics, relativity in space travel. |
+| Foundation | Intuitive | Things fall down. Heavy things are harder to push. Water flows downhill. |
+| Discovery | Qualitative | Larger forces move heavier objects. Bridges need support. Heat melts ice. |
+| Builder | Quantitative basics | F=ma for simple cases. Buoyancy calculations. Ohm's law in circuits. |
+| Innovator | Full Newtonian + intro modern | Vector forces, torque, wave equations, basic E&M, thermodynamics. |
+| Creator | Advanced | Quantum mechanics, statistical mechanics, relativity in space travel. |
 
-The same bridge exists at all tiers. A Little Learner builds with big blocks and learns
-"triangles are strong." A Scholar calculates the stress tensor and moment of inertia.
+The same bridge exists at all tiers. A Foundation-tier player builds with big blocks and learns
+"triangles are strong." An Innovator-tier player calculates the stress tensor and moment of inertia.
 The physics engine scales its feedback — simple animations for kids, numerical output
 and graphs for advanced players.
 
@@ -317,11 +317,11 @@ All chemistry in the game follows real rules:
 
 - **Conservation of mass** — always enforced
 - **Real formulas** — H₂O, NaCl, C₆H₁₂O₆ are the actual compounds
-- **Balanced equations** — required at Adventurer tier and above
+- **Balanced equations** — required at Builder tier and above
 - **Energy changes** — exothermic/endothermic reactions behave correctly
 - **Phase changes** — accurate melting/boiling points (simplified labels for young players)
 
-At Little Learner tier, chemistry presents as "mixing colors" and "making things hot
+At Foundation tier, chemistry presents as "mixing colors" and "making things hot
 or cold." The underlying system is the same — it's just displayed differently.
 
 ### Ecology Rules
@@ -334,8 +334,8 @@ The Living Forest and other biological biomes follow real ecological principles:
 - **Succession** — disturbed areas recover through predictable stages
 - **Weather effects** — drought, flood, fire all affect the ecosystem
 
-At Explorer tier, this manifests as "the rabbits ate all the plants because the foxes
-disappeared." At Scholar tier, the same system produces population differential equations
+At Discovery tier, this manifests as "the rabbits ate all the plants because the foxes
+disappeared." At Innovator tier, the same system produces population differential equations
 and predator-prey models (Lotka-Volterra).
 
 ---
@@ -345,14 +345,14 @@ and predator-prey models (Lotka-Volterra).
 The world expands as the player progresses. See [03-TRAVEL_MECHANICS.md](03-TRAVEL_MECHANICS.md)
 for the full travel system. Here's the world-scale overview:
 
-| Stage | Scope | Age Tier | Size Feel |
+| Stage | Scope | Mastery Tier | Size Feel |
 |-------|-------|----------|-----------|
-| Local | Village, garden, companion's home | Little Learner | A single neighborhood — cozy, safe |
-| Regional | Multiple biomes, paths between them | Explorer | A small country — days of exploration |
-| Continental | Oceans, continents, diverse climates | Adventurer | An entire world — weeks of travel |
-| Planetary | Atmosphere, orbit, global features | Scholar | A planet seen from space — awe-inspiring |
-| Interplanetary | Moons, planets, asteroid belt | Scholar–Master | A solar system — vast and humbling |
-| Interstellar | Other star systems, nebulae, deep space | Master | A galaxy — the final frontier |
+| Local | Village, garden, companion's home | Foundation | A single neighborhood — cozy, safe |
+| Regional | Multiple biomes, paths between them | Discovery | A small country — days of exploration |
+| Continental | Oceans, continents, diverse climates | Builder | An entire world — weeks of travel |
+| Planetary | Atmosphere, orbit, global features | Innovator | A planet seen from space — awe-inspiring |
+| Interplanetary | Moons, planets, asteroid belt | Innovator–Creator | A solar system — vast and humbling |
+| Interstellar | Other star systems, nebulae, deep space | Creator | A galaxy — the final frontier |
 
 Each scale increase requires genuinely deeper knowledge to navigate, survive, and thrive.
 The world doesn't just get bigger — it gets more scientifically complex.
@@ -431,8 +431,8 @@ Weather is physics-based and educational:
 | Fog | Light scattering, navigation | "Can't see the path. Use compass and distance calculation." |
 | Eclipse | Orbital mechanics, geometry | "The moon is passing in front of the sun. Predict the duration." |
 
-Weather at Little Learner tier is simple and friendly — "It's raining! The flowers are
-happy!" At Scholar tier, the same rain involves calculating precipitation rates, erosion
+Weather at Foundation tier is simple and friendly — "It's raining! The flowers are
+happy!" At Innovator tier, the same rain involves calculating precipitation rates, erosion
 coefficients, and flood modeling.
 
 ---
@@ -461,7 +461,7 @@ Before building against this document, complete the following research:
 - [ ] **Child interest research** — Review developmental psychology research on how children's interests form and evolve (Renninger & Hidi's "The Power of Interest"). Understand how interests differ from preferences and how to avoid stereotyping.
 - [ ] **Dynamic difficulty in open worlds** — Study how Skyrim, Breath of the Wild, and Witcher 3 handle level scaling. Identify approaches that feel natural vs. "rubber-banding."
 - [ ] **Biome-based learning environments** — Review research on contextual learning and situated cognition (Lave & Wenger). How does the learning environment affect retention and transfer?
-- [ ] **Ecological modeling for games** — Research simplified ecological simulations suitable for real-time gameplay (Lotka-Volterra for Explorer tier, agent-based models for Scholar tier). Review Ecosystem games (Eco by Strange Loop Games).
+- [ ] **Ecological modeling for games** — Research simplified ecological simulations suitable for real-time gameplay (Lotka-Volterra for Discovery tier, agent-based models for Innovator tier). Review Ecosystem games (Eco by Strange Loop Games).
 
 ---
 

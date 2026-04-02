@@ -1,8 +1,8 @@
 # 16 — Art Direction
 
 > Nexus Academy uses stylized 3D — not photorealistic, not pixel art. The visual
-> style scales smoothly across age tiers from soft and playful (Little Learner) to
-> stunning and atmospheric (Scholar/Master), all within a single coherent aesthetic.
+> style scales smoothly across mastery tiers from soft and playful (Foundation) to
+> stunning and atmospheric (Innovator/Creator), all within a single coherent aesthetic.
 > Think Breath of the Wild's environmental beauty meets Monument Valley's geometric
 > elegance meets Spiderverse's expressive rendering. This document covers the visual
 > philosophy, per-tier styling, color system, and rendering approach.
@@ -20,7 +20,7 @@ character from above or behind. This is a deliberate design choice:
   observing it.
 - **The player's hands/tools are visible** but there is no full avatar on screen.
   What the player sees is the world itself, their tools, and their companion.
-- **For Little Learner (2–5):** First person, but the companion is always visible
+- **For Foundation tier (typically ages 2–5):** First person, but the companion is always visible
   directly ahead — talking TO the player, pointing at things, reacting to what happens.
   The companion is the player's anchor in the world.
 - **For older players:** First-person exploration, building, and crafting — like
@@ -56,7 +56,7 @@ character change.
 
 ## Per-Tier Visual Style
 
-### Little Learner (Ages 2–5)
+### Foundation (typically ages 2–5)
 
 **Reference:** Monument Valley + Fisher-Price + Dora's environment
 
@@ -71,7 +71,7 @@ character change.
 | Text | Almost none. Icons and images communicate. |
 | Lighting | Soft, even. No harsh shadows. Always feels safe. |
 
-### Explorer (Ages 6–10)
+### Discovery (typically ages 6–10)
 
 **Reference:** Zelda: Wind Waker + Minecraft (shaders) + Journey
 
@@ -86,7 +86,7 @@ character change.
 | Text | Labels, short dialogue. Clear, readable fonts. |
 | Lighting | Dynamic day/night cycle. Soft shadows. Warm tones. |
 
-### Adventurer (Ages 11–14)
+### Builder (typically ages 11–14)
 
 **Reference:** Breath of the Wild + Gris + Alto's Odyssey
 
@@ -101,7 +101,7 @@ character change.
 | Text | Full dialogue, journal entries, in-world text. |
 | Lighting | Volumetric effects. God rays. Dynamic weather lighting. |
 
-### Scholar (Ages 15–18)
+### Innovator (typically ages 15–18)
 
 **Reference:** Journey + Spiderverse + Inside + Firewatch
 
@@ -116,7 +116,7 @@ character change.
 | Text | Complex. Technical. Scientific. But always clear. |
 | Lighting | Dramatic. Atmospheric. Emotional. Uses light to guide attention. |
 
-### Master (Ages 18–24)
+### Creator (ages 18+)
 
 **Reference:** Fez + scientific visualization + data art + Manifest
 
@@ -179,11 +179,11 @@ Each biome has a 5-color palette that harmonizes with Frost/Aurora:
 
 | Tier | Saturation | Brightness | Contrast |
 |------|-----------|-----------|---------|
-| Little Learner | High (80-100%) | High | High (>7:1 for text) |
-| Explorer | Medium-High (60-85%) | Medium-High | High |
-| Adventurer | Medium (50-75%) | Medium | Medium-High |
-| Scholar | Medium-Low (40-65%) | Varies (dramatic) | Medium |
-| Master | Low-Medium (30-60%) | Varies (functional) | High for data |
+| Foundation | High (80-100%) | High | High (>7:1 for text) |
+| Discovery | Medium-High (60-85%) | Medium-High | High |
+| Builder | Medium (50-75%) | Medium | Medium-High |
+| Innovator | Medium-Low (40-65%) | Varies (dramatic) | Medium |
+| Creator | Low-Medium (30-60%) | Varies (functional) | High for data |
 
 ---
 
@@ -221,7 +221,7 @@ LOD 3: Billboard/impostor (very far distance)
 
 Age-tier-appropriate post-processing:
 
-| Effect | Little Learner | Explorer | Adventurer | Scholar | Master |
+| Effect | Foundation | Discovery | Builder | Innovator | Creator |
 |--------|---------------|----------|------------|---------|--------|
 | Bloom | Soft, dreamy | Subtle | Atmospheric | Dramatic | Functional |
 | Depth of field | None (everything clear) | Gentle | Cinematic | Dramatic | Data-driven |
@@ -242,13 +242,13 @@ Fully customizable at every tier:
 - **Hair:** Wide variety of styles, colors, textures
 - **Clothing:** Functional and decorative options earned through play
 - **Accessories:** Earned through quests and building
-- **Scale:** Adjusts subtly with age tier (child proportions → adult proportions)
+- **Scale:** Adjusts subtly with mastery tier (child proportions → adult proportions)
 
 ### Companion (see [11-COMPANION_SYSTEM.md](11-COMPANION_SYSTEM.md))
 
 - Stylized to match the biome the player is in (subtle color adaptation)
 - Expression system: 20+ emotional states visible in face/body language
-- Size appropriate to tier (slightly larger relative to avatar for Little Learner)
+- Size appropriate to tier (slightly larger relative to avatar for Foundation tier)
 
 ### NPCs
 

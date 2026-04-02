@@ -228,7 +228,7 @@ because it is.
   factories, robotics. See [02-WORLD_DESIGN.md](02-WORLD_DESIGN.md).
 - **Difficulty auto-adjusts.** Too easy → escalate. Too hard → scaffold. Always aiming
   for the flow channel. See [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md).
-- **Age tiers are guides, not gates.** A gifted 7-year-old gets algebra. A struggling
+- **Mastery tiers are guides, not gates.** A gifted 7-year-old gets algebra. A struggling
   13-year-old gets reinforced fundamentals. No child is held back or rushed.
 - **Input methods are flexible.** Touch, voice, keyboard, gamepad — all first-class.
   Switch mid-session. See [13-INPUT_CONTROLS.md](13-INPUT_CONTROLS.md).
@@ -268,7 +268,7 @@ and all core mechanics work independently.
 
 **What this means:**
 - **Standalone Mode** is a full game — not a demo, not a trial, not a degraded experience.
-  All subjects, all age tiers, all mechanics functional.
+  All subjects, all mastery tiers, all mechanics functional.
 - **Atlas-Enhanced Mode** adds: dynamic content generation, Ender Protocol adaptive
   difficulty, interest tracking and world reshaping, parent reports, multi-device sync,
   and nightly content refresh.
@@ -301,10 +301,11 @@ the full truth — never a falsehood that will need to be unlearned later.
   says so: "Scientists are still studying this."
 - **Simplification is honest.** "Angles as turns" (radian intuition for toddlers) is
   an honest simplification — it's actually MORE correct than starting with degrees.
-  "Atoms are tiny balls" is acceptable at Explorer tier because it's a useful model
+  "Atoms are tiny balls" is acceptable at Discovery tier because it's a useful model
   that gets refined later — not a lie.
 - **Content is validated.** All Atlas-generated content passes through an educational
   accuracy validator. See [09-CONTENT_PIPELINE.md](09-CONTENT_PIPELINE.md).
+
 
 ---
 

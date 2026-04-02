@@ -31,7 +31,7 @@ Every quest follows a structured JSON format:
   "id": "quest-crystal-bridge-001",
   "title": "The Crystal Bridge",
   "biome": "crystal_caverns",
-  "age_tier": "explorer",
+  "mastery_tier": "discovery",
   "estimated_minutes": 15,
   "skills": {
     "required": ["math.arithmetic.addition", "math.geometry.shapes"],
@@ -130,9 +130,9 @@ Total handcrafted: ~1,000 quests for Phase 1.
 
 Atlas generates ~20-30 quests per active player per week.
 
-### Player-Created Content (Master Tier)
+### Player-Created Content (Creator Tier)
 
-Master-tier players can create quests for younger players. Pipeline:
+Creator-tier players can create quests for younger players. Pipeline:
 
 1. Player designs quest using creation tools
 2. Atlas validates educational accuracy and safety

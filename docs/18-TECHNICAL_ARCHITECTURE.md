@@ -251,7 +251,7 @@ CREATE TABLE profiles (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
     avatar_data TEXT,               -- JSON
-    age_tier TEXT NOT NULL,
+    mastery_tier TEXT NOT NULL,
     birth_date DATE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_active TIMESTAMP,
@@ -297,7 +297,7 @@ CREATE TABLE quests (
     id TEXT PRIMARY KEY,
     title TEXT NOT NULL,
     biome TEXT NOT NULL,
-    age_tier TEXT NOT NULL,
+    mastery_tier TEXT NOT NULL,
     skills_required TEXT,           -- JSON
     skills_taught TEXT,             -- JSON
     content TEXT NOT NULL,          -- JSON: full quest definition
@@ -363,7 +363,7 @@ CREATE INDEX idx_mastery_profile ON mastery(profile_id);
 CREATE INDEX idx_mastery_skill ON mastery(skill_id);
 CREATE INDEX idx_events_profile_time ON learning_events(profile_id, timestamp);
 CREATE INDEX idx_events_skill ON learning_events(skill_id);
-CREATE INDEX idx_quests_biome_tier ON quests(biome, age_tier);
+CREATE INDEX idx_quests_biome_tier ON quests(biome, mastery_tier);
 CREATE INDEX idx_quest_progress_profile ON quest_progress(profile_id, status);
 ```
 

@@ -11,10 +11,10 @@
 | 01 | [VISION.md](01-VISION.md) | Vision statement, inspirations, design pillars, what this game IS and ISN'T |
 | 02 | [WORLD_DESIGN.md](02-WORLD_DESIGN.md) | The Nexus: biomes, world morphing, environment rules, procedural generation |
 | 03 | [TRAVEL_MECHANICS.md](03-TRAVEL_MECHANICS.md) | Travel expansion from village to galaxy: vehicles, FTL, wormholes, fuel chemistry |
-| 04 | [AGE_TIERS.md](04-AGE_TIERS.md) | Five tiers from Little Learner (2–5) to Master (18–24), detailed gameplay per tier |
+| 04 | [MASTERY_TIERS.md](04-AGE_TIERS.md) | Five mastery tiers from Foundation (2–5) to Creator (18+), detailed gameplay per tier |
 | 05 | [GAMEPLAY_LOOPS.md](05-GAMEPLAY_LOOPS.md) | Core loops, quest structure, crafting, building, economy, Code Forge |
 | 06 | [MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md) | The Ender Protocol: spaced repetition, gap detection, impossible challenges, flow |
-| 07 | [SUBJECT_MAPPING.md](07-SUBJECT_MAPPING.md) | Every subject mapped to game mechanics at every age tier, with examples |
+| 07 | [SUBJECT_MAPPING.md](07-SUBJECT_MAPPING.md) | Every subject mapped to game mechanics at every mastery tier, with examples |
 | 08 | [ATLAS_INTEGRATION.md](08-ATLAS_INTEGRATION.md) | Atlas as the invisible architect: nightly batch, world shaping, what it does and doesn't do |
 | 09 | [CONTENT_PIPELINE.md](09-CONTENT_PIPELINE.md) | How content is authored, generated, validated, cached, and distributed |
 | 10 | [STORY_NARRATIVE.md](10-STORY_NARRATIVE.md) | The Founders, the overarching mystery, story threads per tier, the endgame revelation |
@@ -35,7 +35,7 @@
 
 1. **[00-CORE_PRINCIPLES.md](00-CORE_PRINCIPLES.md)** — The non-negotiable foundation
 2. **[01-VISION.md](01-VISION.md)** — What this game is and why it exists
-3. **[04-AGE_TIERS.md](04-AGE_TIERS.md)** — How the game adapts from toddler to college
+3. **[04-AGE_TIERS.md](04-AGE_TIERS.md)** — How the game adapts across mastery levels, from toddler to any age
 4. **[02-WORLD_DESIGN.md](02-WORLD_DESIGN.md)** — The living world that teaches through play
 5. **[06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md)** — How learning is tracked invisibly
 
@@ -61,7 +61,7 @@
 - Documents cross-reference each other by number: "See [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md)"
 - Each document starts with a one-paragraph summary
 - Examples are concrete and specific, not abstract
-- All subjects covered through college level (ages 2–24)
+- All subjects covered through college level and beyond (ages 2 and up)
 - "The player" is always gender-neutral
 
 ---

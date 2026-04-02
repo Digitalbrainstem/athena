@@ -45,11 +45,11 @@ character-consistent. Multiple voice profiles are available:
 
 | Profile | Characteristics | Best For |
 |---------|----------------|----------|
-| **Warm** | Gentle pace, nurturing tone, soft resonance | Little Learner, anxious players |
-| **Energetic** | Fast pace, enthusiastic, higher pitch range | Explorer, re-engagement |
-| **Calm** | Steady pace, reassuring, measured delivery | Adventurer, complex problem-solving |
+| **Warm** | Gentle pace, nurturing tone, soft resonance | Foundation, anxious players |
+| **Energetic** | Fast pace, enthusiastic, higher pitch range | Discovery, re-engagement |
+| **Calm** | Steady pace, reassuring, measured delivery | Builder, complex problem-solving |
 | **Playful** | Variable pace, witty tone, wide pitch range | Any age, humor-responsive players |
-| **Scholarly** | Precise diction, moderate pace, articulate | Scholar, Master |
+| **Scholarly** | Precise diction, moderate pace, articulate | Innovator, Creator |
 
 ### Emotional Modulation
 
@@ -111,7 +111,7 @@ Every player action gets immediate audio feedback:
 
 ### Age-Tier Audio Adjustment
 
-| Element | Little Learner | Explorer | Adventurer+ |
+| Element | Foundation | Discovery | Builder+ |
 |---------|---------------|----------|-------------|
 | Correct sound | Big celebration (confetti + music) | Satisfying chime | Clean confirmation |
 | Wrong sound | Barely audible + companion redirect | Soft neutral tone | Quick, informational |
@@ -195,11 +195,11 @@ When the player moves between biomes, music crossfades over 10-15 seconds:
 
 | Tier | Musical Complexity | Instrumentation |
 |------|-------------------|-----------------|
-| Little Learner | Simple melodies, clear rhythms, repetitive | Xylophone, ukulele, simple percussion |
-| Explorer | More complex melodies, developing themes | Acoustic instruments, light orchestra |
-| Adventurer | Rich arrangements, dynamic range | Full orchestra, electronic elements |
-| Scholar | Sophisticated harmony, complex rhythms | Chamber ensemble, advanced electronic |
-| Master | Subtle, powerful, sometimes minimal | Whatever serves the moment |
+| Foundation | Simple melodies, clear rhythms, repetitive | Xylophone, ukulele, simple percussion |
+| Discovery | More complex melodies, developing themes | Acoustic instruments, light orchestra |
+| Builder | Rich arrangements, dynamic range | Full orchestra, electronic elements |
+| Innovator | Sophisticated harmony, complex rhythms | Chamber ensemble, advanced electronic |
+| Creator | Subtle, powerful, sometimes minimal | Whatever serves the moment |
 
 ---
 

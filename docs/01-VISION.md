@@ -1,7 +1,7 @@
 # 01 — Vision Statement
 
 > Nexus Academy is an open-world game where playing IS learning. Players explore,
-> build, craft, and adventure from age 2 to 24 — mastering everything from counting
+> build, craft, and adventure from age 2 and up — mastering everything from counting
 > to calculus, colors to chemistry, letters to linear algebra — without ever taking a
 > test or writing an essay. The world demands knowledge and rewards mastery. Atlas
 > shapes the world between sessions as an invisible architect. The game runs standalone.
@@ -17,7 +17,7 @@ world around each player."**
 
 ## What This Game IS
 
-Nexus Academy is an adaptive, open-world learning game for ages 2–24 where the gameplay
+Nexus Academy is an adaptive, open-world learning game for ages 2 and up where the gameplay
 itself teaches. Not a quiz engine with game graphics. Not a gamified flashcard app. Not
 an "educational game" in the way that phrase is typically understood.
 
@@ -76,7 +76,7 @@ If a crafting recipe exists, it uses real chemistry. If a building stands, it us
 physics. If an economy runs, it uses real economics. Nothing is fake. Nothing is
 simplified past the point of truth.
 
-Simplification is allowed at lower age tiers, but it must be **honest simplification** —
+Simplification is allowed at earlier mastery tiers, but it must be **honest simplification** —
 a stepping stone to the full truth, not a lie that will need to be unlearned later.
 For example, angles start as "turns" (quarter turn, half turn) which is secretly
 radians — when the word "radian" appears years later, the player already has the intuition.
@@ -84,7 +84,7 @@ radians — when the word "radian" appears years later, the player already has t
 ### 4. The World Grows With the Player
 
 A 3-year-old and a 20-year-old play the same game — but the world is unrecognizably
-different for each. The five age tiers (see [04-AGE_TIERS.md](04-AGE_TIERS.md)) transition
+different for each. The five mastery tiers (see [04-AGE_TIERS.md](04-AGE_TIERS.md)) transition
 seamlessly. The player never notices the world "leveling up" — it just gradually becomes
 richer, deeper, more complex.
 
@@ -109,7 +109,7 @@ and cached. A player can go months offline and still have content to play.
 
 Angles are introduced as "turns" — full turn, half turn, quarter turn. This builds
 intuitive understanding of radians years before the word appears. When a 15-year-old
-encounters the unit circle in Scholar mode, they already *feel* that π is a half turn.
+encounters the unit circle at the Innovator tier, they already *feel* that π is a half turn.
 They've been doing it since they were 2.
 
 This philosophy applies broadly: plant the seeds of advanced concepts early in intuitive,

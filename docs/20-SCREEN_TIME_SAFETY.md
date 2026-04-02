@@ -69,18 +69,18 @@ and touching your toes! I'll count to 10."
 - **Never interrupts a challenge.** Waits for the current quest step to complete.
 - **Never punishes.** If the player ignores the suggestion, the game continues.
 - **In-character.** The companion is tired/thirsty/wants to stretch — not the game saying "stop playing."
-- **Age-appropriate frequency.** More frequent for Little Learner (every 15 min), less for older tiers.
+- **Age-appropriate frequency.** More frequent for Foundation tier (every 15 min), less for older tiers.
 - **Physical activity suggestions.** "Let's do 10 jumping jacks!" — the break itself is active.
 
 ### Break Reminder Schedule (Defaults)
 
-| Age Tier | First Reminder | Subsequent | Style |
+| Mastery Tier | First Reminder | Subsequent | Style |
 |----------|---------------|-----------|-------|
-| Little Learner (2-5) | 15 min | Every 10 min | Natural narrative breakpoints |
-| Explorer (6-10) | 30 min | Every 15 min | Companion suggests activity |
-| Adventurer (11-14) | 45 min | Every 20 min | Gentle suggestion |
-| Scholar (15-18) | 60 min | Every 30 min | Brief mention |
-| Master (18-24) | 90 min | Every 45 min | Minimal |
+| Foundation (typically 2–5) | 15 min | Every 10 min | Natural narrative breakpoints |
+| Discovery (typically 6–10) | 30 min | Every 15 min | Companion suggests activity |
+| Builder (typically 11–14) | 45 min | Every 20 min | Gentle suggestion |
+| Innovator (typically 15–18) | 60 min | Every 30 min | Brief mention |
+| Creator (18+) | 90 min | Every 45 min | Minimal |
 
 ---
 
@@ -205,9 +205,9 @@ See [14-MULTIPLAYER.md](14-MULTIPLAYER.md) for full details. Key safety points:
 
 ### Age-Appropriate Content
 
-All content is filtered by age tier:
+All content is filtered by mastery tier:
 
-| Topic | Little Learner | Explorer | Adventurer | Scholar | Master |
+| Topic | Foundation | Discovery | Builder | Innovator | Creator |
 |-------|---------------|----------|------------|---------|--------|
 | Conflict | None | Minor obstacles | Strategy (no violence) | Complex dilemmas | Full complexity |
 | Death | Not mentioned | Natural cycles only | Historical context | Academic context | Full academic |

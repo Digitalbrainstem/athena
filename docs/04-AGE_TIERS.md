@@ -1,6 +1,6 @@
-# 04 — Age Tiers
+# 04 — Mastery Tiers
 
-> Nexus Academy serves ages 2 through 24 across five seamless tiers. Each tier
+> Nexus Academy serves learners ages 2 and up across five seamless mastery tiers. Each tier
 > transforms the interface, world complexity, companion relationship, subject depth,
 > and narrative sophistication — while the underlying world remains continuous. A
 > player never "levels up" to a new tier; the world gradually grows with them. This
@@ -10,23 +10,23 @@
 
 ## Tier Overview
 
-| Tier | Ages | Name Shown to Player | Interface | Companion Role |
-|------|------|---------------------|-----------|---------------|
-| 1 | 2–5 | Little Learner | Voice + large touch targets | Best friend who talks directly to the child |
-| 2 | 6–10 | Nexus Academy: Explorer | Touch/mouse/keyboard, simple HUD | Adventure partner |
-| 3 | 11–14 | Nexus Academy: Adventurer | Full game UI, inventory, quest log | Trusted ally who respects your intelligence |
-| 4 | 15–18 | Nexus Academy: Scholar | Sophisticated UI, equation renderer, simulators | Intellectual peer |
-| 5 | 18–24 | Nexus Academy: Master | Research environment, creation tools, publication | Research partner and collaborator |
+| Tier | Typical Starting Mastery | Name Shown to Player | Interface | Companion Role |
+|------|--------------------------|---------------------|-----------|---------------|
+| 1 | Ages 2–5 | Foundation | Voice + large touch targets | Best friend who talks directly to the child |
+| 2 | Ages 6–10 | Nexus Academy: Discovery | Touch/mouse/keyboard, simple HUD | Adventure partner |
+| 3 | Ages 11–14 | Nexus Academy: Builder | Full game UI, inventory, quest log | Trusted ally who respects your intelligence |
+| 4 | Ages 15–18 | Nexus Academy: Innovator | Sophisticated UI, equation renderer, simulators | Intellectual peer |
+| 5 | Ages 18+ | Nexus Academy: Creator | Research environment, creation tools, publication | Research partner and collaborator |
 
 The transition between tiers is **seamless**. There is no "Congratulations, you've
-reached Explorer mode!" screen. The world just gradually adds complexity. The companion
+reached Discovery mode!" screen. The world just gradually adds complexity. The companion
 gradually shifts tone. The UI gradually offers more controls. A player moving from tier
 1 to tier 2 won't notice it happening — they'll just realize one day that the world is
 bigger than it used to be.
 
 ---
 
-## Tier 1 — Little Learner (Ages 2–5)
+## Tier 1 — Foundation (typically ages 2–5)
 
 ### Inspiration
 
@@ -121,7 +121,7 @@ happens on the corrected answer, not differently from a first-try success.
 
 ---
 
-## Tier 2 — Explorer (Ages 6–10)
+## Tier 2 — Discovery (typically ages 6–10)
 
 ### Interface
 
@@ -129,7 +129,7 @@ happens on the corrected answer, not differently from a first-try success.
 - **HUD:** Simple health/energy bar, item count, mini-map (optional), compass
 - **Inventory:** Basic grid inventory. Drag-and-drop. Visual item icons.
 - **Text:** Labels, short dialogue, journal entries. Reading expected but not required
-  (companion reads aloud on request or by default for younger Explorers).
+  (companion reads aloud on request or by default for younger Discovery-tier players).
 
 ### The World Opens
 
@@ -181,7 +181,7 @@ Everything from Tier 1, plus:
 
 ---
 
-## Tier 3 — Adventurer (Ages 11–14)
+## Tier 3 — Builder (typically ages 11–14)
 
 ### Interface
 
@@ -231,7 +231,7 @@ Everything from Tier 2, plus:
 
 ---
 
-## Tier 4 — Scholar (Ages 15–18)
+## Tier 4 — Innovator (typically ages 15–18)
 
 ### Interface
 
@@ -279,7 +279,7 @@ Everything from Tier 3, plus:
 
 ---
 
-## Tier 5 — Master (Ages 18–24)
+## Tier 5 — Creator (ages 18+)
 
 ### Interface
 
@@ -318,16 +318,16 @@ Everything from Tier 4, plus:
 
 ### Teaching as Mastery
 
-At Master tier, the companion suggests that the player teach younger players:
+At Creator tier, the companion suggests that the player teach younger players:
 
 ```
-COMPANION: "A new Explorer in the Living Forest is struggling with
+COMPANION: "A new Discovery-tier player in the Living Forest is struggling with
 food chains. You mastered ecology years ago. Want to create a quest
 that teaches it? Designing a teaching experience is the deepest
 form of mastery."
 ```
 
-Content created by Master players (after Atlas quality validation) can appear in
+Content created by Creator-tier players (after Atlas quality validation) can appear in
 other players' worlds, creating a living, growing educational ecosystem.
 
 ---
@@ -336,9 +336,9 @@ other players' worlds, creating a living, growing educational ecosystem.
 
 ### Tiers Are Internal Only
 
-**Critical design rule:** The tier names (Little Learner, Explorer, Adventurer, Scholar,
-Master) are internal design categories. **The player never sees them.** There is no
-"Congratulations, you've reached Adventurer!" screen. No tier badge. No rank indicator.
+**Critical design rule:** The tier names (Foundation, Discovery, Builder, Innovator,
+Creator) are internal design categories. **The player never sees them.** There is no
+"Congratulations, you've reached Builder!" screen. No tier badge. No rank indicator.
 No progress bar toward the next tier.
 
 The player experiences a world that gradually, organically expands. That's it.
@@ -379,8 +379,8 @@ Age is a guide for default starting content, not a gate:
 | Navigation + coordinates | Map gains a coordinate grid, longer journeys possible |
 | Basic programming | Code Forge machines become programmable |
 
-A gifted 7-year-old can be encountering what we internally call "Adventurer-tier"
-content. A struggling 13-year-old might still be solidifying "Explorer-tier" skills.
+A gifted 7-year-old can be encountering what we internally call "Builder-tier"
+content. A struggling 13-year-old might still be solidifying "Discovery-tier" skills.
 Both are valid. Both are having fun. Neither knows their internal tier label.
 
 ### What Triggers Transition
@@ -402,7 +402,7 @@ sessions. The transition takes weeks, not minutes. And the player never knows it
 
 Before building against this document, complete the following research:
 
-- [ ] **Child development stages (Piaget)** — Study Piaget's stages of cognitive development (sensorimotor, preoperational, concrete operational, formal operational). Map to our age tiers. Identify where our tier boundaries align/diverge and why.
+- [ ] **Child development stages (Piaget)** — Study Piaget's stages of cognitive development (sensorimotor, preoperational, concrete operational, formal operational). Map to our mastery tiers. Identify where our tier boundaries align/diverge and why.
 - [ ] **Child UX research** — Review Sesame Workshop's research methodology and published findings on children's interaction with screens. Study PBS Kids' design guidelines. Read Nielsen Norman Group's "Children's UX" reports.
 - [ ] **Motor skill development by age** — Research fine motor development milestones (pincer grasp, finger isolation, stylus control). Inform touch target sizes and gesture complexity per tier.
 - [ ] **Age-appropriate interaction design** — Study how children at ages 2-3, 4-5, 6-8, and 9-12 interact with tablets and voice interfaces differently. Review Apple's and Google's child-design guidelines.

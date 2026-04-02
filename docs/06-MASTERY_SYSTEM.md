@@ -149,7 +149,7 @@ multiplication, don't hold them back because "that's second grade."
   the player is ahead, the world adjusts immediately
 - If the player is behind, the world slows down without judgment
 - Tier-appropriate framing always applies (algebra for a 7-year-old is presented through
-  Explorer-tier gameplay, not Scholar-tier equations)
+  Discovery-tier gameplay, not Innovator-tier equations)
 
 ### 6. Cross-Subject Transfer
 
@@ -369,9 +369,9 @@ into a single coherent design intent.
 
 ### No Gates, No Ceremonies, No Visible Tiers
 
-The age tiers (Little Learner, Explorer, Adventurer, Scholar, Master) are **internal
+The mastery tiers (Foundation, Discovery, Builder, Innovator, Creator) are **internal
 design categories only**. The player never sees them. There is no "Congratulations,
-you've reached Explorer mode!" screen. No locked doors with "Requires Explorer Rank."
+you've reached Discovery mode!" screen. No locked doors with "Requires Discovery Rank."
 No progress bars showing "78% to next tier."
 
 The world just quietly expands:
@@ -408,7 +408,7 @@ A brilliant 3-year-old solving algebra-level challenges still gets:
 - Companion speaking everything aloud (because reading shouldn't gate learning)
 - Simple, uncluttered HUD (because visual complexity overwhelms young eyes)
 
-A 15-year-old with motor impairments working on Scholar-level physics still gets:
+A 15-year-old with motor impairments working on Innovator-level physics still gets:
 - Large touch targets and one-switch compatibility
 - Extended timing on all interactions
 - Full equation rendering and sophisticated content
