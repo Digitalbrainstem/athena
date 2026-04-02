@@ -260,7 +260,7 @@ export const foundationWorkshopQuests: CreateQuestInput[] = [
       steps: [
         {
           index: 0,
-          instruction: 'The machine made: red, blue, red, blue, red... It\'s waiting for the next bead — feed it the wrong one and the chain tangles!',
+          instruction: 'The machine made: red, blue, red, blue, red... It\'s waiting for the next bead — keep the pattern going!',
           spokenInstruction: 'The machine is slowing down! Red, blue, red, blue, red... it needs the next bead right now or it\'ll jam!',
           screenReaderText: 'Pattern task. The bead sequence is red, blue, red, blue, red. Choose the next bead to continue the alternating pattern.',
           companionRepeat: 'The machine needs the next bead! Red, blue, red, blue — what comes next?',
@@ -703,7 +703,7 @@ export const foundationWorkshopQuests: CreateQuestInput[] = [
     skillsTaught: ['math.spatial', 'lang.vocabulary'],
     content: {
       description: 'The workshop shelves are about to collapse! Heavy tools must go on the sturdy left shelf and light tools on the right shelf, or everything will come crashing down.',
-      companionIntro: 'Uh oh, look at these shelves! The heavy tools need the sturdy left shelf and the light tools go on the right shelf — if we put the heavy ones on the wrong side, the shelf might break!',
+      companionIntro: 'Look at these shelves! The heavy tools need the sturdy left shelf and the light tools go on the right shelf — let\'s sort them so everything fits perfectly!',
       steps: [
         {
           index: 0,
