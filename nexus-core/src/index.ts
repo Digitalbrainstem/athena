@@ -42,6 +42,14 @@ export { MasterySystem, sm2, calculateMasteryLevel, updateRetention, updateTrans
   TravelSystem, findRoute, reachableBiomes, fuelForRoute,
   WorldSimulation, computeGrowthStage, getGrowthStageName,
   CodexSystem, ProceduralQuestGenerator, AntiRepetitionTracker,
+  MultiplayerSystem,
+  announcePlayerAction, suggestCollaboration, celebrateTeamwork,
+  announcePlayerJoined, announcePlayerLeft, announceObjectiveAssigned, announceQuestProgress,
+  createSessionState, canJoinSession, addPlayerToSession, removePlayerFromSession,
+  getConnectedPlayers, isSessionEmpty,
+  startSharedQuest, claimObjective, completeObjective, isQuestComplete,
+  getCompletedObjectiveCount, getPendingObjectives,
+  createMessage,
 } from './systems/index.js';
 export type { MasteryDimensions, GapAnalysis, GapDetail, SkillPrerequisites,
   PendingLearningEvent, QuestAction, QuestSelectionCriteria, CompanionInteraction,
@@ -130,6 +138,14 @@ export type {
   QuestMechanic, SkillRole, SkillSlot, TemplateStep, TemplateStructure,
   QuestTemplate, GenerationCriteria, GeneratedQuest, GeneratedQuestContent,
   GeneratedQuestStep, MechanicUsageRecord,
+  LANSession, SessionStatus, MultiplayerSessionState, PlayerSessionState,
+  SharedQuestState, SharedObjective,
+  MultiplayerMessageType, MultiplayerMessage,
+  JoinRequestPayload, JoinAcceptedPayload, JoinRejectedPayload,
+  PlayerJoinedPayload, PlayerLeftPayload, GameActionPayload,
+  QuestStartPayload, QuestUpdatePayload,
+  ObjectiveClaimPayload, ObjectiveCompletePayload,
+  CompanionAnnouncementKind, CompanionAnnouncementPayload,
 } from './types/index.js';
 export { DEFAULT_COMPANION_CONFIG, getSpokenInstruction, getScreenReaderText, getCompanionRepeat,
   ALL_CALIBRATION_SUBJECTS,
@@ -137,6 +153,8 @@ export { DEFAULT_COMPANION_CONFIG, getSpokenInstruction, getScreenReaderText, ge
   INTENSITY_WEIGHTS, DEFAULT_SKILL_WEIGHT, MAX_FOCUS_SKILLS, validateFocusRequest,
   INTEREST_CATEGORIES, SIGNAL_TYPE_MULTIPLIERS, BIOME_INTEREST_MAP, INTEREST_DECAY_RATE,
   QUEST_MECHANICS,
+  MAX_PLAYERS_PER_SESSION, SESSION_BEACON_PORT, SESSION_BEACON_INTERVAL_MS,
+  SESSION_TIMEOUT_MS, STATE_SYNC_INTERVAL_MS,
 } from './types/index.js';
 
 // Dialogue data
