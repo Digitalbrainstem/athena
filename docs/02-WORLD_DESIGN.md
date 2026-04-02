@@ -67,6 +67,135 @@ real, and the subjects emerge from the environment naturally.
 
 ---
 
+## Interest-Driven Theming
+
+The world doesn't just adapt to what the player does — it adapts to what the player
+LOVES. This is the most important world-shaping system in the game, and it follows
+one absolute rule: **interests are detected by behavior, never asked or assumed.**
+
+### How Interest Detection Works
+
+The game watches what the player actually does:
+
+| Signal | What It Means | World Response |
+|--------|--------------|---------------|
+| Player spends extra time in the Living Forest | Loves animals/nature | More wildlife encounters, animal companions, veterinary quests |
+| Player keeps picking up crystals and shiny objects | Loves sparkly/beautiful things | Crystal Caverns expand, aurora landscapes appear, fairy gardens grow |
+| Player builds machines whenever possible | Loves engineering/making | Workshop biome deepens, robotics workshop appears, factories unlock |
+| Player always chooses space-related options | Loves space | Observatory expands, star maps appear, rocket building opportunities increase |
+| Player decorates everything and picks colors carefully | Loves art/design | Gallery biome grows, design quests appear, world becomes more colorful |
+| Player keeps visiting the Trading Post | Loves social/economic systems | Market expands, complex trade routes appear, NPC stories deepen |
+| Player breeds creatures and builds habitats | Loves animals/caretaking | Farm biome appears, animal rescue quests, ecosystem management deepens |
+
+### The Rules (Non-Negotiable)
+
+1. **The game NEVER asks "are you a boy or girl?"** — it watches what the player DOES.
+   No gender field. No demographic questions. No assumptions from name or avatar choice.
+
+2. **There are no "boy themes" or "girl themes."** Robots are not "for boys." Sparkles
+   are not "for girls." Space is not masculine. Art is not feminine. The game treats
+   every interest as equally valid, equally supported, and equally available.
+
+3. **Interests are detected by behavior ONLY.** What the player interacts with. What
+   they linger on. What they choose when given options. What they return to. What
+   makes them engage more deeply. Never by any demographic proxy.
+
+4. **The player can change direction AT ANY TIME.** If a player who's been building
+   machines for months suddenly picks up a paintbrush, the world starts adding art
+   studios nearby. If a player who's been tending a garden suddenly looks at the stars,
+   a telescope appears. The world follows the player, always.
+
+5. **Themes BLEND.** The world doesn't lock into one theme. A player can have:
+   - Crystal caves WITH robots
+   - Farms WITH spaceships
+   - Pink sparkly workshops where you build engines
+   - A fairy garden with a rocket launch pad
+   - Any combination the player's behavior suggests
+
+6. **The learning content is IDENTICAL regardless of theme.** Counting farm animals =
+   counting crystals = counting stars = counting robot parts. The math is the same. The
+   chemistry is the same. The physics is the same. Only the wrapper changes. No player
+   gets easier or harder content because of their theme preference.
+
+### Interest-Themed World Examples
+
+**A player who gravitates toward animals:**
+```
+World evolves:
+  Village → gets a farm with baby animals to raise
+  Living Forest → becomes central, expands with new species
+  Healer's Sanctuary → shifts toward veterinary medicine
+  Trading Post → becomes an animal market with breeding genetics
+  
+Counting quest: "How many chicks hatched this morning?"
+Fractions quest: "The horse feed is ¾ oats, ¼ barley. Mix 20 kg."
+Chemistry quest: "The sick puppy needs medicine. What's the dosage per kg?"
+Physics quest: "Build a birdhouse. Will the branch hold the weight?"
+```
+
+**A player who loves pink, sparkly, beautiful things:**
+```
+World evolves:
+  Crystal Caverns → become central, expand with gem types
+  Gallery → grows, full of color and light
+  Aurora landscapes appear at biome boundaries
+  Fairy gardens bloom with bioluminescent plants
+  
+Counting quest: "How many pink crystals? How many purple?"
+Fractions quest: "Mix ⅓ ruby dust + ⅔ diamond dust for the rose gem."
+Chemistry quest: "Why do these crystals glow? It's a chemical reaction!"
+Physics quest: "Angle the prism to split light into a rainbow."
+```
+
+**A player who loves machines and building:**
+```
+World evolves:
+  Workshop → expands with new stations and tools
+  Code Forge → grows adjacent to the Workshop
+  Factories and assembly lines appear
+  Robotics workshop unlocks
+  
+Counting quest: "How many gears in the machine?"
+Fractions quest: "The blueprint says ⅝ inch bolts. Which drawer?"
+Chemistry quest: "What metal alloy is strongest? Mix and test."
+Physics quest: "The crane arm needs to lift 500 kg. Counterweight?"
+```
+
+**A player who loves space:**
+```
+World evolves:
+  Observatory → becomes central, expands with new instruments
+  Shipyard → grows with rocket components
+  Star maps and navigation tools appear everywhere
+  Night sky becomes rich with identifiable constellations
+  
+Counting quest: "How many moons does this planet have?"
+Fractions quest: "The fuel tank is ¾ full. How many km can we go?"
+Chemistry quest: "Synthesize rocket fuel. What ratio of hydrogen to oxygen?"
+Physics quest: "Calculate orbital velocity to stay above the planet."
+```
+
+### When Interests Evolve
+
+Children's interests change — sometimes rapidly. The world handles this gracefully:
+
+- **Short-term interest:** Player spends one session looking at animals → a few
+  animals appear nearby. No permanent world change. If they don't return to animals,
+  the additions fade naturally.
+- **Medium-term interest:** Player engages with animals across 3-5 sessions → the
+  Living Forest expands, animal quests appear. Reversible if interest shifts.
+- **Long-term interest:** Player consistently engages with animals for weeks → the
+  world has a strong animal/nature theme. Still reversible, but changes gradually.
+- **Interest blending:** Player loves BOTH animals AND machines → animal-themed
+  machines appear (automated feeders, habitat climate control, veterinary equipment).
+
+Atlas (when connected) handles interest tracking between sessions. In standalone mode
+(see [08-ATLAS_INTEGRATION.md](08-ATLAS_INTEGRATION.md)), the built-in interest tracker
+uses simpler heuristics (time in biome, interaction frequency, choice patterns) to
+approximate the same behavior.
+
+---
+
 ## Biome Detail: How Subjects Emerge
 
 Biomes don't "contain lessons." They contain **situations** where knowledge is required.

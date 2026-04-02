@@ -17,6 +17,7 @@
 |----------|------|---------|
 | **Identity** | Name, avatar, age tier | "Emma, bear avatar, Explorer" |
 | **World state** | Active biome, discovered biomes, structures, inventory | "Crystal Caverns, 3 biomes discovered, 2 bridges built" |
+| **Interests** | Behavior-detected interest profile, theme weights | "animals: 0.7, sparkly: 0.4, machines: 0.2" |
 | **Mastery** | Per-skill mastery levels across all subjects | "math.fractions: 0.72, physics.forces: 0.45" |
 | **Companion** | Name, appearance, personality stage, memory | "Buddy, blue bear, adventure partner, remembers Crystal Cave" |
 | **Story** | Codex fragments discovered, story progress | "12/50 Founders fragments found" |
@@ -24,6 +25,35 @@
 | **Preferences** | Input method, voice profile, UI settings | "Touch primary, warm voice, large text" |
 | **Schedule** | Spaced repetition queue, upcoming reviews | "5 reviews due today across math and chemistry" |
 | **History** | Session log, learning events, quest completions | "Completed 147 quests, 2,340 learning events" |
+
+### Interest Profile
+
+Every player has a behavior-detected interest profile that drives world theming
+(see [02-WORLD_DESIGN.md](02-WORLD_DESIGN.md) for the full interest-driven theming system).
+
+**How interests are tracked:**
+- Time spent in each biome type
+- Objects interacted with (animals, machines, crystals, plants, stars…)
+- Choices made when presented with options ("Left to the forest or right to the workshop?")
+- Items collected and kept vs. discarded
+- Quests completed vs. abandoned, by theme
+- Companion conversations initiated, by topic
+
+**How interests are NOT tracked:**
+- Never from demographic data (no gender, no age-based assumptions)
+- Never from avatar appearance (pink hair ≠ "likes girly things")
+- Never from name (no gendered name inference)
+- Never asked directly — the game watches behavior, never surveys
+
+**Interest weights** are floating-point values (0.0–1.0) per theme category:
+```
+animals: 0.7, nature: 0.5, sparkly: 0.4, machines: 0.2,
+space: 0.3, art: 0.1, building: 0.6, social: 0.2, stories: 0.3
+```
+
+Weights change continuously based on recent sessions. A player who abandons machines
+for animals will see machine weight decay and animal weight rise over several sessions.
+Themes blend — the world reflects ALL interests proportionally, not just the top one.
 
 ### Profile Creation
 
@@ -37,8 +67,8 @@
 - Player creates with parent oversight
 - Avatar builder with customization options
 - Companion selection and naming
-- Interest selection: "What sounds fun?" (images, not text for younger explorers)
-- Calibration zone adapts to indicated age
+- NO interest questionnaire — interests are detected through play (see [00-CORE_PRINCIPLES.md](00-CORE_PRINCIPLES.md), Principle V)
+- Calibration zone adapts to indicated age and detects initial interests through gameplay choices
 
 ### Authentication
 

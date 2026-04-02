@@ -7,6 +7,7 @@
 
 | # | Document | Description |
 |---|----------|-------------|
+| 00 | [CORE_PRINCIPLES.md](00-CORE_PRINCIPLES.md) | Non-negotiable principles — safety, access, privacy, no monetization, inclusion |
 | 01 | [VISION.md](01-VISION.md) | Vision statement, inspirations, design pillars, what this game IS and ISN'T |
 | 02 | [WORLD_DESIGN.md](02-WORLD_DESIGN.md) | The Nexus: biomes, world morphing, environment rules, procedural generation |
 | 03 | [TRAVEL_MECHANICS.md](03-TRAVEL_MECHANICS.md) | Travel expansion from village to galaxy: vehicles, FTL, wormholes, fuel chemistry |
@@ -32,23 +33,24 @@
 
 **First time? Start here:**
 
-1. **[01-VISION.md](01-VISION.md)** — What this game is and why it exists
-2. **[04-AGE_TIERS.md](04-AGE_TIERS.md)** — How the game adapts from toddler to college
-3. **[02-WORLD_DESIGN.md](02-WORLD_DESIGN.md)** — The living world that teaches through play
-4. **[06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md)** — How learning is tracked invisibly
+1. **[00-CORE_PRINCIPLES.md](00-CORE_PRINCIPLES.md)** — The non-negotiable foundation
+2. **[01-VISION.md](01-VISION.md)** — What this game is and why it exists
+3. **[04-AGE_TIERS.md](04-AGE_TIERS.md)** — How the game adapts from toddler to college
+4. **[02-WORLD_DESIGN.md](02-WORLD_DESIGN.md)** — The living world that teaches through play
+5. **[06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md)** — How learning is tracked invisibly
 
 **Building the game?**
 
-5. **[05-GAMEPLAY_LOOPS.md](05-GAMEPLAY_LOOPS.md)** — Core gameplay mechanics
-6. **[07-SUBJECT_MAPPING.md](07-SUBJECT_MAPPING.md)** — What the game teaches and how
-7. **[18-TECHNICAL_ARCHITECTURE.md](18-TECHNICAL_ARCHITECTURE.md)** — How to build it
-8. **[13-INPUT_CONTROLS.md](13-INPUT_CONTROLS.md)** — Input handling across devices
+6. **[05-GAMEPLAY_LOOPS.md](05-GAMEPLAY_LOOPS.md)** — Core gameplay mechanics
+7. **[07-SUBJECT_MAPPING.md](07-SUBJECT_MAPPING.md)** — What the game teaches and how
+8. **[18-TECHNICAL_ARCHITECTURE.md](18-TECHNICAL_ARCHITECTURE.md)** — How to build it
+9. **[13-INPUT_CONTROLS.md](13-INPUT_CONTROLS.md)** — Input handling across devices
 
 **Understanding the ecosystem?**
 
-9. **[08-ATLAS_INTEGRATION.md](08-ATLAS_INTEGRATION.md)** — Atlas as the invisible architect
-10. **[09-CONTENT_PIPELINE.md](09-CONTENT_PIPELINE.md)** — Content generation and distribution
-11. **[11-COMPANION_SYSTEM.md](11-COMPANION_SYSTEM.md)** — The companion character
+10. **[08-ATLAS_INTEGRATION.md](08-ATLAS_INTEGRATION.md)** — Atlas as the invisible architect
+11. **[09-CONTENT_PIPELINE.md](09-CONTENT_PIPELINE.md)** — Content generation and distribution
+12. **[11-COMPANION_SYSTEM.md](11-COMPANION_SYSTEM.md)** — The companion character
 
 **Everything else:**
 
@@ -64,6 +66,6 @@
 
 ---
 
-**Version:** 2.0 — Spec suite restructure
+**Version:** 2.1 — Added Core Principles, interest-driven theming, Atlas-optional architecture
 **Date:** July 2025
 **Author:** Derek Thomas + Atlas Copilot
