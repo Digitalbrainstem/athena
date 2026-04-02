@@ -18,6 +18,8 @@ import { InventorySystem } from './systems/inventory.js';
 import { CraftSystem } from './systems/craft.js';
 import { FlowEngine } from './systems/flow.js';
 import { CalibrationSystem } from './systems/calibration.js';
+import { DialogueGenerator } from './systems/dialogue.js';
+import { InterestTracker, InterestRepository } from './systems/interest.js';
 import { createEmptySceneGraph } from './scene/graph.js';
 import type { GameAction } from './types/actions.js';
 import type { SceneGraph } from './types/scene.js';
@@ -51,6 +53,7 @@ export class NexusCore {
   readonly learningEvents: LearningEventRepository;
   readonly worldState: WorldStateRepository;
   readonly companions: CompanionRepository;
+  readonly interests: InterestRepository;
 
   // Systems (public for advanced usage)
   readonly masterySystem: MasterySystem;
@@ -59,6 +62,8 @@ export class NexusCore {
   readonly companionSystem: CompanionSystem;
   readonly inventorySystem: InventorySystem;
   readonly craftSystem: CraftSystem;
+  readonly dialogueGenerator: DialogueGenerator;
+  readonly interestTracker: InterestTracker;
   readonly flowEngine: FlowEngine;
   readonly calibrationSystem: CalibrationSystem;
 
@@ -87,8 +92,7 @@ export class NexusCore {
     this.learningEvents = new LearningEventRepository(db);
     this.worldState = new WorldStateRepository(db);
     this.companions = new CompanionRepository(db);
-
-    // Initialize systems
+    this.interests = new InterestRepository(db);
     this.masterySystem = new MasterySystem();
     this.masterySystem.setRepositories(this.mastery, this.learningEvents);
 
@@ -110,6 +114,11 @@ export class NexusCore {
 
     this.calibrationSystem = new CalibrationSystem();
 
+    this.dialogueGenerator = new DialogueGenerator();
+
+    this.interestTracker = new InterestTracker();
+    this.interestTracker.setRepository(this.interests);
+
     // Add systems to world
     this.world.addSystem(this.worldSystem);
     this.world.addSystem(this.masterySystem);
@@ -119,6 +128,7 @@ export class NexusCore {
     this.world.addSystem(this.craftSystem);
     this.world.addSystem(this.flowEngine);
     this.world.addSystem(this.calibrationSystem);
+    this.world.addSystem(this.interestTracker);
   }
 
   /** Create a new NexusCore instance */

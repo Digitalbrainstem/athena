@@ -20,6 +20,7 @@ export type { System, WorldEvent } from './ecs/index.js';
 // Database
 export { DatabaseConnection, createSchema, ProfileRepository, MasteryRepository,
   QuestRepository, LearningEventRepository, WorldStateRepository, CompanionRepository,
+  InterestRepository as InterestRepositoryDB,
 } from './db/index.js';
 export type { DatabaseConfig } from './db/index.js';
 
@@ -33,6 +34,13 @@ export { MasterySystem, sm2, calculateMasteryLevel, updateRetention, updateTrans
   RECIPES, getRecipe, recipesForTierAndBiome,
   BUILDING_MATERIALS, getMaterial, materialsForTier,
   FlowEngine, CalibrationSystem,
+  ScreenTimeSystem, FocusModeSystem,
+  DialogueGenerator, InterestTracker, InterestRepository,
+  EconomySystem, computePrice, currencyToCopper, normalizeCurrency,
+  getTradeableItem, getNpcMerchant, merchantsInBiome,
+  TRADEABLE_ITEMS, NPC_MERCHANTS,
+  TravelSystem, findRoute, reachableBiomes, fuelForRoute,
+  WorldSimulation, computeGrowthStage, getGrowthStageName,
 } from './systems/index.js';
 export type { MasteryDimensions, GapAnalysis, GapDetail, SkillPrerequisites,
   PendingLearningEvent, QuestAction, QuestSelectionCriteria, CompanionInteraction,
@@ -61,8 +69,15 @@ export {
   BIOME_ACCESSIBILITY, getBiomeAccessibility, BIOME_IDS, isValidBiome,
   SKILL_PREREQUISITES, getPrerequisites, getAllPrerequisites, arePrerequisitesMet,
   getRootSkills, getDependents,
+  MATERIAL_INTERACTIONS, getInteraction, findInteraction,
+  interactionsForTier, interactionsWithMaterial,
+  WEATHER_EFFECTS, WEATHER_TRANSITIONS,
+  getWeatherEffect, getTransitionsFrom, nextWeather,
+  TRAVEL_METHODS, BIOME_ROUTES, VEHICLE_RECIPES,
+  getTravelMethod, travelMethodsForTier, getRoute, routesFrom,
+  getVehicleRecipe, vehicleRecipesForTier,
 } from './data/index.js';
-export type { BiomeAccessibility, BiomeId } from './data/index.js';
+export type { BiomeAccessibility, BiomeId, WeatherTransition } from './data/index.js';
 
 // Types — re-export everything
 export type {
@@ -89,7 +104,30 @@ export type {
   Redirection, ChallengeAttemptRecord, ChallengeInfo,
   CalibrationSession, CalibrationResponse, CalibrationNext, CalibrationResults,
   CalibrationSubject, SubjectCalibrationState, CalibrationLevelDefinition, AgeStartingLevel,
+  BreakAction, LimitAction, SessionStats, ScreenTimeConfig, SessionState,
+  FocusSource, FocusIntensity, CompanionFocusRequest, ParentFocusRequest,
+  FocusSession, SkillWeight,
+  DialogueTrigger, DialogueEmotion, DialogueCondition, DialogueVariant,
+  DialogueTemplate, DialogueResponse, DialogueContext, GeneratedDialogue,
+  InterestCategory, InterestSignalType, InterestSignal, InterestWeights,
+  ThemeWeights, BiomeRecommendation,
+  MarketPrice, MarketState, TradeItem, TradeOffer, TradeResult,
+  PlayerEconomy, CurrencyHolding, TradeRecord, SupplyDemandCurve,
+  TradeableItem, ItemCategory, NpcMerchant,
+  TravelMethod, TravelMethodDefinition, TerrainType, TravelCheck, TravelResult,
+  TravelEvent, VehicleRecipe, VehicleMaterial, VehicleStats, PlayerVehicle, BiomeRoute,
+  MaterialInteraction, InteractionCondition, WeatherType, WeatherState, WeatherEffect,
+  WorldEffect, SettlementState, Contribution, SettlementNpc, SettlementBuilding,
+  SettlementProblem, WorldConsequence, SimWorldEvent, EcosystemState, EcologicalProcess,
 } from './types/index.js';
 export { DEFAULT_COMPANION_CONFIG, getSpokenInstruction, getScreenReaderText, getCompanionRepeat,
   ALL_CALIBRATION_SUBJECTS,
+  DEFAULT_BREAK_INTERVALS, defaultScreenTimeConfig, validateScreenTimeConfig,
+  INTENSITY_WEIGHTS, DEFAULT_SKILL_WEIGHT, MAX_FOCUS_SKILLS, validateFocusRequest,
+  INTEREST_CATEGORIES, SIGNAL_TYPE_MULTIPLIERS, BIOME_INTEREST_MAP, INTEREST_DECAY_RATE,
 } from './types/index.js';
+
+// Dialogue data
+export {
+  DIALOGUE_TEMPLATES, getTemplatesForTrigger, getTemplateCount,
+} from './data/index.js';

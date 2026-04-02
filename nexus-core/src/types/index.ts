@@ -78,6 +78,33 @@ export type {
 export { DEFAULT_COMPANION_CONFIG } from './companion.js';
 
 export type {
+  DialogueTrigger,
+  DialogueEmotion,
+  DialogueCondition,
+  DialogueVariant,
+  DialogueTemplate,
+  DialogueResponse,
+  DialogueContext,
+  GeneratedDialogue,
+} from './dialogue.js';
+
+export type {
+  InterestCategory,
+  InterestSignalType,
+  InterestSignal,
+  InterestWeights,
+  ThemeWeights,
+  BiomeRecommendation,
+} from './interest.js';
+
+export {
+  INTEREST_CATEGORIES,
+  SIGNAL_TYPE_MULTIPLIERS,
+  BIOME_INTEREST_MAP,
+  INTEREST_DECAY_RATE,
+} from './interest.js';
+
+export type {
   AccessibilityMeta,
   Element,
   ElementCategory,
@@ -111,6 +138,53 @@ export type {
   Caption,
   CaptionType,
 } from './accessibility.js';
+
+export type {
+  MarketPrice,
+  MarketState,
+  TradeItem,
+  TradeOffer,
+  TradeResult,
+  PlayerEconomy,
+  CurrencyHolding,
+  TradeRecord,
+  SupplyDemandCurve,
+  TradeableItem,
+  ItemCategory,
+  NpcMerchant,
+} from './economy.js';
+
+export type {
+  TravelMethod,
+  TravelMethodDefinition,
+  TerrainType,
+  TravelCheck,
+  TravelResult,
+  TravelEvent,
+  VehicleRecipe,
+  VehicleMaterial,
+  VehicleStats,
+  PlayerVehicle,
+  BiomeRoute,
+} from './travel.js';
+
+export type {
+  MaterialInteraction,
+  InteractionCondition,
+  WeatherType,
+  WeatherState,
+  WeatherEffect,
+  WorldEffect,
+  SettlementState,
+  Contribution,
+  SettlementNpc,
+  SettlementBuilding,
+  SettlementProblem,
+  WorldConsequence,
+  SimWorldEvent,
+  EcosystemState,
+  EcologicalProcess,
+} from './world-sim.js';
 
 export type {
   AttemptOutcome,

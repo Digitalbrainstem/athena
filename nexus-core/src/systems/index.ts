@@ -14,5 +14,15 @@ export { CraftSystem,
   RECIPES, getRecipe, recipesForTierAndBiome,
   BUILDING_MATERIALS, getMaterial, materialsForTier,
 } from './craft.js';
+export { EconomySystem, computePrice, currencyToCopper, normalizeCurrency,
+  getTradeableItem, getNpcMerchant, merchantsInBiome,
+  TRADEABLE_ITEMS, NPC_MERCHANTS,
+} from './economy.js';
+export { TravelSystem, findRoute, reachableBiomes, fuelForRoute } from './travel.js';
+export { WorldSimulation, computeGrowthStage, getGrowthStageName } from './world-sim.js';
+export { DialogueGenerator } from './dialogue.js';
+export { InterestTracker, InterestRepository } from './interest.js';
 export { FlowEngine } from './flow.js';
 export { CalibrationSystem } from './calibration.js';
+export { ScreenTimeSystem } from './screen-time.js';
+export { FocusModeSystem } from './focus.js';
