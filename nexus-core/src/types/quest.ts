@@ -34,7 +34,10 @@ export interface QuestStep {
   /** Simplified restatement for "say that again?" — defaults to instruction if not provided */
   companionRepeat?: string;
   objectiveType: 'interact' | 'collect' | 'build' | 'craft' | 'navigate' | 'observe' | 'teach'
-    | 'count' | 'match' | 'sort' | 'find' | 'mix' | 'measure' | 'pattern' | 'place';
+    | 'count' | 'match' | 'sort' | 'find' | 'mix' | 'measure' | 'pattern' | 'place'
+    | 'solve' | 'design' | 'experiment' | 'balance' | 'decode' | 'diagnose'
+    | 'repair' | 'optimize' | 'predict' | 'code' | 'explore' | 'sequence'
+    | 'compare' | 'transform' | 'protect';
   targetId?: string;
   targetValue?: unknown;
   requiredCount?: number;
