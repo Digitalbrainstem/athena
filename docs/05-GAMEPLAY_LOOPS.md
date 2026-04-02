@@ -422,5 +422,18 @@ A typical play session:
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **Game theory — flow state** — Read Csikszentmihalyi's "Flow: The Psychology of Optimal Experience." Study the flow channel model. Research how games like Journey, Celeste, and Hades maintain flow state.
+- [ ] **Variable reward schedules** — Study Skinner's operant conditioning research, specifically variable-ratio and variable-interval schedules. Understand the neuroscience (dopamine prediction error). Identify the ethical boundary between engagement and addiction.
+- [ ] **GDC talks on engagement** — Watch and summarize: "Designing for Curiosity" (GDC 2019), "The Chemistry of Game Design" (Daniel Cook), "Idle Hands: Designing for Anticipation" (GDC 2017). Extract implementable engagement principles.
+- [ ] **Top children's games analysis** — Deep-play and document loop structures in: Prodigy Math, DragonBox Algebra, Minecraft Education, Roblox education experiences, PBS Kids games, Duolingo Kids. Map each game's core/meta/outer loops.
+- [ ] **Crafting system design** — Research crafting in Zelda: TotK, Minecraft, Terraria, and Valheim. What makes crafting compelling vs. tedious? How to integrate real science without making it feel like homework.
+- [ ] **In-game programming environments** — Study Scratch (MIT), Roblox Studio, Minecraft commands, and Code.org. Evaluate what makes in-game coding engaging. Review Bret Victor's "Learnable Programming" essay.
+
+---
+
 *Previous: [04-AGE_TIERS.md](04-AGE_TIERS.md) — The five age tiers.*
 *Next: [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md) — The Ender Protocol mastery system.*

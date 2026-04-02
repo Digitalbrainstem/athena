@@ -369,5 +369,18 @@ The transition takes weeks, not minutes.
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **Child development stages (Piaget)** — Study Piaget's stages of cognitive development (sensorimotor, preoperational, concrete operational, formal operational). Map to our age tiers. Identify where our tier boundaries align/diverge and why.
+- [ ] **Child UX research** — Review Sesame Workshop's research methodology and published findings on children's interaction with screens. Study PBS Kids' design guidelines. Read Nielsen Norman Group's "Children's UX" reports.
+- [ ] **Motor skill development by age** — Research fine motor development milestones (pincer grasp, finger isolation, stylus control). Inform touch target sizes and gesture complexity per tier.
+- [ ] **Age-appropriate interaction design** — Study how children at ages 2-3, 4-5, 6-8, and 9-12 interact with tablets and voice interfaces differently. Review Apple's and Google's child-design guidelines.
+- [ ] **Toddler speech recognition** — Research state-of-the-art in child speech recognition. Whisper's performance on child speech. Fuzzy phonetic matching approaches (Soundex, Metaphone, Beider-Morse). Benchmark with actual toddler speech samples.
+- [ ] **Gifted child accommodation** — Research how gifted education programs handle acceleration. Study Davidson Institute guidelines. Ensure our "never stunt progression" principle is developmentally appropriate.
+
+---
+
 *Previous: [03-TRAVEL_MECHANICS.md](03-TRAVEL_MECHANICS.md) — Travel from walking to FTL.*
 *Next: [05-GAMEPLAY_LOOPS.md](05-GAMEPLAY_LOOPS.md) — Core gameplay mechanics and loops.*

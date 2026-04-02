@@ -398,5 +398,19 @@ See [05-GAMEPLAY_LOOPS.md](05-GAMEPLAY_LOOPS.md) for detailed cross-subject ques
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **Common Core State Standards (K-12)** — Download and map the full CCSS for Mathematics and ELA/Literacy. Create a spreadsheet mapping each standard to game mechanics. Identify gaps in our coverage.
+- [ ] **AP curriculum frameworks** — Obtain College Board AP course descriptions for: Calculus AB/BC, Physics 1/2/C, Chemistry, Biology, CS A, CS Principles, US/World History, Economics (Micro/Macro). Map to Scholar-tier content.
+- [ ] **IB Middle Years and Diploma Programme** — Review the IB MYP (ages 11-16) and DP (ages 16-19) subject guides. Identify concepts not covered by Common Core or AP that should be in the game.
+- [ ] **Khan Academy skill trees** — Export or map KA's complete skill tree for Math, Science, and Computing. Compare to our subject taxonomy. Identify missing nodes.
+- [ ] **University course progressions** — Obtain syllabi for standard sequences: Calc I→III, Linear Algebra, Diff Eq (MIT OCW); Physics I→II + Modern (Feynman Lectures); Gen Chem → Organic → Biochem; CS intro → Data Structures → Algorithms → Systems. Map to Master-tier content.
+- [ ] **Next Generation Science Standards** — Review NGSS for K-12 science. Crosswalk with our biology, chemistry, physics, and earth science content.
+- [ ] **Real-world math applications** — Research "when will I ever use this?" resources. Build a database of real-world applications for every math concept to use as quest inspiration.
+
+---
+
 *Previous: [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md) — The Ender Protocol.*
 *Next: [08-ATLAS_INTEGRATION.md](08-ATLAS_INTEGRATION.md) — Atlas as the invisible architect.*

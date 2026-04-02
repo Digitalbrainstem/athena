@@ -266,5 +266,17 @@ sense of shared discovery — the most powerful bonding tool available.
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **Interactive narrative design** — Study branching narrative techniques from Inkle Studios (80 Days, Heaven's Vault), Telltale Games, and Choice of Games. Research the ink scripting language for narrative. Evaluate for quest dialogue trees.
+- [ ] **Mysteries in games** — Analyze how long-running mysteries sustain engagement: Outer Wilds (knowledge-gated exploration), Return of the Obra Dinn (deductive storytelling), Her Story (non-linear discovery). Extract principles for The Founders arc.
+- [ ] **Educational narrative research** — Study how narrative affects learning retention. Read "The Science of Storytelling" (Will Storr). Research narrative transportation theory (Green & Brock). Quantify the learning benefit of story-wrapped content vs. context-free content.
+- [ ] **Multi-year story arc design** — Research how franchises maintain coherent stories across years: Marvel MCU planning, The Stormlight Archive's foreshadowing, Doctor Who's regeneration arcs. Identify patterns for a 15+ year game story.
+- [ ] **Child-appropriate philosophy** — Research how to introduce philosophical concepts (purpose, knowledge, identity) to different age groups. Study Philosophy for Children (P4C) movement. Inform the endgame Founders revelation.
+
+---
+
 *Previous: [09-CONTENT_PIPELINE.md](09-CONTENT_PIPELINE.md) — Content authoring and distribution.*
 *Next: [11-COMPANION_SYSTEM.md](11-COMPANION_SYSTEM.md) — The companion character system.*

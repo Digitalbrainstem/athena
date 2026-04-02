@@ -299,5 +299,17 @@ templates for future generation.
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **Quest generation with LLMs** — Prototype quest generation using Qwen3-4B. Evaluate output quality for math, science, and narrative quests. Measure educational accuracy rate. Identify prompt engineering patterns that produce consistent, valid quest JSON.
+- [ ] **Content validation pipelines** — Research how game studios validate procedurally generated content. Study Dwarf Fortress's world generation validation, No Man's Sky's content filters, and AI Dungeon's safety systems.
+- [ ] **Delta sync protocols** — Research efficient delta synchronization for offline-first architectures. Study CouchDB replication, Firestore offline persistence, and SQLite-based sync (cr-sqlite, Electric SQL). Choose the simplest approach for LAN-based sync.
+- [ ] **TTS batch rendering** — Benchmark Fish Audio and Qwen3-TTS for batch rendering. Measure latency per line, quality at different sample rates, and storage requirements per hour of audio. Estimate nightly batch TTS budget per player.
+- [ ] **Content versioning** — Research how to version and update pre-cached content without breaking offline players' experiences. Study game patching strategies and content migration patterns.
+
+---
+
 *Previous: [08-ATLAS_INTEGRATION.md](08-ATLAS_INTEGRATION.md) — Atlas as the invisible architect.*
 *Next: [10-STORY_NARRATIVE.md](10-STORY_NARRATIVE.md) — The Founders and the overarching mystery.*

@@ -327,4 +327,16 @@ If any answer is wrong, fix the feature — not the principle.
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **Atlas Cortex Principles deep-read** — Study the full `CORE_PRINCIPLES.md` from Atlas Cortex. Understand the hierarchy-of-conscience model and how it resolves conflicts between principles.
+- [ ] **COPPA compliance** — Read the actual Children's Online Privacy Protection Act text and FTC enforcement guidelines. Confirm our architecture meets every requirement.
+- [ ] **Child psychology of reward systems** — Research intrinsic vs. extrinsic motivation (Deci & Ryan's Self-Determination Theory). Ensure our "no grades, no scores" approach is supported by evidence, and identify any risks.
+- [ ] **Freemium model analysis** — Study why the no-monetization principle matters by analyzing the harm done by predatory monetization in children's games (Prodigy post-paywall, Roblox economy, gacha games). Document as supporting evidence for Principle II.
+- [ ] **AI content safety** — Research best practices for validating AI-generated educational content for accuracy and age-appropriateness. Review existing tools and approaches (OpenAI moderation API, custom classifiers, human-in-the-loop pipelines).
+
+---
+
 *Next: [01-VISION.md](01-VISION.md) — Vision statement and inspiration.*

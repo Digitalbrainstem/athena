@@ -361,5 +361,19 @@ and scoring. The player measures progress by what they can DO, not by a number.
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **Spaced repetition science** — Study Ebbinghaus forgetting curve (original 1885 research and modern replications). Read Piotr Wozniak's SuperMemo documentation on the SM-2 through SM-18 algorithms. Compare Leitner system, Anki's implementation, and FSRS (Free Spaced Repetition Scheduler). Determine which algorithm best fits disguised-as-gameplay repetition.
+- [ ] **Cognitive load theory** — Read Sweller's cognitive load theory papers. Understand intrinsic, extraneous, and germane load. Apply to quest design: how many simultaneous concepts can a player handle per tier?
+- [ ] **Zone of Proximal Development** — Study Vygotsky's ZPD and scaffolding theory. Map to our difficulty adjustment system. Research "desirable difficulties" (Bjork & Bjork) — when is struggle productive?
+- [ ] **Transfer of learning** — Research near-transfer vs. far-transfer in educational psychology. What conditions promote cross-subject transfer? Study Perkins & Salomon's work on transfer. Inform our cross-subject quest design.
+- [ ] **Mastery learning** — Read Bloom's mastery learning framework. Compare to our 4-dimension mastery model. Study Khan Academy's implementation of mastery-based progression.
+- [ ] **Adaptive testing (CAT)** — Research computerized adaptive testing algorithms (Rasch model, item response theory). Evaluate for calibration zone design. Study how GRE/GMAT adapt question difficulty.
+- [ ] **Teaching as learning** — Research the "protégé effect" and Feynman technique in educational psychology. Quantify the learning benefit of explaining to others. Inform companion teaching interactions.
+
+---
+
 *Previous: [05-GAMEPLAY_LOOPS.md](05-GAMEPLAY_LOOPS.md) — Core gameplay loops and quests.*
 *Next: [07-SUBJECT_MAPPING.md](07-SUBJECT_MAPPING.md) — Every subject mapped to game mechanics.*

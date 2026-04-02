@@ -298,5 +298,17 @@ Atlas uses these metrics to tune companion behavior between sessions
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **Virtual companion research** — Study research on children's relationships with virtual agents. Review Cynthia Breazeal's social robotics work (MIT Media Lab), Sesame Workshop's AI companion studies, and Microsoft's Xiaoice engagement research. Understand parasocial relationship dynamics.
+- [ ] **TTS voice personality** — Evaluate Fish Audio voice cloning for creating a consistent companion personality across thousands of lines. Test emotional modulation capabilities. Compare with Qwen3-TTS for secondary voices. Benchmark quality vs. latency.
+- [ ] **Dialogue generation** — Research dialogue systems that maintain personality consistency across long interactions. Study persona-based dialogue models (PersonaChat dataset). Evaluate whether LLM-generated dialogue can maintain character over years.
+- [ ] **Fourth-wall design (Dora model)** — Study the Dora the Explorer production bible and Sesame Workshop's "pause and wait" technique. Research the developmental psychology behind direct address for 2-5 year olds. Interview early childhood educators on effective techniques.
+- [ ] **Companion evolution in games** — Analyze how companion characters evolve in long games: Cortana (Halo series), Ellie (The Last of Us), Elizabeth (BioShock Infinite). What makes a companion feel like a real relationship?
+
+---
+
 *Previous: [10-STORY_NARRATIVE.md](10-STORY_NARRATIVE.md) — The Founders story arc.*
 *Next: [12-VOICE_GAMEPLAY.md](12-VOICE_GAMEPLAY.md) — Zero-screen voice-only mode.*

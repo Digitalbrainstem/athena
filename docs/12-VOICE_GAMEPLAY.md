@@ -400,5 +400,18 @@ or try something new?"
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **Audio-only game design** — Study text adventures (Zork, Colossal Cave), modern audio games (A Blind Legend, The Vale: Shadow of the Crown), and audio drama design (BBC radio plays, podcasts like The Adventure Zone). Extract principles for engaging zero-screen gameplay.
+- [ ] **Voice UI design** — Read Google's Conversation Design guidelines, Amazon's Alexa Design Guide, and Apple's SiriKit best practices. Identify patterns for child-friendly voice interaction. Study "voice-first" UX principles.
+- [ ] **Child speech recognition accuracy** — Benchmark Whisper (tiny/base/small/medium) on child speech datasets. Test with different ages (2-5, 6-10, 11+). Measure word error rate by age. Evaluate whether local Pi inference is viable or if server-side is required.
+- [ ] **Spatial audio on limited hardware** — Test Web Audio API spatial processing on Raspberry Pi browsers. Evaluate mono-speaker psychoacoustic techniques for directionality cues. Benchmark ESP32 audio quality with I2S speakers.
+- [ ] **Interactive fiction engines** — Evaluate Ink (Inkle), Twine, Ren'Py, and custom engines for voice-first interactive fiction. Determine if an existing engine can be adapted or if we need a custom voice-quest runtime.
+- [ ] **Choose-your-own-adventure research** — Study the educational effectiveness of branching narratives vs. linear ones. Review research on agency in learning contexts.
+
+---
+
 *Previous: [11-COMPANION_SYSTEM.md](11-COMPANION_SYSTEM.md) — Companion character system.*
 *Next: [13-INPUT_CONTROLS.md](13-INPUT_CONTROLS.md) — Input methods across all platforms.*

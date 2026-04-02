@@ -172,5 +172,16 @@ Nexus Academy is part of the Atlas ecosystem:
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **Competitor analysis** — Deep-play Prodigy, DragonBox, Minecraft Education Edition, Khan Academy Kids, Duolingo, ABCmouse. Document what each does well and what feels "quiz-like." Identify the exact moments where learning-through-play breaks down into testing.
+- [ ] **Game-based learning literature** — Read Gee's "What Video Games Have to Teach Us About Learning and Literacy," Squire's "Video Games and Learning," and Koster's "Theory of Fun." Extract design principles backed by evidence.
+- [ ] **OASIS and Mind Game analysis** — Re-read the OASIS school chapters in "Ready Player One" and the Mind Game chapters in "Ender's Game." Document specific mechanics described and map to implementable features.
+- [ ] **Open-source educational games** — Survey the landscape. Are there open-source projects we can learn from or contribute to? (Open edX, GCompris, Tux Math, Minetest education mods)
+
+---
+
 *Previous: [00-CORE_PRINCIPLES.md](00-CORE_PRINCIPLES.md) — The non-negotiable principles.*
 *Next: [02-WORLD_DESIGN.md](02-WORLD_DESIGN.md) — The Nexus world, biomes, and morphing system.*

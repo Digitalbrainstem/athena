@@ -452,5 +452,18 @@ because it's truly theirs — shaped by every choice they've made.
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **Procedural world generation** — Study No Man's Sky's biome generation (GDC talks by Sean Murray), Minecraft chunk loading, and Houdini procedural workflows. Identify algorithms suitable for educational biome generation in Three.js.
+- [ ] **Interest detection systems** — Research recommendation engine approaches (collaborative filtering, content-based filtering) adapted for behavior tracking without demographic data. Study how Spotify Discover Weekly works as a model for interest-driven content.
+- [ ] **Child interest research** — Review developmental psychology research on how children's interests form and evolve (Renninger & Hidi's "The Power of Interest"). Understand how interests differ from preferences and how to avoid stereotyping.
+- [ ] **Dynamic difficulty in open worlds** — Study how Skyrim, Breath of the Wild, and Witcher 3 handle level scaling. Identify approaches that feel natural vs. "rubber-banding."
+- [ ] **Biome-based learning environments** — Review research on contextual learning and situated cognition (Lave & Wenger). How does the learning environment affect retention and transfer?
+- [ ] **Ecological modeling for games** — Research simplified ecological simulations suitable for real-time gameplay (Lotka-Volterra for Explorer tier, agent-based models for Scholar tier). Review Ecosystem games (Eco by Strange Loop Games).
+
+---
+
 *Previous: [01-VISION.md](01-VISION.md) — Vision and design pillars.*
 *Next: [03-TRAVEL_MECHANICS.md](03-TRAVEL_MECHANICS.md) — How travel expands from walking to FTL.*

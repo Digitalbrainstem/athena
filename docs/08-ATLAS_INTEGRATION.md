@@ -411,5 +411,17 @@ Easily fits on a Surface Go or Raspberry Pi.
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **LLM-based content generation for education** — Research approaches to generating educationally valid quiz/quest content with LLMs. Study how Khan Academy uses GPT-4 (Khanmigo). Evaluate Qwen3's capability for STEM content accuracy.
+- [ ] **Nightly batch architecture patterns** — Study cron-based vs. event-driven batch systems. Review Apache Airflow, Prefect, and simple SQLite-backed job queues. Choose the simplest approach that handles per-player batch processing.
+- [ ] **Educational content validation** — Research automated fact-checking approaches for STEM content. Can an LLM reliably validate another LLM's math/chemistry/physics output? What human-in-the-loop approaches exist?
+- [ ] **Adaptive difficulty algorithms** — Beyond SM-2: study Elo rating systems (used in chess, adapted for education), Bayesian Knowledge Tracing (BKT), and Deep Knowledge Tracing (DKT). Evaluate complexity vs. accuracy tradeoffs.
+- [ ] **Atlas Cortex module architecture** — Study the existing Atlas module system in atlas-cortex to understand plugin patterns, API conventions, and batch job infrastructure. Ensure the Athena module integrates cleanly.
+
+---
+
 *Previous: [07-SUBJECT_MAPPING.md](07-SUBJECT_MAPPING.md) — Subject to game mechanic mapping.*
 *Next: [09-CONTENT_PIPELINE.md](09-CONTENT_PIPELINE.md) — Content authoring, generation, and distribution.*

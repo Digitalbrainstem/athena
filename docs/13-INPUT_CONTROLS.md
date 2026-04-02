@@ -282,5 +282,17 @@ Input controls integrate directly with the accessibility system
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **Gamepad API browser support** — Test Gamepad API across Chrome, Firefox, Safari, and Edge. Document controller compatibility (Xbox, PS5, Switch Pro, 8BitDo). Identify browser-specific quirks and workarounds.
+- [ ] **Touch gesture libraries** — Evaluate Hammer.js, interact.js, and native pointer events for gesture recognition in Three.js. Benchmark performance on Surface Go and low-end tablets.
+- [ ] **Voice-to-action mapping** — Research NLU (natural language understanding) approaches for game commands. Evaluate whether a simple intent classifier (keyword matching + synonyms) is sufficient or if a small language model is needed. Benchmark latency.
+- [ ] **Adaptive controller support** — Study Xbox Adaptive Controller hardware and software integration. Review accessibility APIs for web (Gamepad API extensions). Test with switch-access and eye-tracking systems.
+- [ ] **Input latency budgets** — Research acceptable input latency for children's games by input method. Touch: target < 50ms. Voice: target < 500ms for STT + < 200ms for action. Gamepad: target < 16ms. Measure actual latency in Three.js prototype.
+
+---
+
 *Previous: [12-VOICE_GAMEPLAY.md](12-VOICE_GAMEPLAY.md) — Voice-only mode.*
 *Next: [14-MULTIPLAYER.md](14-MULTIPLAYER.md) — Same-network multiplayer and classroom mode.*

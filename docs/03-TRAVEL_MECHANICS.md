@@ -427,5 +427,18 @@ itself is education.
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **Orbital mechanics simulators** — Study Kerbal Space Program's physics model (Unity-based patched conics). Review the KSP modding community's simplified orbital mechanics libraries. Identify what can be adapted for a web-based engine.
+- [ ] **Rocket equation pedagogy** — Research how aerospace engineering courses introduce the Tsiolkovsky equation. Review MIT OpenCourseWare 16.07 (Dynamics) for progression from basic Newtonian mechanics to orbital transfers.
+- [ ] **Simplified N-body physics** — Evaluate approaches for real-time gravitational simulation in JavaScript: Euler integration, Verlet integration, RK4. Performance benchmarks for web.
+- [ ] **Age-appropriate vehicle design** — Study how children at different ages conceptualize vehicles and transportation. Review LEGO's age-tier design philosophy for building complexity.
+- [ ] **FTL and wormhole science communication** — Review PBS Space Time, Kurzgesagt, and Veritasium videos on wormholes and Alcubierre drives. Identify accurate-but-accessible explanations suitable for game framing.
+- [ ] **Navigation history** — Research historical navigation techniques (Polynesian wayfinding, celestial navigation, dead reckoning) for authentic Explorer-tier quests.
+
+---
+
 *Previous: [02-WORLD_DESIGN.md](02-WORLD_DESIGN.md) — The Nexus world and biomes.*
 *Next: [04-AGE_TIERS.md](04-AGE_TIERS.md) — The five age tiers in detail.*
