@@ -15,26 +15,26 @@ export const foundationWorkshopQuests: CreateQuestInput[] = [
     skillsTaught: ['lang.colors', 'math.sorting'],
     content: {
       description: 'The workbench is covered in colorful tools! Each color bin needs its matching tools put away.',
-      companionIntro: 'Look at all these tools! They go in the bins that match their color. Can you help me sort them?',
+      companionIntro: 'Look at all these tools! They go in the bins that match their color. Let\'s sort them together!',
       steps: [
         {
           index: 0,
-          instruction: 'The red bin is hungry for red tools! Drag the red hammer and red wrench into the red bin.',
+          instruction: 'The red bin is hungry for red tools! Move the red hammer and red wrench into the red bin.',
           spokenInstruction: 'See that red bin? It needs the red hammer and the red wrench. Let\'s put them in!',
-          screenReaderText: 'Sort task. Drag 2 items to the red bin: the red hammer and the red wrench.',
+          screenReaderText: 'Sort task. Place 2 items into the red bin: the red hammer and the red wrench.',
           companionRepeat: 'Put the red hammer and red wrench in the red bin.',
           objectiveType: 'sort',
           targetValue: ['red-hammer', 'red-wrench'],
           requiredCount: 2,
           hints: ['Look for things that are the same color as the bin!', 'The hammer and the wrench are both bright red, just like the bin.'],
           successResponse: 'The red bin is full! Look how all the red tools match!',
-          failureResponse: 'Hmm, that one looks like a different color. Let\'s find the red ones — the hammer and the wrench!',
+          failureResponse: 'Hmm, that one looks like a different color. Let\'s find the red hammer and the red wrench!',
         },
         {
           index: 1,
           instruction: 'Now the blue bin needs its tools. Find the blue screwdriver and blue pliers.',
-          spokenInstruction: 'The blue bin is next! Can you find the blue screwdriver and the blue pliers?',
-          screenReaderText: 'Sort task. Drag 2 items to the blue bin: the blue screwdriver and the blue pliers.',
+          spokenInstruction: 'The blue bin needs its tools! Let\'s put the blue screwdriver and blue pliers in!',
+          screenReaderText: 'Sort task. Place 2 items into the blue bin: the blue screwdriver and the blue pliers.',
           companionRepeat: 'Find the blue screwdriver and blue pliers for the blue bin.',
           objectiveType: 'sort',
           targetValue: ['blue-screwdriver', 'blue-pliers'],
@@ -47,7 +47,7 @@ export const foundationWorkshopQuests: CreateQuestInput[] = [
           index: 2,
           instruction: 'Last one! The yellow bin is waiting. Find the yellow tape measure, yellow level, and yellow clamp on the bench.',
           spokenInstruction: 'The yellow bin still needs its tools! Look for the tape measure, the level, and the clamp — they\'re all yellow!',
-          screenReaderText: 'Sort task. Drag 3 items to the yellow bin: the yellow tape measure, yellow level, and yellow clamp.',
+          screenReaderText: 'Sort task. Place 3 items into the yellow bin: the yellow tape measure, yellow level, and yellow clamp.',
           companionRepeat: 'Put the yellow tape measure, yellow level, and yellow clamp in the yellow bin.',
           objectiveType: 'sort',
           targetValue: ['yellow-tape', 'yellow-level', 'yellow-clamp'],
@@ -134,7 +134,7 @@ export const foundationWorkshopQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'The door has a circle-shaped hole. Find something round in the workshop to fill it.',
-          spokenInstruction: 'Look at that round hole in the door! We need something circle-shaped. Can you find something round?',
+          spokenInstruction: 'Look at that round hole in the door! We need something circle-shaped. Ooh, I see something round over there! Let\'s grab it!',
           screenReaderText: 'Match task. Find a circle-shaped object in the workshop to fill the round hole in the door.',
           companionRepeat: 'Find something round to fill the circle hole.',
           objectiveType: 'match',
@@ -261,7 +261,7 @@ export const foundationWorkshopQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'The machine made: red, blue, red, blue, red... The next bead keeps the pattern going!',
-          spokenInstruction: 'Look at the beads: red, blue, red, blue, red... What comes next? You got this!',
+          spokenInstruction: 'Look at the beads: red, blue, red, blue, red... The pattern needs its next piece!',
           screenReaderText: 'Pattern task. The bead sequence is red, blue, red, blue, red. Choose the next bead to continue the alternating pattern.',
           companionRepeat: 'The pattern goes red, blue, red, blue. Pick what comes next.',
           objectiveType: 'pattern',
@@ -273,7 +273,7 @@ export const foundationWorkshopQuests: CreateQuestInput[] = [
         {
           index: 1,
           instruction: 'New pattern! Yellow, yellow, green, yellow, yellow, green, yellow, yellow... pick the next bead!',
-          spokenInstruction: 'New pattern! Yellow, yellow, green, yellow, yellow, green, yellow, yellow... What\'s the next bead?',
+          spokenInstruction: 'New pattern! Yellow, yellow, green, yellow, yellow, green, yellow, yellow... The necklace needs one more bead!',
           screenReaderText: 'Pattern task. The bead sequence is yellow, yellow, green repeating. After yellow, yellow, choose the next bead.',
           companionRepeat: 'Two yellows then a green. Pick what comes after two yellows.',
           objectiveType: 'pattern',
@@ -372,7 +372,7 @@ export const foundationWorkshopQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'A tiny nail sticks out of the board. Find the smallest hammer to tap it in.',
-          spokenInstruction: 'See that tiny nail? It needs the smallest hammer. Can you find the littlest one?',
+          spokenInstruction: 'See that tiny nail? It needs the smallest hammer. The littlest one goes first!',
           screenReaderText: 'Match task. Select the smallest hammer to tap in the tiny nail on the board.',
           companionRepeat: 'Find the smallest hammer for the tiny nail.',
           objectiveType: 'match',
@@ -424,7 +424,7 @@ export const foundationWorkshopQuests: CreateQuestInput[] = [
     skillsTaught: ['science.senses', 'lang.vocabulary'],
     content: {
       description: 'Every tool makes its own sound! Listen carefully and find the tool that made each noise.',
-      companionIntro: 'Shh! Listen! Something is making noise behind the curtain. Can you figure out which tool it is?',
+      companionIntro: 'Shh! Listen! Something is making noise behind the curtain. Let\'s listen and figure it out together!',
       steps: [
         {
           index: 0,
@@ -508,10 +508,10 @@ export const foundationWorkshopQuests: CreateQuestInput[] = [
         },
         {
           index: 2,
-          instruction: 'Which present was bigger — the one with 3 hand-lengths of ribbon or the one with 6?',
-          spokenInstruction: 'Here\'s a question: which present was bigger — the one with 3 hand-lengths or 6? What do you think?',
+          instruction: 'The present with 6 hand-lengths was SO much bigger than the 3 hand-length one!',
+          spokenInstruction: 'The present with 6 hand-lengths was SO much bigger than the 3 hand-length one!',
           screenReaderText: 'Match task. Compare the two presents: one used 3 hand-lengths of ribbon, the other used 6. Choose which present is bigger.',
-          companionRepeat: 'Which present was bigger — the 3-ribbon one or the 6-ribbon one?',
+          companionRepeat: 'The 6-ribbon present was the bigger one!',
           objectiveType: 'match',
           targetValue: 'six-present',
           hints: ['Which number is bigger: 3 or 6?', 'The one that needed more ribbon must be bigger!'],
@@ -539,7 +539,7 @@ export const foundationWorkshopQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'Pour red paint and yellow paint into the mixing bowl together.',
-          spokenInstruction: 'Let\'s mix! Pour the red paint and the yellow paint into the bowl. What color do you think they\'ll make?',
+          spokenInstruction: 'Let\'s mix! Pour the red paint and the yellow paint into the bowl. Let\'s see what color they make together!',
           screenReaderText: 'Mix task. Pour red paint and yellow paint into the mixing bowl to discover what color they create together.',
           companionRepeat: 'Mix red paint and yellow paint in the bowl.',
           objectiveType: 'mix',
@@ -551,7 +551,7 @@ export const foundationWorkshopQuests: CreateQuestInput[] = [
         {
           index: 1,
           instruction: 'Now pour blue paint and yellow paint into a clean bowl.',
-          spokenInstruction: 'New mix! Pour blue paint and yellow paint into a clean bowl. What will we get this time?',
+          spokenInstruction: 'New mix! Pour blue paint and yellow paint into a clean bowl. Let\'s mix and see what happens!',
           screenReaderText: 'Mix task. Pour blue paint and yellow paint into a clean mixing bowl to discover what color they create together.',
           companionRepeat: 'Mix blue paint and yellow paint in the bowl.',
           objectiveType: 'mix',
@@ -651,9 +651,9 @@ export const foundationWorkshopQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'The top of the clock is empty. Place the number that goes at the very top — the one after eleven!',
-          spokenInstruction: 'The top of the clock is empty! What number goes at the very top? It\'s the one after eleven!',
+          spokenInstruction: 'The top of the clock is empty! The very top of the clock needs its number — twelve goes up there!',
           screenReaderText: 'Match task. Place the correct number at the top of the clock face. The top position holds the number that comes after 11.',
-          companionRepeat: 'What number goes at the top of the clock? It comes after 11.',
+          companionRepeat: 'Twelve goes at the top!',
           objectiveType: 'match',
           targetId: 'clock-top',
           targetValue: 12,
@@ -677,7 +677,7 @@ export const foundationWorkshopQuests: CreateQuestInput[] = [
         {
           index: 2,
           instruction: 'The bottom needs a 6. Find the number 6 and place it at the very bottom of the clock.',
-          spokenInstruction: 'The bottom of the clock is empty! What number goes straight down at the bottom, opposite from twelve?',
+          spokenInstruction: 'The bottom of the clock is empty! Straight down at the bottom, opposite twelve — six goes right there!',
           screenReaderText: 'Match task. Place the number 6 at the bottom of the clock face, directly opposite the 12 at the top.',
           companionRepeat: 'Put the number 6 at the bottom of the clock.',
           objectiveType: 'match',
@@ -708,7 +708,7 @@ export const foundationWorkshopQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'The hammer goes on the LEFT shelf. The left side is this way! (arrow points left)',
-          spokenInstruction: 'The hammer goes on the LEFT shelf — that\'s this side! Can you put it there?',
+          spokenInstruction: 'The hammer goes on the LEFT shelf — that\'s this side! Let\'s put it right there!',
           screenReaderText: 'Sort task. Place the hammer on the left shelf. An arrow points to the left side.',
           companionRepeat: 'Put the hammer on the left shelf.',
           objectiveType: 'sort',

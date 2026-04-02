@@ -83,6 +83,8 @@ export interface AudioCue {
   volume: number;
   loop: boolean;
   position?: Vec3;
+  /** Text alternative for this audio cue (accessibility). */
+  captionText?: string;
 }
 
 export interface SceneGraph {

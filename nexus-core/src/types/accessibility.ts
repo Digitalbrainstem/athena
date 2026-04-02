@@ -76,6 +76,10 @@ export type AnnouncementCategory =
   | 'quest'
   | 'companion'
   | 'discovery'
+  | 'craft'
+  | 'inventory'
+  | 'interaction'
+  | 'system'
   | 'error';
 
 export interface Announcement {

@@ -63,6 +63,11 @@ export function generateCaption(cue: AudioCue, sessionTimeMs?: number): Caption 
   const timestamp = sessionTimeMs ?? 0;
   const type: CaptionType = cue.type;
 
+  // Prefer explicit captionText on the cue if provided
+  if (cue.captionText) {
+    return { text: cue.captionText, type, timestamp };
+  }
+
   switch (cue.type) {
     case 'sfx': {
       const desc = SFX_DESCRIPTIONS[cue.asset] ?? humanize(cue.asset);

@@ -38,16 +38,26 @@ export interface WorldObjectTemplate {
   meshType: 'box' | 'sphere' | 'cylinder' | 'model' | 'plane';
   modelId?: string;
   color: string;
+  /** Shape identifier for colour-blind mode (e.g. 'circle', 'star') */
+  iconShape?: string;
   scale: { x: number; y: number; z: number };
   position: { x: number; y: number; z: number };
   interactionType?: 'examine' | 'pickup' | 'use' | 'talk' | 'craft' | 'build';
   teaches?: string[];
+  /** Spoken name for audio/screen-reader users */
+  spokenName?: string;
+  /** Plain-language description of this object */
+  accessibilityDescription?: string;
 }
 
 export interface BiomeDefinition {
   id: string;
   name: string;
   description: string;
+  /** Spoken name for audio/screen-reader users */
+  spokenName?: string;
+  /** What the biome sounds like (for audio-first users) */
+  ambientDescription?: string;
   primarySubjects: string[];
   objects: WorldObjectTemplate[];
   ambientLighting: LightingPreset;

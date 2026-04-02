@@ -20,7 +20,7 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'The red chest wants all the RED crystals. Find every red crystal on the ground!',
-          spokenInstruction: 'Ooh, look at all these sparkly crystals everywhere! See the red chest? It wants all the RED ones — the ones that glow like fire! Can you find them all?',
+          spokenInstruction: 'Ooh, look at all these sparkly crystals everywhere! See the red chest? It wants all the RED ones — the ones that glow like fire! Let\'s find them all!',
           screenReaderText: 'Sort all red crystals from the cave floor into the red treasure chest. Four red crystals are needed.',
           companionRepeat: 'Find all the red crystals for the red chest!',
           objectiveType: 'sort',
@@ -33,7 +33,7 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 1,
           instruction: 'The blue chest needs the BLUE crystals. They shimmer like ice!',
-          spokenInstruction: 'Now the blue chest is hungry for crystals! Blue ones shimmer like ice — brrr! Can you find all five blue crystals?',
+          spokenInstruction: 'Now the blue chest is hungry for crystals! Blue ones shimmer like ice — brrr! Let\'s find all five blue crystals!',
           screenReaderText: 'Sort all blue crystals into the blue treasure chest. Five blue crystals are needed.',
           companionRepeat: 'Find the five blue crystals!',
           objectiveType: 'sort',
@@ -46,7 +46,7 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 2,
           instruction: 'One chest is for ROUND crystals and one is for POINTY crystals. Sort the last batch by shape!',
-          spokenInstruction: 'Now here\'s a tricky one! Feel these crystals — some are round and smooth like a ball, and some are pointy with sharp edges! Can you sort them by their shape?',
+          spokenInstruction: 'Now here\'s a tricky one! Feel these crystals — some are round and smooth like a ball, and some are pointy with sharp edges! Let\'s sort them by their shape!',
           screenReaderText: 'Sort remaining crystals by shape: place round crystals in one chest and pointy crystals in the other. Seven total.',
           companionRepeat: 'Sort the round ones and pointy ones into different chests!',
           objectiveType: 'sort',
@@ -103,7 +103,7 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 2,
           instruction: 'The ceiling has the biggest cluster yet. Count them all — reach for the sky!',
-          spokenInstruction: 'Whoa, look UP at the ceiling! That\'s the biggest bunch of crystals yet! Can you count all the way up to the big number?',
+          spokenInstruction: 'Whoa, look UP at the ceiling! That\'s the biggest bunch of crystals yet! Let\'s count all the way up to the big number!',
           screenReaderText: 'Count all crystals in the ceiling cluster. The cluster contains ten crystals.',
           companionRepeat: 'Count all the ceiling crystals!',
           objectiveType: 'count',
@@ -188,7 +188,7 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'A crystal with three sides and three corners glows on the wall. It\'s a triangle! Place it in the triangle slot.',
-          spokenInstruction: 'See that crystal glowing on the wall? Count its sides with me — one, two, THREE! That\'s a triangle! Can you put it in the right slot?',
+          spokenInstruction: 'See that crystal glowing on the wall? Count its sides with me — one, two, THREE! That\'s a triangle! Let\'s put it in the right slot!',
           screenReaderText: 'Identify and place the triangle-shaped crystal into the triangle slot in the jewel case. Triangles have three sides.',
           companionRepeat: 'Put the triangle crystal in the triangle slot!',
           objectiveType: 'match',
@@ -227,7 +227,7 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 3,
           instruction: 'The last crystal has SIX sides! Count them: one, two, three, four, five, six. A hexagon!',
-          spokenInstruction: 'Wow, this crystal has SO many sides! Let\'s count together — one, two, three, four, five, SIX! That\'s called a hexagon! Can you find where it goes?',
+          spokenInstruction: 'Wow, this crystal has SO many sides! Let\'s count together — one, two, three, four, five, SIX! That\'s called a hexagon! It goes right in that six-sided slot!',
           screenReaderText: 'Identify and place the hexagon-shaped crystal into the hexagon slot. Hexagons have six sides.',
           companionRepeat: 'The six-sided crystal goes in the hexagon slot!',
           objectiveType: 'match',
@@ -314,7 +314,7 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'Place the RED crystal first. It\'s the color of fire and goes at the start of the rainbow!',
-          spokenInstruction: 'Let\'s build a rainbow! Every rainbow starts with RED — the color of fire! Can you find the red crystal and put it first?',
+          spokenInstruction: 'Let\'s build a rainbow! Every rainbow starts with RED — the color of fire! There\'s the red crystal — let\'s put it first!',
           screenReaderText: 'Place the red crystal in the first position to begin building the rainbow bridge. Red is the first color.',
           companionRepeat: 'Put the red crystal first!',
           objectiveType: 'sort',
@@ -326,8 +326,8 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 1,
           instruction: 'Next comes ORANGE, then YELLOW. Place them after red!',
-          spokenInstruction: 'Great, red is first! Now we need ORANGE — like an orange fruit! And then YELLOW — bright like sunshine! Can you put them in order?',
-          screenReaderText: 'Place orange and yellow crystals after the red one in rainbow order. Orange comes second, yellow third.',
+          spokenInstruction: 'Great, red is first! Now we need ORANGE — like an orange fruit! And then YELLOW — bright like sunshine! Let\'s put them in order!',
+          screenReaderText: 'Place the orange crystal and yellow crystal after the red crystal in rainbow order. Orange comes second, yellow third.',
           companionRepeat: 'Orange next, then yellow!',
           objectiveType: 'sort',
           targetValue: ['orange', 'yellow'],
@@ -365,12 +365,12 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
     skillsTaught: ['math.spatial', 'lang.vocabulary'],
     content: {
       description: 'Explore the cave and learn where things are! Above, below, inside, outside — where\'s the treasure?',
-      companionIntro: 'Let\'s explore the cave! I\'ll describe where things are — ABOVE, BELOW, INSIDE, OUTSIDE. Can you find them?',
+      companionIntro: 'Let\'s explore the cave! I\'ll describe where things are — ABOVE, BELOW, INSIDE, OUTSIDE. Let\'s find them all!',
       steps: [
         {
           index: 0,
           instruction: 'A bat hangs ABOVE your head. Look UP to find it!',
-          spokenInstruction: 'There\'s a little bat hanging somewhere UP HIGH! Can you look above your head? Way up at the ceiling!',
+          spokenInstruction: 'There\'s a little bat hanging somewhere UP HIGH! Look above your head — way up at the ceiling!',
           screenReaderText: 'Look upward to find a bat hanging above. The bat is located on the cave ceiling above the player.',
           companionRepeat: 'Look up to find the bat!',
           objectiveType: 'find',
@@ -382,7 +382,7 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 1,
           instruction: 'A crystal grows BELOW the bridge. Look DOWN to spot it!',
-          spokenInstruction: 'Now look DOWN! Way down below the bridge — there\'s something sparkly down there! Can you spot it?',
+          spokenInstruction: 'Now look DOWN! Way down below the bridge — there\'s something sparkly down there! Let\'s spot it!',
           screenReaderText: 'Look downward to find a crystal growing below the bridge. The crystal is located beneath the bridge structure.',
           companionRepeat: 'Look down below the bridge!',
           objectiveType: 'find',
@@ -394,7 +394,7 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 2,
           instruction: 'A gem hides INSIDE a hollow rock. Look INTO the opening!',
-          spokenInstruction: 'This hollow rock has an opening — peek INSIDE! Something is hiding in there! Can you see it?',
+          spokenInstruction: 'This hollow rock has an opening — peek INSIDE! Something is hiding in there! Ooh, I think I see it!',
           screenReaderText: 'Look inside the hollow rock to find a hidden gem. The gem is concealed within the rock\'s opening.',
           companionRepeat: 'Peek inside the hollow rock!',
           objectiveType: 'find',
@@ -462,7 +462,7 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 2,
           instruction: 'The last stalactite drips in a pattern: drip, drip, DRIP, drip, drip, DRIP. The big drip opens the gate. Find the pattern!',
-          spokenInstruction: 'This last one is special! Listen — drip, drip, DRIP! drip, drip, DRIP! Two little drips and then a BIG one! Can you figure out when the big drip happens?',
+          spokenInstruction: 'This last one is special! Listen — drip, drip, DRIP! drip, drip, DRIP! Two little drips and then a BIG one! The big drip comes every third time!',
           screenReaderText: 'Identify the pattern in the dripping: two small drips followed by one big drip. Determine which position the big drip occurs at.',
           companionRepeat: 'When does the big drip happen?',
           objectiveType: 'pattern',
@@ -504,7 +504,7 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 1,
           instruction: 'Use your EARS to follow a sound. HEAR the dripping water and find the underground stream!',
-          spokenInstruction: 'Now close your eyes and use your EARS! Can you HEAR that? Drip, drip, drip — follow the sound of water! Where is it coming from?',
+          spokenInstruction: 'Now close your eyes and use your EARS! Listen to that — drip, drip, drip! Follow the sound of water! It\'s coming from over there!',
           screenReaderText: 'Use the sense of hearing to follow the sound of dripping water and locate the underground stream.',
           companionRepeat: 'Listen for the water and follow the sound!',
           objectiveType: 'find',

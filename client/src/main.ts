@@ -7,6 +7,7 @@ import { TouchInput } from './input/touch.js';
 import { FirstPersonCamera } from './camera/first-person.js';
 import { AudioManager } from './audio/audio-manager.js';
 import { HUD } from './ui/hud.js';
+import { AccessibilityManager } from './a11y/accessibility-manager.js';
 import type { Disposable } from './types.js';
 
 const DEBUG = import.meta.env.DEV;
@@ -16,7 +17,13 @@ const disposables: Disposable[] = [];
 async function boot(): Promise<void> {
   const canvas = document.getElementById('game-canvas') as HTMLCanvasElement | null;
   const overlay = document.getElementById('click-to-play');
+  const startBtn = document.getElementById('start-button');
   if (!canvas) { console.error('[Nexus] Could not find #game-canvas element'); return; }
+
+  // Accessibility — first, so CSS vars apply before first paint
+  const a11y = new AccessibilityManager();
+  a11y.init();
+  disposables.push(a11y);
 
   const core = await NexusCore.create({ debug: DEBUG });
   disposables.push({ dispose: () => { void core.destroy(); } });
@@ -36,7 +43,7 @@ async function boot(): Promise<void> {
   disposables.push(audioManager);
 
   const hud = new HUD();
-  hud.init(DEBUG);
+  hud.init(DEBUG, a11y);
   disposables.push(hud);
 
   const loop = new GameLoop(core, input, fpCam, sceneRenderer, audioManager, hud);
@@ -53,10 +60,7 @@ async function boot(): Promise<void> {
     loop.start();
   };
 
-  overlay?.addEventListener('click', startGame);
-  overlay?.addEventListener('keydown', (e: KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') startGame();
-  });
+  startBtn?.addEventListener('click', startGame);
 
   canvas.addEventListener('click', () => {
     if (!fpCam.isPointerLocked && loop.isRunning) fpCam.requestPointerLock(canvas);

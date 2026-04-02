@@ -34,13 +34,15 @@ export interface QuestStep {
   /** Simplified restatement for "say that again?" — defaults to instruction if not provided */
   companionRepeat?: string;
   objectiveType: 'interact' | 'collect' | 'build' | 'craft' | 'navigate' | 'observe' | 'teach'
-    | 'count' | 'match' | 'sort' | 'find' | 'mix' | 'measure' | 'pattern';
+    | 'count' | 'match' | 'sort' | 'find' | 'mix' | 'measure' | 'pattern' | 'place';
   targetId?: string;
   targetValue?: unknown;
   requiredCount?: number;
+  /** Maximum choices presented to the player for this step (2-4 for Foundation) */
+  maxChoices?: number;
   hints: string[];
   successResponse: string;
-  /** Gentle, never punishing */
+  /** Gentle, never punishing — describes world consequences, not player failure */
   failureResponse: string;
 }
 

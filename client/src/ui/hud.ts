@@ -1,4 +1,5 @@
-import type { UIState } from '@nexus-academy/core';
+import type { UIState, Announcement, Caption } from '@nexus-academy/core';
+import type { AccessibilityManager } from '../a11y/accessibility-manager.js';
 import type { Disposable } from '../types.js';
 
 export class HUD implements Disposable {
@@ -6,12 +7,14 @@ export class HUD implements Disposable {
   private fpsEl: HTMLElement | null = null;
   private crosshairEl: HTMLElement | null = null;
   private dialogueEl: HTMLElement | null = null;
+  private a11y: AccessibilityManager | null = null;
   private debug = false;
   private disposed = false;
   private promptTimeout: ReturnType<typeof setTimeout> | null = null;
 
-  init(debug = false): void {
+  init(debug = false, a11yManager?: AccessibilityManager): void {
     this.debug = debug;
+    this.a11y = a11yManager ?? null;
     this.promptEl = document.getElementById('interaction-prompt');
     this.fpsEl = document.getElementById('fps-counter');
     this.crosshairEl = document.getElementById('crosshair');
@@ -21,19 +24,33 @@ export class HUD implements Disposable {
 
   update(ui: UIState): void {
     if (this.disposed) return;
+
+    // Dialogue
     if (this.dialogueEl) {
       if (ui.dialogueActive && ui.dialogueText) {
         this.dialogueEl.classList.remove('hud-hidden');
         const speaker = ui.dialogueSpeaker ? `${ui.dialogueSpeaker}: ` : '';
-        this.dialogueEl.textContent = `${speaker}${ui.dialogueText}`;
-        this.dialogueEl.setAttribute('aria-label', `${speaker}${ui.dialogueText}`);
+        const fullText = `${speaker}${ui.dialogueText}`;
+        this.dialogueEl.textContent = fullText;
+        this.dialogueEl.setAttribute('aria-label', fullText);
       } else {
         this.dialogueEl.classList.add('hud-hidden');
       }
     }
+
     if (ui.paused) {
       this.setCrosshairVisible(false);
     }
+  }
+
+  processAnnouncements(announcements: Announcement[]): void {
+    if (this.disposed || !this.a11y) return;
+    this.a11y.processAnnouncements(announcements);
+  }
+
+  processCaptions(captions: Caption[]): void {
+    if (this.disposed || !this.a11y) return;
+    this.a11y.processCaptions(captions);
   }
 
   showPrompt(text: string): void {
@@ -72,5 +89,6 @@ export class HUD implements Disposable {
     this.fpsEl = null;
     this.crosshairEl = null;
     this.dialogueEl = null;
+    this.a11y = null;
   }
 }

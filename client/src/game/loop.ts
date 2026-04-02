@@ -105,6 +105,8 @@ export class GameLoop implements Disposable {
     this.sceneRenderer.render(sceneGraph);
     this.audioManager.process(sceneGraph.audio);
     this.hud.update(sceneGraph.ui);
+    this.hud.processAnnouncements(sceneGraph.announcements);
+    this.hud.processCaptions(sceneGraph.captions);
     this.hud.updateFPS(this._fps);
   };
 }

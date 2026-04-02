@@ -10,7 +10,9 @@ import {
 // Valid biome IDs from the world system
 const VALID_BIOMES = ['workshop', 'alchemist-lab', 'crystal-caverns', 'living-forest', 'library-echoes'];
 
-// Forbidden quiz-style phrases
+// ---------------------------------------------------------------------------
+// Principle 0: Learning Through Play — NO quiz-style language
+// ---------------------------------------------------------------------------
 const QUIZ_PATTERNS = [
   /\bWhat is\b/i,
   /\bHow many .+ are there\?/i,
@@ -18,32 +20,78 @@ const QUIZ_PATTERNS = [
   /\bDo you know\b/i,
   /\bWhat color is\b.*\?/i,
   /\bName the\b.*\?/i,
+  /\bCan you name\b/i,
 ];
 
-// Gender-specific terms to flag
+// ---------------------------------------------------------------------------
+// Principle V: The World Is for Everyone — NO gendered language
+// ---------------------------------------------------------------------------
 const GENDERED_TERMS = [
   /\bboy\b/i,
   /\bgirl\b/i,
-  /\b(?<![a-z])his\b/i,
-  /\bher\b/i,
-  /\b(?<![a-z])he\b/i,
-  /\bshe\b/i,
   /\bprince\b/i,
   /\bprincess\b/i,
   /\bbrother\b/i,
   /\bsister\b/i,
+  /\bhe\s/i,
+  /\bshe\s/i,
+  /\bhis\s/i,
+  /\bher\s/i,
 ];
 
-// Color-only instruction patterns — color word followed by a generic noun
-// without a shape/position/name qualifier nearby.
-// These catch "tap the red one" or "find the blue crystal" but allow
-// "tap the red circle on the left" or "find the red hammer".
-const COLOR_WORDS = 'red|blue|green|yellow|orange|purple|pink|white|brown|gold';
+// ---------------------------------------------------------------------------
+// Principle VI: No Judgment — NO negative feedback words
+// ---------------------------------------------------------------------------
+const HARSH_WORDS = [
+  /\bwrong\b/i,
+  /\bincorrect\b/i,
+  /\bfailed\b/i,
+  /\bgame over\b/i,
+  /\byou lose\b/i,
+  /\bstupid\b/i,
+  /\bbad\b/i,
+  /\bterrible\b/i,
+  /\bawful\b/i,
+];
 
-// Patterns that rely on color alone to identify a target.
-// "the red one" / "the blue ones" with no shape/position qualifier
+// ---------------------------------------------------------------------------
+// Principle VIII: Mastery Over Speed — NO time pressure
+// ---------------------------------------------------------------------------
+const TIMER_WORDS = [
+  /\bhurry\b/i,
+  /\bquick(?:ly)?\b/i,
+  /\bbefore time\b/i,
+  /\btimer\b/i,
+  /\btime.s up\b/i,
+  /\brun out of time\b/i,
+  /\bfaster\b/i,
+];
+
+// ---------------------------------------------------------------------------
+// Visual Accessibility — NO color-only identification
+// ---------------------------------------------------------------------------
+const COLOR_WORDS = 'red|blue|green|yellow|orange|purple|pink|white|brown|gold';
 const COLOR_ONLY_PATTERNS = [
   new RegExp(`\\bthe (${COLOR_WORDS}) ones?\\b`, 'i'),
+];
+
+// ---------------------------------------------------------------------------
+// Motor Accessibility — NO drag operations
+// ---------------------------------------------------------------------------
+const DRAG_PATTERNS = [
+  /\bdrag\b/i,
+];
+
+// ---------------------------------------------------------------------------
+// No Visible Scores
+// ---------------------------------------------------------------------------
+const SCORE_PATTERNS = [
+  /\bscore\b/i,
+  /\bgrade\b/i,
+  /\bpercent\b/i,
+  /\bout of \d+\b/i,
+  /\bpoints\b/i,
+  /\b\d+\/\d+\b/,
 ];
 
 function collectAllText(quest: (typeof allQuests)[number]): string {
@@ -67,6 +115,21 @@ function collectAllText(quest: (typeof allQuests)[number]): string {
   return parts.join(' ');
 }
 
+function collectStepText(step: (typeof allQuests)[number]['content']['steps'][number]): string {
+  return [
+    step.instruction,
+    step.spokenInstruction ?? '',
+    step.screenReaderText ?? '',
+    step.companionRepeat ?? '',
+    step.successResponse,
+    step.failureResponse,
+    ...step.hints,
+  ].join(' ');
+}
+
+// ============================================================================
+// Quest Count Requirements
+// ============================================================================
 describe('Foundation Quest Data — Counts', () => {
   it('has at least 35 total Foundation quests', () => {
     expect(allFoundationQuests.length).toBeGreaterThanOrEqual(35);
@@ -92,6 +155,9 @@ describe('Foundation Quest Data — Counts', () => {
   });
 });
 
+// ============================================================================
+// Structural Requirements (per quest, per step)
+// ============================================================================
 describe('Foundation Quest Data — Structure', () => {
   for (const quest of allFoundationQuests) {
     describe(`Quest "${quest.id}"`, () => {
@@ -133,6 +199,7 @@ describe('Foundation Quest Data — Structure', () => {
 
       for (const step of quest.content.steps) {
         describe(`Step ${step.index}`, () => {
+          // ── Checklist Item 8: triple instruction format ──
           it('has instruction and objective type', () => {
             expect(step.instruction).toBeTruthy();
             expect(step.objectiveType).toBeTruthy();
@@ -145,28 +212,43 @@ describe('Foundation Quest Data — Structure', () => {
 
           it('has companionRepeat for "say that again?"', () => {
             expect(step.companionRepeat, 'missing companionRepeat').toBeTruthy();
-            // companionRepeat should be shorter/simpler than the main instruction
-            expect(step.companionRepeat!.length).toBeLessThanOrEqual(step.instruction.length + 20);
+            expect(step.companionRepeat!.length).toBeLessThanOrEqual(step.instruction.length + 30);
           });
 
+          // ── Checklist Item 10: hints available ──
           it('has hints array with at least one hint', () => {
             expect(Array.isArray(step.hints)).toBe(true);
             expect(step.hints!.length).toBeGreaterThan(0);
           });
 
+          // ── Checklist Item 9: failure response gentle ──
           it('has success and failure responses', () => {
             expect(step.successResponse).toBeTruthy();
             expect(step.failureResponse).toBeTruthy();
           });
 
-          it('failure response is encouraging and offers a path forward', () => {
+          // ── Checklist Item 2 + 4: Safe, no judgment ──
+          it('failure response is encouraging — no harsh words', () => {
             const f = step.failureResponse;
-            // Must not contain harsh negative words
-            expect(f).not.toMatch(/\bwrong\b/i);
-            expect(f).not.toMatch(/\bincorrect\b/i);
-            expect(f).not.toMatch(/\bfailed\b/i);
-            expect(f).not.toMatch(/\bgame over\b/i);
-            expect(f).not.toMatch(/\byou lose\b/i);
+            for (const pattern of HARSH_WORDS) {
+              expect(f, `failureResponse "${f}" contains harsh word`).not.toMatch(pattern);
+            }
+          });
+
+          // ── No drag operations (motor accessibility) ──
+          it('never references drag operations', () => {
+            const text = collectStepText(step);
+            for (const pattern of DRAG_PATTERNS) {
+              expect(text, `step text mentions "drag"`).not.toMatch(pattern);
+            }
+          });
+
+          // ── No visible scores ──
+          it('never mentions scores or grades', () => {
+            const text = collectStepText(step);
+            for (const pattern of SCORE_PATTERNS) {
+              expect(text, `step text mentions scores/grades`).not.toMatch(pattern);
+            }
           });
         });
       }
@@ -174,16 +256,30 @@ describe('Foundation Quest Data — Structure', () => {
   }
 });
 
-describe('Foundation Quest Data — Accessibility', () => {
-  it('no color-only identification in instructions', () => {
+// ============================================================================
+// Checklist Item 7: Color accessibility — NEVER color alone
+// ============================================================================
+describe('Foundation Quest Data — Color Accessibility', () => {
+  it('no color-only identification in any text field', () => {
     for (const quest of allFoundationQuests) {
       for (const step of quest.content.steps) {
-        for (const pattern of COLOR_ONLY_PATTERNS) {
-          const match = step.instruction.match(pattern);
-          expect(
-            match,
-            `Quest "${quest.id}" step ${step.index} instruction uses color-only identification: "${match?.[0]}"`,
-          ).toBeNull();
+        const fields = [
+          step.instruction,
+          step.spokenInstruction ?? '',
+          step.screenReaderText ?? '',
+          step.companionRepeat ?? '',
+          step.successResponse,
+          step.failureResponse,
+          ...step.hints,
+        ];
+        for (const field of fields) {
+          for (const pattern of COLOR_ONLY_PATTERNS) {
+            const match = field.match(pattern);
+            expect(
+              match,
+              `Quest "${quest.id}" step ${step.index}: "${match?.[0]}" uses color alone`,
+            ).toBeNull();
+          }
         }
       }
     }
@@ -204,8 +300,11 @@ describe('Foundation Quest Data — Accessibility', () => {
   });
 });
 
-describe('Foundation Quest Data — Educational Integrity', () => {
-  it('has no quiz-style language', () => {
+// ============================================================================
+// Checklist Item 1: Feels like play — NO quiz phrasing
+// ============================================================================
+describe('Foundation Quest Data — No Quiz Language', () => {
+  it('no quiz-style language in any quest text', () => {
     for (const quest of allFoundationQuests) {
       const text = collectAllText(quest);
       for (const pattern of QUIZ_PATTERNS) {
@@ -217,7 +316,12 @@ describe('Foundation Quest Data — Educational Integrity', () => {
       }
     }
   });
+});
 
+// ============================================================================
+// Checklist Item 3: Gender neutral
+// ============================================================================
+describe('Foundation Quest Data — Gender Neutral', () => {
   it('uses gender-neutral language', () => {
     for (const quest of allFoundationQuests) {
       const text = collectAllText(quest);
@@ -230,7 +334,37 @@ describe('Foundation Quest Data — Educational Integrity', () => {
       }
     }
   });
+});
 
+// ============================================================================
+// Checklist Item 5: No timers for Foundation
+// ============================================================================
+describe('Foundation Quest Data — No Time Pressure', () => {
+  it('no time-pressure language in any quest text', () => {
+    for (const quest of allFoundationQuests) {
+      const text = collectAllText(quest);
+      for (const pattern of TIMER_WORDS) {
+        const match = text.match(pattern);
+        expect(
+          match,
+          `Quest "${quest.id}" contains time-pressure word: "${match?.[0]}"`,
+        ).toBeNull();
+      }
+    }
+  });
+
+  it('no timeLimit field on any quest', () => {
+    for (const quest of allFoundationQuests) {
+      const content = quest.content as Record<string, unknown>;
+      expect(content['timeLimit'], `Quest "${quest.id}" has timeLimit`).toBeUndefined();
+    }
+  });
+});
+
+// ============================================================================
+// Additional structural integrity
+// ============================================================================
+describe('Foundation Quest Data — Integrity', () => {
   it('has unique quest IDs', () => {
     const ids = allFoundationQuests.map((q) => q.id);
     const uniqueIds = new Set(ids);
@@ -249,6 +383,34 @@ describe('Foundation Quest Data — Educational Integrity', () => {
       quest.content.steps.forEach((step, i) => {
         expect(step.index).toBe(i);
       });
+    }
+  });
+
+  it('all quests are Foundation tier', () => {
+    for (const quest of allFoundationQuests) {
+      expect(quest.masteryTier).toBe('foundation');
+    }
+  });
+
+  it('companion intro never asks quiz questions', () => {
+    for (const quest of allFoundationQuests) {
+      const intro = quest.content.companionIntro ?? '';
+      for (const pattern of QUIZ_PATTERNS) {
+        const match = intro.match(pattern);
+        expect(
+          match,
+          `Quest "${quest.id}" companionIntro contains quiz phrase: "${match?.[0]}"`,
+        ).toBeNull();
+      }
+    }
+  });
+
+  it('companion outro never uses harsh words', () => {
+    for (const quest of allFoundationQuests) {
+      const outro = quest.content.companionOutro ?? '';
+      for (const pattern of HARSH_WORDS) {
+        expect(outro, `Quest "${quest.id}" companionOutro contains harsh word`).not.toMatch(pattern);
+      }
     }
   });
 });

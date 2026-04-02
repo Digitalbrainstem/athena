@@ -77,6 +77,8 @@ function mockHud(): HUD {
     hidePrompt: vi.fn(),
     flashPrompt: vi.fn(),
     setCrosshairVisible: vi.fn(),
+    processAnnouncements: vi.fn(),
+    processCaptions: vi.fn(),
     dispose: vi.fn(),
   } as unknown as HUD;
 }
