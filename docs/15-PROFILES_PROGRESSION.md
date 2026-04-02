@@ -299,5 +299,17 @@ These settings are per-profile and parent-controlled.
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **Adaptive testing for calibration** — Study Item Response Theory (IRT) and Computerized Adaptive Testing (CAT). Review how the GRE, GMAT, and MAP Growth assessments calibrate student ability in 20-30 items. Adapt for gameplay-disguised calibration.
+- [ ] **Offline-first database sync** — Evaluate CRDTs (Conflict-free Replicated Data Types) for multi-device progress merge. Study Automerge, Yjs, and cr-sqlite. Benchmark sync performance for our data model.
+- [ ] **Child profile UX** — Review how existing children's platforms handle profiles: Netflix Kids, Disney+, PBS Kids, Khan Academy Kids. Identify best practices for avatar-based login and minimal-auth flows.
+- [ ] **Interest profiling without demographics** — Research recommendation systems that avoid demographic bias. Study Spotify's taste profile system. Review fairness-aware recommendation research. Ensure our interest tracking can't inadvertently create gendered clusters.
+- [ ] **Progress data visualization for parents** — Study how to present educational progress without triggering parental anxiety. Review Khan Academy parent dashboard, ClassDojo reports, and Seesaw portfolios. Design for encouragement, not surveillance.
+
+---
+
 *Previous: [14-MULTIPLAYER.md](14-MULTIPLAYER.md) — Multiplayer and classroom mode.*
 *Next: [16-ART_DIRECTION.md](16-ART_DIRECTION.md) — Visual style and art direction.*

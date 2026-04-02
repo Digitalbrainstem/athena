@@ -276,5 +276,17 @@ Atlas sync happens separately, outside of multiplayer sessions.
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **LAN multiplayer architecture** — Study WebRTC DataChannels for peer-to-peer LAN communication. Evaluate WebSocket vs. WebRTC for same-network multiplayer. Research mDNS/Bonjour for device discovery on LAN without a central server.
+- [ ] **Classroom technology deployment** — Interview 3-5 teachers about their technology setup. What devices are available? How reliable is school WiFi? What's the IT approval process? Inform realistic classroom mode requirements.
+- [ ] **Collaborative learning research** — Study Vygotsky's social constructivism and peer tutoring research. Review evidence on cross-age tutoring (older helping younger). Quantify learning benefits of collaboration vs. solo play.
+- [ ] **Child safety regulations** — Review COPPA (US), GDPR-K (EU), Age Appropriate Design Code (UK), and AADC (Australia) for multiplayer implications. Ensure same-network-only design satisfies all jurisdictions.
+- [ ] **Cooperative game design** — Study co-op mechanics in: It Takes Two, Overcooked, Keep Talking and Nobody Explodes, Sea of Thieves. Identify patterns for quests where players contribute different skills.
+
+---
+
 *Previous: [13-INPUT_CONTROLS.md](13-INPUT_CONTROLS.md) — Input methods.*
 *Next: [15-PROFILES_PROGRESSION.md](15-PROFILES_PROGRESSION.md) — Player profiles and calibration.*

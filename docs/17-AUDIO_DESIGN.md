@@ -280,5 +280,18 @@ audio is the ENTIRE experience. Design requirements:
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **AI music composition** — Evaluate Suno, Udio, MusicGen (Meta), and Stable Audio for game music generation. Test ability to generate layered, loopable biome tracks. Measure quality of adaptive music (can AI generate separate layers that mix well?). Evaluate licensing terms for AI-generated game music.
+- [ ] **AI sound effect generation** — Test AudioGen (Meta), Stable Audio, and ElevenLabs sound effects for game SFX generation. Compare to traditional Foley and synthesis. Evaluate whether AI can generate 500+ unique, high-quality game sounds.
+- [ ] **Adaptive music systems in games** — Study Wwise (Audiokinetic) and FMOD adaptive music implementations. Research how Zelda: BotW, Minecraft, and Journey implement layered adaptive soundtracks. Identify patterns portable to Web Audio API.
+- [ ] **Fish Audio TTS benchmarks** — Benchmark Fish Audio for: latency per line, emotional range, voice consistency across long sessions, batch rendering throughput, child-appropriate voice profiles. Compare with Qwen3-TTS, Kokoro, and Piper for quality/speed tradeoffs.
+- [ ] **Web Audio API spatial audio** — Test HRTF (Head-Related Transfer Function) processing in Web Audio API across browsers. Benchmark on Surface Go. Evaluate whether binaural audio is perceptible on typical tablet speakers. Test mono-speaker psychoacoustic techniques.
+- [ ] **Game audio design books** — Read "A Composer's Guide to Game Music" (Winifred Phillips), "Game Sound" (Karen Collins), and "An Introduction to the Art of Sound Design" (David Sonnenschein). Extract principles for educational game audio.
+
+---
+
 *Previous: [16-ART_DIRECTION.md](16-ART_DIRECTION.md) — Visual style.*
 *Next: [18-TECHNICAL_ARCHITECTURE.md](18-TECHNICAL_ARCHITECTURE.md) — System architecture.*

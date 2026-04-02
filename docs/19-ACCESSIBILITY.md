@@ -301,5 +301,19 @@ Every quest must pass accessibility testing before shipping.
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **WCAG game guidelines** — Review WCAG 2.2 AA/AAA requirements and their applicability to games. Study the W3C Game Accessibility Guidelines draft. Identify which success criteria apply to our game and which are irrelevant (e.g., form labels).
+- [ ] **Xbox Accessibility Guidelines (XAG)** — Read the full Xbox Accessibility Guidelines. These are the industry gold standard for game accessibility. Map each guideline to our implementation plan. Identify gaps.
+- [ ] **AbleGamers foundation** — Review AbleGamers' Includification guide and Player Panels methodology. Consider engaging AbleGamers for accessibility consulting during Phase 1 prototyping.
+- [ ] **One-switch gaming** — Study SpecialEffect's one-switch gaming setups. Test scanning interfaces with actual switch hardware. Benchmark scan speed and selection accuracy for different age groups.
+- [ ] **Screen reader + Three.js** — Research how screen readers interact with WebGL canvas elements. Study A-Frame's accessibility work. Test NVDA, VoiceOver, and TalkBack with a Three.js scene. Identify what can be made accessible and what requires audio-description fallback.
+- [ ] **Cognitive accessibility in games** — Review research on game design for players with intellectual disabilities, learning disabilities, and autism spectrum. Study the Game Accessibility Conference (GAConf) proceedings. Identify evidence-based design patterns for simplified UI modes.
+- [ ] **Dyslexia-friendly design** — Research OpenDyslexic font effectiveness (studies are mixed). Evaluate alternative approaches: increased letter spacing, specific font choices (Comic Sans performs well in studies), background color options. Test with dyslexic users.
+
+---
+
 *Previous: [18-TECHNICAL_ARCHITECTURE.md](18-TECHNICAL_ARCHITECTURE.md) — System architecture.*
 *Next: [20-SCREEN_TIME_SAFETY.md](20-SCREEN_TIME_SAFETY.md) — Screen time and child protection.*

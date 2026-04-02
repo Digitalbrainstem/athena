@@ -318,6 +318,19 @@ If a parent notices inappropriate content:
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **Screen time research** — Read the AAP (American Academy of Pediatrics) current screen time recommendations and the underlying research. Study the nuance: not all screen time is equal. Review research distinguishing passive consumption from active/educational use.
+- [ ] **Child development and technology** — Study "The Anxious Generation" (Jonathan Haidt) and counterpoint research. Understand the current debate on children and screens. Position Nexus Academy clearly as active educational engagement, not passive consumption.
+- [ ] **COPPA compliance technical guide** — Work through the FTC's COPPA compliance technical guide step by step. Verify that our local-first architecture satisfies every requirement. Document the compliance case.
+- [ ] **GDPR-K and international child privacy** — Research child privacy regulations beyond COPPA: GDPR Article 8 (EU), Age Appropriate Design Code (UK ICO), Australian Privacy Act amendments. Ensure our architecture works globally.
+- [ ] **Dark patterns in children's apps** — Study the FTC's enforcement actions against children's apps (Epic Games/Fortnite, TikTok, YouTube Kids). Document specific dark patterns and verify none exist in our design. Use as negative examples in developer onboarding.
+- [ ] **Break reminder effectiveness** — Research whether break reminders actually work. Study Nintendo's approach (Wii Sports break reminders), Apple Screen Time effectiveness research, and educational game break implementations. Optimize our companion-mediated break approach based on evidence.
+
+---
+
 *Previous: [19-ACCESSIBILITY.md](19-ACCESSIBILITY.md) — Accessibility design.*
 
 *This is the final document in the specification suite. Return to [README.md](README.md) for the full index.*

@@ -38,6 +38,7 @@ When principles conflict, resolve by tier. Higher tiers always prevail.
 - **Principle VIII:** Mastery Over Speed
 - **Principle IX:** Atlas Enhances, Never Required
 - **Principle X:** Grounded in Evidence
+- **Principle XI:** No Artificial Limits
 
 ---
 
@@ -307,6 +308,44 @@ the full truth — never a falsehood that will need to be unlearned later.
 
 ---
 
+## Principle XI: No Artificial Limits
+
+> *If a tool exists to solve a problem, we use it. AI generates art, music, content,
+> and code. Humans direct, review, and playtest.*
+
+We don't artificially constrain ourselves. If AI can generate 3D models, we use it. If
+AI can compose adaptive music, we use it. If AI can write quest dialogue, we use it. If
+AI can generate sound effects, we use it. The goal is the best possible game for every
+child — not proving that humans can do everything by hand.
+
+**What this means:**
+- **AI-generated 3D assets** — Text-to-3D tools (Meshy, Tripo3D, Shap-E) generate
+  models. Humans review, refine, and approve for the art style. See
+  [18-TECHNICAL_ARCHITECTURE.md](18-TECHNICAL_ARCHITECTURE.md) for the AI asset pipeline.
+- **AI-composed music** — AI tools (Suno, MusicGen) generate biome themes and adaptive
+  layers. Humans review for quality, emotional tone, and age-appropriateness.
+- **AI-generated sound effects** — Synthesis and AI audio tools create the 500+ SFX
+  library. Humans curate and test.
+- **LLM-generated quest content** — Atlas (or a standalone generator) writes quests.
+  Validators check educational accuracy. Humans review a sample for quality.
+- **AI-assisted code** — Copilot, Atlas, and other tools accelerate development.
+  Humans review, test, and ship.
+- **AI-generated voice** — Fish Audio TTS with custom character voices. Humans select
+  voices, tune emotion, and validate quality.
+
+**What "no artificial limits" does NOT mean:**
+- It does NOT mean shipping unreviewed AI output. Every AI-generated asset passes
+  through validation (automated) and review (human spot-check).
+- It does NOT mean replacing human judgment. Humans direct the creative vision, set
+  quality standards, and make final approval decisions.
+- It does NOT mean using AI where it's worse. If hand-crafting something produces
+  better results for reasonable effort, hand-craft it.
+- It does NOT mean compromising on principles. AI-generated content must still be
+  educationally accurate (Principle X), age-appropriate (Principle I), and
+  non-discriminatory (Principle V).
+
+---
+
 ## Applying These Principles
 
 Every design decision should pass this checklist:
@@ -322,6 +361,7 @@ Every design decision should pass this checklist:
 9. ☐ Does it rush the player? (Principle VIII)
 10. ☐ Does it require Atlas to function? (Principle IX)
 11. ☐ Is the content factually accurate? (Principle X)
+12. ☐ Are we using the best available tools, including AI? (Principle XI)
 
 If any answer is wrong, fix the feature — not the principle.
 

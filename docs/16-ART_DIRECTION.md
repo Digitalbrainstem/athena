@@ -245,5 +245,18 @@ Fully customizable at every tier:
 
 ---
 
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **AI 3D asset generation** — Evaluate Meshy, Tripo3D, Shap-E, and Point-E for text-to-3D model generation. Test output quality in glTF format for Three.js import. Measure polygon counts, texture quality, and generation time. Identify which tools produce game-ready assets vs. those needing manual cleanup.
+- [ ] **Stylized low-poly pipelines** — Study stylized 3D art pipelines used in: Monument Valley (ustwo), Journey (thatgamecompany), AER: Memories of Old. Identify Blender workflows for producing consistent stylized assets. Evaluate procedural generation tools (Houdini, Geometry Nodes).
+- [ ] **Three.js rendering techniques** — Research post-processing in Three.js: outline shaders (toon rendering), custom materials, LOD systems. Benchmark performance on Surface Go hardware. Study Three.js examples gallery for stylized rendering approaches.
+- [ ] **Age-adaptive visual design** — Review academic research on visual complexity and cognitive load for different ages. Study how PBS Kids, Sesame Street, and Disney Junior transition visual complexity across age ranges. Quantify what "too complex" looks like for a 3-year-old.
+- [ ] **Procedural world generation in WebGL** — Study marching cubes, dual contouring, and wave function collapse for web-based terrain generation. Benchmark performance in Three.js. Review Townscaper's procedural architecture generation as inspiration.
+- [ ] **Color blindness in game design** — Research prevalence data and test tools (Color Oracle, Coblis simulator). Study how Fortnite, Overwatch, and Splatoon handle colorblind modes. Ensure every biome palette has a tested colorblind-safe variant.
+
+---
+
 *Previous: [15-PROFILES_PROGRESSION.md](15-PROFILES_PROGRESSION.md) — Profiles and calibration.*
 *Next: [17-AUDIO_DESIGN.md](17-AUDIO_DESIGN.md) — Sound effects, music, and TTS voice.*

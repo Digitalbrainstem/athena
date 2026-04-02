@@ -530,6 +530,104 @@ The game periodically checks Atlas connectivity (every 5 minutes):
 
 ---
 
+## AI Asset Pipeline
+
+Per [00-CORE_PRINCIPLES.md](00-CORE_PRINCIPLES.md) Principle XI (No Artificial Limits),
+we use AI tools throughout the asset pipeline. Every AI-generated asset passes through
+validation and human review before reaching players.
+
+### Pipeline Overview
+
+```
+                        ┌─────────────────────┐
+                        │   HUMAN DIRECTION    │
+                        │   (style guides,     │
+                        │    prompts, specs)    │
+                        └──────────┬──────────┘
+                                   │
+         ┌─────────────┬───────────┼───────────┬──────────────┐
+         │             │           │           │              │
+         ▼             ▼           ▼           ▼              ▼
+   ┌──────────┐  ┌──────────┐  ┌───────┐  ┌────────┐  ┌──────────┐
+   │ 3D Models│  │  Music   │  │  SFX  │  │ Quest  │  │  Voice   │
+   │ (Meshy/  │  │ (Suno/   │  │(Audio │  │ Text   │  │ (Fish    │
+   │ Tripo3D) │  │ MusicGen)│  │ Gen)  │  │ (LLM)  │  │ Audio)   │
+   └────┬─────┘  └────┬─────┘  └───┬───┘  └────┬───┘  └────┬─────┘
+        │              │            │           │            │
+        ▼              ▼            ▼           ▼            ▼
+   ┌──────────────────────────────────────────────────────────────┐
+   │                    VALIDATION LAYER                          │
+   │  Auto: format check, polygon count, audio quality, accuracy │
+   │  Human: style match, emotional tone, age-appropriateness    │
+   └──────────────────────────────────────────────────────────────┘
+        │              │            │           │            │
+        ▼              ▼            ▼           ▼            ▼
+   ┌──────────────────────────────────────────────────────────────┐
+   │                     CONTENT CACHE                            │
+   │            Ready for game server distribution                │
+   └──────────────────────────────────────────────────────────────┘
+```
+
+### 3D Models
+
+| Stage | Tool | Output | Human Role |
+|-------|------|--------|-----------|
+| Generation | Meshy, Tripo3D, or Shap-E | Raw 3D mesh | Write prompt, select style reference |
+| Cleanup | Blender (scripted) | Optimized glTF | Review polygon count, fix artifacts |
+| Texturing | AI texture + manual | PBR materials | Ensure style consistency per biome |
+| LOD generation | Automated decimation | 3-4 LOD levels | Verify visual quality at each level |
+| Import | Three.js loader | Game-ready asset | Final visual check in-engine |
+
+**Targets:** < 5,000 polygons per object (LOD 0), stylized textures, consistent with
+per-tier art direction (see [16-ART_DIRECTION.md](16-ART_DIRECTION.md)).
+
+### Music
+
+| Stage | Tool | Output | Human Role |
+|-------|------|--------|-----------|
+| Composition | Suno, MusicGen, or Stable Audio | Raw audio tracks | Write prompt with biome, mood, tier |
+| Layer separation | Source separation (Demucs) or multi-generation | Ambient/activity/intensity layers | Verify layers mix well |
+| Loop preparation | Audio editing (scripted) | Seamless loops | Check loop points, crossfade quality |
+| Adaptive integration | Web Audio API layer system | In-game adaptive music | Test biome transitions, intensity shifts |
+
+**Per biome:** 3 layers (ambient, activity, intensity) × 2-3 variations = 6-9 tracks.
+Each track 2-4 minutes looped. Total: ~150 music tracks across all biomes.
+
+### Sound Effects
+
+| Stage | Tool | Output | Human Role |
+|-------|------|--------|-----------|
+| Generation | AudioGen, synthesis, or recording | Raw sound | Specify sound type, context |
+| Processing | Batch processing (normalization, EQ) | Game-ready OGG | Verify quality, no artifacts |
+| Categorization | Automated tagging | Tagged SFX library | Spot-check category accuracy |
+
+**Target library:** 500+ unique sounds at launch. AI generates candidates, humans curate.
+
+### Quest Text & Dialogue
+
+| Stage | Tool | Output | Human Role |
+|-------|------|--------|-----------|
+| Generation | Atlas LLM (Qwen3) or standalone generator | Quest JSON | Set skill targets, difficulty, biome |
+| Validation | Auto-validator (see [09-CONTENT_PIPELINE.md](09-CONTENT_PIPELINE.md)) | Validated JSON | Review flagged content |
+| Dialogue writing | LLM with companion personality prompt | Companion lines | Check tone, age-appropriateness |
+| TTS rendering | Fish Audio (batch) | OGG audio files | Spot-check voice quality, emotion |
+
+### Voice (TTS)
+
+| Voice | Provider | Use Case | Custom Training |
+|-------|----------|----------|----------------|
+| Companion (primary) | Fish Audio | All companion dialogue | Custom voice clone per profile |
+| Companion (variants) | Fish Audio | Emotional modulation | Same clone, different emotion prompts |
+| NPCs | Qwen3-TTS | World characters | Per-NPC voice selection |
+| Narration | Qwen3-TTS | Story fragments, inscriptions | Neutral, authoritative voice |
+| Fallback | Kokoro / Piper | Offline / low-latency | Pre-installed, no network needed |
+
+Fish Audio custom voices are trained once per companion voice profile, then reused for
+all dialogue generation. TTS rendering happens in Atlas nightly batch, with pre-rendered
+audio cached on device for zero-latency playback.
+
+---
+
 ## Deployment
 
 ### Surface Go Kiosk
@@ -614,6 +712,19 @@ services:
 - Short-lived auth tokens per device
 - Signed payloads for satellite sync
 - No cloud dependency
+
+---
+
+## Research Required
+
+Before building against this document, complete the following research:
+
+- [ ] **Three.js vs. Babylon.js decision** — Build a prototype scene in both engines: terrain chunk, 10 animated objects, basic physics, post-processing. Benchmark on Surface Go. Compare: API ergonomics, TypeScript support, physics engines (Rapier vs. Havok), community size, documentation quality. Make final engine choice.
+- [ ] **FastAPI for game servers** — Evaluate FastAPI's suitability for game server workloads (high-frequency progress reporting, content serving, device sync). Benchmark concurrent connections on Raspberry Pi. Compare with Litestar and Starlette.
+- [ ] **SQLite performance at scale** — Benchmark SQLite WAL mode with 30 concurrent readers (classroom mode), 1000+ quests, 100K+ learning events. Test on Pi 4 and Surface Go. Evaluate whether SQLite is sufficient or if we need DuckDB/PostgreSQL for larger deployments.
+- [ ] **Service Worker offline patterns** — Study Workbox (Google) patterns for offline-first PWAs. Test background sync, cache strategies (stale-while-revalidate vs. cache-first), and IndexedDB quota limits across browsers. Build prototype offline cache with quest content.
+- [ ] **Physics engines for web** — Evaluate Rapier.js (Rust/WASM), cannon-es, Oimo.js, and Ammo.js (Bullet port). Benchmark: rigid body count at 60fps, constraint solver quality, API usability. Test structural analysis (bridge collapse simulation) feasibility.
+- [ ] **AI asset pipeline tools** — Prototype the full AI asset pipeline: text → 3D model (Meshy/Tripo3D) → glTF cleanup → Three.js import. Measure quality, time per asset, and manual cleanup required. Build a proof-of-concept for 10 game objects.
 
 ---
 
