@@ -5,6 +5,7 @@ import { ObjectFactory } from './object-factory.js';
 import { LightManager } from './light-manager.js';
 import { SkyRenderer } from './sky-renderer.js';
 import { GroundRenderer } from './ground-renderer.js';
+import type { AssetManager } from '../assets/asset-manager.js';
 
 const LOD_PROFILES = {
   low:    { pixelRatioCap: 1,   antialias: false },
@@ -25,6 +26,7 @@ export class SceneRenderer implements Disposable {
   private readonly groundRenderer: GroundRenderer;
 
   private readonly entityMeshes = new Map<number, THREE.Mesh>();
+  private readonly entityGroups = new Map<number, THREE.Group>();
   private lodTier: LODTier;
   private disposed = false;
 
@@ -61,6 +63,11 @@ export class SceneRenderer implements Disposable {
     this.groundRenderer = new GroundRenderer(this.scene);
 
     window.addEventListener('resize', this.onResize);
+  }
+
+  /** Connect the AssetManager so procedural models are used for 'model' mesh types. */
+  setAssetManager(manager: AssetManager): void {
+    this.objectFactory.setAssetManager(manager);
   }
 
   render(sceneGraph: SceneGraph): void {
@@ -101,6 +108,11 @@ export class SceneRenderer implements Disposable {
       this.scene.remove(mesh);
     }
     this.entityMeshes.clear();
+
+    for (const group of this.entityGroups.values()) {
+      this.scene.remove(group);
+    }
+    this.entityGroups.clear();
 
     this.lightManager.dispose();
     this.skyRenderer.dispose();
@@ -143,8 +155,18 @@ export class SceneRenderer implements Disposable {
         this.objectFactory.updateMesh(existing, obj);
       } else {
         const mesh = this.objectFactory.createMesh(obj);
-        this.entityMeshes.set(obj.entityId, mesh);
-        this.scene.add(mesh);
+
+        // Check if a procedural group was created for this entity
+        const group = this.objectFactory.getProceduralGroup(obj.entityId);
+        if (group) {
+          this.entityGroups.set(obj.entityId, group);
+          this.scene.add(group);
+          // Still track the placeholder mesh so the loop works
+          this.entityMeshes.set(obj.entityId, mesh);
+        } else {
+          this.entityMeshes.set(obj.entityId, mesh);
+          this.scene.add(mesh);
+        }
       }
     }
 
@@ -152,6 +174,12 @@ export class SceneRenderer implements Disposable {
       if (!incoming.has(id)) {
         this.scene.remove(mesh);
         this.entityMeshes.delete(id);
+
+        const group = this.objectFactory.removeProceduralGroup(id);
+        if (group) {
+          this.scene.remove(group);
+          this.entityGroups.delete(id);
+        }
       }
     }
   }

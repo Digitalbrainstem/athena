@@ -11,6 +11,7 @@ import { ProfileScreen } from './ui/profile-screen.js';
 import { AccessibilityManager } from './a11y/accessibility-manager.js';
 import { OfflineManager } from './net/offline.js';
 import { registerServiceWorker } from './net/sw-register.js';
+import { AssetManager } from './assets/asset-manager.js';
 import type { Disposable } from './types.js';
 
 const DEBUG = import.meta.env.DEV;
@@ -69,7 +70,11 @@ async function boot(): Promise<void> {
   overlay?.classList.add('hidden');
 
   // --- Initialize renderers & input ---
+  const assetManager = new AssetManager();
+  disposables.push(assetManager);
+
   const sceneRenderer = new SceneRenderer(canvas);
+  sceneRenderer.setAssetManager(assetManager);
   disposables.push(sceneRenderer);
 
   const input = new InputManager();
