@@ -42,7 +42,7 @@ server/               ← Optional FastAPI sync layer
 | Quest engine | ✅ | State machine, selection, completion |
 | Crafting | ✅ | 37 elements, 35 compounds, 23 reactions, 121 recipes, 20 materials |
 | Companion | ✅ | 4 stages, trust, memory — NO dialogue generation yet |
-| World/biomes | ✅ | 5/18 biomes (workshop, alchemist, caverns, forest, library) |
+| World/biomes | ✅ | 12/21 biomes (workshop, alchemist, caverns, forest, library, ancient-ruins, time-rift, explorers-map, gallery, newsroom, theater, marketplace) |
 | Foundation quests | ✅ | 37 quests across 3 biomes (workshop/forest/caverns) |
 | Client renderer | ✅ | Three.js scene graph renderer, material caching, disposal |
 | Input (kbd+touch) | ✅ | Keyboard + touch. NO gamepad, NO voice input |
@@ -56,7 +56,7 @@ server/               ← Optional FastAPI sync layer
 ### What's Missing
 | Feature | Priority | Notes |
 |---------|----------|-------|
-| 13 biomes | HIGH | Only 5/18 built |
+| 9 biomes | HIGH | Only 12/21 built |
 | Discovery tier quests (ages 6-10) | HIGH | 0 quests |
 | Builder tier quests (ages 11-14) | HIGH | 0 quests |
 | Innovator tier quests (ages 15-18) | MEDIUM | 0 quests |
@@ -84,18 +84,21 @@ server/               ← Optional FastAPI sync layer
 | living-forest | The Living Forest | ✅ BUILT | Biology, Ecology |
 | library-echoes | The Library of Echoes | ✅ BUILT | Language Arts, Literature |
 | observatory | The Observatory | ❌ TODO | Astronomy, Physics, Math |
-| ancient-ruins | The Ancient Ruins | ❌ TODO | History, Archaeology, Language |
+| ancient-ruins | The Ancient Ruins | ✅ BUILT | History, Archaeology, Language |
 | trading-post | The Trading Post | ❌ TODO | Economics, Math |
 | architects-domain | The Architect's Domain | ❌ TODO | Geometry, Engineering, Art |
 | code-forge | The Code Forge | ❌ TODO | Computer Science, Logic |
 | healers-sanctuary | The Healer's Sanctuary | ❌ TODO | Biology, Chemistry, Medicine |
-| explorers-map | The Explorer's Map | ❌ TODO | Geography, Navigation |
-| time-rift | The Time Rift | ❌ TODO | History, Cause & Effect |
+| explorers-map | The Explorer's Map | ✅ BUILT | Geography, Navigation, Culture |
+| time-rift | The Time Rift | ✅ BUILT | History, Cause & Effect |
 | storm-tower | The Storm Tower | ❌ TODO | Physics, Weather, Energy |
 | arena | The Arena | ❌ TODO | Strategy, Game Theory, Logic |
 | shipyard | The Shipyard | ❌ TODO | Engineering, Physics |
 | music-hall | The Music Hall | ❌ TODO | Music Theory, Physics |
-| gallery | The Gallery | ❌ TODO | Art, Design, Math, History |
+| gallery | The Gallery | ✅ BUILT | Art, Design, Math, History |
+| newsroom | The Newsroom | ✅ BUILT | Language Arts, Writing, Journalism |
+| theater | The Theater | ✅ BUILT | Language Arts, Literature, Performance |
+| marketplace | The Marketplace | ✅ BUILT | Economics, Math, Entrepreneurship |
 
 ## Quest Count by Tier & Biome
 
