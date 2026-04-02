@@ -14,6 +14,8 @@ export { CraftSystem,
   RECIPES, getRecipe, recipesForTierAndBiome,
   BUILDING_MATERIALS, getMaterial, materialsForTier,
 } from './craft.js';
+export { CodexSystem } from './story.js';
+export { ProceduralQuestGenerator, AntiRepetitionTracker } from './procedural.js';
 export { EconomySystem, computePrice, currencyToCopper, normalizeCurrency,
   getTradeableItem, getNpcMerchant, merchantsInBiome,
   TRADEABLE_ITEMS, NPC_MERCHANTS,

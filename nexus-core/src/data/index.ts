@@ -26,6 +26,17 @@ export {
   foundationCavernsQuests,
 } from './quests/index.js';
 export {
+  ALL_FRAGMENTS, getFragment, fragmentsForThread, fragmentsForBiome,
+  fragmentsForTier, getThreadCounts,
+} from './fragments.js';
+export {
+  MYSTERIES, getMystery, mysteriesForBiome, mysteriesRequiringFragment,
+} from './mysteries.js';
+export {
+  QUEST_TEMPLATES, getQuestTemplate, templatesForMechanic,
+  templatesForTier as questTemplatesForTier, templatesForBiome as questTemplatesForBiome,
+} from './quest-templates.js';
+export {
   MATERIAL_INTERACTIONS, getInteraction, findInteraction,
   interactionsForTier, interactionsWithMaterial,
 } from './material-interactions.js';

@@ -140,6 +140,31 @@ export type {
 } from './accessibility.js';
 
 export type {
+  StoryThread,
+  Fragment,
+  Mystery,
+  CodexState,
+  MysteryProgress,
+  CodexUpdate,
+} from './story.js';
+
+export type {
+  QuestMechanic,
+  SkillRole,
+  SkillSlot,
+  TemplateStep,
+  TemplateStructure,
+  QuestTemplate,
+  GenerationCriteria,
+  GeneratedQuest,
+  GeneratedQuestContent,
+  GeneratedQuestStep,
+  MechanicUsageRecord,
+} from './procedural.js';
+
+export { QUEST_MECHANICS } from './procedural.js';
+
+export type {
   MarketPrice,
   MarketState,
   TradeItem,

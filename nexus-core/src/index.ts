@@ -41,6 +41,7 @@ export { MasterySystem, sm2, calculateMasteryLevel, updateRetention, updateTrans
   TRADEABLE_ITEMS, NPC_MERCHANTS,
   TravelSystem, findRoute, reachableBiomes, fuelForRoute,
   WorldSimulation, computeGrowthStage, getGrowthStageName,
+  CodexSystem, ProceduralQuestGenerator, AntiRepetitionTracker,
 } from './systems/index.js';
 export type { MasteryDimensions, GapAnalysis, GapDetail, SkillPrerequisites,
   PendingLearningEvent, QuestAction, QuestSelectionCriteria, CompanionInteraction,
@@ -76,6 +77,11 @@ export {
   TRAVEL_METHODS, BIOME_ROUTES, VEHICLE_RECIPES,
   getTravelMethod, travelMethodsForTier, getRoute, routesFrom,
   getVehicleRecipe, vehicleRecipesForTier,
+  ALL_FRAGMENTS, getFragment, fragmentsForThread, fragmentsForBiome,
+  fragmentsForTier, getThreadCounts,
+  MYSTERIES, getMystery, mysteriesForBiome, mysteriesRequiringFragment,
+  QUEST_TEMPLATES, getQuestTemplate, templatesForMechanic,
+  questTemplatesForTier, questTemplatesForBiome,
 } from './data/index.js';
 export type { BiomeAccessibility, BiomeId, WeatherTransition } from './data/index.js';
 
@@ -119,12 +125,18 @@ export type {
   MaterialInteraction, InteractionCondition, WeatherType, WeatherState, WeatherEffect,
   WorldEffect, SettlementState, Contribution, SettlementNpc, SettlementBuilding,
   SettlementProblem, WorldConsequence, SimWorldEvent, EcosystemState, EcologicalProcess,
+  StoryThread, Fragment, Mystery, CodexState, MysteryProgress as MysteryProgressType,
+  CodexUpdate,
+  QuestMechanic, SkillRole, SkillSlot, TemplateStep, TemplateStructure,
+  QuestTemplate, GenerationCriteria, GeneratedQuest, GeneratedQuestContent,
+  GeneratedQuestStep, MechanicUsageRecord,
 } from './types/index.js';
 export { DEFAULT_COMPANION_CONFIG, getSpokenInstruction, getScreenReaderText, getCompanionRepeat,
   ALL_CALIBRATION_SUBJECTS,
   DEFAULT_BREAK_INTERVALS, defaultScreenTimeConfig, validateScreenTimeConfig,
   INTENSITY_WEIGHTS, DEFAULT_SKILL_WEIGHT, MAX_FOCUS_SKILLS, validateFocusRequest,
   INTEREST_CATEGORIES, SIGNAL_TYPE_MULTIPLIERS, BIOME_INTEREST_MAP, INTEREST_DECAY_RATE,
+  QUEST_MECHANICS,
 } from './types/index.js';
 
 // Dialogue data

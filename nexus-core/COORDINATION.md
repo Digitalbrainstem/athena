@@ -63,7 +63,8 @@ server/               ← Optional FastAPI sync layer
 | Creator tier quests (ages 18+) | MEDIUM | 0 quests |
 | Companion dialogue generation | HIGH | State works, no dialogue output |
 | Interest tracking system | HIGH | 0% — blocks world adaptation |
-| Story/narrative system | HIGH | Codex, fragments, Founders lore |
+| Story/narrative system | ✅ | Codex system, 101 fragments, 12 mysteries, 5 story threads |
+| Procedural quest engine | ✅ | 51 templates, 23 mechanics, anti-repetition tracker |
 | Gamepad input | HIGH | Specified as first-class |
 | Voice input (STT) | MEDIUM | Web Speech API |
 | Economy/trading system | MEDIUM | Trading Post biome |
