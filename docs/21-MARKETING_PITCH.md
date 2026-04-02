@@ -280,7 +280,7 @@ worst experience, and those are exactly the children who need the best experienc
 Because the current system — where educational software is either expensive, ad-funded,
 or mediocre — is a failure. And failures should be replaced, not iterated on.
 
-Nexus Academy is built by Digital Brainstem. It's open source. It runs on your hardware.
+Nexus Academy is built by DigitalBrainstem. It's open source. It runs on your hardware.
 Your data never leaves your home. There is no business model because there doesn't need
 to be one.
 

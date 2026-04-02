@@ -6,7 +6,7 @@ An open-world adaptive learning game for ages 2 and up. No quizzes. No tests. No
 The world demands knowledge and rewards mastery. Playing IS learning.
 
 Powered by [Atlas Cortex](https://github.com/Betanu701/atlas-cortex). Built by
-[Digital Brainstem](https://github.com/Digitalbrainstem).
+[DigitalBrainstem](https://github.com/Digitalbrainstem).
 
 ---
 
@@ -89,8 +89,6 @@ Five mastery tiers, one seamless world that grows with the player:
 | 19 | [Accessibility](docs/19-ACCESSIBILITY.md) | Visual, motor, cognitive, auditory |
 | 20 | [Screen Time](docs/20-SCREEN_TIME_SAFETY.md) | Parental controls, COPPA, safety |
 
-Also: [Copilot Instructions](.github/copilot-instructions.md) — AI assistant context for development.
-
 ## Getting Started
 
 ### Prerequisites
@@ -141,4 +139,4 @@ interaction. See [Voice Gameplay](docs/VOICE_GAMEPLAY.md) for the full design.
 
 ## License
 
-[MIT](LICENSE) — © 2026 Digital Brainstem / Derek Thomas
+[MIT](LICENSE) — © 2026 DigitalBrainstem / Derek Thomas

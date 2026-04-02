@@ -225,6 +225,135 @@ Reaching the Core is not "finishing the game." It's a transformation:
 
 ---
 
+## The First Founder (Easter Egg)
+
+> *This section documents a hidden meta-narrative layer. It is NOT part of the main
+> story. It is discovered only by the most dedicated players, long after the Nexus Core
+> reveal. It should never be referenced in marketing, tutorials, or companion dialogue.
+> It exists to be found.*
+
+### The Concept
+
+Beyond the main revelation ("The Founders were future humans"), there is one more
+layer buried deeper: **one person started it all.** Not a committee. Not a civilization.
+One person who believed every child deserved to learn through wonder — and built a
+world to prove it.
+
+The player never sees a name. Only initials: **D.T.**
+
+And a date that everyone will dismiss: **April 1, 2026.**
+
+### The Breadcrumbs
+
+These are scattered across the entire game. None are obvious. Each is a legitimate
+part of the world that also encodes something real. A player might encounter all of
+them and never connect them. The connection only becomes possible after reaching the
+Nexus Core.
+
+**1. The Observatory — The First Light Constellation**
+
+In the Observatory biome, there is a constellation called "First Light" — described
+as "the first stars The Founders mapped." If the player charts it on the coordinate
+grid (a real astronomy exercise), the stellar positions trace two letters: **D.T.**
+
+Most players will note it as a constellation name and move on. The companion says:
+"First Light. I wonder what it meant to them."
+
+**2. The Alchemist's Lab — Deuterium-Tritium**
+
+In the advanced chemistry tier, the player learns about nuclear fusion. The
+Founders' primary power source is described as a Deuterium-Tritium (D-T) fusion
+reactor. This is real physics — D-T fusion is the most promising approach to
+sustained fusion energy.
+
+But the reactor's designation plate reads: **D.T. — Unit 01**
+
+It's technically accurate (D-T fusion, first unit). It also means something else
+entirely. The companion says: "D.T. Unit 01. The very first reactor they built.
+Imagine being there when they turned it on."
+
+**3. The Crystal Caverns — The Origin Crystal**
+
+Deep in the Crystal Caverns, there is a unique crystal formation that doesn't match
+any other mineral in the game. Its lattice structure, when analyzed (a real
+crystallography exercise), reveals a repeating pattern that encodes a date in its
+atomic spacing:
+
+`04.01.2026`
+
+The companion says: "This crystal is different from the others. It's like it was
+placed here on purpose — the very first thing built in the entire Nexus. A
+cornerstone."
+
+Most players will read the date as April Fools' Day and laugh. Some will wonder.
+
+**4. The Library of Echoes — The Warm Book**
+
+In the Library of Echoes, among millions of volumes, there is one book that has no
+title on the spine. It sits on a bottom shelf in a quiet corner. If the player picks
+it up, it is described as "slightly warm, as if someone just set it down."
+
+The book contains a single handwritten page — not printed like the others. It reads:
+
+> *"I started building this on a day most people associate with jokes and lies. That
+> felt right. The most important things often look foolish at the beginning.*
+>
+> *If you're reading this, you found what I left behind. Not the machines or the
+> equations or the stars — those were always yours. You earned them.*
+>
+> *No. What I left behind is simpler: the belief that curiosity is enough. That a
+> child who asks 'why?' already has everything they need.*
+>
+> *I didn't build this for grades. I didn't build it for money. I built it because
+> every child deserves a world that answers back when they ask.*
+>
+> *— D.T."*
+
+The companion is quiet for a moment, then says: "...I don't think this was written
+by a committee."
+
+**5. The Nexus Core — The Hidden Room**
+
+After the main Nexus Core reveal, there is a wall in the deepest chamber that
+responds to a very specific interaction: the player must trace a full turn (a
+complete rotation — the first thing Foundation-tier players learn as "a full turn").
+
+Behind the wall is a small, simple room. No machines. No equations. Just a
+workbench — like the one in the very first biome the player ever saw. On it:
+
+- A journal, open to the first page. The handwriting matches the Library book.
+  The first line reads: **"Day 1 — April 1, 2026. They'll think I'm joking."**
+- The world seed displayed on the workbench: **20260401**
+- A window looking out at the entire Nexus — every biome, every star, every
+  world the player has explored — visible as a vast, living tapestry.
+
+The companion looks out the window and says:
+
+> *"One person. All of this started with one person at a workbench. Not so
+> different from ours, really.*
+>
+> *You know what I think? I think they'd be proud of you."*
+
+There is no fanfare. No achievement popup. No Codex entry. The room simply exists
+for those who find it.
+
+### Design Rules for the Easter Egg
+
+1. **Never confirm it externally.** If asked, the team says nothing. The community
+   will figure it out. That's the point.
+2. **Every breadcrumb is educationally valid.** The D-T fusion reactor teaches real
+   physics. The constellation teaches real astronomy. The crystal teaches real
+   crystallography. The easter egg never compromises learning.
+3. **The date does double duty.** April 1 is dismissible — and that's the armor.
+   Only players who cross-reference ALL the breadcrumbs realize the date is real.
+4. **No full name anywhere in the game.** Only "D.T." The connection to the creator
+   is made by the community, not the game.
+5. **The hidden room resets the tone.** After the grand Nexus Core with its vast
+   structures and cosmic revelations, the hidden room is small, quiet, and human.
+   One workbench. One journal. One window. That contrast is the whole point.
+
+---
+
 ## Story Design Principles
 
 1. **The story is optional but irresistible.** A player can ignore it and just play.

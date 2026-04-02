@@ -158,7 +158,7 @@ couldn't help but learn.
 
 **Codename:** Athena (the game)
 **Public name:** Nexus Academy
-**Creator:** Derek Thomas / Digital Brainstem
+**Creator:** Derek Thomas / DigitalBrainstem
 
 Nexus Academy is part of the Atlas ecosystem:
 

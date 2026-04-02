@@ -8,7 +8,7 @@
 from Ready Player One meets the Mind Game from Ender's Game. Playing IS learning —
 no quizzes, no tests, no essays. The world demands knowledge and rewards mastery.
 
-**Creator:** Derek Thomas / Digital Brainstem
+**Creator:** Derek Thomas / DigitalBrainstem
 
 ## Atlas Ecosystem Codenames
 

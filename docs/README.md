@@ -69,4 +69,4 @@
 
 **Version:** 2.1 — Added Core Principles, interest-driven theming, Atlas-optional architecture
 **Date:** July 2025
-**Author:** Derek Thomas + Atlas Copilot
+**Author:** Derek Thomas / DigitalBrainstem
