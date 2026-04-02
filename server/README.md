@@ -1,44 +1,105 @@
 # Nexus Academy — Server
 
-FastAPI server powering Nexus Academy. Manages player profiles, progress tracking,
-mastery data, content serving, and Atlas integration.
+Optional sync server for Nexus Academy. The game runs **fully standalone** via
+nexus-core in the client. This server adds multi-device sync, authentication,
+parent dashboard, and Atlas bridge capabilities.
 
 ## Tech Stack
 
 - Python 3.11+ / FastAPI
 - SQLite (WAL mode) for player data
-- Atlas Cortex module integration
-- Fish Audio TTS for companion voice generation
+- bcrypt password hashing + JWT tokens
+- aiosqlite for async database access
 
-## Responsibilities
+## What the Server Provides
 
-- **Profiles** — Player creation, authentication (child PIN, parent password)
-- **Progress** — Mastery tracking, spaced repetition scheduling, gap analysis
-- **Content** — Quest serving, asset management, content cache
-- **Sync** — Offline satellite sync, multi-device progress merge
-- **Atlas Bridge** — Nightly batch content generation, difficulty tuning
-- **Parent API** — Reports, screen time config, profile management
+- **Sync** — Multi-device merge engine (max-mastery, union events, completed-wins)
+- **Auth** — PIN (children) and password (parents) with JWT access/refresh tokens
+- **Parent Dashboard** — Progress reports, mastery breakdowns, screen-time config
+- **Profiles** — CRUD with pagination
+- **Atlas Bridge** — Stubs for nightly LLM content generation (future)
 
 ## Structure
 
 ```
 server/
 ├── app/
-│   ├── api/           # FastAPI route modules
-│   ├── models/        # Data models (profiles, progress, quests)
-│   ├── services/      # Business logic (mastery, content, sync)
-│   ├── atlas/         # Atlas Cortex integration module
-│   └── db/            # Database schema, migrations
-├── tests/             # Server tests
-└── config/            # Configuration files
+│   ├── main.py               # FastAPI app, lifespan, middleware, CORS
+│   ├── config.py             # Pydantic Settings (env-driven, NEXUS_ prefix)
+│   ├── errors.py             # NexusError hierarchy
+│   ├── security.py           # JWT + bcrypt
+│   ├── middleware.py         # Request ID + access logging
+│   ├── api/
+│   │   ├── auth.py           # /api/auth/* — login, refresh, parent, setup
+│   │   ├── profiles.py       # /api/profiles/* — CRUD + paginated list
+│   │   ├── sync.py           # /api/sync/* — upload, download, full
+│   │   └── parent.py         # /api/parent/* — reports, dashboard, screen-time
+│   ├── services/
+│   │   ├── sync.py           # Multi-device merge logic
+│   │   └── reports.py        # Report generation
+│   └── db/
+│       ├── connection.py     # SQLite WAL, init/close, transactions
+│       └── schema.py         # Schema matching nexus-core
+├── tests/                    # 48 pytest tests
+├── requirements.txt
+└── pyproject.toml
 ```
 
 ## Getting Started
 
 ```bash
 pip install -r requirements.txt
-python -m server.app      # Start on port 5200
-python -m pytest tests/   # Run tests
+
+# Run server (port 5200)
+cd server && python3 -m uvicorn app.main:app --host 0.0.0.0 --port 5200
+
+# Run tests
+python3 -m pytest tests/ -v
 ```
 
-> ⚠️ **Not yet implemented.** This is the planned structure. See [docs/TECHNICAL_ARCHITECTURE.md](../docs/TECHNICAL_ARCHITECTURE.md) for architecture details.
+## Configuration
+
+All settings via environment variables with `NEXUS_` prefix:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `NEXUS_DATABASE_PATH` | `./data/nexus.db` | SQLite database path |
+| `NEXUS_JWT_SECRET` | — | **Required** for production |
+| `NEXUS_JWT_ACCESS_TTL_MINUTES` | `30` | Access token lifetime |
+| `NEXUS_JWT_REFRESH_TTL_DAYS` | `7` | Refresh token lifetime |
+| `NEXUS_BCRYPT_COST` | `12` | bcrypt cost factor |
+| `NEXUS_CORS_ORIGINS` | `http://localhost:5173` | Comma-separated origins |
+| `NEXUS_HOST` | `0.0.0.0` | Server bind address |
+| `NEXUS_PORT` | `5200` | Server port |
+| `NEXUS_DEBUG` | `false` | Debug mode |
+
+## API Endpoints
+
+```
+GET    /api/health                          # DB probe + version
+POST   /api/auth/login                      # PIN or password → tokens
+POST   /api/auth/refresh                    # Refresh → new access token
+POST   /api/auth/parent                     # Parent login → parent-scoped token
+POST   /api/auth/setup                      # Set/update auth for a profile
+POST   /api/profiles                        # Create profile
+GET    /api/profiles/{id}                   # Get profile
+PUT    /api/profiles/{id}                   # Update profile
+GET    /api/profiles?offset=0&limit=20      # List (paginated)
+POST   /api/sync/upload                     # Upload local changes → merge
+POST   /api/sync/download                   # Download merged state (optionally since timestamp)
+POST   /api/sync/full                       # Full export for first sync / recovery
+GET    /api/parent/reports/{profile_id}     # Weekly progress report (parent token)
+GET    /api/parent/dashboard                # All children overview (parent token)
+PUT    /api/parent/screen-time/{profile_id} # Configure screen-time limits (parent token)
+GET    /api/parent/mastery/{profile_id}     # Detailed mastery breakdown (parent token)
+```
+
+## Sync Merge Rules
+
+The server is the merge authority for multi-device play:
+
+- **Mastery levels:** `max(local, server)` — you can't un-learn
+- **Learning events:** union with dedup by (skill_id, timestamp)
+- **Quest progress:** completed on any device = completed; max steps
+- **World state:** union for collections (biomes, inventory, structures, travel); last-write-wins for scalars
+- **Companion:** max trust; union traits and memories
