@@ -68,6 +68,36 @@ export const BIOME_ACCESSIBILITY: Record<string, BiomeAccessibility> = {
     description: 'A vibrant trading hub with market stalls, a bank counter, and a supply chain map.',
     ambientDescription: 'Coins clink on countertops. Cheerful haggling and the creak of wooden carts fill a bustling open-air market.',
   },
+  observatory: {
+    spokenName: 'The Observatory',
+    description: 'A mountain-top telescope station with star charts, an orrery, a light prism, and a constellation map under a vast night sky.',
+    ambientDescription: 'A soft hum of instruments fills the air. Wind whispers across the stone platform under a vast, star-filled sky.',
+  },
+  'storm-tower': {
+    spokenName: 'The Storm Tower',
+    description: 'A tower piercing the clouds with a lightning rod, wind turbine, Tesla coil, and weather instruments.',
+    ambientDescription: 'Thunder rumbles in the distance. Wind howls through metal grating. A faint crackling of static electricity is constant.',
+  },
+  'healers-sanctuary': {
+    spokenName: "The Healer's Sanctuary",
+    description: 'A calm garden sanctuary with an anatomy model, herb garden, microscope, and nutrition table.',
+    ambientDescription: 'Gentle wind chimes ring softly. Water trickles over smooth stones. The air smells of fresh herbs.',
+  },
+  hospital: {
+    spokenName: 'The Hospital',
+    description: 'A working hospital with a patient ward, surgery observation gallery, X-ray lightbox, pharmacy, and emergency triage.',
+    ambientDescription: 'Soft beeping of monitors and quiet footsteps on clean floors. A calm voice occasionally announces over a speaker.',
+  },
+  farm: {
+    spokenName: 'The Farm',
+    description: 'A working farm with crop fields, animal pens, a greenhouse, market stand, and irrigation system.',
+    ambientDescription: 'A rooster calls in the distance. Bees buzz between flower rows. A gentle breeze rustles through tall crops.',
+  },
+  laboratory: {
+    spokenName: 'The Laboratory',
+    description: 'A science laboratory with an experiment bench, safety station, hypothesis board, centrifuge, Bunsen burner, and periodic table wall.',
+    ambientDescription: 'A soft hum of ventilation fans. The quiet bubbling of a water bath. Glassware clinks occasionally.',
+  },
 };
 
 /** Get accessibility metadata for a biome. */
@@ -93,6 +123,12 @@ export const BIOME_IDS: readonly string[] = [
   'newsroom',
   'theater',
   'marketplace',
+  'observatory',
+  'storm-tower',
+  'healers-sanctuary',
+  'hospital',
+  'farm',
+  'laboratory',
 ] as const;
 
 export type BiomeId = (typeof BIOME_IDS)[number];

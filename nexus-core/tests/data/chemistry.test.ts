@@ -296,8 +296,8 @@ describe('Skill Prerequisites', () => {
 // Biomes
 // ============================================================================
 describe('Biome Data', () => {
-  it('has 12 biome IDs', () => {
-    expect(BIOME_IDS).toHaveLength(12);
+  it('has 18 biome IDs', () => {
+    expect(BIOME_IDS).toHaveLength(18);
   });
 
   it('isValidBiome returns true for valid IDs', () => {
