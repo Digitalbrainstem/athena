@@ -172,4 +172,5 @@ Nexus Academy is part of the Atlas ecosystem:
 
 ---
 
+*Previous: [00-CORE_PRINCIPLES.md](00-CORE_PRINCIPLES.md) — The non-negotiable principles.*
 *Next: [02-WORLD_DESIGN.md](02-WORLD_DESIGN.md) — The Nexus world, biomes, and morphing system.*

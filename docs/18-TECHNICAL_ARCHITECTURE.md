@@ -406,6 +406,130 @@ Service Worker
 
 ---
 
+## Atlas-Optional Architecture
+
+The game uses a provider pattern to abstract Atlas dependency. Every system that can
+be enhanced by Atlas has a built-in fallback. See [08-ATLAS_INTEGRATION.md](08-ATLAS_INTEGRATION.md)
+for the full Standalone vs. Atlas-Enhanced comparison.
+
+### Provider Interface
+
+```typescript
+// Content provider — serves quests and assets
+interface ContentProvider {
+    getNextQuests(profileId: string, count: number): Promise<Quest[]>;
+    getAsset(assetId: string): Promise<Asset>;
+}
+
+// Difficulty provider — calibrates challenge levels
+interface DifficultyProvider {
+    getDifficultyForSkill(profileId: string, skillId: string): number;
+    reportLearningEvent(event: LearningEvent): void;
+}
+
+// Interest provider — tracks and responds to player interests
+interface InterestProvider {
+    getInterestProfile(profileId: string): InterestWeights;
+    reportInteraction(profileId: string, interaction: Interaction): void;
+}
+
+// Companion provider — manages companion dialogue and personality
+interface CompanionProvider {
+    getDialogue(context: DialogueContext): CompanionLine;
+    getPersonalityState(profileId: string): PersonalityState;
+}
+```
+
+### Standalone Providers (Built-In)
+
+```python
+class StandaloneContentProvider:
+    """Serves quests from the handcrafted content library."""
+    
+    def get_next_quests(self, profile_id: str, count: int) -> list[Quest]:
+        # Select from 1000+ handcrafted quests based on:
+        # - Player's current mastery levels
+        # - Spaced repetition schedule
+        # - Biome the player is in
+        # - Basic interest heuristics
+        ...
+
+class StandaloneDifficultyProvider:
+    """Static difficulty curves with sensible defaults."""
+    
+    def get_difficulty(self, profile_id: str, skill_id: str) -> float:
+        # Use mastery level to set difficulty
+        # Simple formula: difficulty = mastery_level + 0.1 (slight stretch)
+        # Clamp to [0.0, 1.0]
+        ...
+
+class StandaloneInterestProvider:
+    """Tracks interests using local heuristics."""
+    
+    def get_interest_profile(self, profile_id: str) -> InterestWeights:
+        # Weighted average of recent interactions:
+        # - Time in biome (40% weight)
+        # - Objects interacted with (30% weight)
+        # - Choices made (20% weight)
+        # - Items kept vs discarded (10% weight)
+        ...
+```
+
+### Atlas Providers (Enhanced)
+
+```python
+class AtlasContentProvider:
+    """Serves personalized quests from Atlas-generated content."""
+    
+    def get_next_quests(self, profile_id: str, count: int) -> list[Quest]:
+        # Check Atlas-generated quest cache first
+        # Fall back to handcrafted if cache is empty
+        # Quests are targeted to specific gaps and interests
+        ...
+
+class AtlasDifficultyProvider:
+    """Full Ender Protocol adaptive difficulty."""
+    
+    def get_difficulty(self, profile_id: str, skill_id: str) -> float:
+        # Uses gap analysis results from nightly batch
+        # Implements impossible challenges
+        # Tracks flow state per skill
+        ...
+```
+
+### Provider Selection at Startup
+
+```python
+async def initialize_providers():
+    """Select providers based on Atlas availability."""
+    atlas_available = await check_atlas_connection()
+    
+    if atlas_available:
+        content = AtlasContentProvider(atlas_url=config.ATLAS_URL)
+        difficulty = AtlasDifficultyProvider(atlas_url=config.ATLAS_URL)
+        interest = AtlasInterestProvider(atlas_url=config.ATLAS_URL)
+        companion = AtlasCompanionProvider(atlas_url=config.ATLAS_URL)
+        log.info("Atlas connected — using enhanced providers")
+    else:
+        content = StandaloneContentProvider(content_dir=config.CONTENT_DIR)
+        difficulty = StandaloneDifficultyProvider()
+        interest = StandaloneInterestProvider()
+        companion = StandaloneCompanionProvider(dialogue_dir=config.DIALOGUE_DIR)
+        log.info("Atlas not available — using standalone providers")
+    
+    return Providers(content, difficulty, interest, companion)
+```
+
+### Health Check and Failover
+
+The game periodically checks Atlas connectivity (every 5 minutes):
+- If Atlas was connected and goes down → seamless fallback to standalone providers
+- If Atlas was down and comes up → seamless upgrade to Atlas providers
+- Progress accumulated during standalone mode is synced on reconnection
+- The player NEVER notices the switch
+
+---
+
 ## Deployment
 
 ### Surface Go Kiosk

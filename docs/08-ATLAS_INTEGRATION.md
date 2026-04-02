@@ -253,23 +253,113 @@ POST   /atlas/generate/report              — On-demand parent report
 
 ---
 
-## The Game Without Atlas
+## The Game Without Atlas — Two Operating Modes
 
-If Atlas is unreachable (offline mode, network failure, Atlas maintenance):
+Nexus Academy has two distinct operating modes. Both are full, complete experiences.
+Standalone is not a demo. Atlas-Enhanced is not "the real version." Standalone is a
+really good educational game. Atlas-Enhanced is a really good educational game with
+a world-class AI architect behind it.
 
-1. **Game plays normally.** All pre-cached content is available.
-2. **Spaced repetition continues.** Review schedules run locally using cached intervals.
-3. **New quests come from the cache.** 3-4 years of pre-generated content.
-4. **Difficulty stays at last-set levels.** No dynamic adjustment until Atlas reconnects.
-5. **Progress queues locally.** Learning events stored in local DB, synced when reconnected.
-6. **Companion uses cached dialogue.** No new personality adjustments, but existing works.
+### Standalone Mode (No Atlas)
+
+Everything needed for a complete educational experience, with no AI dependency:
+
+| Feature | How It Works Without Atlas |
+|---------|--------------------------|
+| **Content** | Pre-built curriculum with 1,000+ handcrafted quests across all subjects and tiers |
+| **Difficulty** | Static difficulty curves with sensible defaults — good for most players |
+| **Spaced repetition** | SM-2 algorithm runs locally using cached intervals |
+| **Interest tracking** | Built-in heuristics: time in biome, interaction frequency, choice patterns |
+| **World theming** | Responds to interest heuristics, but without cross-session reshaping |
+| **Profiles** | Local profiles on device, progress tracked per skill |
+| **Companion** | Pre-scripted dialogue library, personality stage based on tier |
+| **All subjects** | Full coverage, all age tiers, all biomes — nothing gated behind Atlas |
+| **Multiplayer** | Same-network co-op, classroom mode — fully functional |
+| **Voice mode** | Pre-rendered TTS audio, local STT if hardware supports it |
+| **Parent dashboard** | Local progress reports from tracked mastery data |
+
+**What standalone DOESN'T have:**
+- Novel, personalized quest generation (uses handcrafted library instead)
+- Deep gap detection with prerequisite tracing (uses simpler difficulty adjustment)
+- World reshaping between sessions (world adapts in-session only)
+- Cross-device sync (each device has its own profile data)
+- Nightly content refresh
+- Rich parent reports with AI-generated insights
+
+### Atlas-Enhanced Mode (With Atlas)
+
+Everything in Standalone, PLUS:
+
+| Feature | What Atlas Adds |
+|---------|----------------|
+| **Dynamic content** | Novel problems, personalized quests, content tailored to gaps and interests |
+| **Ender Protocol** | Full adaptive difficulty — gap detection, impossible challenges, prerequisite tracing |
+| **Interest tracking** | Deep behavioral analysis across sessions, world reshaping between sessions |
+| **World shaping** | Atlas modifies biomes, inserts story hooks, adjusts challenge placement nightly |
+| **Companion tuning** | Personality, vocabulary, hint frequency all calibrated per player |
+| **Parent reports** | AI-generated weekly reports with insights, recommendations, curriculum alignment |
+| **Cross-device sync** | Progress merges across Surface Go, tablets, satellites |
+| **Content pre-generation** | 3-4 years of content generated ahead per player |
+| **Voice companion** | Dynamic TTS via Fish Audio, personalized dialogue |
+| **Curriculum alignment** | Automatic mapping to Common Core, AP, IB standards |
+
+### The Architecture Boundary
+
+```
+┌──────────────────────────────────────────────────────────┐
+│                     GAME ENGINE                           │
+│                                                          │
+│  World │ Quests │ Physics │ Crafting │ Companion │ UI    │
+│                                                          │
+│  Built-in:                                               │
+│  ├── Handcrafted content library (1000+ quests)          │
+│  ├── Static difficulty curves                            │
+│  ├── Local SM-2 spaced repetition                        │
+│  ├── Basic interest heuristics                           │
+│  └── Pre-scripted companion dialogue                     │
+│                                                          │
+│                    ┌─────────────┐                       │
+│                    │ Atlas API   │ ← OPTIONAL             │
+│                    │ Interface   │                        │
+│                    └──────┬──────┘                       │
+│                           │                              │
+└───────────────────────────┼──────────────────────────────┘
+                            │ (only if Atlas is available)
+                            │
+              ┌─────────────┴───────────────┐
+              │       ATLAS CORTEX          │
+              │                             │
+              │  Content Gen │ Gap Analysis  │
+              │  World Shape │ Difficulty    │
+              │  TTS Render  │ Reports      │
+              └─────────────────────────────┘
+```
+
+The Atlas API Interface is a **clean boundary**:
+- The game engine never calls Atlas directly — it goes through the interface
+- The interface has a `StandaloneProvider` and an `AtlasProvider`
+- At startup, the game checks if Atlas is reachable
+- If yes → `AtlasProvider` handles content, difficulty, interest tracking
+- If no → `StandaloneProvider` falls back to built-in systems
+- The game can switch between providers mid-session (Atlas goes down → seamless fallback)
+
+### Fallback Behavior
+
+If Atlas disconnects during operation:
+
+1. **Game continues without interruption.** Player notices nothing.
+2. **Spaced repetition continues locally.** SM-2 runs with cached intervals.
+3. **New quests served from built-in library.** Handcrafted content is always available.
+4. **Difficulty stays at last-set levels.** No dynamic adjustment, but static curves work.
+5. **Progress queues locally.** Learning events stored in local DB.
+6. **Companion uses cached dialogue.** No new personality adjustments.
 
 When Atlas reconnects:
 1. Sync queued progress data
 2. Run gap analysis on new data
 3. Generate fresh content based on updated profile
 4. Push updates to the game server
-5. The player notices nothing — just that the world has new stuff next session.
+5. The player notices nothing — just that the world has fresh content next session.
 
 ---
 
