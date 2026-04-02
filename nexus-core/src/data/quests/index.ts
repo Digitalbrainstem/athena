@@ -10,6 +10,8 @@ import { foundationSocialQuests } from './foundation-social.js';
 import { foundationEngineeringQuests } from './foundation-engineering.js';
 import { foundationHumanitiesQuests } from './foundation-humanities.js';
 
+import { allDiscoveryQuests } from './discovery/index.js';
+
 import { innovatorWorkshopQuests } from './innovator/innovator-workshop.js';
 import { innovatorAlchemistLabQuests } from './innovator/innovator-alchemist-lab.js';
 import { innovatorCrystalCavernsQuests } from './innovator/innovator-crystal-caverns.js';
@@ -186,6 +188,35 @@ export { builderNewsroomQuests } from './builder/builder-newsroom.js';
 export { builderTheaterQuests } from './builder/builder-theater.js';
 export { builderMarketplaceQuests } from './builder/builder-marketplace.js';
 
+export { allDiscoveryQuests } from './discovery/index.js';
+export { discoveryWorkshopQuests } from './discovery/discovery-workshop.js';
+export { discoveryAlchemistLabQuests } from './discovery/discovery-alchemist-lab.js';
+export { discoveryCrystalCavernsQuests } from './discovery/discovery-crystal-caverns.js';
+export { discoveryLivingForestQuests } from './discovery/discovery-living-forest.js';
+export { discoveryLibraryEchoesQuests } from './discovery/discovery-library-echoes.js';
+export { discoveryObservatoryQuests } from './discovery/discovery-observatory.js';
+export { discoveryAncientRuinsQuests } from './discovery/discovery-ancient-ruins.js';
+export { discoveryTradingPostQuests } from './discovery/discovery-trading-post.js';
+export { discoveryArchitectsDomainQuests } from './discovery/discovery-architects-domain.js';
+export { discoveryCodeForgeQuests } from './discovery/discovery-code-forge.js';
+export { discoveryHealersSanctuaryQuests } from './discovery/discovery-healers-sanctuary.js';
+export { discoveryHospitalQuests } from './discovery/discovery-hospital.js';
+export { discoveryFarmQuests } from './discovery/discovery-farm.js';
+export { discoveryLaboratoryQuests } from './discovery/discovery-laboratory.js';
+export { discoveryExplorersMapQuests } from './discovery/discovery-explorers-map.js';
+export { discoveryTimeRiftQuests } from './discovery/discovery-time-rift.js';
+export { discoveryStormTowerQuests } from './discovery/discovery-storm-tower.js';
+export { discoveryArenaQuests } from './discovery/discovery-arena.js';
+export { discoveryShipyardQuests } from './discovery/discovery-shipyard.js';
+export { discoveryMusicHallQuests } from './discovery/discovery-music-hall.js';
+export { discoveryDigitalWorldQuests } from './discovery/discovery-digital-world.js';
+export { discoverySpaceStationQuests } from './discovery/discovery-space-station.js';
+export { discoveryDebateHallQuests } from './discovery/discovery-debate-hall.js';
+export { discoveryGalleryQuests } from './discovery/discovery-gallery.js';
+export { discoveryNewsroomQuests } from './discovery/discovery-newsroom.js';
+export { discoveryTheaterQuests } from './discovery/discovery-theater.js';
+export { discoveryMarketplaceQuests } from './discovery/discovery-marketplace.js';
+
 /** All hand-crafted Foundation tier quests across every biome */
 export const allFoundationQuests: CreateQuestInput[] = [
   ...foundationWorkshopQuests,
@@ -293,6 +324,7 @@ export const allCreatorQuests: CreateQuestInput[] = [
 /** Every hand-crafted quest in the game, all tiers */
 export const allQuests: CreateQuestInput[] = [
   ...allFoundationQuests,
+  ...allDiscoveryQuests,
   ...allBuilderQuests,
   ...allInnovatorQuests,
   ...allCreatorQuests,

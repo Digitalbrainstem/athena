@@ -57,7 +57,7 @@ server/               ← Optional FastAPI sync layer
 | Feature | Priority | Notes |
 |---------|----------|-------|
 | 0 biomes | — | All 27 built |
-| Discovery tier quests (ages 6-10) | HIGH | 0 quests |
+| Discovery tier quests (ages 6-10) | ✅ | 1,000 quests across 27 biomes |
 | Builder tier quests (ages 11-14) | HIGH | 0 quests |
 | Innovator tier quests (ages 15-18) | MEDIUM | 0 quests |
 | Creator tier quests (ages 18+) | MEDIUM | 0 quests |
@@ -111,12 +111,12 @@ server/               ← Optional FastAPI sync layer
 
 | Biome | Foundation | Discovery | Builder | Innovator | Creator |
 |-------|-----------|-----------|---------|-----------|---------|
-| workshop | 16 ✅ | 0 ❌ | 0 ❌ | 0 ❌ | 0 ❌ |
-| alchemist-lab | 0 | 0 | 0 | 0 | 0 |
-| crystal-caverns | 10 ✅ | 0 | 0 | 0 | 0 |
-| living-forest | 11 ✅ | 0 | 0 | 0 | 0 |
-| library-echoes | 0 | 0 | 0 | 0 | 0 |
-| (13 more biomes) | — | — | — | — | — |
+| workshop | 16 ✅ | 38 ✅ | 0 ❌ | 0 ❌ | 0 ❌ |
+| alchemist-lab | 0 | 37 ✅ | 0 | 0 | 0 |
+| crystal-caverns | 10 ✅ | 37 ✅ | 0 | 0 | 0 |
+| living-forest | 11 ✅ | 37 ✅ | 0 | 0 | 0 |
+| library-echoes | 0 | 37 ✅ | 0 | 0 | 0 |
+| (22 more biomes) | — | 37 each ✅ | — | — | — |
 
 ## Non-Negotiable Principles (EVERY agent must follow)
 
