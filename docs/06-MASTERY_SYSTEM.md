@@ -476,6 +476,57 @@ we've failed. The progression system exists to ensure that moment never comes.
 
 ---
 
+## Anti-Cheat by Design
+
+There is no anti-cheat system in Nexus Academy. There doesn't need to be — because
+there is nothing to cheat. The architecture of the game makes cheating either impossible,
+pointless, or indistinguishable from learning. See [00-CORE_PRINCIPLES.md](00-CORE_PRINCIPLES.md)
+Principle XII: All Learning Counts.
+
+### Why Traditional Cheating Doesn't Work Here
+
+| Cheat Method | Why It Doesn't Help |
+|-------------|-------------------|
+| **Look up the answer** | Great — you just learned something. But the mastery system will test you on a VARIATION weeks later. If you can apply it in a new context, you learned it. If you can't, the game naturally adjusts. |
+| **Follow a walkthrough** | The world is different for every player. Interest-driven theming, procedural generation, and personalized quest selection mean no two players face the same challenges. There is no walkthrough to follow. |
+| **Share answers with friends** | Every player gets different quests targeting different skills at different mastery levels. Even the same quest has different numbers, contexts, and scenarios per player. |
+| **Skip to the hard content** | There are no levels to skip. The world just grows. You can't jump to Creator tier any more than you can jump to the moon — the prerequisite knowledge IS the progression. |
+| **Pay to advance** | There is nothing to buy. No premium currency. No XP boosts. No level skips. No content packs. Nothing. |
+| **Memorize answers** | Spaced repetition returns weeks later with variations. The bridge is longer. The potion needs different ratios. The orbit has different parameters. Memorizing the old answer doesn't help with the new problem. |
+| **Ask someone else to play** | The mastery system tracks response patterns, speed, and consistency across sessions. A sudden jump in demonstrated ability triggers gentle re-calibration — which just means easier content returns to fill gaps. No penalty. |
+
+### The Deeper Truth
+
+The "cheat" in Nexus Academy — looking something up, asking for help, researching
+outside the game — is literally the educational outcome we're hoping for. A child who
+is so motivated by the game that they go learn chemistry from a YouTube video so they
+can come back and synthesize the compound? **That child is winning.** That's the entire
+point of the game.
+
+The mastery system doesn't care HOW you learned. It only asks: can you APPLY it?
+
+- **Recall is not mastery.** Remembering "F = ma" is recall. Designing a rocket that
+  reaches orbit using F = ma is mastery. The game tests the latter.
+- **Novel application catches bluffs.** If someone truly doesn't understand fractions,
+  they'll fail when the game presents fractions in a context they haven't seen — not
+  the same recipe, but a different one requiring the same underlying skill.
+- **Cross-subject transfer is unfakeable.** When a quest requires applying physics
+  learned in bridge-building to a rocket design problem, memorized answers from the
+  bridge quest don't help. Only genuine understanding transfers.
+- **Teaching the companion is the ultimate test.** When the companion asks "Can you
+  explain this to me?", there's no answer to look up. The player must articulate
+  their understanding in their own words. This is the Feynman technique — the deepest
+  mastery verification there is.
+
+### The Result
+
+The game has no anti-cheat — and it doesn't need one. The architecture makes it
+impossible to progress without genuine understanding. Not through gatekeeping or
+surveillance, but through the simple fact that understanding is the only thing that
+unlocks the world. You can't fake your way to the stars.
+
+---
+
 ## Research Required
 
 Before building against this document, complete the following research:
