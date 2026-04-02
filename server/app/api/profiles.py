@@ -17,24 +17,48 @@ router = APIRouter(prefix="/api/profiles", tags=["profiles"])
 # -- Models --------------------------------------------------------------------
 
 ColorBlindMode = Literal["none", "deuteranopia", "protanopia", "tritanopia"]
+FontFamily = Literal["system", "opendyslexic", "high-legibility"]
+AccessibilityPreset = Literal[
+    "none", "visual", "motor", "cognitive", "auditory", "low-vision", "full"
+]
 
 
 class AccessibilitySettings(BaseModel):
-    """Per-profile accessibility preferences — synced across devices."""
+    """Per-profile accessibility preferences — synced across devices.
 
+    Mirrors the nexus-core AccessibilitySettings interface exactly.
+    """
+
+    # Visual
     color_blind_mode: ColorBlindMode = "none"
     high_contrast: bool = False
     reduced_motion: bool = False
     font_size: int = Field(default=100, ge=50, le=200)
-    font_family: str = "default"
-    line_spacing: float = 1.4
+    font_family: str = "system"
+    line_spacing: float = Field(default=1.4, ge=1.0, le=2.0)
+
+    # Motor
+    one_switch_mode: bool = False
+    scan_speed: float = Field(default=2.0, ge=0.5, le=5.0)
+    input_debounce: int = Field(default=200, ge=100, le=1000)
+    hold_duration: int = Field(default=500, ge=200, le=3000)
+    sticky_keys: bool = False
+
+    # Cognitive
+    simplified_ui: bool = False
+    max_choices: int = Field(default=4, ge=2, le=4)
+    companion_speech_speed: int = Field(default=100, ge=50, le=150)
+    auto_repeat: bool = False
+    extended_pacing: bool = False
+
+    # Auditory
     subtitles: bool = False
     sound_captions: bool = False
-    one_switch_mode: bool = False
-    scan_speed: float = 1.0
-    input_debounce: float = 0.0
-    simplified_ui: bool = False
-    companion_speech_speed: float = 1.0
+    visual_sound_indicators: bool = False
+    haptic_feedback: bool = False
+
+    # Presets
+    preset: AccessibilityPreset = "none"
 
 
 class CreateProfileRequest(BaseModel):

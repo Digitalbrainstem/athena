@@ -140,6 +140,12 @@ class TestParentAccessibility:
         assert a11y["color_blind_mode"] == "none"
         assert a11y["high_contrast"] is False
         assert a11y["font_size"] == 100
+        assert a11y["scan_speed"] == 2.0
+        assert a11y["input_debounce"] == 200
+        assert a11y["hold_duration"] == 500
+        assert a11y["max_choices"] == 4
+        assert a11y["companion_speech_speed"] == 100
+        assert a11y["preset"] == "none"
 
     async def test_set_accessibility(self, client: AsyncClient, profile: dict, parent_token: str):
         """Parent can set accessibility settings for a child."""
@@ -150,15 +156,23 @@ class TestParentAccessibility:
                 "high_contrast": True,
                 "reduced_motion": True,
                 "font_size": 150,
-                "font_family": "OpenDyslexic",
+                "font_family": "opendyslexic",
                 "line_spacing": 2.0,
                 "subtitles": True,
                 "sound_captions": True,
                 "one_switch_mode": False,
-                "scan_speed": 1.0,
-                "input_debounce": 50.0,
+                "scan_speed": 2.0,
+                "input_debounce": 400,
+                "hold_duration": 1000,
+                "sticky_keys": True,
                 "simplified_ui": True,
-                "companion_speech_speed": 0.7,
+                "max_choices": 2,
+                "companion_speech_speed": 70,
+                "auto_repeat": True,
+                "extended_pacing": True,
+                "visual_sound_indicators": True,
+                "haptic_feedback": True,
+                "preset": "full",
             },
             headers={"Authorization": f"Bearer {parent_token}"},
         )
@@ -168,13 +182,21 @@ class TestParentAccessibility:
         assert a11y["high_contrast"] is True
         assert a11y["reduced_motion"] is True
         assert a11y["font_size"] == 150
-        assert a11y["font_family"] == "OpenDyslexic"
+        assert a11y["font_family"] == "opendyslexic"
         assert a11y["line_spacing"] == 2.0
         assert a11y["subtitles"] is True
         assert a11y["sound_captions"] is True
         assert a11y["simplified_ui"] is True
-        assert a11y["companion_speech_speed"] == 0.7
-        assert a11y["input_debounce"] == 50.0
+        assert a11y["companion_speech_speed"] == 70
+        assert a11y["input_debounce"] == 400
+        assert a11y["hold_duration"] == 1000
+        assert a11y["sticky_keys"] is True
+        assert a11y["max_choices"] == 2
+        assert a11y["auto_repeat"] is True
+        assert a11y["extended_pacing"] is True
+        assert a11y["visual_sound_indicators"] is True
+        assert a11y["haptic_feedback"] is True
+        assert a11y["preset"] == "full"
 
     async def test_set_then_get_accessibility(self, client: AsyncClient, profile: dict, parent_token: str):
         """Verify SET then GET round-trip."""

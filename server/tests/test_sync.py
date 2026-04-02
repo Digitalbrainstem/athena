@@ -287,7 +287,7 @@ class TestSyncAccessibility:
             "accessibility_settings": {
                 "color_blind_mode": "protanopia",
                 "reduced_motion": True,
-                "companion_speech_speed": 0.75,
+                "companion_speech_speed": 75,
             },
         })
 
@@ -298,7 +298,7 @@ class TestSyncAccessibility:
         assert a11y is not None
         assert a11y["color_blind_mode"] == "protanopia"
         assert a11y["reduced_motion"] is True
-        assert a11y["companion_speech_speed"] == 0.75
+        assert a11y["companion_speech_speed"] == 75
 
     async def test_accessibility_last_write_wins(self, client: AsyncClient, profile: dict):
         """Later upload replaces earlier accessibility settings entirely."""

@@ -117,6 +117,13 @@ class TestAccessibilityInProfiles:
                 "subtitles": True,
                 "one_switch_mode": True,
                 "scan_speed": 0.5,
+                "hold_duration": 1000,
+                "sticky_keys": True,
+                "max_choices": 2,
+                "auto_repeat": True,
+                "visual_sound_indicators": True,
+                "haptic_feedback": True,
+                "preset": "full",
             },
         })
         assert resp.status_code == 201
@@ -129,6 +136,13 @@ class TestAccessibilityInProfiles:
         assert a11y["subtitles"] is True
         assert a11y["one_switch_mode"] is True
         assert a11y["scan_speed"] == 0.5
+        assert a11y["hold_duration"] == 1000
+        assert a11y["sticky_keys"] is True
+        assert a11y["max_choices"] == 2
+        assert a11y["auto_repeat"] is True
+        assert a11y["visual_sound_indicators"] is True
+        assert a11y["haptic_feedback"] is True
+        assert a11y["preset"] == "full"
 
     async def test_create_profile_without_accessibility(self, client: AsyncClient):
         resp = await client.post("/api/profiles", json={"name": "No A11y"})
@@ -141,7 +155,9 @@ class TestAccessibilityInProfiles:
                 "color_blind_mode": "protanopia",
                 "font_size": 175,
                 "sound_captions": True,
-                "companion_speech_speed": 0.8,
+                "companion_speech_speed": 80,
+                "extended_pacing": True,
+                "preset": "cognitive",
             },
         })
         assert resp.status_code == 200
@@ -149,7 +165,9 @@ class TestAccessibilityInProfiles:
         assert a11y["color_blind_mode"] == "protanopia"
         assert a11y["font_size"] == 175
         assert a11y["sound_captions"] is True
-        assert a11y["companion_speech_speed"] == 0.8
+        assert a11y["companion_speech_speed"] == 80
+        assert a11y["extended_pacing"] is True
+        assert a11y["preset"] == "cognitive"
 
     async def test_get_profile_returns_accessibility(self, client: AsyncClient, profile: dict):
         # Set accessibility first
@@ -196,16 +214,29 @@ class TestAccessibilityInProfiles:
         })
         assert resp.status_code == 201
         a11y = resp.json()["accessibility_settings"]
+        # Visual
         assert a11y["color_blind_mode"] == "none"
         assert a11y["high_contrast"] is False
         assert a11y["reduced_motion"] is False
         assert a11y["font_size"] == 100
-        assert a11y["font_family"] == "default"
+        assert a11y["font_family"] == "system"
         assert a11y["line_spacing"] == 1.4
+        # Motor
+        assert a11y["one_switch_mode"] is False
+        assert a11y["scan_speed"] == 2.0
+        assert a11y["input_debounce"] == 200
+        assert a11y["hold_duration"] == 500
+        assert a11y["sticky_keys"] is False
+        # Cognitive
+        assert a11y["simplified_ui"] is False
+        assert a11y["max_choices"] == 4
+        assert a11y["companion_speech_speed"] == 100
+        assert a11y["auto_repeat"] is False
+        assert a11y["extended_pacing"] is False
+        # Auditory
         assert a11y["subtitles"] is False
         assert a11y["sound_captions"] is False
-        assert a11y["one_switch_mode"] is False
-        assert a11y["scan_speed"] == 1.0
-        assert a11y["input_debounce"] == 0.0
-        assert a11y["simplified_ui"] is False
-        assert a11y["companion_speech_speed"] == 1.0
+        assert a11y["visual_sound_indicators"] is False
+        assert a11y["haptic_feedback"] is False
+        # Presets
+        assert a11y["preset"] == "none"
