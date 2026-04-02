@@ -1,10 +1,14 @@
 import type { AudioCue, Vec3 } from '../types.js';
 import type { Disposable } from '../types.js';
+import { SoundSynthesizer } from './synthesizer.js';
+import { hasSFX, getSFXCaption } from './sfx-library.js';
+import { getBiomeAmbientCaption } from './biome-soundscapes.js';
 
 const FADE_DURATION_MS = 1000;
 
 export class AudioManager implements Disposable {
   private ctx: AudioContext | null = null;
+  private synthesizer: SoundSynthesizer | null = null;
   private readonly activeSources = new Map<string, { source: AudioBufferSourceNode; gain: GainNode }>();
   private readonly audioCache = new Map<string, AudioBuffer>();
   private disposed = false;
@@ -17,6 +21,18 @@ export class AudioManager implements Disposable {
       void this.ctx.resume();
     }
     return this.ctx;
+  }
+
+  private ensureSynthesizer(): SoundSynthesizer {
+    if (!this.synthesizer) {
+      this.synthesizer = new SoundSynthesizer(this.ensureContext());
+    }
+    return this.synthesizer;
+  }
+
+  /** Get the underlying SoundSynthesizer (lazy-initialized). */
+  getSynthesizer(): SoundSynthesizer {
+    return this.ensureSynthesizer();
   }
 
   process(cues: AudioCue[]): void {
@@ -36,11 +52,10 @@ export class AudioManager implements Disposable {
     this.stop(cue.id);
 
     const ctx = this.ensureContext();
-    const buffer = this.audioCache.get(cue.asset);
+    let buffer = this.audioCache.get(cue.asset);
 
     if (!buffer) {
-      this.loadAudio(cue.asset);
-      return;
+      buffer = this.synthesizeAsset(cue.asset);
     }
 
     const source = ctx.createBufferSource();
@@ -78,10 +93,9 @@ export class AudioManager implements Disposable {
     this.stop(cue.id);
 
     const ctx = this.ensureContext();
-    const buffer = this.audioCache.get(cue.asset);
+    let buffer = this.audioCache.get(cue.asset);
     if (!buffer) {
-      this.loadAudio(cue.asset);
-      return;
+      buffer = this.synthesizeAsset(cue.asset);
     }
 
     const source = ctx.createBufferSource();
@@ -122,13 +136,37 @@ export class AudioManager implements Disposable {
     panner.connect(ctx.destination);
   }
 
-  private loadAudio(asset: string): void {
-    if (this.audioCache.has(asset)) return;
+  /**
+   * Synthesize an audio asset procedurally using the SFX library.
+   * Falls back to a silent buffer if the asset is unknown.
+   */
+  private synthesizeAsset(asset: string): AudioBuffer {
+    const cached = this.audioCache.get(asset);
+    if (cached) return cached;
 
-    const ctx = this.ensureContext();
-    const sampleRate = ctx.sampleRate;
-    const buffer = ctx.createBuffer(1, sampleRate * 0.01, sampleRate);
+    const synth = this.ensureSynthesizer();
+    let buffer: AudioBuffer;
+
+    if (hasSFX(asset)) {
+      buffer = synth.generateSFX(asset);
+    } else if (asset.startsWith('music-')) {
+      // Parse music asset IDs: "music-{biomeId}-{layer}"
+      const parts = asset.replace('music-', '').split('-');
+      const layer = parts.pop() as 'ambient' | 'activity' | 'intensity';
+      const biomeId = parts.join('-');
+      buffer = synth.generateMusicLayer(biomeId, layer);
+    } else if (asset.endsWith('-ambient')) {
+      // Biome ambient asset
+      const biomeId = asset.replace('-ambient', '');
+      buffer = synth.generateAmbient(biomeId);
+    } else {
+      // Unknown asset — generate silence
+      const ctx = this.ensureContext();
+      buffer = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * 0.01), ctx.sampleRate);
+    }
+
     this.audioCache.set(asset, buffer);
+    return buffer;
   }
 
   dispose(): void {
@@ -140,6 +178,11 @@ export class AudioManager implements Disposable {
     }
     this.activeSources.clear();
     this.audioCache.clear();
+
+    if (this.synthesizer) {
+      this.synthesizer.clearCache();
+      this.synthesizer = null;
+    }
 
     if (this.ctx) {
       void this.ctx.close();
