@@ -437,7 +437,7 @@ export class GamepadInput implements InputProvider {
 
 // ─── Gamepad Haptic Actuator Type Extension ─────────────────────────────────
 
-interface GamepadWithHaptics extends Gamepad {
+interface GamepadWithHaptics extends Omit<Gamepad, 'vibrationActuator'> {
   vibrationActuator?: {
     playEffect(type: string, params: {
       startDelay: number;

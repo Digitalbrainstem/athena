@@ -166,7 +166,7 @@ function createCollaborationTask(
 
 export class SiblingPlaySystem implements System {
   readonly name = 'sibling-play';
-  readonly priority = 90;
+  readonly priority = 46;
 
   private sharedWorlds: Map<string, SharedWorld> = new Map();
   private siblingProfiles: Map<string, SiblingProfile> = new Map();

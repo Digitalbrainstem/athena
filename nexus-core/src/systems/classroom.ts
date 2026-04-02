@@ -63,7 +63,7 @@ interface InternalMasteryRecord {
 
 export class ClassroomSystem implements System {
   readonly name = 'classroom';
-  readonly priority = 91;
+  readonly priority = 47;
 
   private classrooms: Map<string, Classroom> = new Map();
   private questAssignments: Map<string, QuestAssignment[]> = new Map();

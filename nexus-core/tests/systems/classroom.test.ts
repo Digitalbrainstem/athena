@@ -495,7 +495,7 @@ describe('ClassroomSystem', () => {
   describe('System interface', () => {
     it('has correct name and priority', () => {
       expect(system.name).toBe('classroom');
-      expect(system.priority).toBe(91);
+      expect(system.priority).toBe(47);
     });
 
     it('update does not throw', () => {

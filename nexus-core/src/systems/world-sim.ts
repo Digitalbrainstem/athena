@@ -48,7 +48,7 @@ const NPC_TEMPLATES: readonly { role: string; name: string; appearsAt: number; q
 
 export class WorldSimulation implements System {
   readonly name = 'world-sim';
-  readonly priority = 60;
+  readonly priority = 6;
 
   private weather: Map<string, WeatherState> = new Map();
   private settlements: Map<string, SettlementState> = new Map();

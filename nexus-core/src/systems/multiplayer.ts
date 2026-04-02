@@ -326,7 +326,7 @@ interface PendingMultiplayerAction {
 
 export class MultiplayerSystem implements System {
   readonly name = 'multiplayer';
-  readonly priority = 50;
+  readonly priority = 45;
 
   private session: MultiplayerSessionState | null = null;
   private pendingActions: PendingMultiplayerAction[] = [];

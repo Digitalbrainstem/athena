@@ -299,7 +299,7 @@ describe('MultiplayerSystem', () => {
 
   it('has correct name and priority', () => {
     expect(system.name).toBe('multiplayer');
-    expect(system.priority).toBe(50);
+    expect(system.priority).toBe(45);
   });
 
   it('starts with no session', () => {

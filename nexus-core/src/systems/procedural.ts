@@ -133,7 +133,7 @@ function seededRandom(seed: number): () => number {
 
 export class ProceduralQuestGenerator implements System {
   readonly name = 'procedural-quest';
-  readonly priority = 65;
+  readonly priority = 22;
 
   private tracker = new AntiRepetitionTracker();
   private questCounter = 0;

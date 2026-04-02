@@ -43,6 +43,7 @@ export { MasterySystem, sm2, calculateMasteryLevel, updateRetention, updateTrans
   WorldSimulation, computeGrowthStage, getGrowthStageName,
   CodexSystem, ProceduralQuestGenerator, AntiRepetitionTracker,
   MultiplayerSystem,
+  CodeForgeSystem, SiblingPlaySystem, ClassroomSystem,
   announcePlayerAction, suggestCollaboration, celebrateTeamwork,
   announcePlayerJoined, announcePlayerLeft, announceObjectiveAssigned, announceQuestProgress,
   createSessionState, canJoinSession, addPlayerToSession, removePlayerFromSession,

@@ -20,6 +20,17 @@ import { FlowEngine } from './systems/flow.js';
 import { CalibrationSystem } from './systems/calibration.js';
 import { DialogueGenerator } from './systems/dialogue.js';
 import { InterestTracker, InterestRepository } from './systems/interest.js';
+import { TravelSystem } from './systems/travel.js';
+import { EconomySystem } from './systems/economy.js';
+import { ClassroomSystem } from './systems/classroom.js';
+import { CodeForgeSystem } from './systems/code-forge.js';
+import { SiblingPlaySystem } from './systems/sibling.js';
+import { ScreenTimeSystem } from './systems/screen-time.js';
+import { FocusModeSystem } from './systems/focus.js';
+import { MultiplayerSystem } from './systems/multiplayer.js';
+import { ProceduralQuestGenerator } from './systems/procedural.js';
+import { CodexSystem } from './systems/story.js';
+import { WorldSimulation } from './systems/world-sim.js';
 import { createEmptySceneGraph } from './scene/graph.js';
 import type { GameAction } from './types/actions.js';
 import type { SceneGraph } from './types/scene.js';
@@ -66,6 +77,19 @@ export class NexusCore {
   readonly interestTracker: InterestTracker;
   readonly flowEngine: FlowEngine;
   readonly calibrationSystem: CalibrationSystem;
+
+  // Orphaned systems — now registered
+  readonly travelSystem: TravelSystem;
+  readonly economySystem: EconomySystem;
+  readonly classroomSystem: ClassroomSystem;
+  readonly codeForgeSystem: CodeForgeSystem;
+  readonly siblingPlaySystem: SiblingPlaySystem;
+  readonly screenTimeSystem: ScreenTimeSystem;
+  readonly focusModeSystem: FocusModeSystem;
+  readonly multiplayerSystem: MultiplayerSystem;
+  readonly proceduralQuestGenerator: ProceduralQuestGenerator;
+  readonly codexSystem: CodexSystem;
+  readonly worldSimulation: WorldSimulation;
 
   private constructor(db: DatabaseConnection, debug: boolean) {
     this.db = db;
@@ -119,16 +143,47 @@ export class NexusCore {
     this.interestTracker = new InterestTracker();
     this.interestTracker.setRepository(this.interests);
 
+    this.travelSystem = new TravelSystem();
+
+    this.economySystem = new EconomySystem();
+
+    this.classroomSystem = new ClassroomSystem();
+
+    this.codeForgeSystem = new CodeForgeSystem();
+
+    this.siblingPlaySystem = new SiblingPlaySystem();
+
+    this.screenTimeSystem = new ScreenTimeSystem();
+
+    this.focusModeSystem = new FocusModeSystem();
+
+    this.multiplayerSystem = new MultiplayerSystem();
+
+    this.proceduralQuestGenerator = new ProceduralQuestGenerator();
+
+    this.codexSystem = new CodexSystem();
+    this.codexSystem.setDatabase(db);
+
+    this.worldSimulation = new WorldSimulation();
+
     // Add systems to world
     this.world.addSystem(this.worldSystem);
+    this.world.addSystem(this.worldSimulation);
+    this.world.addSystem(this.travelSystem);
     this.world.addSystem(this.masterySystem);
     this.world.addSystem(this.questSystem);
+    this.world.addSystem(this.proceduralQuestGenerator);
+    this.world.addSystem(this.codexSystem);
     this.world.addSystem(this.inventorySystem);
+    this.world.addSystem(this.economySystem);
     this.world.addSystem(this.companionSystem);
     this.world.addSystem(this.craftSystem);
     this.world.addSystem(this.flowEngine);
     this.world.addSystem(this.calibrationSystem);
     this.world.addSystem(this.interestTracker);
+    this.world.addSystem(this.multiplayerSystem);
+    this.world.addSystem(this.siblingPlaySystem);
+    this.world.addSystem(this.classroomSystem);
   }
 
   /** Create a new NexusCore instance */

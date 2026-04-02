@@ -132,7 +132,7 @@ export const NPC_MERCHANTS: readonly NpcMerchant[] = [
 
 export class EconomySystem implements System {
   readonly name = 'economy';
-  readonly priority = 55;
+  readonly priority = 26;
 
   private markets: Map<string, MarketState> = new Map();
   private playerEconomies: Map<string, PlayerEconomy> = new Map();

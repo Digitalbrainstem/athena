@@ -89,7 +89,7 @@ CREATE INDEX IF NOT EXISTS idx_mystery_progress_profile ON mystery_progress(prof
 
 export class CodexSystem implements System {
   readonly name = 'codex';
-  readonly priority = 60;
+  readonly priority = 23;
 
   private db: DatabaseConnection | null = null;
   private initialized = false;

@@ -4,14 +4,16 @@ import type { GameAction } from '../../src/types.js';
 
 // ─── Mock Gamepad Factory ───────────────────────────────────────────────────
 
+type MutableGamepad = Omit<Gamepad, 'buttons'> & { buttons: GamepadButton[] };
+
 function createMockButton(pressed = false, value = 0): GamepadButton {
   return { pressed, touched: pressed, value };
 }
 
-function createMockGamepad(overrides: Partial<Gamepad> = {}): Gamepad {
+function createMockGamepad(overrides: Partial<Gamepad> = {}): MutableGamepad {
   const buttons: GamepadButton[] = Array.from({ length: 17 }, () => createMockButton());
   const axes = [0, 0, 0, 0];
-  return {
+  const base = {
     id: 'Xbox 360 Controller (STANDARD GAMEPAD Vendor: 045e Product: 028e)',
     index: 0,
     connected: true,
@@ -20,9 +22,9 @@ function createMockGamepad(overrides: Partial<Gamepad> = {}): Gamepad {
     axes,
     timestamp: performance.now(),
     hapticActuators: [],
-    vibrationActuator: null,
-    ...overrides,
+    vibrationActuator: null as unknown as GamepadHapticActuator,
   };
+  return Object.assign(base, overrides) as MutableGamepad;
 }
 
 function mockNavigatorGetGamepads(pads: (Gamepad | null)[]): void {

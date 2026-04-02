@@ -226,7 +226,7 @@ export class VoiceInput implements InputProvider {
   private readonly config: VoiceConfig;
   private commands: CommandPattern[];
   private listening = false;
-  private wakeWordActive = false;
+  private _wakeWordActive = false;
   private restartTimer: ReturnType<typeof setTimeout> | null = null;
 
   // Privacy: no audio stored. Everything processed locally.
@@ -269,7 +269,7 @@ export class VoiceInput implements InputProvider {
     }
     this.recognition = null;
     this.emit = null;
-    this.wakeWordActive = false;
+    this._wakeWordActive = false;
   }
 
   dispose(): void { this.detach(); }
@@ -278,6 +278,7 @@ export class VoiceInput implements InputProvider {
 
   isListening(): boolean { return this.listening; }
   isAvailable(): boolean { return isSpeechRecognitionAvailable(); }
+  isWakeWordActive(): boolean { return this._wakeWordActive; }
 
   setCompanionName(name: string): void {
     this.config.companionName = name;
@@ -332,7 +333,7 @@ export class VoiceInput implements InputProvider {
 
         // Check wake word on raw transcript first
         if (this.isWakeWord(raw)) {
-          this.wakeWordActive = true;
+          this._wakeWordActive = true;
           continue;
         }
 

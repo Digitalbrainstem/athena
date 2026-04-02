@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import {
   VoiceInput,
   CHILD_SPEECH_MAP,
@@ -278,8 +278,8 @@ describe('VoiceInput with mock SpeechRecognition', () => {
 
   beforeEach(() => {
     received = [];
-    OriginalSR = (window as Record<string, unknown>)['SpeechRecognition'];
-    (window as Record<string, unknown>)['SpeechRecognition'] = MockSpeechRecognition;
+    OriginalSR = (window as unknown as Record<string, unknown>)['SpeechRecognition'];
+    (window as unknown as Record<string, unknown>)['SpeechRecognition'] = MockSpeechRecognition;
     input = new VoiceInput();
     input.attach((a: GameAction) => received.push(a));
     mockRecognition = (input as unknown as { recognition: MockSpeechRecognition }).recognition;
@@ -288,9 +288,9 @@ describe('VoiceInput with mock SpeechRecognition', () => {
   afterEach(() => {
     input.dispose();
     if (OriginalSR) {
-      (window as Record<string, unknown>)['SpeechRecognition'] = OriginalSR;
+      (window as unknown as Record<string, unknown>)['SpeechRecognition'] = OriginalSR;
     } else {
-      delete (window as Record<string, unknown>)['SpeechRecognition'];
+      delete (window as unknown as Record<string, unknown>)['SpeechRecognition'];
     }
   });
 

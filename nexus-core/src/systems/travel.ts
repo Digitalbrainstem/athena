@@ -28,7 +28,7 @@ const TIER_ORDER: Record<string, number> = {
 
 export class TravelSystem implements System {
   readonly name = 'travel';
-  readonly priority = 50;
+  readonly priority = 7;
 
   private playerVehicles: Map<string, PlayerVehicle[]> = new Map();
   private playerSkills: Map<string, Set<string>> = new Map();

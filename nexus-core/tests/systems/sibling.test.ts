@@ -501,7 +501,7 @@ describe('SiblingPlaySystem', () => {
   describe('System interface', () => {
     it('has the correct name and priority', () => {
       expect(system.name).toBe('sibling-play');
-      expect(system.priority).toBe(90);
+      expect(system.priority).toBe(46);
     });
 
     it('update does not throw', () => {
