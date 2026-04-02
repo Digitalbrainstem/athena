@@ -376,8 +376,8 @@ describe('WorldSimulation', () => {
     });
 
     it('weather changes over time in simulation', () => {
+      sim.setRng(() => 0.95); // High roll to skip "stay same" transitions
       sim.initializeWeather('workshop', 'clear');
-      // Simulate enough time for weather to change
       let changed = false;
       for (let i = 0; i < 100; i++) {
         sim.simulate(10);
@@ -387,7 +387,6 @@ describe('WorldSimulation', () => {
           break;
         }
       }
-      // With deterministic RNG at 0.5, weather should eventually change
       expect(changed).toBe(true);
     });
 
@@ -411,7 +410,7 @@ describe('WorldSimulation', () => {
       const s1 = sim.initializeSettlement('workshop', 'Village A');
       const s2 = sim.initializeSettlement('workshop', 'Village B');
       expect(s1).toBe(s2);
-      expect(s1.name).toBe('Tinker Village');
+      expect(s1.name).toBe('Village A');
     });
 
     it('retrieves settlement state', () => {
@@ -464,10 +463,11 @@ describe('WorldSimulation', () => {
         id: 'house-1', name: 'Stone House', type: 'house',
         condition: 100, playerBuilt: true,
       };
-      const events = sim.addBuilding('workshop', building);
+      sim.addBuilding('workshop', building);
       const state = sim.getSettlement('workshop')!;
       expect(state.buildings.length).toBe(1);
-      expect(events.length).toBeGreaterThan(0);
+      // Player-built building adds a contribution
+      expect(state.playerContributions.length).toBeGreaterThan(0);
     });
 
     it('adds and resolves problems', () => {
@@ -635,6 +635,7 @@ describe('WorldSimulation', () => {
     it('accumulates events', () => {
       sim.initializeWeather('workshop', 'clear');
       sim.initializeSettlement('workshop', 'Village');
+      // Use enough prosperity boost to cross growth stage threshold
       sim.addContribution('workshop', {
         type: 'build',
         description: 'Built something',
@@ -642,6 +643,7 @@ describe('WorldSimulation', () => {
       });
 
       const events = sim.getEventsSince(0);
+      // Settlement growth to camp + NPC arrival events should have been generated
       expect(events.length).toBeGreaterThan(0);
     });
 

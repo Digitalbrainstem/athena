@@ -174,6 +174,7 @@ export class WorldSimulation implements System {
       changeIn: 120 + this._rng() * 180,
       activeEffects: effect ? [effect] : [],
     };
+    this.updateWeatherMetrics(state);
     this.weather.set(biome, state);
     return state;
   }
@@ -277,6 +278,9 @@ export class WorldSimulation implements System {
         ));
       }
     }
+
+    // Add events to the log so they are available via getEventsSince
+    this.eventLog.push(...events);
 
     return events;
   }
