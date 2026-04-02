@@ -32,6 +32,7 @@ export { MasterySystem, sm2, calculateMasteryLevel, updateRetention, updateTrans
   COMPOUNDS, REACTIONS, getCompound, getReaction, reactionsForTier,
   RECIPES, getRecipe, recipesForTierAndBiome,
   BUILDING_MATERIALS, getMaterial, materialsForTier,
+  FlowEngine, CalibrationSystem,
 } from './systems/index.js';
 export type { MasteryDimensions, GapAnalysis, GapDetail, SkillPrerequisites,
   PendingLearningEvent, QuestAction, QuestSelectionCriteria, CompanionInteraction,
@@ -84,5 +85,11 @@ export type {
   AccessibilitySettings, AccessibilityPreset, ColorBlindMode, FontFamily,
   Announcement, AnnouncementPriority, AnnouncementCategory,
   Caption, CaptionType,
+  AttemptOutcome, FlowState, FlowZone, ScaffoldAction, ScaffoldType,
+  Redirection, ChallengeAttemptRecord, ChallengeInfo,
+  CalibrationSession, CalibrationResponse, CalibrationNext, CalibrationResults,
+  CalibrationSubject, SubjectCalibrationState, CalibrationLevelDefinition, AgeStartingLevel,
 } from './types/index.js';
-export { DEFAULT_COMPANION_CONFIG, getSpokenInstruction, getScreenReaderText, getCompanionRepeat } from './types/index.js';
+export { DEFAULT_COMPANION_CONFIG, getSpokenInstruction, getScreenReaderText, getCompanionRepeat,
+  ALL_CALIBRATION_SUBJECTS,
+} from './types/index.js';

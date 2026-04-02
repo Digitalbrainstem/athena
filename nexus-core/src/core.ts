@@ -16,6 +16,8 @@ import { WorldSystem } from './systems/world.js';
 import { CompanionSystem } from './systems/companion.js';
 import { InventorySystem } from './systems/inventory.js';
 import { CraftSystem } from './systems/craft.js';
+import { FlowEngine } from './systems/flow.js';
+import { CalibrationSystem } from './systems/calibration.js';
 import { createEmptySceneGraph } from './scene/graph.js';
 import type { GameAction } from './types/actions.js';
 import type { SceneGraph } from './types/scene.js';
@@ -57,6 +59,8 @@ export class NexusCore {
   readonly companionSystem: CompanionSystem;
   readonly inventorySystem: InventorySystem;
   readonly craftSystem: CraftSystem;
+  readonly flowEngine: FlowEngine;
+  readonly calibrationSystem: CalibrationSystem;
 
   private constructor(db: DatabaseConnection, debug: boolean) {
     this.db = db;
@@ -102,6 +106,10 @@ export class NexusCore {
 
     this.craftSystem = new CraftSystem();
 
+    this.flowEngine = new FlowEngine();
+
+    this.calibrationSystem = new CalibrationSystem();
+
     // Add systems to world
     this.world.addSystem(this.worldSystem);
     this.world.addSystem(this.masterySystem);
@@ -109,6 +117,8 @@ export class NexusCore {
     this.world.addSystem(this.inventorySystem);
     this.world.addSystem(this.companionSystem);
     this.world.addSystem(this.craftSystem);
+    this.world.addSystem(this.flowEngine);
+    this.world.addSystem(this.calibrationSystem);
   }
 
   /** Create a new NexusCore instance */

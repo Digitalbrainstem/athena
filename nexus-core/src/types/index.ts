@@ -111,3 +111,57 @@ export type {
   Caption,
   CaptionType,
 } from './accessibility.js';
+
+export type {
+  AttemptOutcome,
+  FlowState,
+  FlowZone,
+  ScaffoldAction,
+  ScaffoldType,
+  Redirection,
+  ChallengeAttemptRecord,
+  ChallengeInfo,
+} from './flow.js';
+
+export type {
+  CalibrationSession,
+  CalibrationResponse,
+  CalibrationNext,
+  CalibrationResults,
+  CalibrationSubject,
+  SubjectCalibrationState,
+  CalibrationLevelDefinition,
+  AgeStartingLevel,
+} from './calibration.js';
+
+export { ALL_CALIBRATION_SUBJECTS } from './calibration.js';
+
+export type {
+  BreakAction,
+  LimitAction,
+  SessionStats,
+  ScreenTimeConfig,
+  SessionState,
+} from './screen-time.js';
+
+export {
+  DEFAULT_BREAK_INTERVALS,
+  defaultScreenTimeConfig,
+  validateScreenTimeConfig,
+} from './screen-time.js';
+
+export type {
+  FocusSource,
+  FocusIntensity,
+  CompanionFocusRequest,
+  ParentFocusRequest,
+  FocusSession,
+  SkillWeight,
+} from './focus.js';
+
+export {
+  INTENSITY_WEIGHTS,
+  DEFAULT_SKILL_WEIGHT,
+  MAX_FOCUS_SKILLS,
+  validateFocusRequest,
+} from './focus.js';

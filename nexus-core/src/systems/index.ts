@@ -14,3 +14,5 @@ export { CraftSystem,
   RECIPES, getRecipe, recipesForTierAndBiome,
   BUILDING_MATERIALS, getMaterial, materialsForTier,
 } from './craft.js';
+export { FlowEngine } from './flow.js';
+export { CalibrationSystem } from './calibration.js';
