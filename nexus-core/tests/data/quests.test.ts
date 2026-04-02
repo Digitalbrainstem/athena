@@ -1,14 +1,18 @@
 import { describe, it, expect } from 'vitest';
 import {
   allFoundationQuests,
+  allInnovatorQuests,
+  allCreatorQuests,
   allQuests,
   foundationWorkshopQuests,
   foundationForestQuests,
   foundationCavernsQuests,
 } from '../../src/data/quests/index.js';
+import { BIOME_IDS } from '../../src/data/biomes.js';
 
 // Valid biome IDs from the world system
 const VALID_BIOMES = ['workshop', 'alchemist-lab', 'crystal-caverns', 'living-forest', 'library-echoes'];
+const ALL_VALID_BIOMES = [...BIOME_IDS];
 
 // ---------------------------------------------------------------------------
 // Principle 0: Learning Through Play — NO quiz-style language
@@ -528,5 +532,232 @@ describe('Foundation Quest Data — Pedagogical Principles', () => {
         ).toBeTruthy();
       }
     }
+  });
+});
+
+// ============================================================================
+// Helpers for Innovator/Creator validation
+// ============================================================================
+
+function collectAllTextGeneric(quest: (typeof allQuests)[number]): string {
+  const parts: string[] = [
+    quest.title,
+    quest.content.description,
+    quest.content.companionIntro ?? '',
+    quest.content.companionOutro ?? '',
+  ];
+  for (const step of quest.content.steps) {
+    parts.push(step.instruction);
+    parts.push(step.spokenInstruction ?? '');
+    parts.push(step.screenReaderText ?? '');
+    parts.push(step.companionRepeat ?? '');
+    parts.push(step.successResponse ?? '');
+    parts.push(step.failureResponse ?? '');
+    if (step.hints) {
+      parts.push(...step.hints);
+    }
+  }
+  return parts.join(' ');
+}
+
+// ============================================================================
+// INNOVATOR TIER — AP-level content (ages 15-18)
+// ============================================================================
+
+describe('Innovator Quest Data — Counts', () => {
+  it('has at least 800 total Innovator quests', () => {
+    expect(allInnovatorQuests.length).toBeGreaterThanOrEqual(800);
+  });
+
+  it('covers all 27 biomes', () => {
+    const biomes = new Set(allInnovatorQuests.map((q) => q.biome));
+    expect(biomes.size).toBe(27);
+    for (const id of ALL_VALID_BIOMES) {
+      expect(biomes.has(id), `Missing innovator quests for biome: ${id}`).toBe(true);
+    }
+  });
+
+  it('allQuests contains every Innovator quest', () => {
+    for (const q of allInnovatorQuests) {
+      expect(allQuests.find((a) => a.id === q.id)).toBeDefined();
+    }
+  });
+});
+
+describe('Innovator Quest Data — Structure', () => {
+  for (const quest of allInnovatorQuests) {
+    describe(`Quest "${quest.id}"`, () => {
+      it('has required fields and innovator tier', () => {
+        expect(quest.id).toBeTruthy();
+        expect(quest.title).toBeTruthy();
+        expect(ALL_VALID_BIOMES).toContain(quest.biome);
+        expect(quest.masteryTier).toBe('innovator');
+        expect(quest.content.description).toBeTruthy();
+        expect(quest.content.companionIntro).toBeTruthy();
+        expect(quest.content.companionOutro).toBeTruthy();
+        expect(quest.content.estimatedMinutes).toBeGreaterThanOrEqual(20);
+        expect(quest.content.estimatedMinutes).toBeLessThanOrEqual(40);
+        expect((quest.skillsTaught ?? []).length).toBeGreaterThanOrEqual(2);
+        for (const skill of (quest.skillsTaught ?? [])) {
+          expect(skill).toMatch(/^[a-z]+\.[a-z0-9-]+$/);
+        }
+      });
+
+      it('has at least 3 steps with triple instruction', () => {
+        expect(quest.content.steps.length).toBeGreaterThanOrEqual(3);
+        for (const step of quest.content.steps) {
+          expect(step.instruction).toBeTruthy();
+          expect(step.spokenInstruction).toBeTruthy();
+          expect(step.screenReaderText).toBeTruthy();
+          expect(step.companionRepeat).toBeTruthy();
+          expect(step.hints!.length).toBeGreaterThan(0);
+          expect(step.successResponse).toBeTruthy();
+          expect(step.failureResponse).toBeTruthy();
+          for (const pattern of HARSH_WORDS) {
+            expect(step.failureResponse).not.toMatch(pattern);
+          }
+        }
+      });
+    });
+  }
+});
+
+describe('Innovator Quest Data — Content Quality', () => {
+  it('uses no quiz-style language', () => {
+    for (const quest of allInnovatorQuests) {
+      const text = collectAllTextGeneric(quest);
+      for (const pattern of QUIZ_PATTERNS) {
+        expect(text.match(pattern), `"${quest.id}" quiz: "${text.match(pattern)?.[0]}"`).toBeNull();
+      }
+    }
+  });
+
+  it('uses gender-neutral language', () => {
+    for (const quest of allInnovatorQuests) {
+      const text = collectAllTextGeneric(quest);
+      for (const pattern of GENDERED_TERMS) {
+        expect(text.match(pattern), `"${quest.id}" gendered: "${text.match(pattern)?.[0]}"`).toBeNull();
+      }
+    }
+  });
+
+  it('has unique quest IDs starting with i-', () => {
+    const ids = allInnovatorQuests.map((q) => q.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const quest of allInnovatorQuests) {
+      expect(quest.id).toMatch(/^i-/);
+      expect(quest.id).toMatch(/^[a-z0-9-]+$/);
+    }
+  });
+
+  it('step indices are sequential starting from 0', () => {
+    for (const quest of allInnovatorQuests) {
+      quest.content.steps.forEach((step, i) => { expect(step.index).toBe(i); });
+    }
+  });
+});
+
+// ============================================================================
+// CREATOR TIER — College/research-level content (ages 18+)
+// ============================================================================
+
+describe('Creator Quest Data — Counts', () => {
+  it('has at least 800 total Creator quests', () => {
+    expect(allCreatorQuests.length).toBeGreaterThanOrEqual(800);
+  });
+
+  it('covers all 27 biomes', () => {
+    const biomes = new Set(allCreatorQuests.map((q) => q.biome));
+    expect(biomes.size).toBe(27);
+    for (const id of ALL_VALID_BIOMES) {
+      expect(biomes.has(id), `Missing creator quests for biome: ${id}`).toBe(true);
+    }
+  });
+});
+
+describe('Creator Quest Data — Structure', () => {
+  for (const quest of allCreatorQuests) {
+    describe(`Quest "${quest.id}"`, () => {
+      it('has required fields and creator tier', () => {
+        expect(quest.id).toBeTruthy();
+        expect(quest.title).toBeTruthy();
+        expect(ALL_VALID_BIOMES).toContain(quest.biome);
+        expect(quest.masteryTier).toBe('creator');
+        expect(quest.content.description).toBeTruthy();
+        expect(quest.content.companionIntro).toBeTruthy();
+        expect(quest.content.companionOutro).toBeTruthy();
+        expect(quest.content.estimatedMinutes).toBeGreaterThanOrEqual(25);
+        expect(quest.content.estimatedMinutes).toBeLessThanOrEqual(40);
+        expect((quest.skillsTaught ?? []).length).toBeGreaterThanOrEqual(2);
+        for (const skill of (quest.skillsTaught ?? [])) {
+          expect(skill).toMatch(/^[a-z]+\.[a-z0-9-]+$/);
+        }
+      });
+
+      it('has at least 4 steps with triple instruction', () => {
+        expect(quest.content.steps.length).toBeGreaterThanOrEqual(4);
+        for (const step of quest.content.steps) {
+          expect(step.instruction).toBeTruthy();
+          expect(step.spokenInstruction).toBeTruthy();
+          expect(step.screenReaderText).toBeTruthy();
+          expect(step.companionRepeat).toBeTruthy();
+          expect(step.hints!.length).toBeGreaterThan(0);
+          expect(step.successResponse).toBeTruthy();
+          expect(step.failureResponse).toBeTruthy();
+          for (const pattern of HARSH_WORDS) {
+            expect(step.failureResponse).not.toMatch(pattern);
+          }
+        }
+      });
+    });
+  }
+});
+
+describe('Creator Quest Data — Content Quality', () => {
+  it('uses no quiz-style language', () => {
+    for (const quest of allCreatorQuests) {
+      const text = collectAllTextGeneric(quest);
+      for (const pattern of QUIZ_PATTERNS) {
+        expect(text.match(pattern), `"${quest.id}" quiz: "${text.match(pattern)?.[0]}"`).toBeNull();
+      }
+    }
+  });
+
+  it('uses gender-neutral language', () => {
+    for (const quest of allCreatorQuests) {
+      const text = collectAllTextGeneric(quest);
+      for (const pattern of GENDERED_TERMS) {
+        expect(text.match(pattern), `"${quest.id}" gendered: "${text.match(pattern)?.[0]}"`).toBeNull();
+      }
+    }
+  });
+
+  it('has unique quest IDs starting with c-', () => {
+    const ids = allCreatorQuests.map((q) => q.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const quest of allCreatorQuests) {
+      expect(quest.id).toMatch(/^c-/);
+      expect(quest.id).toMatch(/^[a-z0-9-]+$/);
+    }
+  });
+
+  it('step indices are sequential starting from 0', () => {
+    for (const quest of allCreatorQuests) {
+      quest.content.steps.forEach((step, i) => { expect(step.index).toBe(i); });
+    }
+  });
+});
+
+// ============================================================================
+// Cross-tier integrity
+// ============================================================================
+describe('Cross-Tier Quest Integrity', () => {
+  it('total quest count is at least 1600', () => {
+    expect(allQuests.length).toBeGreaterThanOrEqual(1600);
+  });
+
+  it('no duplicate IDs across all tiers', () => {
+    const ids = allQuests.map((q) => q.id);
+    expect(new Set(ids).size).toBe(ids.length);
   });
 });
