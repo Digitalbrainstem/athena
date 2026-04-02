@@ -93,4 +93,12 @@ export interface SceneGraph {
   ground: GroundDescriptor;
   ui: UIState;
   audio: AudioCue[];
+  /** Screen-reader announcements queued this frame */
+  announcements: Announcement[];
+  /** Captions for deaf / hard-of-hearing players */
+  captions: Caption[];
 }
+
+// Re-export accessibility types used in the scene graph
+import type { Announcement, Caption } from './accessibility.js';
+export type { Announcement, Caption };

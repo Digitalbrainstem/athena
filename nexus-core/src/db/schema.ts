@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS profiles (
     birth_date TEXT,
     created_at TEXT DEFAULT (datetime('now')),
     last_active TEXT,
-    settings TEXT
+    settings TEXT,
+    accessibility_settings TEXT
 );
 
 CREATE TABLE IF NOT EXISTS auth (

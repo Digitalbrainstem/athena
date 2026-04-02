@@ -20,6 +20,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'The red chest wants all the RED crystals. Find every red crystal on the ground!',
+          spokenInstruction: 'Ooh, look at all these sparkly crystals everywhere! See the red chest? It wants all the RED ones — the ones that glow like fire! Can you find them all?',
+          screenReaderText: 'Sort all red crystals from the cave floor into the red treasure chest. Four red crystals are needed.',
+          companionRepeat: 'Find all the red crystals for the red chest!',
           objectiveType: 'sort',
           targetValue: 'red',
           requiredCount: 4,
@@ -30,6 +33,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 1,
           instruction: 'The blue chest needs the BLUE crystals. They shimmer like ice!',
+          spokenInstruction: 'Now the blue chest is hungry for crystals! Blue ones shimmer like ice — brrr! Can you find all five blue crystals?',
+          screenReaderText: 'Sort all blue crystals into the blue treasure chest. Five blue crystals are needed.',
+          companionRepeat: 'Find the five blue crystals!',
           objectiveType: 'sort',
           targetValue: 'blue',
           requiredCount: 5,
@@ -40,6 +46,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 2,
           instruction: 'One chest is for ROUND crystals and one is for POINTY crystals. Sort the last batch by shape!',
+          spokenInstruction: 'Now here\'s a tricky one! Feel these crystals — some are round and smooth like a ball, and some are pointy with sharp edges! Can you sort them by their shape?',
+          screenReaderText: 'Sort remaining crystals by shape: place round crystals in one chest and pointy crystals in the other. Seven total.',
+          companionRepeat: 'Sort the round ones and pointy ones into different chests!',
           objectiveType: 'sort',
           targetValue: { round: 3, pointy: 4 },
           requiredCount: 7,
@@ -68,6 +77,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'The first wall has a small cluster. Touch each crystal as you count!',
+          spokenInstruction: 'Look at the crystals on this wall! Let\'s touch each one and count together! Ready? One... two...',
+          screenReaderText: 'Count the crystals in the first wall cluster by tapping each one. The cluster contains four crystals.',
+          companionRepeat: 'Touch and count the crystals on the wall!',
           objectiveType: 'count',
           targetValue: 4,
           requiredCount: 4,
@@ -78,6 +90,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 1,
           instruction: 'The deep wall has a bigger cluster. Count carefully — there are more than before!',
+          spokenInstruction: 'Wow, this wall has even MORE crystals! This is a big group! Let\'s count them all — nice and slow!',
+          screenReaderText: 'Count the larger crystal cluster on the deep wall. This cluster contains eight crystals.',
+          companionRepeat: 'Count the big crystal cluster!',
           objectiveType: 'count',
           targetValue: 8,
           requiredCount: 8,
@@ -88,6 +103,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 2,
           instruction: 'The ceiling has the biggest cluster yet. Count them all — reach for the sky!',
+          spokenInstruction: 'Whoa, look UP at the ceiling! That\'s the biggest bunch of crystals yet! Can you count all the way up to the big number?',
+          screenReaderText: 'Count all crystals in the ceiling cluster. The cluster contains ten crystals.',
+          companionRepeat: 'Count all the ceiling crystals!',
           objectiveType: 'count',
           targetValue: 10,
           requiredCount: 10,
@@ -116,6 +134,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'The cave echoes: HIGH, LOW, HIGH, LOW, HIGH... Keep the pattern going! Pick the next sound.',
+          spokenInstruction: 'Listen to the cave! It goes HIGH, LOW, HIGH, LOW, HIGH... do you hear it going back and forth? What comes next?',
+          screenReaderText: 'Identify the next sound in an alternating high-low pattern. The sequence is high, low, high, low, high. Select the next sound.',
+          companionRepeat: 'What sound comes next — high or low?',
           objectiveType: 'pattern',
           targetValue: 'low',
           hints: ['The sounds go back and forth: HIGH then LOW then HIGH then LOW...', 'After HIGH always comes LOW!'],
@@ -125,6 +146,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 1,
           instruction: 'New echo: DING DING DONG, DING DING DONG, DING DING... fill in the missing sound!',
+          spokenInstruction: 'A new echo! DING DING DONG, DING DING DONG... hear how two dings always get followed by a dong? DING DING... what comes next?',
+          screenReaderText: 'Complete the repeating sound pattern: ding, ding, dong. The sequence needs its final sound after two dings.',
+          companionRepeat: 'After ding-ding, what comes next?',
           objectiveType: 'pattern',
           targetValue: 'dong',
           hints: ['Two dings then a dong, two dings then a dong...', 'After two DINGS always comes a DONG!'],
@@ -134,6 +158,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 2,
           instruction: 'Final echo: DRIP, DROP, SPLASH, DRIP, DROP, SPLASH, DRIP... continue the pattern!',
+          spokenInstruction: 'Last one! DRIP, DROP, SPLASH! DRIP, DROP, SPLASH! DRIP... there are three sounds that keep repeating! What are the next two?',
+          screenReaderText: 'Complete the three-part repeating sound pattern: drip, drop, splash. Provide the two missing sounds after drip.',
+          companionRepeat: 'After drip, what two sounds come next?',
           objectiveType: 'pattern',
           targetValue: ['drop', 'splash'],
           hints: ['Three sounds repeat: drip, drop, splash!', 'After DRIP comes DROP, then SPLASH, then it starts over.'],
@@ -161,6 +188,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'A crystal with three sides and three corners glows on the wall. It\'s a triangle! Place it in the triangle slot.',
+          spokenInstruction: 'See that crystal glowing on the wall? Count its sides with me — one, two, THREE! That\'s a triangle! Can you put it in the right slot?',
+          screenReaderText: 'Identify and place the triangle-shaped crystal into the triangle slot in the jewel case. Triangles have three sides.',
+          companionRepeat: 'Put the triangle crystal in the triangle slot!',
           objectiveType: 'match',
           targetId: 'triangle-slot',
           targetValue: 'triangle',
@@ -171,6 +201,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 1,
           instruction: 'A perfectly round crystal rolls out of a crack. No corners at all!',
+          spokenInstruction: 'Ooh, that one is rolling! It\'s round and smooth — no corners anywhere! What shape is perfectly round like a ball?',
+          screenReaderText: 'Identify and place the circle-shaped crystal into the circle slot. Circles are round with no corners.',
+          companionRepeat: 'Find the slot for the round crystal!',
           objectiveType: 'match',
           targetId: 'circle-slot',
           targetValue: 'circle',
@@ -181,6 +214,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 2,
           instruction: 'This crystal has four sides and they\'re all the same length. A perfect square!',
+          spokenInstruction: 'This crystal has four sides and they\'re ALL the same! Count them — one, two, three, four! That makes it a square!',
+          screenReaderText: 'Identify and place the square-shaped crystal into the square slot. Squares have four equal sides.',
+          companionRepeat: 'Put the square crystal in its slot!',
           objectiveType: 'match',
           targetId: 'square-slot',
           targetValue: 'square',
@@ -191,6 +227,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 3,
           instruction: 'The last crystal has SIX sides! Count them: one, two, three, four, five, six. A hexagon!',
+          spokenInstruction: 'Wow, this crystal has SO many sides! Let\'s count together — one, two, three, four, five, SIX! That\'s called a hexagon! Can you find where it goes?',
+          screenReaderText: 'Identify and place the hexagon-shaped crystal into the hexagon slot. Hexagons have six sides.',
+          companionRepeat: 'The six-sided crystal goes in the hexagon slot!',
           objectiveType: 'match',
           targetId: 'hexagon-slot',
           targetValue: 'hexagon',
@@ -219,6 +258,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'Pick up the glowing crystal. Hold it up — watch how the light chases away the darkness!',
+          spokenInstruction: 'See that crystal shining all by itself? Pick it up! Hold it high and watch what happens to the dark — whoooosh, the light pushes it away!',
+          screenReaderText: 'Pick up the glowing crystal to use as a light source. Interact with the bright crystal on the ground.',
+          companionRepeat: 'Pick up the glowing crystal!',
           objectiveType: 'interact',
           targetId: 'glow-crystal',
           targetValue: 'pick-up',
@@ -229,6 +271,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 1,
           instruction: 'Shine the crystal into the dark tunnel. Something sparkles in the shadows!',
+          spokenInstruction: 'Now point your crystal into that dark tunnel over there! Move the light around — do you see something sparkly hiding in the shadows?',
+          screenReaderText: 'Use the glowing crystal to illuminate the dark tunnel and find three hidden gems that sparkle when light reaches them.',
+          companionRepeat: 'Shine your light in the tunnel to find hidden gems!',
           objectiveType: 'find',
           targetValue: 'hidden-gems',
           requiredCount: 3,
@@ -239,6 +284,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 2,
           instruction: 'Cover the crystal with your hands. Watch what happens when the light goes away!',
+          spokenInstruction: 'Try this — cover the crystal with your hands! What happens? Everything gets dark! Now uncover it — ta-da! Light is back! Isn\'t that amazing?',
+          screenReaderText: 'Cover the crystal to observe what happens when light is removed. The cave becomes dark without the light source.',
+          companionRepeat: 'Cover the crystal and see what happens!',
           objectiveType: 'observe',
           targetValue: 'dark',
           hints: ['When the light is covered, everything changes!', 'Try covering the crystal and then uncovering it!'],
@@ -266,6 +314,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'Place the RED crystal first. It\'s the color of fire and goes at the start of the rainbow!',
+          spokenInstruction: 'Let\'s build a rainbow! Every rainbow starts with RED — the color of fire! Can you find the red crystal and put it first?',
+          screenReaderText: 'Place the red crystal in the first position to begin building the rainbow bridge. Red is the first color.',
+          companionRepeat: 'Put the red crystal first!',
           objectiveType: 'sort',
           targetValue: 'red',
           hints: ['Red is the first color of the rainbow!', 'Find the fire-colored crystal.'],
@@ -275,6 +326,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 1,
           instruction: 'Next comes ORANGE, then YELLOW. Place them after red!',
+          spokenInstruction: 'Great, red is first! Now we need ORANGE — like an orange fruit! And then YELLOW — bright like sunshine! Can you put them in order?',
+          screenReaderText: 'Place orange and yellow crystals after the red one in rainbow order. Orange comes second, yellow third.',
+          companionRepeat: 'Orange next, then yellow!',
           objectiveType: 'sort',
           targetValue: ['orange', 'yellow'],
           requiredCount: 2,
@@ -285,6 +339,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 2,
           instruction: 'Now the cool colors: GREEN, BLUE, and PURPLE to finish the rainbow!',
+          spokenInstruction: 'Almost done! Now the cool colors — GREEN like grass, BLUE like the sky, and PURPLE like grapes! Put them in order to finish our rainbow!',
+          screenReaderText: 'Place green, blue, and purple crystals to complete the rainbow sequence. Green fourth, blue fifth, purple sixth.',
+          companionRepeat: 'Green, blue, purple — finish the rainbow!',
           objectiveType: 'sort',
           targetValue: ['green', 'blue', 'purple'],
           requiredCount: 3,
@@ -313,6 +370,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'A bat hangs ABOVE your head. Look UP to find it!',
+          spokenInstruction: 'There\'s a little bat hanging somewhere UP HIGH! Can you look above your head? Way up at the ceiling!',
+          screenReaderText: 'Look upward to find a bat hanging above. The bat is located on the cave ceiling above the player.',
+          companionRepeat: 'Look up to find the bat!',
           objectiveType: 'find',
           targetValue: 'above',
           hints: ['ABOVE means higher than you — look up!', 'The bat is over your head, hanging from the ceiling.'],
@@ -322,6 +382,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 1,
           instruction: 'A crystal grows BELOW the bridge. Look DOWN to spot it!',
+          spokenInstruction: 'Now look DOWN! Way down below the bridge — there\'s something sparkly down there! Can you spot it?',
+          screenReaderText: 'Look downward to find a crystal growing below the bridge. The crystal is located beneath the bridge structure.',
+          companionRepeat: 'Look down below the bridge!',
           objectiveType: 'find',
           targetValue: 'below',
           hints: ['BELOW means lower than you — look down!', 'Under the bridge, down below your feet.'],
@@ -331,6 +394,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 2,
           instruction: 'A gem hides INSIDE a hollow rock. Look INTO the opening!',
+          spokenInstruction: 'This hollow rock has an opening — peek INSIDE! Something is hiding in there! Can you see it?',
+          screenReaderText: 'Look inside the hollow rock to find a hidden gem. The gem is concealed within the rock\'s opening.',
+          companionRepeat: 'Peek inside the hollow rock!',
           objectiveType: 'find',
           targetValue: 'inside',
           hints: ['INSIDE means hidden within something!', 'Peek into the hollow rock — something\'s in there!'],
@@ -340,6 +406,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 3,
           instruction: 'Mushrooms grow OUTSIDE the cave entrance. Head toward the light!',
+          spokenInstruction: 'See the bright light coming from the cave entrance? Head that way — there\'s something cool growing OUTSIDE! Let\'s go look!',
+          screenReaderText: 'Navigate toward the cave entrance to find mushrooms growing outside. Move toward the light at the cave opening.',
+          companionRepeat: 'Go outside the cave entrance!',
           objectiveType: 'find',
           targetValue: 'outside',
           hints: ['OUTSIDE means not inside the cave — where the light comes in!', 'Walk toward the bright opening.'],
@@ -367,6 +436,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'Count the drips falling into the first pool. Tap once for each drip you hear!',
+          spokenInstruction: 'Listen! Drip... drip... drip! Water is falling from the ceiling! Let\'s tap and count each drip together — ready?',
+          screenReaderText: 'Count water drips falling into the first pool by tapping once per drip. Five drips total.',
+          companionRepeat: 'Tap and count each drip!',
           objectiveType: 'count',
           targetValue: 5,
           requiredCount: 5,
@@ -377,6 +449,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 1,
           instruction: 'Two stalactites drip together! Count ALL the drips from both.',
+          spokenInstruction: 'Now there are TWO drippy spots! This one goes drip drip drip and that one goes drip drip drip drip! Count ALL the drips from both together!',
+          screenReaderText: 'Count the combined drips from two stalactites. One drips five times and the other four times, totaling nine.',
+          companionRepeat: 'Count all the drips from both!',
           objectiveType: 'count',
           targetValue: 9,
           requiredCount: 9,
@@ -387,6 +462,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 2,
           instruction: 'The last stalactite drips in a pattern: drip, drip, DRIP, drip, drip, DRIP. The big drip opens the gate. Find the pattern!',
+          spokenInstruction: 'This last one is special! Listen — drip, drip, DRIP! drip, drip, DRIP! Two little drips and then a BIG one! Can you figure out when the big drip happens?',
+          screenReaderText: 'Identify the pattern in the dripping: two small drips followed by one big drip. Determine which position the big drip occurs at.',
+          companionRepeat: 'When does the big drip happen?',
           objectiveType: 'pattern',
           targetValue: 3,
           hints: ['Two small drips, then a BIG one. Two small, BIG.', 'The big drip comes every third one!'],
@@ -414,6 +492,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'Use your EYES to find something colorful. SEE the crystals glowing on the wall!',
+          spokenInstruction: 'Let\'s use our EYES first! Look around the cave — what\'s the most colorful, sparkly thing you can SEE? Your eyes are amazing at finding colors!',
+          screenReaderText: 'Use the sense of sight to locate colorful crystals glowing on the cave wall.',
+          companionRepeat: 'Use your eyes to find something colorful!',
           objectiveType: 'find',
           targetValue: 'see',
           hints: ['We SEE with our eyes! Look for colors.', 'The bright, colorful crystals — you can SEE them glowing!'],
@@ -423,6 +504,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 1,
           instruction: 'Use your EARS to follow a sound. HEAR the dripping water and find the underground stream!',
+          spokenInstruction: 'Now close your eyes and use your EARS! Can you HEAR that? Drip, drip, drip — follow the sound of water! Where is it coming from?',
+          screenReaderText: 'Use the sense of hearing to follow the sound of dripping water and locate the underground stream.',
+          companionRepeat: 'Listen for the water and follow the sound!',
           objectiveType: 'find',
           targetValue: 'hear',
           hints: ['We HEAR with our ears! Follow the dripping sound.', 'The drip-drip-drip sound leads to water!'],
@@ -432,6 +516,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 2,
           instruction: 'Use TOUCH to find the smoothest crystal. FEEL them — some are rough and some are smooth!',
+          spokenInstruction: 'Time to use your hands! TOUCH the crystals and FEEL them — some are bumpy and rough, but one is super smooth! Which one is the smoothest?',
+          screenReaderText: 'Use the sense of touch to examine crystals and find the smoothest one among rough and smooth options.',
+          companionRepeat: 'Feel the crystals and find the smooth one!',
           objectiveType: 'find',
           targetValue: 'touch',
           hints: ['We TOUCH with our hands! Feel each crystal.', 'Some are bumpy and rough, one is perfectly smooth.'],
@@ -441,6 +528,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 3,
           instruction: 'Use your NOSE to SMELL. Follow the sweet scent to find the underground flower garden!',
+          spokenInstruction: 'Last sense — your NOSE! Take a big sniff — mmmm, do you smell something sweet? Follow that yummy smell to find where it\'s coming from!',
+          screenReaderText: 'Use the sense of smell to follow a sweet scent and discover the hidden underground flower garden.',
+          companionRepeat: 'Follow the sweet smell with your nose!',
           objectiveType: 'find',
           targetValue: 'smell',
           hints: ['We SMELL with our nose! Follow the sweet scent.', 'Flowers smell sweet — follow your nose!'],
@@ -468,6 +558,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'Purple, white, purple, white, purple, ___. The wall is missing one crystal! Fill in the gap.',
+          spokenInstruction: 'Look at the crystal wall! Purple, white, purple, white, purple... it keeps going back and forth! One crystal is missing — what color should it be?',
+          screenReaderText: 'Complete the alternating color pattern: purple, white, purple, white, purple, blank. Select the missing color.',
+          companionRepeat: 'What color comes after purple?',
           objectiveType: 'pattern',
           targetValue: 'white',
           hints: ['Two colors take turns: purple, white, purple, white...', 'After purple always comes white!'],
@@ -477,6 +570,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 1,
           instruction: 'Green, green, gold, green, green, gold, green, green, ___. Fill in the missing crystal!',
+          spokenInstruction: 'This pattern has TWO greens and then a gold! Green, green, GOLD! Green, green... what comes next?',
+          screenReaderText: 'Complete the repeating color pattern: two greens followed by one gold. Select the missing color after two greens.',
+          companionRepeat: 'After two greens, what color comes next?',
           objectiveType: 'pattern',
           targetValue: 'gold',
           hints: ['Two greens, then a gold. Two greens, then a gold.', 'After two greens always comes a gold!'],
@@ -486,6 +582,9 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 2,
           instruction: 'Blue, pink, yellow, blue, pink, ___, blue, pink, yellow. One crystal is missing in the middle!',
+          spokenInstruction: 'Ooh, three colors this time! Blue, pink, yellow! Blue, pink... hmm, one is missing! Look at the other parts of the pattern — what color fills the gap?',
+          screenReaderText: 'Complete the three-color repeating pattern: blue, pink, yellow. Select the missing color in the middle of the sequence.',
+          companionRepeat: 'What color goes between pink and blue?',
           objectiveType: 'pattern',
           targetValue: 'yellow',
           hints: ['Three colors repeat: blue, pink, yellow!', 'The same three colors in the same order, over and over.'],

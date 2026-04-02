@@ -81,5 +81,8 @@ export type {
   StructuralElement, StructuralElementType, StructuralAnalysis, FailureMode,
   RecipeInput, RecipeInputType, RecipeOutput, RecipeOutputType,
   CraftRecipe, CraftResult,
+  AccessibilitySettings, AccessibilityPreset, ColorBlindMode, FontFamily,
+  Announcement, AnnouncementPriority, AnnouncementCategory,
+  Caption, CaptionType,
 } from './types/index.js';
 export { DEFAULT_COMPANION_CONFIG, getSpokenInstruction, getScreenReaderText, getCompanionRepeat } from './types/index.js';

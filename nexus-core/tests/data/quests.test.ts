@@ -34,6 +34,18 @@ const GENDERED_TERMS = [
   /\bsister\b/i,
 ];
 
+// Color-only instruction patterns — color word followed by a generic noun
+// without a shape/position/name qualifier nearby.
+// These catch "tap the red one" or "find the blue crystal" but allow
+// "tap the red circle on the left" or "find the red hammer".
+const COLOR_WORDS = 'red|blue|green|yellow|orange|purple|pink|white|brown|gold';
+
+// Patterns that rely on color alone to identify a target.
+// "the red one" / "the blue ones" with no shape/position qualifier
+const COLOR_ONLY_PATTERNS = [
+  new RegExp(`\\bthe (${COLOR_WORDS}) ones?\\b`, 'i'),
+];
+
 function collectAllText(quest: (typeof allQuests)[number]): string {
   const parts: string[] = [
     quest.title,
@@ -43,13 +55,13 @@ function collectAllText(quest: (typeof allQuests)[number]): string {
   ];
   for (const step of quest.content.steps) {
     parts.push(step.instruction);
+    parts.push(step.spokenInstruction ?? '');
+    parts.push(step.screenReaderText ?? '');
+    parts.push(step.companionRepeat ?? '');
     parts.push(step.successResponse ?? '');
     parts.push(step.failureResponse ?? '');
     if (step.hints) {
       parts.push(...step.hints);
-    }
-    if (step.hint) {
-      parts.push(step.hint);
     }
   }
   return parts.join(' ');
@@ -126,6 +138,17 @@ describe('Foundation Quest Data — Structure', () => {
             expect(step.objectiveType).toBeTruthy();
           });
 
+          it('has triple instruction format (visual + audio + screen reader)', () => {
+            expect(step.spokenInstruction, 'missing spokenInstruction').toBeTruthy();
+            expect(step.screenReaderText, 'missing screenReaderText').toBeTruthy();
+          });
+
+          it('has companionRepeat for "say that again?"', () => {
+            expect(step.companionRepeat, 'missing companionRepeat').toBeTruthy();
+            // companionRepeat should be shorter/simpler than the main instruction
+            expect(step.companionRepeat!.length).toBeLessThanOrEqual(step.instruction.length + 20);
+          });
+
           it('has hints array with at least one hint', () => {
             expect(Array.isArray(step.hints)).toBe(true);
             expect(step.hints!.length).toBeGreaterThan(0);
@@ -135,10 +158,50 @@ describe('Foundation Quest Data — Structure', () => {
             expect(step.successResponse).toBeTruthy();
             expect(step.failureResponse).toBeTruthy();
           });
+
+          it('failure response is encouraging and offers a path forward', () => {
+            const f = step.failureResponse;
+            // Must not contain harsh negative words
+            expect(f).not.toMatch(/\bwrong\b/i);
+            expect(f).not.toMatch(/\bincorrect\b/i);
+            expect(f).not.toMatch(/\bfailed\b/i);
+            expect(f).not.toMatch(/\bgame over\b/i);
+            expect(f).not.toMatch(/\byou lose\b/i);
+          });
         });
       }
     });
   }
+});
+
+describe('Foundation Quest Data — Accessibility', () => {
+  it('no color-only identification in instructions', () => {
+    for (const quest of allFoundationQuests) {
+      for (const step of quest.content.steps) {
+        for (const pattern of COLOR_ONLY_PATTERNS) {
+          const match = step.instruction.match(pattern);
+          expect(
+            match,
+            `Quest "${quest.id}" step ${step.index} instruction uses color-only identification: "${match?.[0]}"`,
+          ).toBeNull();
+        }
+      }
+    }
+  });
+
+  it('screenReaderText never starts with a color word alone', () => {
+    const colorStart = new RegExp(`^(${COLOR_WORDS})\\b`, 'i');
+    for (const quest of allFoundationQuests) {
+      for (const step of quest.content.steps) {
+        if (step.screenReaderText) {
+          expect(
+            step.screenReaderText.match(colorStart),
+            `Quest "${quest.id}" step ${step.index} screenReaderText starts with color word`,
+          ).toBeNull();
+        }
+      }
+    }
+  });
 });
 
 describe('Foundation Quest Data — Educational Integrity', () => {

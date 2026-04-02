@@ -13,6 +13,7 @@ interface ProfileRow {
   created_at: string;
   last_active: string | null;
   settings: string | null;
+  accessibility_settings: string | null;
 }
 
 function rowToProfile(row: ProfileRow): Profile {
@@ -25,6 +26,9 @@ function rowToProfile(row: ProfileRow): Profile {
     createdAt: row.created_at,
     lastActive: row.last_active ?? undefined,
     settings: row.settings ? JSON.parse(row.settings) as Record<string, unknown> : undefined,
+    accessibilitySettings: row.accessibility_settings
+      ? JSON.parse(row.accessibility_settings) as import('../../types/accessibility.js').AccessibilitySettings
+      : undefined,
   };
 }
 
@@ -43,11 +47,12 @@ export class ProfileRepository {
   create(input: CreateProfileInput): Profile {
     const id = input.id ?? generateId();
     const settings = input.settings ? JSON.stringify(input.settings) : null;
+    const a11ySettings = input.accessibilitySettings ? JSON.stringify(input.accessibilitySettings) : null;
 
     this.db.run(
-      `INSERT INTO profiles (id, name, avatar_data, birth_date, settings, last_active)
-       VALUES (?, ?, ?, ?, ?, datetime('now'))`,
-      [id, input.name, input.avatarData ?? null, input.birthDate ?? null, settings],
+      `INSERT INTO profiles (id, name, avatar_data, birth_date, settings, accessibility_settings, last_active)
+       VALUES (?, ?, ?, ?, ?, ?, datetime('now'))`,
+      [id, input.name, input.avatarData ?? null, input.birthDate ?? null, settings, a11ySettings],
     );
 
     // Create default companion
@@ -105,6 +110,10 @@ export class ProfileRepository {
     if (updates.settings !== undefined) {
       setClauses.push('settings = ?');
       values.push(updates.settings ? JSON.stringify(updates.settings) : null);
+    }
+    if (updates.accessibilitySettings !== undefined) {
+      setClauses.push('accessibility_settings = ?');
+      values.push(updates.accessibilitySettings ? JSON.stringify(updates.accessibilitySettings) : null);
     }
 
     if (setClauses.length === 0) return this.getById(id);

@@ -1,6 +1,7 @@
 // Profile, auth, and mastery types
 
 import type { MasteryTier } from './components.js';
+import type { AccessibilitySettings } from './accessibility.js';
 
 export interface Profile {
   id: string;
@@ -11,6 +12,7 @@ export interface Profile {
   createdAt: string;
   lastActive?: string;
   settings?: Record<string, unknown>;
+  accessibilitySettings?: AccessibilitySettings;
 }
 
 export interface CreateProfileInput {
@@ -19,6 +21,7 @@ export interface CreateProfileInput {
   avatarData?: string;
   birthDate?: string;
   settings?: Record<string, unknown>;
+  accessibilitySettings?: AccessibilitySettings;
 }
 
 export interface Auth {

@@ -84,5 +84,7 @@ export function createEmptySceneGraph(): SceneGraph {
       paused: false,
     },
     audio: [],
+    announcements: [],
+    captions: [],
   };
 }

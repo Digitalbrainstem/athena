@@ -99,3 +99,15 @@ export type {
   CraftRecipe,
   CraftResult,
 } from './craft.js';
+
+export type {
+  AccessibilitySettings,
+  AccessibilityPreset,
+  ColorBlindMode,
+  FontFamily,
+  Announcement,
+  AnnouncementPriority,
+  AnnouncementCategory,
+  Caption,
+  CaptionType,
+} from './accessibility.js';

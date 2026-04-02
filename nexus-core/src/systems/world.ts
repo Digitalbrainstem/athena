@@ -505,6 +505,8 @@ export class WorldSystem implements System {
         paused: false,
       },
       audio,
+      announcements: [],
+      captions: [],
     };
   }
 }
