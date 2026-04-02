@@ -133,6 +133,88 @@ assumptions, and engages in genuine collaborative problem-solving.
 
 ---
 
+## Companion as Growth Mirror
+
+The player doesn't see themselves grow — they see the **companion** grow. This is the
+primary mechanism by which the player perceives their own progression. It's more
+powerful than any XP bar or level indicator because it's emotional, not numerical.
+
+### Why the Companion, Not the Player
+
+In a first-person game (see [16-ART_DIRECTION.md](16-ART_DIRECTION.md)), the player
+doesn't see their own avatar. They see the world and their companion. So the companion
+becomes the mirror — reflecting the player's growth back to them through its own
+evolution.
+
+This is MORE impactful than watching your own character change:
+- Watching a friend grow up alongside you creates deep emotional investment
+- The companion's evolution feels earned — "My companion is smarter because of what
+  we've done together"
+- There's no "leveling up" to compare with other players — growth is personal
+  and relational
+
+### How the Companion Grows
+
+**Communication evolution (gradual, continuous):**
+
+| Stage | Companion Says | Player Hears |
+|-------|---------------|-------------|
+| Early | "Ooh look, a butterfly! Can you count the spots?" | Childlike wonder, simple questions |
+| Growing | "I think if we combine these two materials…" | Helpful suggestions, emerging knowledge |
+| Maturing | "The structural integrity depends on the load distribution" | Genuine expertise, collaborative problem-solving |
+| Advanced | "The thrust-to-weight ratio needs adjustment. What do you think?" | Intellectual peer, trusts the player |
+
+The shift is imperceptible day-to-day. But a player who returns after a month away
+will notice: "My companion sounds... different. Smarter." That moment is the
+progression feedback.
+
+**Physical evolution (subtle, organic):**
+
+The companion's appearance gradually changes to reflect shared experiences:
+
+| Progression | Physical Change | What It Signals |
+|-------------|----------------|----------------|
+| Early days | Small, simple, rounded features | New, curious, matching the player's world |
+| After exploring biomes | Wears tiny accessories from visited biomes (crystal pendant, leaf pin) | Shared history, "we went there together" |
+| After building projects | Carries a small toolkit or tool belt | Growing capability |
+| After mastering subjects | Taller, more detailed features, confident posture | Growing wisdom |
+| After space travel | Star map in their eyes, cosmic dust on their fur/surface | "We've been to the stars" |
+
+**Ability evolution:**
+
+The companion gains abilities that reflect the player's mastery:
+
+| Player Masters | Companion Gains |
+|---------------|----------------|
+| Navigation | Can read maps and suggest routes |
+| Chemistry | Can identify materials and suggest combinations |
+| Programming | Can interface with machines directly |
+| Languages | Can read ancient inscriptions |
+| Physics | Can estimate distances, weights, and trajectories |
+
+These aren't "companion upgrades" the player selects. They emerge naturally from
+what the player has been teaching the companion through gameplay (see
+[06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md) — Teaching as Mastery).
+
+### The Long View
+
+A player who started at age 3 with a tiny, bouncy, excitable companion will, at age 18,
+have a poised, knowledgeable, physically transformed companion who remembers
+EVERYTHING they did together:
+
+```
+COMPANION: "Remember when we first found the Crystal Caverns?
+You couldn't figure out the door code — it was 7, and you
+kept tapping 4. [laughs] Now you're solving differential
+equations. We've come such a long way."
+```
+
+That moment — the companion reflecting years of shared growth — is the most powerful
+progression feedback the game can offer. No XP bar. No level number. Just your
+oldest friend, who grew up with you, telling you how far you've come.
+
+---
+
 ## Companion Customization
 
 ### Appearance

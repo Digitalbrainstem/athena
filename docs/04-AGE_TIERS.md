@@ -334,38 +334,67 @@ other players' worlds, creating a living, growing educational ecosystem.
 
 ## Tier Transitions
 
+### Tiers Are Internal Only
+
+**Critical design rule:** The tier names (Little Learner, Explorer, Adventurer, Scholar,
+Master) are internal design categories. **The player never sees them.** There is no
+"Congratulations, you've reached Adventurer!" screen. No tier badge. No rank indicator.
+No progress bar toward the next tier.
+
+The player experiences a world that gradually, organically expands. That's it.
+
 ### How Transition Works
 
-There is no "you are now an Adventurer" moment. Instead:
+1. **The world quietly expands.** A new path appears. A hill reveals something beyond
+   it. A door that was stuck now opens. The companion notices something it hadn't
+   before: "Wait — was that cave always there?"
 
-1. **UI elements appear gradually.** The quest log icon appears when the player starts
-   doing multi-step tasks. The crafting system reveals formulas when the player is
-   ready for them.
+2. **UI elements appear when needed.** The quest log icon appears when the player starts
+   doing multi-step tasks. The crafting formula display appears when the player is ready
+   for precise chemistry. An equation renderer appears when the math demands it. These
+   aren't "unlocked" — they just weren't needed until now.
 
-2. **Companion language shifts.** "Let's count together!" gradually becomes "What do you
-   think we need?" which becomes "I've been considering your hypothesis…"
+3. **Companion language shifts.** "Let's count together!" gradually becomes "What do you
+   think we need?" which becomes "I've been considering your hypothesis…" The companion
+   grows alongside the player (see [11-COMPANION_SYSTEM.md](11-COMPANION_SYSTEM.md)).
 
-3. **World complexity increases.** Simple puzzles gain extra steps. Recipes require more
-   precision. Navigation introduces new tools as the player outgrows old ones.
+4. **Content sophistication increases.** Vocabulary, sentence complexity, visual detail,
+   and narrative depth all ramp continuously. Not in steps — on a smooth curve.
 
-4. **Content sophistication.** Vocabulary, sentence complexity, visual detail, and
-   narrative depth all increase continuously.
+5. **UI adapts independently from content.** A brilliant 3-year-old solving pre-algebra
+   still gets large touch targets and voice-first interaction. Motor skills, reading
+   ability, and knowledge mastery are tracked on separate axes. See the Progression
+   Philosophy in [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md).
 
-5. **Age is a guide, not a gate.** A gifted 7-year-old can be encountering Adventurer-tier
-   content. A struggling 13-year-old might still be solidifying Explorer-tier skills.
-   The tier adapts to mastery, not birthday (see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md)).
+### Mastery Drives Expansion, Not Age
+
+Age is a guide for default starting content, not a gate:
+
+| Mastery Achieved | World Responds |
+|-----------------|---------------|
+| Counting + basic addition | Inventory and trading systems appear |
+| Reading comprehension | Journals, signs, and scrolls appear with quest clues |
+| Shapes + angles | Building tools and architectural challenges emerge |
+| Variables + unknowns | Crafting recipes show formulas, not just pictures |
+| Navigation + coordinates | Map gains a coordinate grid, longer journeys possible |
+| Basic programming | Code Forge machines become programmable |
+
+A gifted 7-year-old can be encountering what we internally call "Adventurer-tier"
+content. A struggling 13-year-old might still be solidifying "Explorer-tier" skills.
+Both are valid. Both are having fun. Neither knows their internal tier label.
 
 ### What Triggers Transition
 
-Atlas evaluates between sessions (see [08-ATLAS_INTEGRATION.md](08-ATLAS_INTEGRATION.md)):
+Atlas evaluates between sessions (see [08-ATLAS_INTEGRATION.md](08-ATLAS_INTEGRATION.md)).
+In standalone mode, the game uses simpler heuristics:
 
-- **Breadth:** Has the player demonstrated competence across core subject areas for the current tier?
-- **Depth:** Can the player apply skills in novel contexts? Teach the companion?
-- **Engagement:** Is the player bored with current-tier content? Completing too easily?
-- **Readiness signals:** Has the player tried accessing higher-tier mechanics on their own?
+- **Breadth:** Has the player demonstrated competence across core subject areas?
+- **Depth:** Can they apply skills in novel contexts? Teach the companion?
+- **Engagement:** Are they bored with current content? Completing too easily?
+- **Readiness signals:** Have they tried interacting with things beyond their current level?
 
-If these signals align, Atlas gradually introduces next-tier elements over several sessions.
-The transition takes weeks, not minutes.
+If these signals align, the game gradually introduces next-tier elements over several
+sessions. The transition takes weeks, not minutes. And the player never knows it's happening.
 
 ---
 

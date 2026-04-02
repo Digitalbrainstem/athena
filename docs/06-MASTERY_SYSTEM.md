@@ -361,6 +361,121 @@ and scoring. The player measures progress by what they can DO, not by a number.
 
 ---
 
+## Progression Philosophy
+
+This section captures the unified philosophy of how progression FEELS in Nexus Academy.
+It ties together the mastery system, the companion, the world, and the player's experience
+into a single coherent design intent.
+
+### No Gates, No Ceremonies, No Visible Tiers
+
+The age tiers (Little Learner, Explorer, Adventurer, Scholar, Master) are **internal
+design categories only**. The player never sees them. There is no "Congratulations,
+you've reached Explorer mode!" screen. No locked doors with "Requires Explorer Rank."
+No progress bars showing "78% to next tier."
+
+The world just quietly expands:
+
+- A new path appears where there wasn't one before
+- A hill reveals something beyond it that the player couldn't see last week
+- The companion notices something new: "Hey, I think there's a cave over there…"
+- A tool appears in the workshop that wasn't there yesterday
+- An NPC mentions a distant land the player has never heard of
+
+The expansion is driven by **mastery, not time or age:**
+
+| When the player masters… | The world responds with… |
+|--------------------------|-------------------------|
+| Counting + addition | Inventory system appears, trading becomes possible |
+| Reading | Journals, scrolls, and signs appear in the world with clues |
+| Shapes + angles | Building tools appear, architectural challenges emerge |
+| Basic chemistry | The Alchemist's Lab deepens, new ingredients appear |
+| Programming basics | Code Forge machines become programmable, not just operable |
+| Navigation + trig | Maps get coordinate systems, longer voyages become possible |
+| Calculus | Optimization challenges, rocket design, rate-of-change puzzles |
+
+A 4-year-old genius and a 12-year-old beginner can be experiencing the same part of
+the world — they got there by different paths, but the experience is equally valid.
+
+### UI Adapts Independently from Content
+
+This is critical and often overlooked: **motor skills and reading ability are tracked
+separately from knowledge mastery.**
+
+A brilliant 3-year-old solving algebra-level challenges still gets:
+- 80×80dp touch targets (because their fingers are small and imprecise)
+- Voice input as primary (because they may not read yet)
+- Companion speaking everything aloud (because reading shouldn't gate learning)
+- Simple, uncluttered HUD (because visual complexity overwhelms young eyes)
+
+A 15-year-old with motor impairments working on Scholar-level physics still gets:
+- Large touch targets and one-switch compatibility
+- Extended timing on all interactions
+- Full equation rendering and sophisticated content
+
+The UI complexity scales based on:
+1. **Motor development** — Touch target size, gesture complexity, input method
+2. **Reading level** — How much text appears vs. spoken content
+3. **Visual processing** — Number of simultaneous on-screen elements
+4. **Attention span** — Session length suggestions, break frequency
+
+These are INDEPENDENT axes from knowledge mastery. The game never assumes that a player
+who understands calculus also has adult motor skills, or that a player with a PhD-level
+reading ability is ready for advanced physics.
+
+### The Companion Embodies Growth
+
+The player doesn't see themselves grow — they see the **companion** grow. This is the
+primary mechanism by which the player perceives their own progression. See
+[11-COMPANION_SYSTEM.md](11-COMPANION_SYSTEM.md) for the full companion growth system.
+
+- Early: companion is small, simple, excited about everything
+- Mid: companion is helpful, knowledgeable, a true collaborator
+- Advanced: companion is sophisticated, challenges the player intellectually
+- The companion may physically change — grows taller, gains tools, wears gear reflecting
+  the biomes explored together
+
+This is MORE powerful than the player's own avatar changing. It's like watching your
+best friend grow up alongside you. The companion is a mirror that reflects the player's
+growth back to them without ever making it feel like an evaluation.
+
+### First-Person Immersion
+
+The game is first-person (see [16-ART_DIRECTION.md](16-ART_DIRECTION.md) and
+[05-GAMEPLAY_LOOPS.md](05-GAMEPLAY_LOOPS.md)). The player IS in the world, not
+watching a character from above. The player's hands and tools are visible, but there
+is no avatar on screen to judge or compare.
+
+Combined with companion-as-mirror, first-person perspective means the player experiences
+growth through:
+1. **What they can DO** — "I can build bridges now. I couldn't before."
+2. **Where they can GO** — "The world is so much bigger than when I started."
+3. **How the companion talks** — "My companion is SO much smarter now."
+4. **What the world offers** — "There's always something new to discover."
+
+They never experience growth through:
+- Numbers going up
+- Bars filling
+- Ranks unlocking
+- Comparison to others
+- Being told they've improved
+
+### The Player Never Feels Evaluated
+
+This is the emotional summary of the entire progression philosophy:
+
+**The player feels like an explorer whose world keeps getting more interesting.**
+
+Not a student whose grades keep improving. Not a gamer whose level keeps rising. Not a
+test-taker whose scores keep climbing. An explorer. The world is endlessly fascinating,
+and it keeps revealing new wonders because the player keeps becoming capable of
+perceiving them.
+
+The moment a player feels evaluated — the moment they think "the game is testing me" —
+we've failed. The progression system exists to ensure that moment never comes.
+
+---
+
 ## Research Required
 
 Before building against this document, complete the following research:

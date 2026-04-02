@@ -51,6 +51,12 @@ The fundamental unit of gameplay. Every interaction follows this pattern:
 to see the result of their action. Physics simulations run in real-time. Wrong answers
 get instant (gentle) feedback. The world is always responsive.
 
+**First-person perspective:** All loops play out in first person. The player IS in the
+world — they see their hands building the bridge, their tools mixing the potion, the
+companion reacting right in front of them. This creates maximum immersion: the feedback
+loop isn't "watch my character succeed" — it's "I succeeded." See
+[16-ART_DIRECTION.md](16-ART_DIRECTION.md) for the full first-person design.
+
 **Examples by tier:**
 
 | Tier | Micro-Loop Example |

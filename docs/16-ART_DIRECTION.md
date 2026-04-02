@@ -11,6 +11,30 @@
 
 ## Visual Philosophy
 
+### First-Person Perspective
+
+Nexus Academy is a **first-person game**. The player IS in the world — not watching a
+character from above or behind. This is a deliberate design choice:
+
+- **More immersive.** Closer to the OASIS vision. The player is IN the Nexus, not
+  observing it.
+- **The player's hands/tools are visible** but there is no full avatar on screen.
+  What the player sees is the world itself, their tools, and their companion.
+- **For Little Learner (2–5):** First person, but the companion is always visible
+  directly ahead — talking TO the player, pointing at things, reacting to what happens.
+  The companion is the player's anchor in the world.
+- **For older players:** First-person exploration, building, and crafting — like
+  Minecraft or No Man's Sky perspective. The world is what matters, not watching
+  an avatar from behind.
+- **No avatar to judge.** The player never sees their own body rendered, which means
+  there's no appearance to compare, no body type to worry about, no visual "level
+  indicator" on their character. They just ARE in the world.
+
+This integrates with the companion-as-growth-mirror philosophy
+(see [11-COMPANION_SYSTEM.md](11-COMPANION_SYSTEM.md)): the player experiences growth
+by seeing their companion evolve and their world expand, not by watching their own
+character change.
+
 ### Why Stylized, Not Realistic
 
 1. **Timeless.** Realistic graphics age badly. Stylized ages gracefully. A game meant
