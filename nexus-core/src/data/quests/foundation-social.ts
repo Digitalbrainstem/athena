@@ -13,7 +13,7 @@ export const foundationSocialQuests: CreateQuestInput[] = [
     skillsTaught: ["math.counting"],
     content: {
       description: 'The trading post has goods on the shelf! Count each item by tapping it.',
-      companionIntro: 'The trading post is full of goods! Let us count what is on the shelves!',
+      companionIntro: 'The trading post is full of goods! Let us count everything on the shelves!',
       steps: [
         {
           index: 0,
@@ -375,7 +375,7 @@ export const foundationSocialQuests: CreateQuestInput[] = [
         },
         {
           index: 1,
-          instruction: 'Now check: do all baskets have the same? Tap the basket that looks different if one has the incorrect amount, or tap the check mark if they are all equal.',
+          instruction: 'Now check: do all baskets have the same? Tap the basket that looks different if one has a different amount, or tap the check mark if they are all equal.',
           spokenInstruction: 'Are they all the same? Tap the check mark if equal!',
           screenReaderText: 'Interact task. Verify equal groups. Tap check mark if correct.',
           companionRepeat: 'Tap check mark if all equal.',
@@ -1022,7 +1022,7 @@ export const foundationSocialQuests: CreateQuestInput[] = [
           failureResponse: 'Look at all four flags. Three are large, one is tiny. Tap the tiny one.',
         },
       ],
-      companionOutro: 'Finding the odd one out! Look for what is different — shape, size, or pattern!',
+      companionOutro: 'Finding the odd one out! Look for the one that differs — shape, size, or pattern!',
       estimatedMinutes: 5,
     },
   },

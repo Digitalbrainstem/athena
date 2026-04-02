@@ -1274,7 +1274,7 @@ export const foundationScienceQuests: CreateQuestInput[] = [
           companionRepeat: 'White fluffy clouds mean sunshine — tap the sun card.',
           objectiveType: 'match',
           hints: ['White fluffy clouds mean good weather!', 'Lots of blue sky is a good sign!'],
-          successResponse: 'White fluffy clouds with blue sky — fair weather! Watching clouds helps us predict what is coming!',
+          successResponse: 'White fluffy clouds with blue sky — fair weather! Watching clouds helps us predict the weather ahead!',
           failureResponse: 'White fluffy clouds with blue sky usually mean nice weather. Tap the sunshine card!',
         },
       ],
@@ -1884,7 +1884,7 @@ export const foundationScienceQuests: CreateQuestInput[] = [
     skillsRequired: [],
     skillsTaught: ["science.biology","cs.sorting"],
     content: {
-      description: 'The healer studies living things! Sort what is living from what is not.',
+      description: 'The healer studies living things! Sort living from nonliving.',
       companionIntro: 'Some things are alive and some are not! Living things grow, move, and need food and water!',
       steps: [
         {
@@ -3181,8 +3181,8 @@ export const foundationScienceQuests: CreateQuestInput[] = [
         },
         {
           index: 1,
-          instruction: 'Now zoom in on the rock. Tap the magnifying glass then the rock to see what is inside!',
-          spokenInstruction: 'What is hiding in the rock? Zoom in with the magnifying glass!',
+          instruction: 'Now zoom in on the rock. Tap the magnifying glass then the rock to see the details inside!',
+          spokenInstruction: 'Interesting things hide in the rock! Zoom in with the magnifying glass!',
           screenReaderText: 'Interact task. Use magnifying glass on rock to reveal details.',
           companionRepeat: 'Tap magnifying glass then the rock.',
           objectiveType: 'interact',

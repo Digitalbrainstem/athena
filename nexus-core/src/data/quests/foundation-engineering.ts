@@ -1191,7 +1191,7 @@ export const foundationEngineeringQuests: CreateQuestInput[] = [
         {
           index: 1,
           instruction: 'New pattern: circle, circle, diamond, circle, circle, [missing]. Tap the missing piece!',
-          spokenInstruction: 'Circle, circle, diamond, circle, circle... what is missing? Tap it!',
+          spokenInstruction: 'Circle, circle, diamond, circle, circle... the missing piece! Tap it!',
           screenReaderText: 'Pattern task. Complete: circle, circle, diamond repeating.',
           companionRepeat: 'Tap the missing piece.',
           objectiveType: 'pattern',
@@ -2770,11 +2770,11 @@ export const foundationEngineeringQuests: CreateQuestInput[] = [
           companionRepeat: 'Tap X for not true.',
           objectiveType: 'interact',
           hints: ['The picture shows sun, not rain!', 'The words do not match the picture!'],
-          successResponse: 'Not true! The picture shows sun, not rain! Checking facts means comparing to what is real!',
+          successResponse: 'Not true! The picture shows sun, not rain! Checking facts means comparing to reality!',
           failureResponse: 'The picture shows sunshine but the statement says raining. They do not match. Tap X.',
         },
       ],
-      companionOutro: 'True means it matches what is real! Not true means it does not match!',
+      companionOutro: 'True means it matches reality! Not true means it does not match!',
       estimatedMinutes: 5,
     },
   },
@@ -3093,7 +3093,7 @@ export const foundationEngineeringQuests: CreateQuestInput[] = [
     skillsTaught: ["logic.comparison","math.matching"],
     content: {
       description: 'Two different things can still be alike! Find what they have in common.',
-      companionIntro: 'Even different things can share something! Let us find what is the same!',
+      companionIntro: 'Even different things can share something! Let us find the similarities!',
       steps: [
         {
           index: 0,

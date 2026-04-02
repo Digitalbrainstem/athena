@@ -285,7 +285,7 @@ export const foundationHumanitiesQuests: CreateQuestInput[] = [
           objectiveType: 'find',
           hints: ['On top means above!', 'Look at the highest point of the pillar!'],
           successResponse: 'The golden coin was on top! On top means sitting above something!',
-          failureResponse: 'Look at the pillar. Find what is sitting on top of it. Tap that item.',
+          failureResponse: 'Look at the pillar. Find the item sitting on top of it. Tap that item.',
         },
         {
           index: 1,
@@ -1102,7 +1102,7 @@ export const foundationHumanitiesQuests: CreateQuestInput[] = [
           failureResponse: 'Find the wave symbol. Tap it, then tap the lake sign to match.',
         },
       ],
-      companionOutro: 'Trees for forests, waves for lakes! Map symbols tell us what is at each place!',
+      companionOutro: 'Trees for forests, waves for lakes! Map symbols tell us about each place!',
       estimatedMinutes: 5,
     },
   },
@@ -1798,7 +1798,7 @@ export const foundationHumanitiesQuests: CreateQuestInput[] = [
           screenReaderText: 'Match task. Match sky color name to the sky-colored swatch.',
           companionRepeat: 'Tap sky name then matching swatch.',
           objectiveType: 'match',
-          hints: ['What color is the sky on a clear day?', 'Look for the sky-like swatch!'],
+          hints: ['Think of a clear sky!', 'Look for the sky-like swatch!'],
           successResponse: 'Sky color matched! The paint looks just like a clear sky!',
           failureResponse: 'Find the name tag that says sky. Tap it, then tap the swatch that matches the sky color.',
         },
@@ -1809,7 +1809,7 @@ export const foundationHumanitiesQuests: CreateQuestInput[] = [
           screenReaderText: 'Match task. Match grass color name to grass-colored swatch.',
           companionRepeat: 'Tap grass name then matching swatch.',
           objectiveType: 'match',
-          hints: ['What color is grass?', 'Find the grass-like swatch!'],
+          hints: ['Think of fresh grass!', 'Find the grass-like swatch!'],
           successResponse: 'Grass matched! Sky and grass — colors are everywhere in nature!',
           failureResponse: 'Find the grass name tag. Tap it, then tap the swatch that matches the color of grass.',
         },
@@ -2251,7 +2251,7 @@ export const foundationHumanitiesQuests: CreateQuestInput[] = [
     skillsTaught: ["language.verbs","language.vocabulary"],
     content: {
       description: 'Action words describe what someone is doing! Match the action to the picture.',
-      companionIntro: 'Jump, run, clap! Action words tell us what is happening! Let us match!',
+      companionIntro: 'Jump, run, clap! Action words tell us about the action! Let us match!',
       steps: [
         {
           index: 0,
@@ -2276,7 +2276,7 @@ export const foundationHumanitiesQuests: CreateQuestInput[] = [
           failureResponse: 'Find the picture of someone clapping. Tap it, then tap the CLAP word card.',
         },
       ],
-      companionOutro: 'Jump and clap! Action words describe what is happening! Language is active!',
+      companionOutro: 'Jump and clap! Action words describe the action! Language is active!',
       estimatedMinutes: 5,
     },
   },

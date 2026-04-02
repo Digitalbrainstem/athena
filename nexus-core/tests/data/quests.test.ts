@@ -7,11 +7,15 @@ import {
   foundationWorkshopQuests,
   foundationForestQuests,
   foundationCavernsQuests,
+  foundationScienceQuests,
+  foundationSocialQuests,
+  foundationEngineeringQuests,
+  foundationHumanitiesQuests,
 } from '../../src/data/quests/index.js';
 import { BIOME_IDS } from '../../src/data/biomes.js';
 
 // Valid biome IDs from the world system
-const VALID_BIOMES = ['workshop', 'alchemist-lab', 'crystal-caverns', 'living-forest', 'library-echoes'];
+const VALID_BIOMES = [...BIOME_IDS];
 const ALL_VALID_BIOMES = [...BIOME_IDS];
 
 // ---------------------------------------------------------------------------
@@ -133,8 +137,8 @@ function collectStepText(step: (typeof allQuests)[number]['content']['steps'][nu
 // Quest Count Requirements
 // ============================================================================
 describe('Foundation Quest Data — Counts', () => {
-  it('has at least 35 total Foundation quests', () => {
-    expect(allFoundationQuests.length).toBeGreaterThanOrEqual(35);
+  it('has at least 400 total Foundation quests', () => {
+    expect(allFoundationQuests.length).toBeGreaterThanOrEqual(400);
   });
 
   it('has at least 15 Workshop quests', () => {
@@ -147,6 +151,22 @@ describe('Foundation Quest Data — Counts', () => {
 
   it('has at least 10 Crystal Caverns quests', () => {
     expect(foundationCavernsQuests.length).toBeGreaterThanOrEqual(10);
+  });
+
+  it('has at least 90 Science quests', () => {
+    expect(foundationScienceQuests.length).toBeGreaterThanOrEqual(90);
+  });
+
+  it('has at least 45 Social quests', () => {
+    expect(foundationSocialQuests.length).toBeGreaterThanOrEqual(45);
+  });
+
+  it('has at least 90 Engineering quests', () => {
+    expect(foundationEngineeringQuests.length).toBeGreaterThanOrEqual(90);
+  });
+
+  it('has at least 105 Humanities quests', () => {
+    expect(foundationHumanitiesQuests.length).toBeGreaterThanOrEqual(105);
   });
 
   it('allQuests contains every Foundation quest', () => {
