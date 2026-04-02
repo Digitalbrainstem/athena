@@ -249,7 +249,7 @@ describe('Skill Prerequisites', () => {
   });
 
   it('getPrerequisites returns direct dependencies', () => {
-    expect(getPrerequisites('math.arithmetic')).toContain('math.counting');
+    expect(getPrerequisites('math.arithmetic')).toContain('math.addition');
     expect(getPrerequisites('math.counting')).toEqual([]);
   });
 
@@ -266,8 +266,8 @@ describe('Skill Prerequisites', () => {
 
   it('arePrerequisitesMet checks threshold', () => {
     const levels = new Map<string, number>([
-      ['math.counting', 0.5],
-      ['math.number-sense', 0.5],
+      ['math.addition', 0.5],
+      ['math.subtraction', 0.5],
     ]);
     expect(arePrerequisitesMet('math.arithmetic', levels, 0.3)).toBe(true);
     expect(arePrerequisitesMet('math.arithmetic', levels, 0.8)).toBe(false);
@@ -296,8 +296,8 @@ describe('Skill Prerequisites', () => {
 // Biomes
 // ============================================================================
 describe('Biome Data', () => {
-  it('has 18 biome IDs', () => {
-    expect(BIOME_IDS).toHaveLength(18);
+  it('has 27 biome IDs', () => {
+    expect(BIOME_IDS).toHaveLength(27);
   });
 
   it('isValidBiome returns true for valid IDs', () => {

@@ -141,7 +141,7 @@ describe('Dialogue Content Policy', () => {
     // analytical contexts ("wrong objective", "wrong assumption")
     const wrongExceptions = [
       'wrong objective', 'wrong assumption', 'went wrong',
-      'what went wrong', 'wrong constraint',
+      'what went wrong', 'wrong constraint', 'itself is wrong',
     ];
 
     // "test" is forbidden as quiz but allowed scientifically

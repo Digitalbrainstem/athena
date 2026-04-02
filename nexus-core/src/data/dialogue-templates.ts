@@ -1007,6 +1007,236 @@ const REDIRECT_SUGGESTION: DialogueTemplate[] = [
 ];
 
 // ============================================================
+// ADDITIONAL TEMPLATES — biome, idle, teaching, quest expansions
+// ============================================================
+
+const EXTRA_BIOME_ENTER: DialogueTemplate[] = [
+  t('biome-enter-guide-3', 'biome_enter', ['guide'], 'playful',
+    ['Everything is so COLORFUL here, {playerName}! I love it!',
+     'Whee! A new adventure spot! What do you think lives here?'],
+    'Everything is so colorful! I love it!',
+    'Companion delights in new biome visuals'),
+  t('biome-enter-partner-3', 'biome_enter', ['partner'], 'curious',
+    ['I can tell there are puzzles here. The layout is different from what we know.',
+     'Do you feel that? The atmosphere here is completely different.'],
+    'I can tell there are puzzles here.',
+    'Companion senses new challenges in biome'),
+  t('biome-enter-ally-2', 'biome_enter', ['ally'], 'curious',
+    ['New environment. I want to understand the rules here before we commit to anything.',
+     'Interesting — the principles in this area seem to differ from what we\'ve seen.'],
+    'I want to understand the rules here.',
+    'Companion approaches new biome analytically'),
+  t('biome-enter-peer-2', 'biome_enter', ['peer'], 'thoughtful',
+    ['The dynamics here suggest different governing principles. I want to map them.',
+     'This environment introduces variables we haven\'t encountered. Let\'s be systematic.'],
+    'This introduces variables we haven\'t encountered.',
+    'Companion notes novel variables in biome'),
+];
+
+const EXTRA_BIOME_LEAVE: DialogueTemplate[] = [
+  t('biome-leave-guide-2', 'biome_leave', ['guide'], 'excited',
+    ['That was so fun! We learned SO much! Where next, {playerName}?',
+     'I don\'t want to leave! But new places are exciting too!'],
+    'That was so fun! Where next?',
+    'Companion excited about moving on'),
+  t('biome-leave-partner-2', 'biome_leave', ['partner'], 'proud',
+    ['We accomplished a lot in there. I feel like we\'re getting stronger.',
+     'Nice work in that area. We should come back when we know more.'],
+    'We accomplished a lot in there.',
+    'Companion reflects on biome progress'),
+  t('biome-leave-ally-2', 'biome_leave', ['ally'], 'encouraging',
+    ['Solid progress. The skills we practiced there will transfer to other areas.',
+     'That was productive. I can already see how this connects to other things we\'re working on.'],
+    'The skills here will transfer to other areas.',
+    'Companion identifies skill transfer from biome'),
+  t('biome-leave-peer-2', 'biome_leave', ['peer'], 'curious',
+    ['I\'d like to compare our findings here with data from other environments.',
+     'The patterns we identified here raise questions about the broader system.'],
+    'I\'d like to compare our findings with other environments.',
+    'Companion plans cross-biome analysis'),
+];
+
+const EXTRA_IDLE_OBSERVATION: DialogueTemplate[] = [
+  t('idle-obs-guide-3', 'idle_observation', ['guide'], 'playful',
+    ['Look, {playerName}! That rock looks like a face! Can you see it?',
+     'The flowers are dancing in the wind! So pretty!'],
+    'Look! Can you see that?',
+    'Companion points out whimsical observation'),
+  t('idle-obs-partner-3', 'idle_observation', ['partner'], 'curious',
+    ['I just realized — the way the shadows fall tells us what time it is!',
+     'Hey, have you noticed the temperature difference between this side and that side?'],
+    'I just realized something about the shadows.',
+    'Companion makes practical observation'),
+  t('idle-obs-ally-3', 'idle_observation', ['ally'], 'thoughtful',
+    ['There\'s a subtle symmetry in this area\'s layout. I wonder if it\'s intentional.',
+     'The resource distribution here follows a pattern. I\'m starting to predict where things are.'],
+    'There\'s a subtle symmetry in this layout.',
+    'Companion identifies structural patterns'),
+  t('idle-obs-peer-3', 'idle_observation', ['peer'], 'curious',
+    ['I\'m detecting periodicity in the environmental cycles here. The period is approximately—',
+     'The information density in this area is unusually high. There\'s optimization here.'],
+    'I\'m detecting periodicity in the environmental cycles.',
+    'Companion performs ambient analysis'),
+];
+
+const EXTRA_IDLE_QUESTION: DialogueTemplate[] = [
+  t('idle-q-guide-3', 'idle_question', ['guide'], 'curious',
+    ['How many colors can you see right now, {playerName}? I count SO many!',
+     'What sounds do you hear, {playerName}? I hear something funny!'],
+    'How many colors can you see right now?',
+    'Companion invites sensory observation'),
+  t('idle-q-partner-2', 'idle_question', ['partner'], 'thoughtful',
+    ['If you could change one thing about this place, what would it be?',
+     'What do you think is the most useful thing we\'ve learned together?'],
+    'What would you change about this place?',
+    'Companion prompts creative thinking'),
+  t('idle-q-ally-2', 'idle_question', ['ally'], 'thoughtful',
+    ['What problem do you wish you could solve but don\'t have the tools for yet?',
+     'If you could combine any two areas of knowledge, which two would be most powerful?'],
+    'What problem do you wish you could solve?',
+    'Companion asks strategic question'),
+  t('idle-q-peer-2', 'idle_question', ['peer'], 'curious',
+    ['If you could design a new system from first principles, what axioms would you start with?',
+     'What assumptions do you think we\'re making that might be limiting us?'],
+    'What assumptions might be limiting us?',
+    'Companion invites meta-analysis'),
+];
+
+const EXTRA_IDLE_SUGGESTION: DialogueTemplate[] = [
+  t('idle-sug-guide-3', 'idle_suggestion', ['guide'], 'curious',
+    ['What if we tried mixing those two things together? I bet something cool happens!',
+     'Oh! I just thought of something! What if we build with THESE?'],
+    'What if we mixed those things together?',
+    'Companion suggests experimentation'),
+  t('idle-sug-partner-3', 'idle_suggestion', ['partner'], 'playful',
+    ['Want to set a challenge for each other? I\'ll think of one if you think of one!',
+     'Let\'s try something we\'ve never tried before. I have an idea!'],
+    'Want to set a challenge for each other?',
+    'Companion proposes mutual challenge'),
+  t('idle-sug-ally-2', 'idle_suggestion', ['ally'], 'curious',
+    ['What if we revisited something we struggled with before? We might see it differently now.',
+     'I think we\'re ready for a more complex project. Want to try something ambitious?'],
+    'We might see old challenges differently now.',
+    'Companion suggests revisiting with new knowledge'),
+  t('idle-sug-peer-2', 'idle_suggestion', ['peer'], 'thoughtful',
+    ['I\'ve been formulating a multi-step project. It would integrate several domains. Interested?',
+     'There\'s an open question I\'ve been circling. It might be tractable now with our combined knowledge.'],
+    'I\'ve been formulating a multi-step project.',
+    'Companion proposes integrative project'),
+];
+
+const EXTRA_QUEST_INTRO: DialogueTemplate[] = [
+  t('quest-intro-guide-3', 'quest_intro', ['guide'], 'playful',
+    ['I think this thing needs our help, {playerName}! Can we fix it?',
+     'Something here is broken! I bet we can make it work again!'],
+    'I think this needs our help!',
+    'Companion frames quest as helping'),
+  t('quest-intro-partner-3', 'quest_intro', ['partner'], 'thoughtful',
+    ['I have a hunch about what we need to do here. But I might be completely off!',
+     'There\'s definitely a puzzle here. I can feel it. Want to dig in?'],
+    'I have a hunch about what we need to do.',
+    'Companion shares intuition about quest'),
+];
+
+const EXTRA_QUEST_HINT: DialogueTemplate[] = [
+  t('quest-hint-guide-4', 'quest_hint', ['guide'], 'encouraging',
+    ['We\'re getting closer, {playerName}! I can feel it!',
+     'Almost! Almost! Keep going, I think you\'re onto something!'],
+    'We\'re getting closer! Keep going!',
+    'Companion encourages persistence'),
+  t('quest-hint-partner-3', 'quest_hint', ['partner'], 'curious',
+    ['What if the answer isn\'t in the obvious place? Maybe we need to look where we haven\'t.',
+     'I think there\'s a connection between this and something we saw earlier.'],
+    'Maybe we need to look where we haven\'t.',
+    'Companion suggests non-obvious approach'),
+];
+
+const EXTRA_TEACH_REQUEST: DialogueTemplate[] = [
+  t('teach-req-guide-3', 'teach_request', ['guide'], 'excited',
+    ['That\'s so amazing, {playerName}! How does it work? Tell me tell me!',
+     'Whoa! I want to understand! Can you explain it simply?'],
+    'How does it work? Tell me!',
+    'Companion eager to learn'),
+  t('teach-req-partner-3', 'teach_request', ['partner'], 'curious',
+    ['I want to be able to do what you just did. Where do I start?',
+     'That was smooth! Can you break it down for me step by step?'],
+    'Can you break it down step by step?',
+    'Companion requests procedural explanation'),
+];
+
+const EXTRA_DISCOVERY: DialogueTemplate[] = [
+  t('discovery-guide-3', 'discovery', ['guide'], 'playful',
+    ['Ooh ooh ooh! This is SO exciting! We found a treasure!',
+     'A secret! We found a SECRET, {playerName}!'],
+    'We found a secret!',
+    'Companion thrilled by discovery'),
+  t('discovery-partner-3', 'discovery', ['partner'], 'excited',
+    ['This changes things! I think this opens up new possibilities for us!',
+     'Do you realize what we just found? This is going to be useful!'],
+    'This changes things!',
+    'Companion recognizes practical value of discovery'),
+];
+
+const EXTRA_ACHIEVEMENT: DialogueTemplate[] = [
+  t('achieve-guide-3', 'achievement', ['guide'], 'playful',
+    ['Let\'s celebrate! You\'re amazing, {playerName}! Dance dance dance!',
+     'I want to remember this forever! We did something really cool!'],
+    'Let\'s celebrate!',
+    'Companion wants to celebrate achievement'),
+  t('achieve-partner-3', 'achievement', ['partner'], 'excited',
+    ['That was a real milestone! I\'m telling everyone we meet about this!',
+     'We should build something to mark this moment. A monument of our achievement!'],
+    'That was a real milestone!',
+    'Companion wants to commemorate achievement'),
+];
+
+const EXTRA_STRUGGLE: DialogueTemplate[] = [
+  t('struggle-obs-guide-3', 'struggle_observe', ['guide'], 'playful',
+    ['This one is being sneaky, huh? But we\'re sneakier! Right, {playerName}?',
+     'It\'s like a puzzle wrapped in a riddle! I love puzzles!'],
+    'This one is sneaky! But we\'re sneakier!',
+    'Companion makes difficulty fun'),
+  t('struggle-obs-partner-3', 'struggle_observe', ['partner'], 'thoughtful',
+    ['I think the approach is sound — the execution just needs tweaking.',
+     'We\'re on the right track. Sometimes it takes a few tries to find the rhythm.'],
+    'The approach is sound. We just need to tweak it.',
+    'Companion validates approach'),
+  t('struggle-alt-partner-2', 'struggle_alternative', ['partner'], 'encouraging',
+    ['What about this angle? It looks different but uses the same core idea.',
+     'Let\'s try coming at it sideways. Sometimes the indirect path is faster.'],
+    'Let\'s try coming at it sideways.',
+    'Companion suggests indirect approach'),
+  t('struggle-alt-ally-2', 'struggle_alternative', ['ally'], 'curious',
+    ['What if we built a simpler version first and then scaled up?',
+     'There might be an analogy from another domain that makes this click.'],
+    'What if we built a simpler version first?',
+    'Companion suggests scaffolding approach'),
+];
+
+const EXTRA_REDIRECT: DialogueTemplate[] = [
+  t('redirect-guide-3', 'redirect_suggestion', ['guide'], 'excited',
+    ['I have a surprise! There\'s something really fun we haven\'t tried yet!',
+     'Wait, I almost forgot — there\'s something over there calling our names!'],
+    'I have a surprise!',
+    'Companion creates excitement about redirect'),
+  t('redirect-partner-3', 'redirect_suggestion', ['partner'], 'playful',
+    ['You know what they say — when one door is tricky, try the window!',
+     'Plot twist! Let\'s go do something completely different for a while!'],
+    'Let\'s try the window instead of the door!',
+    'Companion reframes redirect as adventure'),
+  t('redirect-ally-2', 'redirect_suggestion', ['ally'], 'encouraging',
+    ['I think our brains need fresh input. A different challenge might unlock this one.',
+     'Some of the best solutions come when you\'re not directly thinking about the problem.'],
+    'Fresh input might unlock this problem.',
+    'Companion explains strategic benefit of redirect'),
+  t('redirect-peer-2', 'redirect_suggestion', ['peer'], 'curious',
+    ['I wonder if cross-pollination would help. Let\'s engage a different area and see what transfers.',
+     'Strategic context-switching can enhance problem-solving. Want to try?'],
+    'Cross-pollination might help.',
+    'Companion suggests deliberate context-switching'),
+];
+
+// ============================================================
 // COLLECT ALL TEMPLATES
 // ============================================================
 
@@ -1036,6 +1266,18 @@ export const DIALOGUE_TEMPLATES: readonly DialogueTemplate[] = [
   ...STRUGGLE_OBSERVE,
   ...STRUGGLE_ALTERNATIVE,
   ...REDIRECT_SUGGESTION,
+  ...EXTRA_BIOME_ENTER,
+  ...EXTRA_BIOME_LEAVE,
+  ...EXTRA_IDLE_OBSERVATION,
+  ...EXTRA_IDLE_QUESTION,
+  ...EXTRA_IDLE_SUGGESTION,
+  ...EXTRA_QUEST_INTRO,
+  ...EXTRA_QUEST_HINT,
+  ...EXTRA_TEACH_REQUEST,
+  ...EXTRA_DISCOVERY,
+  ...EXTRA_ACHIEVEMENT,
+  ...EXTRA_STRUGGLE,
+  ...EXTRA_REDIRECT,
 ];
 
 /** Look up templates by trigger and personality stage */

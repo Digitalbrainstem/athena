@@ -98,6 +98,51 @@ export const BIOME_ACCESSIBILITY: Record<string, BiomeAccessibility> = {
     description: 'A science laboratory with an experiment bench, safety station, hypothesis board, centrifuge, Bunsen burner, and periodic table wall.',
     ambientDescription: 'A soft hum of ventilation fans. The quiet bubbling of a water bath. Glassware clinks occasionally.',
   },
+  'architects-domain': {
+    spokenName: "The Architect's Domain",
+    description: 'A grand design studio with a drafting table, load calculator, tessellation wall, building sandbox, and city planner.',
+    ambientDescription: 'Pencils sketch across paper. Scale models click together. A distant crane hums.',
+  },
+  shipyard: {
+    spokenName: 'The Shipyard',
+    description: 'A bustling harbor workshop with a drydock, engine workshop, navigation console, and wind tunnel.',
+    ambientDescription: 'Waves lap against docks. Welding sparks crackle. Ropes creak under tension.',
+  },
+  'code-forge': {
+    spokenName: 'The Code Forge',
+    description: 'A glowing digital workshop with a code terminal, robot workshop, circuit board station, and algorithm visualizer.',
+    ambientDescription: 'Keyboards click softly. Holographic code scrolls upward. A robot whirs as it follows instructions.',
+  },
+  'digital-world': {
+    spokenName: 'The Digital World',
+    description: 'A neon-lit cyberspace with server racks, firewall controls, data stream displays, and encryption puzzles.',
+    ambientDescription: 'Data streams hum like rivers. Firewalls crackle with energy. Encrypted messages pulse in rhythmic patterns.',
+  },
+  'space-station': {
+    spokenName: 'The Space Station',
+    description: 'An orbital outpost with mission control, telescopes, a zero-gravity lab, reactor core, and communication dish.',
+    ambientDescription: 'Life support hums steadily. Stars drift past the viewport. Radio signals chirp from distant sources.',
+  },
+  'debate-hall': {
+    spokenName: 'The Debate Hall',
+    description: 'A columned amphitheatre with a podium, logic puzzle board, ethics scenario table, and Socratic circle.',
+    ambientDescription: 'Voices echo off marble walls. A quill scratches on parchment. Soft murmurs of deliberation fill the room.',
+  },
+  'trading-post': {
+    spokenName: 'The Trading Post',
+    description: 'A frontier outpost with a market board, trade counter, warehouse, ledger desk, and auction block.',
+    ambientDescription: 'Merchants call out prices. Coins clink on counters. Crates are stacked and counted.',
+  },
+  arena: {
+    spokenName: 'The Arena',
+    description: 'A grand coliseum of the mind with a strategy table, game board, probability machine, and puzzle vault.',
+    ambientDescription: 'Game pieces clatter on stone. A crowd murmurs with anticipation. Gears of puzzle mechanisms turn and click.',
+  },
+  'music-hall': {
+    spokenName: 'The Music Hall',
+    description: 'A resonant concert hall with an instrument forge, sound wave display, rhythm machine, and acoustics chamber.',
+    ambientDescription: 'A piano plays softly. Tuning forks ring with pure tones. Echoes dance between curved walls.',
+  },
 };
 
 /** Get accessibility metadata for a biome. */
@@ -129,6 +174,15 @@ export const BIOME_IDS: readonly string[] = [
   'hospital',
   'farm',
   'laboratory',
+  'architects-domain',
+  'shipyard',
+  'code-forge',
+  'digital-world',
+  'space-station',
+  'debate-hall',
+  'trading-post',
+  'arena',
+  'music-hall',
 ] as const;
 
 export type BiomeId = (typeof BIOME_IDS)[number];

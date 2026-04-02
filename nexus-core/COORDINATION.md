@@ -42,7 +42,7 @@ server/               ← Optional FastAPI sync layer
 | Quest engine | ✅ | State machine, selection, completion |
 | Crafting | ✅ | 37 elements, 35 compounds, 23 reactions, 121 recipes, 20 materials |
 | Companion | ✅ | 4 stages, trust, memory — NO dialogue generation yet |
-| World/biomes | ✅ | 18/21 biomes (workshop, alchemist, caverns, forest, library, ancient-ruins, time-rift, explorers-map, gallery, newsroom, theater, marketplace, observatory, storm-tower, healers-sanctuary, hospital, farm, laboratory) |
+| World/biomes | ✅ | 27/27 biomes (all built) |
 | Foundation quests | ✅ | 37 quests across 3 biomes (workshop/forest/caverns) |
 | Client renderer | ✅ | Three.js scene graph renderer, material caching, disposal |
 | Input (kbd+touch) | ✅ | Keyboard + touch. NO gamepad, NO voice input |
@@ -56,7 +56,7 @@ server/               ← Optional FastAPI sync layer
 ### What's Missing
 | Feature | Priority | Notes |
 |---------|----------|-------|
-| 3 biomes | HIGH | Only 18/21 built |
+| 0 biomes | — | All 27 built |
 | Discovery tier quests (ages 6-10) | HIGH | 0 quests |
 | Builder tier quests (ages 11-14) | HIGH | 0 quests |
 | Innovator tier quests (ages 15-18) | MEDIUM | 0 quests |
@@ -85,9 +85,9 @@ server/               ← Optional FastAPI sync layer
 | library-echoes | The Library of Echoes | ✅ BUILT | Language Arts, Literature |
 | observatory | The Observatory | ✅ BUILT | Astronomy, Physics, Math |
 | ancient-ruins | The Ancient Ruins | ✅ BUILT | History, Archaeology, Language |
-| trading-post | The Trading Post | ❌ TODO | Economics, Math |
-| architects-domain | The Architect's Domain | ❌ TODO | Geometry, Engineering, Art |
-| code-forge | The Code Forge | ❌ TODO | Computer Science, Logic |
+| trading-post | The Trading Post | ✅ BUILT | Economics, Math |
+| architects-domain | The Architect's Domain | ✅ BUILT | Geometry, Engineering, Art |
+| code-forge | The Code Forge | ✅ BUILT | Computer Science, Logic |
 | healers-sanctuary | The Healer's Sanctuary | ✅ BUILT | Biology, Chemistry, Medicine |
 | hospital | The Hospital | ✅ BUILT | Medicine, Health, Anatomy, First Aid |
 | farm | The Farm | ✅ BUILT | Biology, Agriculture, Economics, Ecology |
@@ -95,9 +95,12 @@ server/               ← Optional FastAPI sync layer
 | explorers-map | The Explorer's Map | ✅ BUILT | Geography, Navigation, Culture |
 | time-rift | The Time Rift | ✅ BUILT | History, Cause & Effect |
 | storm-tower | The Storm Tower | ✅ BUILT | Physics, Weather, Energy |
-| arena | The Arena | ❌ TODO | Strategy, Game Theory, Logic |
-| shipyard | The Shipyard | ❌ TODO | Engineering, Physics |
-| music-hall | The Music Hall | ❌ TODO | Music Theory, Physics |
+| arena | The Arena | ✅ BUILT | Strategy, Game Theory, Logic |
+| shipyard | The Shipyard | ✅ BUILT | Engineering, Physics |
+| music-hall | The Music Hall | ✅ BUILT | Music Theory, Physics |
+| digital-world | The Digital World | ✅ BUILT | CS, Networking, Cybersecurity, AI |
+| space-station | The Space Station | ✅ BUILT | Physics, Astronomy, Engineering |
+| debate-hall | The Debate Hall | ✅ BUILT | Philosophy, Logic, Rhetoric, Ethics |
 | gallery | The Gallery | ✅ BUILT | Art, Design, Math, History |
 | newsroom | The Newsroom | ✅ BUILT | Language Arts, Writing, Journalism |
 | theater | The Theater | ✅ BUILT | Language Arts, Literature, Performance |
