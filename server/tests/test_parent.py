@@ -124,3 +124,145 @@ class TestMasteryBreakdown:
         assert "math" in data["subjects"]
         assert "science" in data["subjects"]
         assert len(data["subjects"]["math"]) == 2
+
+
+class TestParentAccessibility:
+    async def test_get_accessibility_defaults(self, client: AsyncClient, profile: dict, parent_token: str):
+        """New profile returns default accessibility settings."""
+        resp = await client.get(
+            f"/api/parent/accessibility/{profile['id']}",
+            headers={"Authorization": f"Bearer {parent_token}"},
+        )
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["profile_id"] == profile["id"]
+        a11y = data["accessibility_settings"]
+        assert a11y["color_blind_mode"] == "none"
+        assert a11y["high_contrast"] is False
+        assert a11y["font_size"] == 100
+
+    async def test_set_accessibility(self, client: AsyncClient, profile: dict, parent_token: str):
+        """Parent can set accessibility settings for a child."""
+        resp = await client.put(
+            f"/api/parent/accessibility/{profile['id']}",
+            json={
+                "color_blind_mode": "deuteranopia",
+                "high_contrast": True,
+                "reduced_motion": True,
+                "font_size": 150,
+                "font_family": "OpenDyslexic",
+                "line_spacing": 2.0,
+                "subtitles": True,
+                "sound_captions": True,
+                "one_switch_mode": False,
+                "scan_speed": 1.0,
+                "input_debounce": 50.0,
+                "simplified_ui": True,
+                "companion_speech_speed": 0.7,
+            },
+            headers={"Authorization": f"Bearer {parent_token}"},
+        )
+        assert resp.status_code == 200
+        a11y = resp.json()["accessibility_settings"]
+        assert a11y["color_blind_mode"] == "deuteranopia"
+        assert a11y["high_contrast"] is True
+        assert a11y["reduced_motion"] is True
+        assert a11y["font_size"] == 150
+        assert a11y["font_family"] == "OpenDyslexic"
+        assert a11y["line_spacing"] == 2.0
+        assert a11y["subtitles"] is True
+        assert a11y["sound_captions"] is True
+        assert a11y["simplified_ui"] is True
+        assert a11y["companion_speech_speed"] == 0.7
+        assert a11y["input_debounce"] == 50.0
+
+    async def test_set_then_get_accessibility(self, client: AsyncClient, profile: dict, parent_token: str):
+        """Verify SET then GET round-trip."""
+        await client.put(
+            f"/api/parent/accessibility/{profile['id']}",
+            json={
+                "color_blind_mode": "tritanopia",
+                "font_size": 175,
+                "one_switch_mode": True,
+                "scan_speed": 0.5,
+            },
+            headers={"Authorization": f"Bearer {parent_token}"},
+        )
+
+        resp = await client.get(
+            f"/api/parent/accessibility/{profile['id']}",
+            headers={"Authorization": f"Bearer {parent_token}"},
+        )
+        assert resp.status_code == 200
+        a11y = resp.json()["accessibility_settings"]
+        assert a11y["color_blind_mode"] == "tritanopia"
+        assert a11y["font_size"] == 175
+        assert a11y["one_switch_mode"] is True
+        assert a11y["scan_speed"] == 0.5
+
+    async def test_accessibility_syncs_to_profile(self, client: AsyncClient, profile: dict, parent_token: str):
+        """Settings set by parent are visible in the profile API."""
+        await client.put(
+            f"/api/parent/accessibility/{profile['id']}",
+            json={"high_contrast": True, "simplified_ui": True},
+            headers={"Authorization": f"Bearer {parent_token}"},
+        )
+
+        resp = await client.get(f"/api/profiles/{profile['id']}")
+        assert resp.status_code == 200
+        a11y = resp.json()["accessibility_settings"]
+        assert a11y["high_contrast"] is True
+        assert a11y["simplified_ui"] is True
+
+    async def test_accessibility_syncs_to_download(self, client: AsyncClient, profile: dict, parent_token: str):
+        """Settings set by parent appear in sync download."""
+        await client.put(
+            f"/api/parent/accessibility/{profile['id']}",
+            json={"color_blind_mode": "protanopia", "subtitles": True},
+            headers={"Authorization": f"Bearer {parent_token}"},
+        )
+
+        dl = await client.post("/api/sync/download", json={"profile_id": profile["id"]})
+        a11y = dl.json()["accessibility_settings"]
+        assert a11y["color_blind_mode"] == "protanopia"
+        assert a11y["subtitles"] is True
+
+    async def test_accessibility_requires_parent_token(self, client: AsyncClient, profile: dict):
+        resp = await client.get(f"/api/parent/accessibility/{profile['id']}")
+        assert resp.status_code == 401
+
+        resp = await client.put(
+            f"/api/parent/accessibility/{profile['id']}",
+            json={"high_contrast": True},
+        )
+        assert resp.status_code == 401
+
+    async def test_accessibility_nonexistent_profile(self, client: AsyncClient, parent_token: str):
+        resp = await client.get(
+            "/api/parent/accessibility/ghost",
+            headers={"Authorization": f"Bearer {parent_token}"},
+        )
+        assert resp.status_code == 404
+
+        resp = await client.put(
+            "/api/parent/accessibility/ghost",
+            json={"high_contrast": True},
+            headers={"Authorization": f"Bearer {parent_token}"},
+        )
+        assert resp.status_code == 404
+
+    async def test_accessibility_validation(self, client: AsyncClient, profile: dict, parent_token: str):
+        """Invalid values are rejected."""
+        resp = await client.put(
+            f"/api/parent/accessibility/{profile['id']}",
+            json={"font_size": 10},  # below min of 50
+            headers={"Authorization": f"Bearer {parent_token}"},
+        )
+        assert resp.status_code == 422
+
+        resp = await client.put(
+            f"/api/parent/accessibility/{profile['id']}",
+            json={"color_blind_mode": "invalid"},
+            headers={"Authorization": f"Bearer {parent_token}"},
+        )
+        assert resp.status_code == 422

@@ -20,6 +20,7 @@ class SyncUploadRequest(BaseModel):
     quest_progress: list[dict] = Field(default_factory=list)
     companion: dict | None = None
     world_state: dict | None = None
+    accessibility_settings: dict | None = None
 
 
 class SyncUploadResponse(BaseModel):
@@ -29,6 +30,7 @@ class SyncUploadResponse(BaseModel):
     quests_updated: int
     companion_updated: bool
     world_state_updated: bool
+    accessibility_updated: bool
     conflicts: list[str]
 
 
@@ -54,6 +56,7 @@ async def sync_upload(body: SyncUploadRequest):
         quest_progress=body.quest_progress,
         companion=body.companion,
         world_state=body.world_state,
+        accessibility_settings=body.accessibility_settings,
     )
     result = await sync_service.merge_upload(body.profile_id, payload)
 
@@ -63,6 +66,7 @@ async def sync_upload(body: SyncUploadRequest):
         quests_updated=result.quests_updated,
         companion_updated=result.companion_updated,
         world_state_updated=result.world_state_updated,
+        accessibility_updated=result.accessibility_updated,
         conflicts=result.conflicts,
     )
 

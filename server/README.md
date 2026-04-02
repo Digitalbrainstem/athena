@@ -92,7 +92,32 @@ GET    /api/parent/reports/{profile_id}     # Weekly progress report (parent tok
 GET    /api/parent/dashboard                # All children overview (parent token)
 PUT    /api/parent/screen-time/{profile_id} # Configure screen-time limits (parent token)
 GET    /api/parent/mastery/{profile_id}     # Detailed mastery breakdown (parent token)
+GET    /api/parent/accessibility/{profile_id}  # Get child's accessibility settings (parent token)
+PUT    /api/parent/accessibility/{profile_id}  # Set child's accessibility settings (parent token)
 ```
+
+## Accessibility Settings
+
+Every profile has an optional `accessibility_settings` JSON field that syncs across
+devices (last-write-wins). Parents can view and configure these via the parent dashboard.
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `color_blind_mode` | `none\|deuteranopia\|protanopia\|tritanopia` | `none` | Color blind filter |
+| `high_contrast` | bool | `false` | High contrast mode |
+| `reduced_motion` | bool | `false` | Reduce animations |
+| `font_size` | int (50–200) | `100` | Font size percentage |
+| `font_family` | string | `default` | Preferred font |
+| `line_spacing` | float | `1.4` | Line height multiplier |
+| `subtitles` | bool | `false` | Show subtitles |
+| `sound_captions` | bool | `false` | Describe sound effects in text |
+| `one_switch_mode` | bool | `false` | Single-switch scanning input |
+| `scan_speed` | float | `1.0` | Auto-scan speed multiplier |
+| `input_debounce` | float | `0.0` | Input debounce delay (ms) |
+| `simplified_ui` | bool | `false` | Reduced UI complexity |
+| `companion_speech_speed` | float | `1.0` | Companion TTS speed |
+
+Accessible via: profile CRUD, sync upload/download, and parent dashboard endpoints.
 
 ## Sync Merge Rules
 
@@ -103,3 +128,4 @@ The server is the merge authority for multi-device play:
 - **Quest progress:** completed on any device = completed; max steps
 - **World state:** union for collections (biomes, inventory, structures, travel); last-write-wins for scalars
 - **Companion:** max trust; union traits and memories
+- **Accessibility settings:** last-write-wins (preferences replace entirely)

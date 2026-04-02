@@ -262,3 +262,128 @@ class TestSyncCompanion:
         import json
         traits = json.loads(comp["traits"]) if isinstance(comp["traits"], str) else comp["traits"]
         assert set(traits) >= {"curious", "playful", "patient"}
+
+
+class TestSyncAccessibility:
+    async def test_upload_accessibility_settings(self, client: AsyncClient, profile: dict):
+        """Accessibility settings sync via upload."""
+        resp = await client.post("/api/sync/upload", json={
+            "profile_id": profile["id"],
+            "accessibility_settings": {
+                "color_blind_mode": "deuteranopia",
+                "high_contrast": True,
+                "font_size": 150,
+                "subtitles": True,
+            },
+        })
+        assert resp.status_code == 200
+        assert resp.json()["accessibility_updated"] is True
+
+    async def test_download_includes_accessibility(self, client: AsyncClient, profile: dict):
+        """Accessibility settings appear in sync download."""
+        # Upload settings
+        await client.post("/api/sync/upload", json={
+            "profile_id": profile["id"],
+            "accessibility_settings": {
+                "color_blind_mode": "protanopia",
+                "reduced_motion": True,
+                "companion_speech_speed": 0.75,
+            },
+        })
+
+        # Download and verify
+        dl = await client.post("/api/sync/download", json={"profile_id": profile["id"]})
+        assert dl.status_code == 200
+        a11y = dl.json()["accessibility_settings"]
+        assert a11y is not None
+        assert a11y["color_blind_mode"] == "protanopia"
+        assert a11y["reduced_motion"] is True
+        assert a11y["companion_speech_speed"] == 0.75
+
+    async def test_accessibility_last_write_wins(self, client: AsyncClient, profile: dict):
+        """Later upload replaces earlier accessibility settings entirely."""
+        # Device A sets deuteranopia + high contrast
+        await client.post("/api/sync/upload", json={
+            "profile_id": profile["id"],
+            "accessibility_settings": {
+                "color_blind_mode": "deuteranopia",
+                "high_contrast": True,
+                "font_size": 120,
+            },
+        })
+
+        # Device B sets tritanopia + reduced motion (overwrites A entirely)
+        await client.post("/api/sync/upload", json={
+            "profile_id": profile["id"],
+            "accessibility_settings": {
+                "color_blind_mode": "tritanopia",
+                "reduced_motion": True,
+                "font_size": 180,
+            },
+        })
+
+        # Verify last write wins
+        dl = await client.post("/api/sync/download", json={"profile_id": profile["id"]})
+        a11y = dl.json()["accessibility_settings"]
+        assert a11y["color_blind_mode"] == "tritanopia"
+        assert a11y["reduced_motion"] is True
+        assert a11y["font_size"] == 180
+        # high_contrast was not in device B's upload — should be absent or default
+        assert a11y.get("high_contrast") is False or a11y.get("high_contrast") is None
+
+    async def test_download_no_accessibility_returns_null(self, client: AsyncClient, profile: dict):
+        """Profile with no accessibility settings returns null."""
+        dl = await client.post("/api/sync/download", json={"profile_id": profile["id"]})
+        assert dl.json()["accessibility_settings"] is None
+
+    async def test_full_export_includes_accessibility(self, client: AsyncClient, profile: dict):
+        """Full sync export includes accessibility settings."""
+        await client.post("/api/sync/upload", json={
+            "profile_id": profile["id"],
+            "accessibility_settings": {
+                "one_switch_mode": True,
+                "scan_speed": 0.5,
+                "simplified_ui": True,
+            },
+        })
+
+        resp = await client.post("/api/sync/full", json={"profile_id": profile["id"]})
+        assert resp.status_code == 200
+        a11y = resp.json()["accessibility_settings"]
+        assert a11y["one_switch_mode"] is True
+        assert a11y["scan_speed"] == 0.5
+        assert a11y["simplified_ui"] is True
+
+    async def test_upload_without_accessibility_preserves_existing(self, client: AsyncClient, profile: dict):
+        """Uploading other data without accessibility_settings doesn't erase them."""
+        # Set accessibility
+        await client.post("/api/sync/upload", json={
+            "profile_id": profile["id"],
+            "accessibility_settings": {
+                "high_contrast": True,
+                "font_size": 140,
+            },
+        })
+
+        # Upload only mastery data (no accessibility_settings field)
+        await client.post("/api/sync/upload", json={
+            "profile_id": profile["id"],
+            "mastery": [{
+                "skill_id": "math.arithmetic",
+                "level": 0.5,
+                "retention_score": 0.4,
+                "transfer_score": 0.3,
+                "depth_score": 0.2,
+                "attempts": 10,
+                "successes": 7,
+                "ease_factor": 2.5,
+                "streak": 3,
+                "interval_days": 6.0,
+            }],
+        })
+
+        # Accessibility settings should be unchanged
+        dl = await client.post("/api/sync/download", json={"profile_id": profile["id"]})
+        a11y = dl.json()["accessibility_settings"]
+        assert a11y["high_contrast"] is True
+        assert a11y["font_size"] == 140

@@ -20,6 +20,7 @@ class SyncUploadPayload:
     quest_progress: list[dict] = field(default_factory=list)
     companion: dict | None = None
     world_state: dict | None = None
+    accessibility_settings: dict | None = None
 
 
 @dataclass
@@ -31,6 +32,7 @@ class SyncResult:
     quests_updated: int = 0
     companion_updated: bool = False
     world_state_updated: bool = False
+    accessibility_updated: bool = False
     conflicts: list[str] = field(default_factory=list)
 
 
@@ -53,6 +55,7 @@ class SyncService:
             result.quests_updated = await self._merge_quest_progress(conn, profile_id, upload.quest_progress)
             result.companion_updated = await self._merge_companion(conn, profile_id, upload.companion)
             result.world_state_updated = await self._merge_world_state(conn, profile_id, upload.world_state)
+            result.accessibility_updated = await self._merge_accessibility(conn, profile_id, upload.accessibility_settings)
         return result
 
     async def get_state_since(
@@ -98,12 +101,21 @@ class SyncService:
         if companion:
             companion = _parse_companion(companion)
 
+        # Accessibility settings from the profile row
+        a11y_cur = await db.execute(
+            "SELECT accessibility_settings FROM profiles WHERE id = ?", (profile_id,)
+        )
+        a11y_row = await a11y_cur.fetchone()
+        a11y_raw = dict(a11y_row).get("accessibility_settings") if a11y_row else None
+        accessibility_settings = _parse_json_obj(a11y_raw)
+
         return {
             "learning_events": events,
             "mastery": mastery,
             "quest_progress": quest_progress,
             "companion": companion,
             "world_state": world_state,
+            "accessibility_settings": accessibility_settings,
         }
 
     async def full_export(self, profile_id: str) -> dict:
@@ -119,6 +131,20 @@ class SyncService:
         return state
 
     # -- Private merge helpers --------------------------------------------------
+
+    async def _merge_accessibility(
+        self, conn: aiosqlite.Connection, profile_id: str, settings: dict | None
+    ) -> bool:
+        """Last-write-wins for accessibility preferences."""
+        if settings is None:
+            return False
+
+        a11y_json = json.dumps(settings)
+        await conn.execute(
+            "UPDATE profiles SET accessibility_settings = ? WHERE id = ?",
+            (a11y_json, profile_id),
+        )
+        return True
 
     async def _merge_events(
         self, conn: aiosqlite.Connection, profile_id: str, events: list[dict]
@@ -448,6 +474,19 @@ def _parse_companion(row: dict) -> dict:
         if field in row and isinstance(row[field], str):
             row[field] = _parse_json_list(row[field])
     return row
+
+
+def _parse_json_obj(value: str | dict | None) -> dict | None:
+    """Parse a JSON text field into a dict, or return None."""
+    if value is None:
+        return None
+    if isinstance(value, dict):
+        return value
+    try:
+        result = json.loads(value)
+        return result if isinstance(result, dict) else None
+    except (json.JSONDecodeError, TypeError):
+        return None
 
 
 # -- Utility helpers -----------------------------------------------------------

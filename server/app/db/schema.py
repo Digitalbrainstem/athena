@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS profiles (
     birth_date TEXT,
     created_at TEXT DEFAULT (datetime('now')),
     last_active TEXT,
-    settings TEXT
+    settings TEXT,
+    accessibility_settings TEXT
 );
 
 -- Authentication
@@ -147,4 +148,4 @@ CREATE INDEX IF NOT EXISTS idx_quests_biome_tier ON quests(biome, mastery_tier);
 CREATE INDEX IF NOT EXISTS idx_quest_progress_profile ON quest_progress(profile_id, status);
 """
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2

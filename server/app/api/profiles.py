@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import json
 import uuid
 from datetime import datetime, timezone
+from typing import Literal
 
 from fastapi import APIRouter, Query
 from pydantic import BaseModel, Field
@@ -14,11 +16,33 @@ router = APIRouter(prefix="/api/profiles", tags=["profiles"])
 
 # -- Models --------------------------------------------------------------------
 
+ColorBlindMode = Literal["none", "deuteranopia", "protanopia", "tritanopia"]
+
+
+class AccessibilitySettings(BaseModel):
+    """Per-profile accessibility preferences — synced across devices."""
+
+    color_blind_mode: ColorBlindMode = "none"
+    high_contrast: bool = False
+    reduced_motion: bool = False
+    font_size: int = Field(default=100, ge=50, le=200)
+    font_family: str = "default"
+    line_spacing: float = 1.4
+    subtitles: bool = False
+    sound_captions: bool = False
+    one_switch_mode: bool = False
+    scan_speed: float = 1.0
+    input_debounce: float = 0.0
+    simplified_ui: bool = False
+    companion_speech_speed: float = 1.0
+
+
 class CreateProfileRequest(BaseModel):
     name: str = Field(..., min_length=1, max_length=100)
     avatar_data: str | None = None
     birth_date: str | None = None
     settings: dict | None = None
+    accessibility_settings: AccessibilitySettings | None = None
 
 
 class UpdateProfileRequest(BaseModel):
@@ -27,6 +51,7 @@ class UpdateProfileRequest(BaseModel):
     mastery_tier: str | None = None
     birth_date: str | None = None
     settings: dict | None = None
+    accessibility_settings: AccessibilitySettings | None = None
 
 
 class ProfileResponse(BaseModel):
@@ -38,6 +63,7 @@ class ProfileResponse(BaseModel):
     created_at: str | None = None
     last_active: str | None = None
     settings: dict | None = None
+    accessibility_settings: AccessibilitySettings | None = None
 
 
 class PaginatedProfiles(BaseModel):
@@ -58,13 +84,13 @@ async def create_profile(body: CreateProfileRequest):
     profile_id = uuid.uuid4().hex[:12]
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
 
-    import json
     settings_json = json.dumps(body.settings) if body.settings else None
+    a11y_json = body.accessibility_settings.model_dump_json() if body.accessibility_settings else None
 
     await db.execute(
-        "INSERT INTO profiles (id, name, avatar_data, birth_date, created_at, last_active, settings) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?)",
-        (profile_id, body.name, body.avatar_data, body.birth_date, now, now, settings_json),
+        "INSERT INTO profiles (id, name, avatar_data, birth_date, created_at, last_active, settings, accessibility_settings) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        (profile_id, body.name, body.avatar_data, body.birth_date, now, now, settings_json, a11y_json),
     )
 
     # Bootstrap companion and world state
@@ -85,6 +111,7 @@ async def create_profile(body: CreateProfileRequest):
         created_at=now,
         last_active=now,
         settings=body.settings,
+        accessibility_settings=body.accessibility_settings,
     )
 
 
@@ -121,8 +148,9 @@ async def update_profile(profile_id: str, body: UpdateProfileRequest):
     if body.birth_date is not None:
         updates["birth_date"] = body.birth_date
     if body.settings is not None:
-        import json
         updates["settings"] = json.dumps(body.settings)
+    if body.accessibility_settings is not None:
+        updates["accessibility_settings"] = body.accessibility_settings.model_dump_json()
 
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
     updates["last_active"] = now
@@ -165,13 +193,19 @@ async def list_profiles(
 
 
 def _row_to_profile(row: dict) -> ProfileResponse:
-    import json
     settings = None
     if row.get("settings"):
         try:
             settings = json.loads(row["settings"])
         except (json.JSONDecodeError, TypeError):
             settings = None
+
+    a11y = None
+    if row.get("accessibility_settings"):
+        try:
+            a11y = AccessibilitySettings.model_validate_json(row["accessibility_settings"])
+        except Exception:
+            a11y = None
 
     return ProfileResponse(
         id=row["id"],
@@ -182,4 +216,5 @@ def _row_to_profile(row: dict) -> ProfileResponse:
         created_at=row.get("created_at"),
         last_active=row.get("last_active"),
         settings=settings,
+        accessibility_settings=a11y,
     )
