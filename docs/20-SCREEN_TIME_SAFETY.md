@@ -332,5 +332,6 @@ Before building against this document, complete the following research:
 ---
 
 *Previous: [19-ACCESSIBILITY.md](19-ACCESSIBILITY.md) — Accessibility design.*
+*Next: [21-MARKETING_PITCH.md](21-MARKETING_PITCH.md) — Marketing and positioning.*
 
-*This is the final document in the specification suite. Return to [README.md](README.md) for the full index.*
+*Return to [README.md](README.md) for the full index.*

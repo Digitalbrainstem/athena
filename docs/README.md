@@ -28,6 +28,7 @@
 | 18 | [TECHNICAL_ARCHITECTURE.md](18-TECHNICAL_ARCHITECTURE.md) | Three.js client, FastAPI server, database schema, offline/sync, deployment |
 | 19 | [ACCESSIBILITY.md](19-ACCESSIBILITY.md) | Visual, motor, cognitive, and auditory accessibility — full spec |
 | 20 | [SCREEN_TIME_SAFETY.md](20-SCREEN_TIME_SAFETY.md) | Parental controls, screen time philosophy, COPPA compliance, child protection |
+| 21 | [MARKETING_PITCH.md](21-MARKETING_PITCH.md) | The pitch: problem, positioning, trailer concept, competitive landscape, why free |
 
 ## Suggested Reading Order
 
