@@ -151,7 +151,17 @@ Atlas does NOT:
 
 ## Key Documents
 
-- [Game Design Document](../docs/GAME_DESIGN.md) — The full GDD (read this first)
-- [Subject Mapping](../docs/SUBJECT_MAPPING.md) — Every subject mapped to game mechanics
-- [Voice Gameplay](../docs/VOICE_GAMEPLAY.md) — Audio-only mode design
-- [Technical Architecture](../docs/TECHNICAL_ARCHITECTURE.md) — System architecture
+20 focused spec documents in `docs/` — see [docs/README.md](../docs/README.md) for
+the full index and reading order.
+
+**Start here:**
+- [01-VISION.md](../docs/01-VISION.md) — What this game is and why
+- [04-AGE_TIERS.md](../docs/04-AGE_TIERS.md) — The five tiers in detail
+- [02-WORLD_DESIGN.md](../docs/02-WORLD_DESIGN.md) — The living world
+- [06-MASTERY_SYSTEM.md](../docs/06-MASTERY_SYSTEM.md) — The Ender Protocol
+
+**Building the game:**
+- [05-GAMEPLAY_LOOPS.md](../docs/05-GAMEPLAY_LOOPS.md) — Core gameplay mechanics
+- [07-SUBJECT_MAPPING.md](../docs/07-SUBJECT_MAPPING.md) — Subject → mechanic mapping
+- [18-TECHNICAL_ARCHITECTURE.md](../docs/18-TECHNICAL_ARCHITECTURE.md) — Architecture
+- [13-INPUT_CONTROLS.md](../docs/13-INPUT_CONTROLS.md) — Input handling

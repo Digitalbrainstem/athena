@@ -64,13 +64,32 @@ Five age tiers, one seamless world that grows with the player:
 
 ## Documentation
 
-| Document | Description |
-|----------|-------------|
-| [Game Design Document](docs/GAME_DESIGN.md) | Full GDD — vision, world, mechanics, mastery system, story |
-| [Subject Mapping](docs/SUBJECT_MAPPING.md) | Every subject mapped to game mechanics at each age tier |
-| [Voice Gameplay](docs/VOICE_GAMEPLAY.md) | Audio-only mode for satellite speakers (zero screen) |
-| [Technical Architecture](docs/TECHNICAL_ARCHITECTURE.md) | Client, server, Atlas integration, content pipeline |
-| [Copilot Instructions](.github/copilot-instructions.md) | AI assistant context for development |
+20 focused spec documents in [`docs/`](docs/README.md):
+
+| # | Document | Focus |
+|---|----------|-------|
+| 01 | [Vision](docs/01-VISION.md) | Design pillars, inspirations, what this IS and ISN'T |
+| 02 | [World Design](docs/02-WORLD_DESIGN.md) | Biomes, morphing, procedural generation |
+| 03 | [Travel Mechanics](docs/03-TRAVEL_MECHANICS.md) | Village → galaxy, ships, FTL, fuel chemistry |
+| 04 | [Age Tiers](docs/04-AGE_TIERS.md) | Little Learner through Master — detailed gameplay |
+| 05 | [Gameplay Loops](docs/05-GAMEPLAY_LOOPS.md) | Quests, crafting, building, Code Forge, economy |
+| 06 | [Mastery System](docs/06-MASTERY_SYSTEM.md) | Ender Protocol: spaced repetition, gap detection |
+| 07 | [Subject Mapping](docs/07-SUBJECT_MAPPING.md) | Every subject → game mechanic, all tiers |
+| 08 | [Atlas Integration](docs/08-ATLAS_INTEGRATION.md) | Invisible architect, nightly batch |
+| 09 | [Content Pipeline](docs/09-CONTENT_PIPELINE.md) | Generation, validation, caching, distribution |
+| 10 | [Story & Narrative](docs/10-STORY_NARRATIVE.md) | The Founders, mystery arc, endgame |
+| 11 | [Companion System](docs/11-COMPANION_SYSTEM.md) | Character arc, personality, teaching |
+| 12 | [Voice Gameplay](docs/12-VOICE_GAMEPLAY.md) | Zero-screen satellite mode |
+| 13 | [Input & Controls](docs/13-INPUT_CONTROLS.md) | Touch, voice, keyboard, gamepad |
+| 14 | [Multiplayer](docs/14-MULTIPLAYER.md) | Co-op, classroom mode, child safety |
+| 15 | [Profiles](docs/15-PROFILES_PROGRESSION.md) | Calibration zone, sync, progression |
+| 16 | [Art Direction](docs/16-ART_DIRECTION.md) | Stylized 3D, per-tier visual style |
+| 17 | [Audio Design](docs/17-AUDIO_DESIGN.md) | TTS, adaptive music, spatial audio |
+| 18 | [Tech Architecture](docs/18-TECHNICAL_ARCHITECTURE.md) | Three.js, FastAPI, DB, offline |
+| 19 | [Accessibility](docs/19-ACCESSIBILITY.md) | Visual, motor, cognitive, auditory |
+| 20 | [Screen Time](docs/20-SCREEN_TIME_SAFETY.md) | Parental controls, COPPA, safety |
+
+Also: [Copilot Instructions](.github/copilot-instructions.md) — AI assistant context for development.
 
 ## Getting Started
 
