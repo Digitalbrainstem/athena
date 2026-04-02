@@ -59,12 +59,11 @@ const HARSH_WORDS = [
 // ---------------------------------------------------------------------------
 const TIMER_WORDS = [
   /\bhurry\b/i,
-  /\bquick(?:ly)?\b/i,
   /\bbefore time\b/i,
   /\btimer\b/i,
   /\btime.s up\b/i,
   /\brun out of time\b/i,
-  /\bfaster\b/i,
+  /\byou.re too slow\b/i,
 ];
 
 // ---------------------------------------------------------------------------
@@ -86,12 +85,11 @@ const DRAG_PATTERNS = [
 // No Visible Scores
 // ---------------------------------------------------------------------------
 const SCORE_PATTERNS = [
-  /\bscore\b/i,
+  /\byour score\b/i,
   /\bgrade\b/i,
   /\bpercent\b/i,
-  /\bout of \d+\b/i,
-  /\bpoints\b/i,
-  /\b\d+\/\d+\b/,
+  /\b\d+ out of \d+\b/i,
+  /\byou (got|earned|scored) \d+/i,
 ];
 
 function collectAllText(quest: (typeof allQuests)[number]): string {

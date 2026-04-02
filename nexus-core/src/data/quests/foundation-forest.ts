@@ -510,9 +510,9 @@ export const foundationForestQuests: CreateQuestInput[] = [
         },
         {
           index: 2,
-          instruction: 'Line up all five trees from shortest to tallest. Drag the shortest to the left and the tallest to the right!',
+          instruction: 'Line up all five trees from shortest to tallest. Place the shortest to the left and the tallest to the right!',
           spokenInstruction: 'Now let\'s line up all five trees! Put the shortest on the left and build up to the tallest!',
-          screenReaderText: 'Sort task. Arrange 5 trees by height from shortest to tallest. Drag to reorder, shortest on the left, tallest on the right.',
+          screenReaderText: 'Sort task. Arrange 5 trees by height from shortest to tallest. Place to reorder, shortest on the left, tallest on the right.',
           companionRepeat: 'Put the trees in order — shortest to tallest.',
           objectiveType: 'sort',
           targetValue: ['tree-1', 'tree-2', 'tree-3', 'tree-4', 'tree-5'],
@@ -663,10 +663,10 @@ export const foundationForestQuests: CreateQuestInput[] = [
       steps: [
         {
           index: 0,
-          instruction: 'The tree grows, drinks water, and makes leaves. It\'s LIVING! Drag it to the right basket.',
-          spokenInstruction: 'Look at the tree — it grows and drinks water! This one is living! Drag it to the living basket!',
+          instruction: 'The tree grows, drinks water, and makes leaves. It\'s LIVING! Place it in the living basket.',
+          spokenInstruction: 'Look at the tree — it grows and drinks water! This one is living! Place it in the living basket!',
           screenReaderText: 'Sort task. Decide if the tree is living or not living. Two baskets: living on the left, not living on the right. The tree grows and needs water.',
-          companionRepeat: 'The tree grows — it\'s living! Drag it!',
+          companionRepeat: 'The tree grows — it\'s living! Place it!',
           objectiveType: 'sort',
           targetId: 'tree',
           targetValue: 'living',
@@ -677,9 +677,9 @@ export const foundationForestQuests: CreateQuestInput[] = [
         {
           index: 1,
           instruction: 'A rock sits by the path. It never grows, eats, or drinks water. It\'s NOT LIVING!',
-          spokenInstruction: 'Now look at this rock. It doesn\'t grow or eat — this one is not living! Drag it to the not-living basket!',
+          spokenInstruction: 'Now look at this rock. It doesn\'t grow or eat — this one is not living! Place it in the not-living basket!',
           screenReaderText: 'Sort task. Decide if the rock is living or not living. Two baskets: living on the left, not living on the right. The rock does not grow or need food.',
-          companionRepeat: 'The rock doesn\'t grow — not living! Drag it!',
+          companionRepeat: 'The rock doesn\'t grow — not living! Place it!',
           objectiveType: 'sort',
           targetId: 'rock',
           targetValue: 'not-living',

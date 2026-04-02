@@ -20,7 +20,7 @@ export const foundationCavernsQuests: CreateQuestInput[] = [
         {
           index: 0,
           instruction: 'The red chest wants all the RED crystals. Find every red crystal on the ground!',
-          spokenInstruction: 'Ooh, look at all these sparkly crystals everywhere! See the red chest? It wants all the RED ones — the ones that glow like fire! Let\'s find them all!',
+          spokenInstruction: 'Ooh, look at all these sparkly crystals everywhere! See the red chest? It wants all the RED crystals — the ones that glow like fire! Let\'s find them all!',
           screenReaderText: 'Sort all red crystals from the cave floor into the red treasure chest. Four red crystals are needed.',
           companionRepeat: 'Find all the red crystals for the red chest!',
           objectiveType: 'sort',
