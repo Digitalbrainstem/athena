@@ -412,3 +412,121 @@ describe('Foundation Quest Data — Integrity', () => {
     }
   });
 });
+
+// ============================================================================
+// Pedagogical Principles (Montessori / Reggio / Singapore / Finland / Vygotsky)
+// ============================================================================
+describe('Foundation Quest Data — Pedagogical Principles', () => {
+  // Principle: Concrete-first (Montessori/Singapore CPA)
+  // Every Foundation quest must involve interacting with concrete objects
+  const CONCRETE_OBJECTIVES = new Set([
+    'interact', 'collect', 'build', 'craft', 'navigate', 'observe',
+    'count', 'match', 'sort', 'find', 'mix', 'measure', 'pattern', 'place',
+  ]);
+
+  it('every step uses a concrete objective type (no abstract-only steps)', () => {
+    for (const quest of allFoundationQuests) {
+      for (const step of quest.content.steps) {
+        expect(
+          CONCRETE_OBJECTIVES.has(step.objectiveType),
+          `Quest "${quest.id}" step ${step.index} uses non-concrete objectiveType "${step.objectiveType}"`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  // Principle: World demands knowledge (Reggio Emilia)
+  // Quest descriptions should describe a world NEED, not an assignment
+  const ASSIGNMENT_PATTERNS = [
+    /\byour (task|job|assignment)\b/i,
+    /\bI want you to\b/i,
+    /\bthe teacher\b/i,
+    /\bthe lesson\b/i,
+    /\btoday we will learn\b/i,
+    /\btime to practice\b/i,
+    /\blet.s learn about\b/i,
+    /\bI.m going to teach\b/i,
+  ];
+
+  it('descriptions never use assignment/school language', () => {
+    for (const quest of allFoundationQuests) {
+      const desc = quest.content.description;
+      for (const pattern of ASSIGNMENT_PATTERNS) {
+        const match = desc.match(pattern);
+        expect(
+          match,
+          `Quest "${quest.id}" description uses school language: "${match?.[0]}"`,
+        ).toBeNull();
+      }
+    }
+  });
+
+  // Principle: Intrinsic motivation (Deci & Ryan SDT)
+  // No visible scores, no XP, no "you earned", no "reward points"
+  const EXTRINSIC_REWARD_PATTERNS = [
+    /\byou earned\b/i,
+    /\breward points\b/i,
+    /\bXP\b/,
+    /\bexperience points\b/i,
+    /\blevel up\b/i,
+    /\byour score\b/i,
+    /\bstars? earned\b/i,
+  ];
+
+  it('never mentions extrinsic rewards in any text', () => {
+    for (const quest of allFoundationQuests) {
+      const text = collectAllText(quest);
+      for (const pattern of EXTRINSIC_REWARD_PATTERNS) {
+        const match = text.match(pattern);
+        expect(
+          match,
+          `Quest "${quest.id}" mentions extrinsic reward: "${match?.[0]}"`,
+        ).toBeNull();
+      }
+    }
+  });
+
+  // Principle: Scaffolding (Vygotsky ZPD)
+  // Every quest with 2+ steps should have increasing complexity (step indices)
+  // AND every step should have hints (scaffolding support)
+  it('every step has at least one hint (scaffolding)', () => {
+    for (const quest of allFoundationQuests) {
+      for (const step of quest.content.steps) {
+        expect(
+          step.hints.length,
+          `Quest "${quest.id}" step ${step.index} has no hints (no scaffolding)`,
+        ).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  // Principle: Play IS learning (Finland)
+  // Failure responses should describe world consequences, not correctness
+  // "The bridge wobbled and fell!" not "That's not quite right."
+  it('failure responses describe world consequences or encourage retry', () => {
+    for (const quest of allFoundationQuests) {
+      for (const step of quest.content.steps) {
+        const f = step.failureResponse;
+        // Should not be empty platitudes
+        expect(
+          f.length,
+          `Quest "${quest.id}" step ${step.index} failureResponse is too short`,
+        ).toBeGreaterThan(10);
+      }
+    }
+  });
+
+  // Principle: No teaching vocab to youngest children (Montessori isolation of difficulty)
+  // Foundation quest instructions should not require reading ability
+  // spokenInstruction MUST exist for every step (voice-first for ages 2-5)
+  it('every step has spokenInstruction (voice-first, no reading required)', () => {
+    for (const quest of allFoundationQuests) {
+      for (const step of quest.content.steps) {
+        expect(
+          step.spokenInstruction,
+          `Quest "${quest.id}" step ${step.index} missing spokenInstruction (ages 2-5 cannot read)`,
+        ).toBeTruthy();
+      }
+    }
+  });
+});

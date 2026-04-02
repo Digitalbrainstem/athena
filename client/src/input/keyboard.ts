@@ -61,8 +61,12 @@ export class KeyboardInput implements InputProvider {
       case 'KeyE': return down ? { type: 'interact', source: 'keyboard' } : null;
       case 'KeyI': return down ? { type: 'inventory', source: 'keyboard' } : null;
       case 'KeyM': return down ? { type: 'map', source: 'keyboard' } : null;
+      case 'KeyC': return down ? { type: 'companion', source: 'keyboard' } : null;
       case 'Escape': return down ? { type: 'pause', source: 'keyboard' } : null;
       case 'Backspace': return down ? { type: 'back', source: 'keyboard' } : null;
+      case 'Digit1': case 'Digit2': case 'Digit3': case 'Digit4':
+      case 'Digit5': case 'Digit6': case 'Digit7': case 'Digit8': case 'Digit9':
+        return down ? { type: 'select', source: 'keyboard', payload: { entityId: parseInt(code.slice(5), 10) } as import('@nexus-academy/core').SelectPayload } : null;
       default: return null;
     }
   }
