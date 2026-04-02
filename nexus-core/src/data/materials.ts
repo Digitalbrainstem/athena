@@ -16,6 +16,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: true,
     },
     tier: 'foundation',
+    accessibility: {
+      spokenName: 'pine wood',
+      description: 'Pine wood is a light, affordable softwood. It is easy to work with but catches fire easily.',
+      iconShape: 'triangle',
+    },
   },
   {
     id: 'sandstone',
@@ -28,6 +33,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: false,
     },
     tier: 'foundation',
+    accessibility: {
+      spokenName: 'sandstone',
+      description: 'Sandstone is a sedimentary rock made of compressed sand grains. It is easy to carve and has been used in buildings for thousands of years.',
+      iconShape: 'square',
+    },
   },
   {
     id: 'clay-brick',
@@ -40,6 +50,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: false,
     },
     tier: 'foundation',
+    accessibility: {
+      spokenName: 'clay brick',
+      description: 'Clay brick is made by firing shaped clay in a kiln. It resists fire and weathering, making it one of the oldest building materials still in use.',
+      iconShape: 'square',
+    },
   },
 
   // --- Discovery tier ---
@@ -54,6 +69,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: true,
     },
     tier: 'discovery',
+    accessibility: {
+      spokenName: 'oak wood',
+      description: 'Oak wood is a dense, strong hardwood prized for its durability. It is widely used in furniture, flooring, and timber-frame construction.',
+      iconShape: 'triangle',
+    },
   },
   {
     id: 'limestone',
@@ -66,6 +86,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: false,
     },
     tier: 'discovery',
+    accessibility: {
+      spokenName: 'limestone',
+      description: 'Limestone is a sedimentary rock rich in calcium carbonate. It is the key ingredient in cement and is used in many historic buildings.',
+      iconShape: 'square',
+    },
   },
   {
     id: 'granite',
@@ -78,6 +103,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: false,
     },
     tier: 'discovery',
+    accessibility: {
+      spokenName: 'granite',
+      description: 'Granite is an extremely hard igneous rock with very high compressive strength. It is commonly used for countertops, monuments, and building foundations.',
+      iconShape: 'square',
+    },
   },
   {
     id: 'bamboo',
@@ -90,6 +120,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: true,
     },
     tier: 'discovery',
+    accessibility: {
+      spokenName: 'bamboo',
+      description: 'Bamboo is a fast-growing grass with remarkable tensile strength for its weight. It is used for scaffolding, bridges, and houses across Asia.',
+      iconShape: 'triangle',
+    },
   },
 
   // --- Builder tier ---
@@ -104,6 +139,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: false,
     },
     tier: 'builder',
+    accessibility: {
+      spokenName: 'concrete',
+      description: 'Concrete is a mixture of cement, water, sand, and gravel that hardens into stone-like mass. It is very strong under compression but very weak under tension.',
+      iconShape: 'hexagon',
+    },
   },
   {
     id: 'mild-steel',
@@ -116,6 +156,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: false,
     },
     tier: 'builder',
+    accessibility: {
+      spokenName: 'mild steel',
+      description: 'Mild steel is strong and relatively inexpensive. It is the most common structural steel in buildings and bridges.',
+      iconShape: 'star',
+    },
   },
   {
     id: 'wrought-iron',
@@ -128,6 +173,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: false,
     },
     tier: 'builder',
+    accessibility: {
+      spokenName: 'wrought iron',
+      description: 'Wrought iron is a tough, malleable iron with very low carbon content. It was the primary structural metal before steel, used in railings, gates, and early bridges.',
+      iconShape: 'star',
+    },
   },
   {
     id: 'glass',
@@ -140,6 +190,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: false,
     },
     tier: 'builder',
+    accessibility: {
+      spokenName: 'soda-lime glass',
+      description: 'Soda-lime glass is the most common type of glass, made from sand, soda ash, and lime. It is incredibly strong under compression but shatters easily under impact.',
+      iconShape: 'circle',
+    },
   },
   {
     id: 'reinforced-concrete',
@@ -152,6 +207,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: false,
     },
     tier: 'builder',
+    accessibility: {
+      spokenName: 'reinforced concrete',
+      description: 'Reinforced concrete embeds steel rebar inside concrete to handle tension. This combination makes it far stronger than plain concrete and is used in most modern structures.',
+      iconShape: 'hexagon',
+    },
   },
   {
     id: 'copper',
@@ -164,6 +224,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: false,
     },
     tier: 'builder',
+    accessibility: {
+      spokenName: 'copper',
+      description: 'Copper is a soft, ductile metal that resists corrosion. It is widely used for roofing, plumbing, and electrical wiring in buildings.',
+      iconShape: 'star',
+    },
   },
 
   // --- Innovator tier ---
@@ -178,6 +243,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: false,
     },
     tier: 'innovator',
+    accessibility: {
+      spokenName: 'high-strength steel',
+      description: 'High-strength steel is an advanced structural steel that is stronger than mild steel at the same weight. It is used in skyscrapers and long-span bridges.',
+      iconShape: 'star',
+    },
   },
   {
     id: 'aluminium-alloy',
@@ -190,6 +260,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: false,
     },
     tier: 'innovator',
+    accessibility: {
+      spokenName: 'aluminium alloy',
+      description: 'Aluminium alloy 6061 is lightweight yet strong, with about one-third the density of steel. It is used in aircraft, curtain walls, and lightweight structural frames.',
+      iconShape: 'star',
+    },
   },
   {
     id: 'pre-stressed-concrete',
@@ -202,6 +277,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: false,
     },
     tier: 'innovator',
+    accessibility: {
+      spokenName: 'pre-stressed concrete',
+      description: 'Pre-stressed concrete has steel tendons stretched inside it before it sets, keeping the concrete permanently compressed. It can span longer distances than regular reinforced concrete.',
+      iconShape: 'hexagon',
+    },
   },
   {
     id: 'stainless-steel',
@@ -214,6 +294,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: false,
     },
     tier: 'innovator',
+    accessibility: {
+      spokenName: 'stainless steel',
+      description: 'Stainless steel contains chromium that forms an invisible protective layer, preventing rust. It is used in kitchen equipment, medical instruments, and building facades.',
+      iconShape: 'star',
+    },
   },
 
   // --- Creator tier ---
@@ -228,6 +313,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: false,
     },
     tier: 'creator',
+    accessibility: {
+      spokenName: 'titanium alloy',
+      description: 'Titanium alloy is as strong as steel but nearly half the weight, and it resists corrosion almost completely. It is used in aerospace, medical implants, and high-performance architecture.',
+      iconShape: 'star',
+    },
   },
   {
     id: 'carbon-fiber-composite',
@@ -240,6 +330,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: false,
     },
     tier: 'creator',
+    accessibility: {
+      spokenName: 'carbon fiber composite',
+      description: 'Carbon fiber composite weaves thin carbon strands into a resin matrix, creating a material with extraordinary strength-to-weight ratio. It is used in race cars, aircraft, and advanced bridges.',
+      iconShape: 'pentagon',
+    },
   },
   {
     id: 'ultra-high-performance-concrete',
@@ -252,6 +347,11 @@ export const BUILDING_MATERIALS: readonly BuildingMaterial[] = [
       flammable: false,
     },
     tier: 'creator',
+    accessibility: {
+      spokenName: 'ultra-high-performance concrete',
+      description: 'Ultra-high-performance concrete uses fine powders and steel fibers to achieve compressive strength five times that of regular concrete. It is used in thin, elegant structures like pedestrian bridges.',
+      iconShape: 'hexagon',
+    },
   },
 ] as const;
 

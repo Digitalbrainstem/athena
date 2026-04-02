@@ -44,6 +44,25 @@ export { distance, findObjectsInRadius, findNearestInteractable, updateHighlight
   fadeOut, getBiomeAmbience,
 } from './scene/index.js';
 
+// Accessibility
+export {
+  DEFAULT_ACCESSIBILITY_SETTINGS,
+  sanitizeSettings,
+  applyPreset,
+  mergeSettings,
+  AnnouncementQueue,
+  generateCaption,
+  generateCaptions,
+} from './accessibility/index.js';
+
+// Data
+export {
+  BIOME_ACCESSIBILITY, getBiomeAccessibility, BIOME_IDS, isValidBiome,
+  SKILL_PREREQUISITES, getPrerequisites, getAllPrerequisites, arePrerequisitesMet,
+  getRootSkills, getDependents,
+} from './data/index.js';
+export type { BiomeAccessibility, BiomeId } from './data/index.js';
+
 // Types — re-export everything
 export type {
   PositionComponent, RotationComponent, RenderableComponent, InteractableComponent,
@@ -63,4 +82,4 @@ export type {
   RecipeInput, RecipeInputType, RecipeOutput, RecipeOutputType,
   CraftRecipe, CraftResult,
 } from './types/index.js';
-export { DEFAULT_COMPANION_CONFIG } from './types/index.js';
+export { DEFAULT_COMPANION_CONFIG, getSpokenInstruction, getScreenReaderText, getCompanionRepeat } from './types/index.js';

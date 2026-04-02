@@ -110,7 +110,10 @@ export class CraftSystem implements System {
    */
   analyzeStructure(elements: StructuralElement[]): StructuralAnalysis {
     if (elements.length === 0) {
-      return { stable: false, maxLoad: 0, weakPoints: [], safetyFactor: 0, failureMode: 'overturning' };
+      return {
+        stable: false, maxLoad: 0, weakPoints: [], safetyFactor: 0, failureMode: 'overturning',
+        announcement: 'This structure has no elements. Add structural components to begin building.',
+      };
     }
 
     let totalCapacity = Infinity;
@@ -207,6 +210,13 @@ export class CraftSystem implements System {
       weakPoints,
       safetyFactor: Math.round(safetyFactor * 100) / 100,
       failureMode: safetyFactor < 1.0 ? criticalFailure : undefined,
+      announcement: this.describeStructuralAnalysis({
+        stable: structureStable && safetyFactor >= 1.0,
+        maxLoad: Math.max(0, totalCapacity - totalWeight),
+        weakPoints,
+        safetyFactor: Math.round(safetyFactor * 100) / 100,
+        failureMode: safetyFactor < 1.0 ? criticalFailure : undefined,
+      }),
     };
   }
 
@@ -222,6 +232,49 @@ export class CraftSystem implements System {
    */
   getReaction(id: string): ChemicalReaction | undefined {
     return REACTIONS.find(r => r.id === id);
+  }
+
+  /**
+   * Generate a human-readable, screen-reader-friendly announcement
+   * describing a structural analysis result.
+   */
+  describeStructuralAnalysis(analysis: StructuralAnalysis): string {
+    if (analysis.maxLoad === 0 && analysis.safetyFactor === 0) {
+      return 'This structure has no elements. Add structural components to begin building.';
+    }
+
+    const loadKg = Math.round(analysis.maxLoad / G);
+    const parts: string[] = [];
+
+    if (analysis.stable) {
+      parts.push('This structure is stable.');
+      parts.push(`It can support about ${loadKg.toLocaleString()} kilograms.`);
+      if (analysis.safetyFactor >= 3) {
+        parts.push('The safety margin is excellent.');
+      } else if (analysis.safetyFactor >= 1.5) {
+        parts.push('The safety margin is adequate.');
+      } else {
+        parts.push('The safety margin is narrow — consider reinforcing.');
+      }
+    } else {
+      parts.push('This structure is unstable.');
+      if (analysis.failureMode) {
+        const modeDescriptions: Record<string, string> = {
+          buckling: 'a column or beam would buckle under the load',
+          tension: 'a member would snap from being pulled apart',
+          compression: 'a member would be crushed under the weight',
+          shear: 'a connection would fail from sideways force',
+          overturning: 'the structure would topple over',
+        };
+        parts.push(`The likely failure: ${modeDescriptions[analysis.failureMode] ?? analysis.failureMode}.`);
+      }
+      if (analysis.weakPoints.length > 0) {
+        const wp = analysis.weakPoints[0]!;
+        parts.push(`The weakest point is at position ${wp.x}, ${wp.y}, ${wp.z}.`);
+      }
+    }
+
+    return parts.join(' ');
   }
 
   // ── Internal ─────────────────────────────────────────────────────────────

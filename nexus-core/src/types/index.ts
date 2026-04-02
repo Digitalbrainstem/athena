@@ -57,6 +57,8 @@ export type {
   CreateQuestInput,
 } from './quest.js';
 
+export { getSpokenInstruction, getScreenReaderText, getCompanionRepeat } from './quest.js';
+
 export type {
   WorldState,
   BuiltStructure,
@@ -76,6 +78,7 @@ export type {
 export { DEFAULT_COMPANION_CONFIG } from './companion.js';
 
 export type {
+  AccessibilityMeta,
   Element,
   ElementCategory,
   ElementRef,

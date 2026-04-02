@@ -4,6 +4,23 @@ import type { MasteryTier } from './components.js';
 import type { Vec3 } from './scene.js';
 
 // ---------------------------------------------------------------------------
+// Accessibility — every piece of game data must be usable without vision
+// ---------------------------------------------------------------------------
+
+/** Accessibility metadata attached to every craftable/viewable game object.
+ *  Ensures screen-reader, audio-only, and color-blind support. */
+export interface AccessibilityMeta {
+  /** Human-friendly spoken name ("water" not "H₂O") */
+  spokenName: string;
+  /** Spoken formula for compounds/elements ("two H, one O") */
+  spokenFormula?: string;
+  /** Plain-language description suitable for screen readers */
+  description: string;
+  /** Shape identifier for color-blind mode (e.g. "circle", "triangle") */
+  iconShape?: string;
+}
+
+// ---------------------------------------------------------------------------
 // Chemistry
 // ---------------------------------------------------------------------------
 
@@ -17,6 +34,7 @@ export interface Element {
   category: ElementCategory;
   /** Mastery tier at which the player first encounters this element */
   discoveryTier: MasteryTier;
+  accessibility: AccessibilityMeta;
 }
 
 export type ElementCategory =
@@ -37,6 +55,7 @@ export interface Compound {
   properties: CompoundProperties;
   /** Mastery tier at which the player first encounters this compound */
   discoveryTier: MasteryTier;
+  accessibility: AccessibilityMeta;
 }
 
 export interface ElementRef {
@@ -77,6 +96,7 @@ export interface BuildingMaterial {
   name: string;
   properties: MaterialProperties;
   tier: MasteryTier;
+  accessibility: AccessibilityMeta;
 }
 
 export interface MaterialProperties {
@@ -123,6 +143,8 @@ export interface StructuralAnalysis {
   /** actual strength / required strength */
   safetyFactor: number;
   failureMode?: FailureMode;
+  /** Human-readable announcement of the analysis result */
+  announcement?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -157,6 +179,7 @@ export interface CraftRecipe {
   skillsTaught: string[];
   /** Explanation the companion can use for teaching moments */
   scienceExplanation: string;
+  accessibility: AccessibilityMeta;
 }
 
 // ---------------------------------------------------------------------------

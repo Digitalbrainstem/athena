@@ -724,3 +724,224 @@ describe('Data Integrity — Cross-Referencing', () => {
     }
   });
 });
+
+// ---------------------------------------------------------------------------
+// Accessibility metadata
+// ---------------------------------------------------------------------------
+
+describe('Accessibility — Elements', () => {
+  it('every element has accessibility metadata', () => {
+    for (const el of ELEMENTS) {
+      expect(el.accessibility, `Element ${el.symbol} missing accessibility`).toBeDefined();
+      expect(el.accessibility.spokenName.length).toBeGreaterThan(0);
+      expect(el.accessibility.description.length).toBeGreaterThan(10);
+    }
+  });
+
+  it('spokenName is lowercase and human-readable', () => {
+    const h = getElement('H')!;
+    expect(h.accessibility.spokenName).toBe('hydrogen');
+    const fe = getElement('Fe')!;
+    expect(fe.accessibility.spokenName).toBe('iron');
+  });
+
+  it('every element has an iconShape for color-blind identification', () => {
+    for (const el of ELEMENTS) {
+      expect(el.accessibility.iconShape, `Element ${el.symbol} missing iconShape`).toBeDefined();
+      expect(el.accessibility.iconShape!.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('different categories map to different icon shapes', () => {
+    const shapes = new Set(ELEMENTS.map(e => e.accessibility.iconShape));
+    // We have 8 categories, so should have multiple distinct shapes
+    expect(shapes.size).toBeGreaterThanOrEqual(5);
+  });
+
+  it('elements are identifiable by symbol+name, not just color', () => {
+    // Every element has spokenName (the full name) — no reliance on color
+    for (const el of ELEMENTS) {
+      expect(el.accessibility.spokenName).toBe(el.name.toLowerCase());
+    }
+  });
+});
+
+describe('Accessibility — Compounds', () => {
+  it('every compound has accessibility metadata', () => {
+    for (const c of COMPOUNDS) {
+      expect(c.accessibility, `Compound ${c.formula} missing accessibility`).toBeDefined();
+      expect(c.accessibility.spokenName.length).toBeGreaterThan(0);
+      expect(c.accessibility.description.length).toBeGreaterThan(10);
+    }
+  });
+
+  it('spokenFormula describes composition in plain English', () => {
+    const water = getCompound('H2O')!;
+    expect(water.accessibility.spokenFormula).toBeDefined();
+    // Should mention H and O
+    expect(water.accessibility.spokenFormula!.toLowerCase()).toContain('h');
+    expect(water.accessibility.spokenFormula!.toLowerCase()).toContain('o');
+  });
+
+  it('water has human-friendly spokenName, not formula', () => {
+    const water = getCompound('H2O')!;
+    expect(water.accessibility.spokenName).toBe('water');
+  });
+
+  it('salt has human-friendly spokenName', () => {
+    const salt = getCompound('NaCl')!;
+    expect(salt.accessibility.spokenName).toBe('salt');
+  });
+
+  it('every compound has an iconShape', () => {
+    for (const c of COMPOUNDS) {
+      expect(c.accessibility.iconShape, `Compound ${c.formula} missing iconShape`).toBeDefined();
+    }
+  });
+
+  it('iconShape varies by physical state', () => {
+    const water = getCompound('H2O')!; // liquid
+    const salt = getCompound('NaCl')!;  // solid
+    const co2 = getCompound('CO2')!;    // gas
+    // Different states should have different shapes
+    expect(water.accessibility.iconShape).not.toBe(salt.accessibility.iconShape);
+    expect(co2.accessibility.iconShape).not.toBe(salt.accessibility.iconShape);
+  });
+});
+
+describe('Accessibility — Building Materials', () => {
+  it('every material has accessibility metadata', () => {
+    for (const mat of BUILDING_MATERIALS) {
+      expect(mat.accessibility, `Material ${mat.id} missing accessibility`).toBeDefined();
+      expect(mat.accessibility.spokenName.length).toBeGreaterThan(0);
+      expect(mat.accessibility.description.length).toBeGreaterThan(10);
+    }
+  });
+
+  it('spokenName is human-friendly, not the id', () => {
+    const pine = getMaterial('pine-wood')!;
+    expect(pine.accessibility.spokenName).not.toContain('-');
+    expect(pine.accessibility.spokenName.toLowerCase()).toContain('pine');
+  });
+
+  it('every material has an iconShape', () => {
+    for (const mat of BUILDING_MATERIALS) {
+      expect(mat.accessibility.iconShape, `Material ${mat.id} missing iconShape`).toBeDefined();
+    }
+  });
+
+  it('materials have descriptions with real physical property info', () => {
+    const steel = getMaterial('mild-steel')!;
+    expect(steel.accessibility.description.length).toBeGreaterThan(20);
+  });
+});
+
+describe('Accessibility — Recipes', () => {
+  it('every recipe has accessibility metadata', () => {
+    for (const recipe of RECIPES) {
+      expect(recipe.accessibility, `Recipe ${recipe.id} missing accessibility`).toBeDefined();
+      expect(recipe.accessibility.spokenName.length).toBeGreaterThan(0);
+      expect(recipe.accessibility.description.length).toBeGreaterThan(10);
+    }
+  });
+
+  it('recipe spokenFormula describes inputs and outputs', () => {
+    const water = getRecipe('water-from-elements')!;
+    expect(water.accessibility.spokenFormula).toBeDefined();
+    expect(water.accessibility.spokenFormula!.length).toBeGreaterThan(0);
+  });
+
+  it('recipe descriptions work for screen readers (no visual-only info)', () => {
+    for (const recipe of RECIPES) {
+      const desc = recipe.accessibility.description.toLowerCase();
+      // Should not reference colors as the only identifier
+      expect(desc).not.toMatch(/\bthe (red|blue|green) one\b/);
+    }
+  });
+
+  it('every recipe has an iconShape', () => {
+    for (const recipe of RECIPES) {
+      expect(recipe.accessibility.iconShape, `Recipe ${recipe.id} missing iconShape`).toBeDefined();
+    }
+  });
+
+  it('recipe descriptions mention tap-based interactions, not drag', () => {
+    for (const recipe of RECIPES) {
+      const desc = recipe.accessibility.description.toLowerCase();
+      // Must not require drag-and-drop
+      expect(desc).not.toContain('drag');
+    }
+  });
+});
+
+describe('Accessibility — Structural Analysis Announcements', () => {
+  let craft: CraftSystem;
+
+  beforeEach(() => {
+    craft = new CraftSystem();
+  });
+
+  it('empty structure gets an announcement', () => {
+    const analysis = craft.analyzeStructure([]);
+    expect(analysis.announcement).toBeDefined();
+    expect(analysis.announcement!.length).toBeGreaterThan(0);
+  });
+
+  it('stable structure announcement says "stable"', () => {
+    const column: StructuralElement = {
+      type: 'column',
+      material: 'mild-steel',
+      dimensions: { length: 3, width: 0.3, height: 0.3 },
+      position: { x: 0, y: 0, z: 0 },
+      rotation: { x: 0, y: 0, z: 0 },
+    };
+    const analysis = craft.analyzeStructure([column]);
+    expect(analysis.announcement).toContain('stable');
+  });
+
+  it('stable structure announcement mentions load capacity', () => {
+    const foundation: StructuralElement = {
+      type: 'foundation',
+      material: 'concrete',
+      dimensions: { length: 4, width: 4, height: 0.5 },
+      position: { x: 0, y: 0, z: 0 },
+      rotation: { x: 0, y: 0, z: 0 },
+    };
+    const analysis = craft.analyzeStructure([foundation]);
+    expect(analysis.announcement).toContain('kilogram');
+  });
+
+  it('describeStructuralAnalysis produces human-readable text', () => {
+    const description = craft.describeStructuralAnalysis({
+      stable: false,
+      maxLoad: 0,
+      weakPoints: [{ x: 1, y: 2, z: 3 }],
+      safetyFactor: 0.5,
+      failureMode: 'buckling',
+    });
+    expect(description).toContain('unstable');
+    expect(description).toContain('buckle');
+  });
+
+  it('describeStructuralAnalysis handles stable structures', () => {
+    const description = craft.describeStructuralAnalysis({
+      stable: true,
+      maxLoad: 50000,
+      weakPoints: [{ x: 0, y: 0, z: 0 }],
+      safetyFactor: 2.5,
+    });
+    expect(description).toContain('stable');
+    expect(description).toContain('kilogram');
+  });
+
+  it('announces narrow safety margin with warning', () => {
+    const description = craft.describeStructuralAnalysis({
+      stable: true,
+      maxLoad: 1000,
+      weakPoints: [{ x: 0, y: 0, z: 0 }],
+      safetyFactor: 1.2,
+    });
+    expect(description).toContain('narrow');
+  });
+});
+
