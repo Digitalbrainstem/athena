@@ -122,7 +122,7 @@ export class MusicGenerator implements Disposable {
     const fadeSec = durationMs / 1000;
 
     // Fade out all current layers
-    for (const [layer, active] of this.activeLayers) {
+    for (const [, active] of this.activeLayers) {
       if (active.biomeId === fromBiome) {
         active.gain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + fadeSec);
         const sourceRef = active.source;
@@ -137,9 +137,9 @@ export class MusicGenerator implements Disposable {
 
     // Only start layers that were previously active (or at least ambient)
     const layersToStart: MusicLayer[] = [];
-    for (const [layer, active] of this.activeLayers) {
+    for (const [, active] of this.activeLayers) {
       if (active.biomeId === fromBiome) {
-        layersToStart.push(layer);
+        layersToStart.push(active.layer);
       }
     }
 

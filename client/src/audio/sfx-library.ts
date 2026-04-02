@@ -59,43 +59,17 @@ export interface SFXRecipe {
 const C4 = 261.63;
 const D4 = 293.66;
 const E4 = 329.63;
-const F4 = 349.23;
 const G4 = 392.00;
 const A4 = 440.00;
-const B4 = 493.88;
 const C5 = 523.25;
-const D5 = 587.33;
 const E5 = 659.26;
-const F5 = 698.46;
 const G5 = 783.99;
 const A5 = 880.00;
 const B5 = 987.77;
 const C6 = 1046.50;
 
-const C3 = 130.81;
-const D3 = 146.83;
-const E3 = 164.81;
-const F3 = 174.61;
-const G3 = 196.00;
 const A3 = 220.00;
-const B3 = 246.94;
-
-const C2 = 65.41;
-const F2 = 87.31;
-const G2 = 98.00;
-const A2 = 110.00;
-const Bb2 = 116.54;
-const Bb3 = 233.08;
-const Bb4 = 466.16;
-const Eb4 = 311.13;
-const Ab4 = 415.30;
-
-// Sharps/flats used in various keys
-const Cs4 = 277.18;
-const Fs4 = 369.99;
-const Gs4 = 415.30;
-const Cs5 = 554.37;
-const Fs5 = 739.99;
+const G3 = 196.00;
 
 // ---------------------------------------------------------------------------
 // UI Sounds
@@ -1720,6 +1694,779 @@ const biomeSpecificSounds: Record<string, SFXRecipe> = {
 };
 
 // ---------------------------------------------------------------------------
+// Building / construction sounds
+// ---------------------------------------------------------------------------
+
+const buildingSounds: Record<string, SFXRecipe> = {
+  'wood-place': {
+    caption: '[Wood placing]',
+    duration: 0.2,
+    oscillators: [
+      { type: 'triangle', frequency: 180, frequencyEnd: 120, gain: 0.1, gainEnd: 0.0, offset: 0, duration: 0.1 },
+    ],
+    noises: [
+      { color: 'pink', gain: 0.08, gainEnd: 0.0, offset: 0, duration: 0.08, filterFreq: 2500, highpassFreq: 400 },
+    ],
+  },
+  'stone-place': {
+    caption: '[Stone placing]',
+    duration: 0.25,
+    oscillators: [
+      { type: 'sine', frequency: 100, frequencyEnd: 70, gain: 0.12, gainEnd: 0.0, offset: 0, duration: 0.08 },
+    ],
+    noises: [
+      { color: 'white', gain: 0.1, gainEnd: 0.0, offset: 0, duration: 0.06, filterFreq: 3000, highpassFreq: 600 },
+    ],
+  },
+  'metal-place': {
+    caption: '[Metal placing]',
+    duration: 0.3,
+    oscillators: [
+      { type: 'sine', frequency: 600, gain: 0.06, gainEnd: 0.0, offset: 0, duration: 0.15 },
+      { type: 'sine', frequency: 900, gain: 0.03, gainEnd: 0.0, offset: 0, duration: 0.1 },
+    ],
+    noises: [
+      { color: 'white', gain: 0.08, gainEnd: 0.0, offset: 0, duration: 0.04, filterFreq: 5000, highpassFreq: 1200 },
+    ],
+  },
+  'rope-tie': {
+    caption: '[Rope tying]',
+    duration: 0.3,
+    oscillators: [],
+    noises: [
+      { color: 'brown', gain: 0.06, gainEnd: 0.03, offset: 0, duration: 0.2, filterFreq: 800, highpassFreq: 100 },
+    ],
+  },
+  'brick-stack': {
+    caption: '[Brick stacking]',
+    duration: 0.15,
+    oscillators: [
+      { type: 'sine', frequency: 150, frequencyEnd: 100, gain: 0.1, gainEnd: 0.0, offset: 0, duration: 0.06 },
+    ],
+    noises: [
+      { color: 'white', gain: 0.08, gainEnd: 0.0, offset: 0, duration: 0.04, filterFreq: 2500, highpassFreq: 500 },
+    ],
+  },
+  'glass-place': {
+    caption: '[Glass placing]',
+    duration: 0.2,
+    oscillators: [
+      { type: 'sine', frequency: 2200, gain: 0.04, gainEnd: 0.0, offset: 0, duration: 0.1 },
+      { type: 'sine', frequency: 3300, gain: 0.02, gainEnd: 0.0, offset: 0, duration: 0.08 },
+    ],
+    noises: [],
+  },
+  'bridge-creak': {
+    caption: '[Bridge creaking]',
+    duration: 0.8,
+    oscillators: [
+      { type: 'sawtooth', frequency: 50, frequencyEnd: 70, gain: 0.03, gainEnd: 0.0, offset: 0, duration: 0.6 },
+    ],
+    noises: [
+      { color: 'brown', gain: 0.04, gainEnd: 0.02, offset: 0, duration: 0.7, filterFreq: 600 },
+    ],
+  },
+  'structure-settle': {
+    caption: '[Structure settling]',
+    duration: 0.5,
+    oscillators: [
+      { type: 'sine', frequency: 60, frequencyEnd: 40, gain: 0.06, gainEnd: 0.0, offset: 0, duration: 0.3 },
+    ],
+    noises: [
+      { color: 'brown', gain: 0.05, gainEnd: 0.01, offset: 0, duration: 0.4, filterFreq: 400 },
+    ],
+  },
+  'pulley-crank': {
+    caption: '[Pulley cranking]',
+    duration: 0.6,
+    oscillators: [
+      { type: 'square', frequency: 60, gain: 0.04, gainEnd: 0.0, offset: 0, duration: 0.08 },
+      { type: 'square', frequency: 65, gain: 0.04, gainEnd: 0.0, offset: 0.1, duration: 0.08 },
+      { type: 'square', frequency: 58, gain: 0.04, gainEnd: 0.0, offset: 0.2, duration: 0.08 },
+      { type: 'square', frequency: 63, gain: 0.04, gainEnd: 0.0, offset: 0.3, duration: 0.08 },
+      { type: 'square', frequency: 61, gain: 0.04, gainEnd: 0.0, offset: 0.4, duration: 0.08 },
+    ],
+    noises: [
+      { color: 'brown', gain: 0.03, gainEnd: 0.0, offset: 0, duration: 0.5, filterFreq: 700 },
+    ],
+  },
+  'lever-pull': {
+    caption: '[Lever pulling]',
+    duration: 0.3,
+    oscillators: [
+      { type: 'sine', frequency: 100, frequencyEnd: 200, gain: 0.06, gainEnd: 0.0, offset: 0, duration: 0.2 },
+    ],
+    noises: [
+      { color: 'brown', gain: 0.05, gainEnd: 0.0, offset: 0, duration: 0.15, filterFreq: 600 },
+    ],
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Creature sounds
+// ---------------------------------------------------------------------------
+
+const creatureSounds: Record<string, SFXRecipe> = {
+  'cricket-chirp': {
+    caption: '[Cricket chirping]',
+    duration: 0.3,
+    oscillators: [
+      { type: 'sine', frequency: 4000, gain: 0.04, gainEnd: 0.0, offset: 0, duration: 0.03 },
+      { type: 'sine', frequency: 4200, gain: 0.04, gainEnd: 0.0, offset: 0.05, duration: 0.03 },
+      { type: 'sine', frequency: 3800, gain: 0.04, gainEnd: 0.0, offset: 0.1, duration: 0.03 },
+      { type: 'sine', frequency: 4100, gain: 0.04, gainEnd: 0.0, offset: 0.15, duration: 0.03 },
+    ],
+    noises: [],
+  },
+  'bee-buzz': {
+    caption: '[Bee buzzing]',
+    duration: 0.8,
+    oscillators: [
+      { type: 'sawtooth', frequency: 220, gain: 0.025, gainEnd: 0.025, offset: 0, duration: 0.4, detune: 3 },
+      { type: 'sawtooth', frequency: 225, gain: 0.025, gainEnd: 0.0, offset: 0.4, duration: 0.4, detune: -3 },
+    ],
+    noises: [],
+  },
+  'fish-splash': {
+    caption: '[Fish splashing]',
+    duration: 0.3,
+    oscillators: [
+      { type: 'sine', frequency: 300, frequencyEnd: 150, gain: 0.06, gainEnd: 0.0, offset: 0, duration: 0.1 },
+    ],
+    noises: [
+      { color: 'white', gain: 0.1, gainEnd: 0.0, offset: 0, duration: 0.15, filterFreq: 4000 },
+    ],
+  },
+  'wolf-howl': {
+    caption: '[Distant wolf howl]',
+    duration: 2.0,
+    oscillators: [
+      { type: 'sine', frequency: 250, frequencyEnd: 400, gain: 0.0, gainEnd: 0.06, offset: 0, duration: 0.5 },
+      { type: 'sine', frequency: 400, frequencyEnd: 350, gain: 0.06, gainEnd: 0.06, offset: 0.5, duration: 0.8 },
+      { type: 'sine', frequency: 350, frequencyEnd: 200, gain: 0.06, gainEnd: 0.0, offset: 1.3, duration: 0.7 },
+    ],
+    noises: [],
+  },
+  'horse-neigh': {
+    caption: '[Horse neighing]',
+    duration: 0.8,
+    oscillators: [
+      { type: 'sawtooth', frequency: 200, frequencyEnd: 500, gain: 0.05, gainEnd: 0.03, offset: 0, duration: 0.3 },
+      { type: 'sawtooth', frequency: 500, frequencyEnd: 300, gain: 0.04, gainEnd: 0.0, offset: 0.3, duration: 0.5 },
+    ],
+    noises: [],
+  },
+  'chicken-cluck': {
+    caption: '[Chicken clucking]',
+    duration: 0.3,
+    oscillators: [
+      { type: 'sine', frequency: 400, frequencyEnd: 300, gain: 0.06, gainEnd: 0.0, offset: 0, duration: 0.06 },
+      { type: 'sine', frequency: 380, frequencyEnd: 280, gain: 0.05, gainEnd: 0.0, offset: 0.1, duration: 0.06 },
+      { type: 'sine', frequency: 420, frequencyEnd: 320, gain: 0.05, gainEnd: 0.0, offset: 0.18, duration: 0.06 },
+    ],
+    noises: [],
+  },
+  'cow-moo': {
+    caption: '[Cow mooing]',
+    duration: 1.5,
+    oscillators: [
+      { type: 'sawtooth', frequency: 120, frequencyEnd: 100, gain: 0.04, gainEnd: 0.03, offset: 0, duration: 0.8 },
+      { type: 'sawtooth', frequency: 100, frequencyEnd: 80, gain: 0.03, gainEnd: 0.0, offset: 0.8, duration: 0.7 },
+    ],
+    noises: [],
+  },
+  'cat-purr': {
+    caption: '[Cat purring]',
+    duration: 1.5,
+    oscillators: [
+      { type: 'sine', frequency: 26, gain: 0.04, gainEnd: 0.04, offset: 0, duration: 1.5 },
+      { type: 'sine', frequency: 52, gain: 0.02, gainEnd: 0.02, offset: 0, duration: 1.5 },
+    ],
+    noises: [],
+  },
+  'dog-bark': {
+    caption: '[Dog barking]',
+    duration: 0.3,
+    oscillators: [
+      { type: 'square', frequency: 300, frequencyEnd: 200, gain: 0.08, gainEnd: 0.0, offset: 0, duration: 0.1 },
+      { type: 'square', frequency: 280, frequencyEnd: 180, gain: 0.06, gainEnd: 0.0, offset: 0.15, duration: 0.1 },
+    ],
+    noises: [
+      { color: 'white', gain: 0.04, gainEnd: 0.0, offset: 0, duration: 0.05, filterFreq: 3000 },
+    ],
+  },
+  'snake-hiss': {
+    caption: '[Snake hissing]',
+    duration: 0.8,
+    oscillators: [],
+    noises: [
+      { color: 'white', gain: 0.03, gainEnd: 0.05, offset: 0, duration: 0.3, filterFreq: 8000, highpassFreq: 4000 },
+      { color: 'white', gain: 0.05, gainEnd: 0.0, offset: 0.3, duration: 0.5, filterFreq: 7000, highpassFreq: 3500 },
+    ],
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Weather variation sounds
+// ---------------------------------------------------------------------------
+
+const weatherSounds: Record<string, SFXRecipe> = {
+  'hail-patter': {
+    caption: '[Hail pattering]',
+    duration: 2.0,
+    oscillators: [],
+    noises: [
+      { color: 'white', gain: 0.08, gainEnd: 0.08, offset: 0, duration: 2.0, filterFreq: 6000, highpassFreq: 2000 },
+    ],
+  },
+  'snow-crunch': {
+    caption: '[Snow crunching]',
+    duration: 0.15,
+    oscillators: [],
+    noises: [
+      { color: 'pink', gain: 0.06, gainEnd: 0.0, offset: 0, duration: 0.1, filterFreq: 4000, highpassFreq: 1000 },
+    ],
+  },
+  'ice-crack': {
+    caption: '[Ice cracking]',
+    duration: 0.4,
+    oscillators: [
+      { type: 'sine', frequency: 1500, frequencyEnd: 500, gain: 0.08, gainEnd: 0.0, offset: 0, duration: 0.05 },
+    ],
+    noises: [
+      { color: 'white', gain: 0.12, gainEnd: 0.0, offset: 0, duration: 0.08, filterFreq: 8000, highpassFreq: 2000 },
+    ],
+  },
+  'fog-horn': {
+    caption: '[Fog horn]',
+    duration: 2.0,
+    oscillators: [
+      { type: 'sawtooth', frequency: 80, gain: 0.0, gainEnd: 0.08, offset: 0, duration: 0.5 },
+      { type: 'sawtooth', frequency: 80, gain: 0.08, gainEnd: 0.08, offset: 0.5, duration: 1.0 },
+      { type: 'sawtooth', frequency: 80, gain: 0.08, gainEnd: 0.0, offset: 1.5, duration: 0.5 },
+    ],
+    noises: [],
+  },
+  'lightning-flash': {
+    caption: '[Lightning flash]',
+    duration: 0.2,
+    oscillators: [
+      { type: 'sawtooth', frequency: 100, frequencyEnd: 2000, gain: 0.1, gainEnd: 0.0, offset: 0, duration: 0.05 },
+    ],
+    noises: [
+      { color: 'white', gain: 0.2, gainEnd: 0.0, offset: 0, duration: 0.08, filterFreq: 10000 },
+    ],
+  },
+  'wind-chimes': {
+    caption: '[Wind chimes]',
+    duration: 1.5,
+    oscillators: [
+      { type: 'sine', frequency: 1200, gain: 0.06, gainEnd: 0.0, offset: 0, duration: 0.4 },
+      { type: 'sine', frequency: 1500, gain: 0.05, gainEnd: 0.0, offset: 0.2, duration: 0.35 },
+      { type: 'sine', frequency: 1800, gain: 0.04, gainEnd: 0.0, offset: 0.5, duration: 0.3 },
+      { type: 'sine', frequency: 1400, gain: 0.05, gainEnd: 0.0, offset: 0.8, duration: 0.35 },
+      { type: 'sine', frequency: 1600, gain: 0.04, gainEnd: 0.0, offset: 1.1, duration: 0.3 },
+    ],
+    noises: [],
+  },
+  'ocean-wave': {
+    caption: '[Ocean wave]',
+    duration: 3.0,
+    oscillators: [],
+    noises: [
+      { color: 'pink', gain: 0.02, gainEnd: 0.1, offset: 0, duration: 1.2, filterFreq: 2000, highpassFreq: 80 },
+      { color: 'white', gain: 0.06, gainEnd: 0.0, offset: 0.8, duration: 0.5, filterFreq: 5000, highpassFreq: 500 },
+      { color: 'pink', gain: 0.1, gainEnd: 0.02, offset: 1.0, duration: 2.0, filterFreq: 1500, highpassFreq: 60 },
+    ],
+  },
+  'waterfall-roar': {
+    caption: '[Waterfall roaring]',
+    duration: 3.0,
+    oscillators: [],
+    noises: [
+      { color: 'pink', gain: 0.1, gainEnd: 0.1, offset: 0, duration: 3.0, filterFreq: 3000, highpassFreq: 150 },
+      { color: 'white', gain: 0.05, gainEnd: 0.05, offset: 0, duration: 3.0, filterFreq: 6000, highpassFreq: 500 },
+    ],
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Material interaction sounds
+// ---------------------------------------------------------------------------
+
+const materialSounds: Record<string, SFXRecipe> = {
+  'cloth-tear': {
+    caption: '[Cloth tearing]',
+    duration: 0.3,
+    oscillators: [],
+    noises: [
+      { color: 'white', gain: 0.08, gainEnd: 0.0, offset: 0, duration: 0.2, filterFreq: 6000, highpassFreq: 2000 },
+    ],
+  },
+  'cloth-rustle': {
+    caption: '[Cloth rustling]',
+    duration: 0.4,
+    oscillators: [],
+    noises: [
+      { color: 'white', gain: 0.04, gainEnd: 0.0, offset: 0, duration: 0.3, filterFreq: 5000, highpassFreq: 1500 },
+    ],
+  },
+  'chain-clink': {
+    caption: '[Chain clinking]',
+    duration: 0.4,
+    oscillators: [
+      { type: 'sine', frequency: 3000, gain: 0.05, gainEnd: 0.0, offset: 0, duration: 0.08 },
+      { type: 'sine', frequency: 2500, gain: 0.04, gainEnd: 0.0, offset: 0.1, duration: 0.08 },
+      { type: 'sine', frequency: 3200, gain: 0.04, gainEnd: 0.0, offset: 0.2, duration: 0.08 },
+    ],
+    noises: [
+      { color: 'white', gain: 0.04, gainEnd: 0.0, offset: 0, duration: 0.03, filterFreq: 8000, highpassFreq: 3000 },
+    ],
+  },
+  'paper-crumple': {
+    caption: '[Paper crumpling]',
+    duration: 0.4,
+    oscillators: [],
+    noises: [
+      { color: 'white', gain: 0.06, gainEnd: 0.02, offset: 0, duration: 0.3, filterFreq: 7000, highpassFreq: 2500 },
+    ],
+  },
+  'ceramic-clink': {
+    caption: '[Ceramic clinking]',
+    duration: 0.25,
+    oscillators: [
+      { type: 'sine', frequency: 1800, gain: 0.06, gainEnd: 0.0, offset: 0, duration: 0.15 },
+      { type: 'sine', frequency: 2700, gain: 0.03, gainEnd: 0.0, offset: 0, duration: 0.1 },
+    ],
+    noises: [],
+  },
+  'leather-creak': {
+    caption: '[Leather creaking]',
+    duration: 0.4,
+    oscillators: [
+      { type: 'sawtooth', frequency: 50, frequencyEnd: 80, gain: 0.02, gainEnd: 0.0, offset: 0, duration: 0.3 },
+    ],
+    noises: [
+      { color: 'brown', gain: 0.03, gainEnd: 0.01, offset: 0, duration: 0.3, filterFreq: 500 },
+    ],
+  },
+  'metal-scrape': {
+    caption: '[Metal scraping]',
+    duration: 0.5,
+    oscillators: [
+      { type: 'sawtooth', frequency: 500, frequencyEnd: 800, gain: 0.04, gainEnd: 0.0, offset: 0, duration: 0.3 },
+    ],
+    noises: [
+      { color: 'white', gain: 0.06, gainEnd: 0.02, offset: 0, duration: 0.4, filterFreq: 6000, highpassFreq: 2000 },
+    ],
+  },
+  'glass-clink': {
+    caption: '[Glass clinking]',
+    duration: 0.4,
+    oscillators: [
+      { type: 'sine', frequency: 2500, gain: 0.06, gainEnd: 0.0, offset: 0, duration: 0.2 },
+      { type: 'sine', frequency: 3800, gain: 0.03, gainEnd: 0.0, offset: 0, duration: 0.15 },
+    ],
+    noises: [],
+  },
+  'wood-creak': {
+    caption: '[Wood creaking]',
+    duration: 0.6,
+    oscillators: [
+      { type: 'sawtooth', frequency: 40, frequencyEnd: 60, gain: 0.03, gainEnd: 0.0, offset: 0, duration: 0.5 },
+    ],
+    noises: [
+      { color: 'brown', gain: 0.04, gainEnd: 0.01, offset: 0, duration: 0.5, filterFreq: 500 },
+    ],
+  },
+  'stone-grind': {
+    caption: '[Stone grinding]',
+    duration: 0.8,
+    oscillators: [],
+    noises: [
+      { color: 'brown', gain: 0.08, gainEnd: 0.04, offset: 0, duration: 0.7, filterFreq: 1500, highpassFreq: 200 },
+    ],
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Interaction / collection sounds
+// ---------------------------------------------------------------------------
+
+const interactionSounds: Record<string, SFXRecipe> = {
+  'item-pickup': {
+    caption: '[Item collected]',
+    duration: 0.2,
+    oscillators: [
+      { type: 'sine', frequency: E5, gain: 0.12, gainEnd: 0.0, offset: 0, duration: 0.1 },
+      { type: 'sine', frequency: G5, gain: 0.1, gainEnd: 0.0, offset: 0.05, duration: 0.12 },
+    ],
+    noises: [],
+  },
+  'item-drop': {
+    caption: '[Item dropped]',
+    duration: 0.15,
+    oscillators: [
+      { type: 'sine', frequency: G4, frequencyEnd: E4, gain: 0.1, gainEnd: 0.0, offset: 0, duration: 0.1 },
+    ],
+    noises: [],
+  },
+  'chest-open': {
+    caption: '[Chest opening]',
+    duration: 0.5,
+    oscillators: [
+      { type: 'triangle', frequency: 200, frequencyEnd: 300, gain: 0.06, gainEnd: 0.0, offset: 0, duration: 0.2 },
+    ],
+    noises: [
+      { color: 'brown', gain: 0.06, gainEnd: 0.02, offset: 0, duration: 0.3, filterFreq: 700 },
+    ],
+  },
+  'treasure-reveal': {
+    caption: '[Treasure revealed]',
+    duration: 0.8,
+    oscillators: [
+      { type: 'sine', frequency: C5, gain: 0.12, gainEnd: 0.06, offset: 0, duration: 0.2 },
+      { type: 'sine', frequency: E5, gain: 0.12, gainEnd: 0.06, offset: 0.15, duration: 0.2 },
+      { type: 'sine', frequency: G5, gain: 0.15, gainEnd: 0.0, offset: 0.3, duration: 0.5 },
+    ],
+    noises: [],
+  },
+  'scroll-unroll': {
+    caption: '[Scroll unrolling]',
+    duration: 0.5,
+    oscillators: [],
+    noises: [
+      { color: 'white', gain: 0.04, gainEnd: 0.06, offset: 0, duration: 0.25, filterFreq: 4000, highpassFreq: 1500 },
+      { color: 'white', gain: 0.06, gainEnd: 0.02, offset: 0.25, duration: 0.25, filterFreq: 3500, highpassFreq: 1200 },
+    ],
+  },
+  'map-unfold': {
+    caption: '[Map unfolding]',
+    duration: 0.4,
+    oscillators: [],
+    noises: [
+      { color: 'white', gain: 0.05, gainEnd: 0.0, offset: 0, duration: 0.3, filterFreq: 4500, highpassFreq: 1800 },
+    ],
+  },
+  'switch-toggle': {
+    caption: '[Switch toggling]',
+    duration: 0.1,
+    oscillators: [
+      { type: 'square', frequency: 300, gain: 0.1, gainEnd: 0.0, offset: 0, duration: 0.04 },
+    ],
+    noises: [
+      { color: 'white', gain: 0.06, gainEnd: 0.0, offset: 0, duration: 0.03, filterFreq: 4000, highpassFreq: 1000 },
+    ],
+  },
+  'button-press': {
+    caption: '[Button pressing]',
+    duration: 0.1,
+    oscillators: [
+      { type: 'sine', frequency: 600, gain: 0.08, gainEnd: 0.0, offset: 0, duration: 0.05 },
+    ],
+    noises: [
+      { color: 'white', gain: 0.05, gainEnd: 0.0, offset: 0, duration: 0.03, filterFreq: 3000, highpassFreq: 800 },
+    ],
+  },
+  'key-insert': {
+    caption: '[Key inserting]',
+    duration: 0.3,
+    oscillators: [
+      { type: 'sine', frequency: 800, gain: 0.04, gainEnd: 0.0, offset: 0, duration: 0.1 },
+    ],
+    noises: [
+      { color: 'white', gain: 0.06, gainEnd: 0.0, offset: 0, duration: 0.05, filterFreq: 5000, highpassFreq: 1500 },
+      { color: 'white', gain: 0.04, gainEnd: 0.0, offset: 0.15, duration: 0.04, filterFreq: 4000, highpassFreq: 1200 },
+    ],
+  },
+  'lock-unlock': {
+    caption: '[Lock unlocking]',
+    duration: 0.2,
+    oscillators: [
+      { type: 'square', frequency: 200, gain: 0.08, gainEnd: 0.0, offset: 0, duration: 0.04 },
+      { type: 'sine', frequency: 600, gain: 0.05, gainEnd: 0.0, offset: 0.05, duration: 0.08 },
+    ],
+    noises: [],
+  },
+  'coin-collect': {
+    caption: '[Coin collected]',
+    duration: 0.25,
+    oscillators: [
+      { type: 'sine', frequency: 3500, gain: 0.06, gainEnd: 0.0, offset: 0, duration: 0.1 },
+      { type: 'sine', frequency: 5000, gain: 0.04, gainEnd: 0.0, offset: 0, duration: 0.08 },
+    ],
+    noises: [],
+  },
+  'gem-collect': {
+    caption: '[Gem collected]',
+    duration: 0.4,
+    oscillators: [
+      { type: 'sine', frequency: 1500, gain: 0.08, gainEnd: 0.0, offset: 0, duration: 0.2 },
+      { type: 'sine', frequency: 2200, gain: 0.06, gainEnd: 0.0, offset: 0.05, duration: 0.2 },
+      { type: 'sine', frequency: 3000, gain: 0.04, gainEnd: 0.0, offset: 0.1, duration: 0.2 },
+    ],
+    noises: [],
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Musical / instrument sounds
+// ---------------------------------------------------------------------------
+
+const instrumentSounds: Record<string, SFXRecipe> = {
+  'bell-toll': {
+    caption: '[Bell tolling]',
+    duration: 2.5,
+    oscillators: [
+      { type: 'sine', frequency: 440, gain: 0.15, gainEnd: 0.0, offset: 0, duration: 2.0 },
+      { type: 'sine', frequency: 880, gain: 0.08, gainEnd: 0.0, offset: 0, duration: 1.5 },
+      { type: 'sine', frequency: 1320, gain: 0.04, gainEnd: 0.0, offset: 0, duration: 1.0 },
+    ],
+    noises: [],
+  },
+  'chime-set': {
+    caption: '[Chime set]',
+    duration: 1.0,
+    oscillators: [
+      { type: 'sine', frequency: C5, gain: 0.08, gainEnd: 0.0, offset: 0, duration: 0.4 },
+      { type: 'sine', frequency: E5, gain: 0.07, gainEnd: 0.0, offset: 0.15, duration: 0.35 },
+      { type: 'sine', frequency: G5, gain: 0.06, gainEnd: 0.0, offset: 0.3, duration: 0.3 },
+      { type: 'sine', frequency: C6, gain: 0.05, gainEnd: 0.0, offset: 0.45, duration: 0.4 },
+    ],
+    noises: [],
+  },
+  'drum-tap': {
+    caption: '[Drum tap]',
+    duration: 0.2,
+    oscillators: [
+      { type: 'sine', frequency: 150, frequencyEnd: 60, gain: 0.15, gainEnd: 0.0, offset: 0, duration: 0.12 },
+    ],
+    noises: [
+      { color: 'white', gain: 0.1, gainEnd: 0.0, offset: 0, duration: 0.03, filterFreq: 4000 },
+    ],
+  },
+  'xylophone-note': {
+    caption: '[Xylophone note]',
+    duration: 0.6,
+    oscillators: [
+      { type: 'sine', frequency: 523.25, gain: 0.12, gainEnd: 0.0, offset: 0, duration: 0.4 },
+      { type: 'sine', frequency: 1046.5, gain: 0.06, gainEnd: 0.0, offset: 0, duration: 0.3 },
+    ],
+    noises: [],
+  },
+  'harp-pluck': {
+    caption: '[Harp pluck]',
+    duration: 1.0,
+    oscillators: [
+      { type: 'sine', frequency: 440, gain: 0.1, gainEnd: 0.0, offset: 0, duration: 0.8 },
+      { type: 'sine', frequency: 880, gain: 0.05, gainEnd: 0.0, offset: 0, duration: 0.5 },
+      { type: 'sine', frequency: 1320, gain: 0.025, gainEnd: 0.0, offset: 0, duration: 0.3 },
+    ],
+    noises: [],
+  },
+  'flute-note': {
+    caption: '[Flute note]',
+    duration: 0.8,
+    oscillators: [
+      { type: 'sine', frequency: 523.25, gain: 0.0, gainEnd: 0.1, offset: 0, duration: 0.15 },
+      { type: 'sine', frequency: 523.25, gain: 0.1, gainEnd: 0.1, offset: 0.15, duration: 0.4 },
+      { type: 'sine', frequency: 523.25, gain: 0.1, gainEnd: 0.0, offset: 0.55, duration: 0.25 },
+    ],
+    noises: [
+      { color: 'white', gain: 0.01, gainEnd: 0.01, offset: 0, duration: 0.8, filterFreq: 2000, highpassFreq: 400 },
+    ],
+  },
+  'gong-strike': {
+    caption: '[Gong strike]',
+    duration: 3.0,
+    oscillators: [
+      { type: 'sine', frequency: 100, gain: 0.12, gainEnd: 0.0, offset: 0, duration: 2.5 },
+      { type: 'sine', frequency: 200, gain: 0.06, gainEnd: 0.0, offset: 0, duration: 2.0 },
+      { type: 'sine', frequency: 300, gain: 0.03, gainEnd: 0.0, offset: 0, duration: 1.5 },
+    ],
+    noises: [
+      { color: 'white', gain: 0.08, gainEnd: 0.0, offset: 0, duration: 0.1, filterFreq: 5000 },
+    ],
+  },
+  'music-box': {
+    caption: '[Music box]',
+    duration: 1.0,
+    oscillators: [
+      { type: 'sine', frequency: E5, gain: 0.08, gainEnd: 0.0, offset: 0, duration: 0.2 },
+      { type: 'sine', frequency: G5, gain: 0.07, gainEnd: 0.0, offset: 0.2, duration: 0.2 },
+      { type: 'sine', frequency: C6, gain: 0.08, gainEnd: 0.0, offset: 0.4, duration: 0.2 },
+      { type: 'sine', frequency: B5, gain: 0.06, gainEnd: 0.0, offset: 0.6, duration: 0.2 },
+      { type: 'sine', frequency: A5, gain: 0.07, gainEnd: 0.0, offset: 0.8, duration: 0.2 },
+    ],
+    noises: [],
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Ambient / environmental extra sounds
+// ---------------------------------------------------------------------------
+
+const ambientExtraSounds: Record<string, SFXRecipe> = {
+  'cave-drip-echo': {
+    caption: '[Cave drip with echo]',
+    duration: 0.8,
+    oscillators: [
+      { type: 'sine', frequency: 1800, frequencyEnd: 800, gain: 0.06, gainEnd: 0.0, offset: 0, duration: 0.05 },
+      { type: 'sine', frequency: 1500, frequencyEnd: 700, gain: 0.03, gainEnd: 0.0, offset: 0.2, duration: 0.04 },
+      { type: 'sine', frequency: 1300, frequencyEnd: 600, gain: 0.015, gainEnd: 0.0, offset: 0.4, duration: 0.03 },
+    ],
+    noises: [],
+  },
+  'underground-rumble': {
+    caption: '[Underground rumble]',
+    duration: 2.0,
+    oscillators: [
+      { type: 'sine', frequency: 30, frequencyEnd: 25, gain: 0.06, gainEnd: 0.0, offset: 0, duration: 1.5 },
+    ],
+    noises: [
+      { color: 'brown', gain: 0.08, gainEnd: 0.0, offset: 0, duration: 1.5, filterFreq: 200 },
+    ],
+  },
+  'wind-through-ruins': {
+    caption: '[Wind through ruins]',
+    duration: 2.5,
+    oscillators: [
+      { type: 'sine', frequency: 250, frequencyEnd: 350, gain: 0.02, gainEnd: 0.0, offset: 0, duration: 2.0 },
+    ],
+    noises: [
+      { color: 'pink', gain: 0.05, gainEnd: 0.03, offset: 0, duration: 2.5, filterFreq: 1500, highpassFreq: 150 },
+    ],
+  },
+  'torch-crackle': {
+    caption: '[Torch crackling]',
+    duration: 1.5,
+    oscillators: [],
+    noises: [
+      { color: 'brown', gain: 0.04, gainEnd: 0.0, offset: 0, duration: 0.04, filterFreq: 2000 },
+      { color: 'white', gain: 0.06, gainEnd: 0.0, offset: 0.1, duration: 0.03, filterFreq: 4000, highpassFreq: 800 },
+      { color: 'brown', gain: 0.03, gainEnd: 0.0, offset: 0.3, duration: 0.04, filterFreq: 1800 },
+      { color: 'white', gain: 0.05, gainEnd: 0.0, offset: 0.5, duration: 0.03, filterFreq: 3500, highpassFreq: 700 },
+      { color: 'brown', gain: 0.04, gainEnd: 0.0, offset: 0.7, duration: 0.04, filterFreq: 2200 },
+      { color: 'white', gain: 0.05, gainEnd: 0.0, offset: 0.9, duration: 0.03, filterFreq: 4200, highpassFreq: 900 },
+      { color: 'brown', gain: 0.03, gainEnd: 0.0, offset: 1.1, duration: 0.04, filterFreq: 1600 },
+      { color: 'white', gain: 0.06, gainEnd: 0.0, offset: 1.3, duration: 0.03, filterFreq: 3800, highpassFreq: 750 },
+    ],
+  },
+  'campfire-warm': {
+    caption: '[Warm campfire]',
+    duration: 3.0,
+    oscillators: [
+      { type: 'sine', frequency: 100, gain: 0.02, gainEnd: 0.02, offset: 0, duration: 3.0 },
+    ],
+    noises: [
+      { color: 'brown', gain: 0.04, gainEnd: 0.04, offset: 0, duration: 3.0, filterFreq: 800 },
+      { color: 'white', gain: 0.02, gainEnd: 0.02, offset: 0, duration: 3.0, filterFreq: 3000, highpassFreq: 800 },
+    ],
+  },
+  'fountain-splash': {
+    caption: '[Fountain splashing]',
+    duration: 2.0,
+    oscillators: [],
+    noises: [
+      { color: 'white', gain: 0.05, gainEnd: 0.05, offset: 0, duration: 2.0, filterFreq: 5000, highpassFreq: 500 },
+      { color: 'pink', gain: 0.04, gainEnd: 0.04, offset: 0, duration: 2.0, filterFreq: 3000, highpassFreq: 200 },
+    ],
+  },
+  'clock-tick': {
+    caption: '[Clock ticking]',
+    duration: 1.0,
+    oscillators: [
+      { type: 'sine', frequency: 1000, gain: 0.06, gainEnd: 0.0, offset: 0, duration: 0.02 },
+      { type: 'sine', frequency: 800, gain: 0.05, gainEnd: 0.0, offset: 0.5, duration: 0.02 },
+    ],
+    noises: [],
+  },
+  'clock-chime': {
+    caption: '[Clock chiming]',
+    duration: 2.0,
+    oscillators: [
+      { type: 'sine', frequency: G4, gain: 0.1, gainEnd: 0.0, offset: 0, duration: 1.5 },
+      { type: 'sine', frequency: G5, gain: 0.05, gainEnd: 0.0, offset: 0, duration: 1.0 },
+    ],
+    noises: [],
+  },
+  'candle-flicker': {
+    caption: '[Candle flickering]',
+    duration: 1.0,
+    oscillators: [],
+    noises: [
+      { color: 'brown', gain: 0.01, gainEnd: 0.02, offset: 0, duration: 0.3, filterFreq: 500 },
+      { color: 'brown', gain: 0.02, gainEnd: 0.01, offset: 0.3, duration: 0.3, filterFreq: 400 },
+      { color: 'brown', gain: 0.01, gainEnd: 0.015, offset: 0.6, duration: 0.4, filterFreq: 450 },
+    ],
+  },
+  'steam-vent': {
+    caption: '[Steam venting]',
+    duration: 0.8,
+    oscillators: [],
+    noises: [
+      { color: 'white', gain: 0.12, gainEnd: 0.0, offset: 0, duration: 0.6, filterFreq: 6000, highpassFreq: 2000 },
+    ],
+  },
+  'magic-shimmer': {
+    caption: '[Magic shimmer]',
+    duration: 1.0,
+    oscillators: [
+      { type: 'sine', frequency: 800, gain: 0.04, gainEnd: 0.0, offset: 0, duration: 0.3 },
+      { type: 'sine', frequency: 1200, gain: 0.03, gainEnd: 0.0, offset: 0.1, duration: 0.3 },
+      { type: 'sine', frequency: 1600, gain: 0.03, gainEnd: 0.0, offset: 0.2, duration: 0.3 },
+      { type: 'sine', frequency: 2000, gain: 0.02, gainEnd: 0.0, offset: 0.3, duration: 0.3 },
+      { type: 'sine', frequency: 2400, gain: 0.02, gainEnd: 0.0, offset: 0.4, duration: 0.4 },
+    ],
+    noises: [],
+  },
+  'portal-hum': {
+    caption: '[Portal humming]',
+    duration: 2.0,
+    oscillators: [
+      { type: 'sine', frequency: 100, frequencyEnd: 200, gain: 0.04, gainEnd: 0.04, offset: 0, duration: 1.0 },
+      { type: 'sine', frequency: 200, frequencyEnd: 100, gain: 0.04, gainEnd: 0.04, offset: 1.0, duration: 1.0 },
+      { type: 'sine', frequency: 150, gain: 0.02, gainEnd: 0.02, offset: 0, duration: 2.0, detune: 5 },
+    ],
+    noises: [],
+  },
+  'starfield-twinkle': {
+    caption: '[Starfield twinkling]',
+    duration: 1.5,
+    oscillators: [
+      { type: 'sine', frequency: 2500, gain: 0.03, gainEnd: 0.0, offset: 0, duration: 0.1 },
+      { type: 'sine', frequency: 3000, gain: 0.025, gainEnd: 0.0, offset: 0.2, duration: 0.08 },
+      { type: 'sine', frequency: 2200, gain: 0.03, gainEnd: 0.0, offset: 0.45, duration: 0.1 },
+      { type: 'sine', frequency: 3500, gain: 0.02, gainEnd: 0.0, offset: 0.7, duration: 0.08 },
+      { type: 'sine', frequency: 2800, gain: 0.025, gainEnd: 0.0, offset: 0.95, duration: 0.1 },
+      { type: 'sine', frequency: 3200, gain: 0.02, gainEnd: 0.0, offset: 1.2, duration: 0.08 },
+    ],
+    noises: [],
+  },
+  'energy-charge': {
+    caption: '[Energy charging]',
+    duration: 1.0,
+    oscillators: [
+      { type: 'sine', frequency: 100, frequencyEnd: 800, gain: 0.0, gainEnd: 0.1, offset: 0, duration: 0.8 },
+      { type: 'sine', frequency: 800, gain: 0.1, gainEnd: 0.0, offset: 0.8, duration: 0.2 },
+    ],
+    noises: [
+      { color: 'white', gain: 0.0, gainEnd: 0.06, offset: 0, duration: 0.8, filterFreq: 4000, highpassFreq: 1000 },
+    ],
+  },
+  'energy-release': {
+    caption: '[Energy release]',
+    duration: 0.5,
+    oscillators: [
+      { type: 'sine', frequency: 800, frequencyEnd: 100, gain: 0.1, gainEnd: 0.0, offset: 0, duration: 0.4 },
+    ],
+    noises: [
+      { color: 'white', gain: 0.1, gainEnd: 0.0, offset: 0, duration: 0.3, filterFreq: 6000 },
+    ],
+  },
+};
+
+// ---------------------------------------------------------------------------
 // Merge all sound recipes into a single registry
 // ---------------------------------------------------------------------------
 
@@ -1739,6 +2486,13 @@ export const SFX_REGISTRY: Readonly<Record<string, SFXRecipe>> = Object.freeze({
   ...feedbackSounds,
   ...companionSounds,
   ...biomeSpecificSounds,
+  ...buildingSounds,
+  ...creatureSounds,
+  ...weatherSounds,
+  ...materialSounds,
+  ...interactionSounds,
+  ...instrumentSounds,
+  ...ambientExtraSounds,
 });
 
 /** All valid SFX type keys */

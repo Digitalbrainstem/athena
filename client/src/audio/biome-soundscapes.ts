@@ -4,31 +4,26 @@
 // All biome IDs match those in nexus-core/data/biomes.
 // ---------------------------------------------------------------------------
 
-import type { SFXRecipe, OscillatorStep, NoiseStep } from './sfx-library.js';
-
 // ---------------------------------------------------------------------------
 // Musical key constants (frequencies for root notes)
+// Only the root notes actually used by biome soundscapes:
 // ---------------------------------------------------------------------------
 
 // Science biomes: C major / A minor
-const C4 = 261.63; const E4 = 329.63; const G4 = 392.00;
-const A3 = 220.00; const C5 = 523.25; const E5 = 659.26; const G5 = 783.99;
-const A4 = 440.00; const B4 = 493.88; const D5 = 587.33;
+const C4 = 261.63;
+const A3 = 220.00;
 
 // Nature biomes: G major
-const G3 = 196.00; const B3 = 246.94; const D4 = 293.66;
-const Fs4 = 369.99; const B5 = 987.77;
+const G3 = 196.00;
 
 // Engineering biomes: D minor
-const D3 = 146.83; const F3 = 174.61; const A2 = 110.00;
-const F4 = 349.23; const D2 = 73.42;
+const D3 = 146.83;
 
 // Humanities biomes: F major
-const F2 = 87.31; const C3 = 130.81; const A5 = 880.00;
+const F3 = 174.61;
 
 // Social biomes: Bb major
-const Bb2 = 116.54; const Bb3 = 233.08; const Bb4 = 466.16;
-const F5 = 698.46;
+const Bb2 = 116.54;
 
 // ---------------------------------------------------------------------------
 // Biome sound profile

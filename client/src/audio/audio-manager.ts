@@ -1,8 +1,7 @@
 import type { AudioCue, Vec3 } from '../types.js';
 import type { Disposable } from '../types.js';
 import { SoundSynthesizer } from './synthesizer.js';
-import { hasSFX, getSFXCaption } from './sfx-library.js';
-import { getBiomeAmbientCaption } from './biome-soundscapes.js';
+import { hasSFX } from './sfx-library.js';
 
 const FADE_DURATION_MS = 1000;
 

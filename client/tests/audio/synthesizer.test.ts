@@ -74,7 +74,7 @@ describe('SoundSynthesizer', () => {
     });
 
     it('every SFX has a caption', () => {
-      for (const [type, recipe] of Object.entries(SFX_REGISTRY)) {
+      for (const [, recipe] of Object.entries(SFX_REGISTRY)) {
         expect(recipe.caption).toBeTruthy();
         expect(recipe.caption.startsWith('[')).toBe(true);
         expect(recipe.caption.endsWith(']')).toBe(true);
@@ -82,7 +82,7 @@ describe('SoundSynthesizer', () => {
     });
 
     it('every SFX has a positive duration', () => {
-      for (const [type, recipe] of Object.entries(SFX_REGISTRY)) {
+      for (const [, recipe] of Object.entries(SFX_REGISTRY)) {
         expect(recipe.duration).toBeGreaterThan(0);
       }
     });
@@ -225,7 +225,7 @@ describe('SoundSynthesizer', () => {
     });
 
     it('every oscillator step has valid frequency range', () => {
-      for (const [_type, recipe] of Object.entries(SFX_REGISTRY)) {
+      for (const [, recipe] of Object.entries(SFX_REGISTRY)) {
         for (const osc of recipe.oscillators) {
           expect(osc.frequency).toBeGreaterThan(0);
           expect(osc.frequency).toBeLessThan(22000);
@@ -238,7 +238,7 @@ describe('SoundSynthesizer', () => {
     });
 
     it('every noise step has valid color', () => {
-      for (const [_type, recipe] of Object.entries(SFX_REGISTRY)) {
+      for (const [, recipe] of Object.entries(SFX_REGISTRY)) {
         for (const noise of recipe.noises) {
           expect(['white', 'pink', 'brown']).toContain(noise.color);
         }
@@ -256,7 +256,7 @@ describe('SoundSynthesizer', () => {
     });
 
     it('every biome has an ambient caption', () => {
-      for (const [id, scape] of Object.entries(BIOME_SOUNDSCAPES)) {
+      for (const [, scape] of Object.entries(BIOME_SOUNDSCAPES)) {
         expect(scape.ambientCaption).toBeTruthy();
         expect(scape.ambientCaption.startsWith('[')).toBe(true);
         expect(scape.ambientCaption.endsWith(']')).toBe(true);
@@ -264,7 +264,7 @@ describe('SoundSynthesizer', () => {
     });
 
     it('every biome has music captions for all 3 layers', () => {
-      for (const [id, scape] of Object.entries(BIOME_SOUNDSCAPES)) {
+      for (const [, scape] of Object.entries(BIOME_SOUNDSCAPES)) {
         expect(scape.musicCaptions.ambient).toBeTruthy();
         expect(scape.musicCaptions.activity).toBeTruthy();
         expect(scape.musicCaptions.intensity).toBeTruthy();
@@ -272,28 +272,28 @@ describe('SoundSynthesizer', () => {
     });
 
     it('every biome has a valid musical key', () => {
-      for (const [id, scape] of Object.entries(BIOME_SOUNDSCAPES)) {
+      for (const [, scape] of Object.entries(BIOME_SOUNDSCAPES)) {
         expect(scape.keyRoot).toBeGreaterThan(0);
         expect(scape.keyRoot).toBeLessThan(2000);
       }
     });
 
     it('every biome has pentatonic scale ratios', () => {
-      for (const [id, scape] of Object.entries(BIOME_SOUNDSCAPES)) {
+      for (const [, scape] of Object.entries(BIOME_SOUNDSCAPES)) {
         expect(scape.scaleRatios.length).toBe(5);
         expect(scape.scaleRatios[0]).toBe(1);
       }
     });
 
     it('every biome has a reasonable tempo', () => {
-      for (const [id, scape] of Object.entries(BIOME_SOUNDSCAPES)) {
+      for (const [, scape] of Object.entries(BIOME_SOUNDSCAPES)) {
         expect(scape.tempoBase).toBeGreaterThanOrEqual(40);
         expect(scape.tempoBase).toBeLessThanOrEqual(120);
       }
     });
 
     it('every biome has a reverb mix between 0 and 1', () => {
-      for (const [id, scape] of Object.entries(BIOME_SOUNDSCAPES)) {
+      for (const [, scape] of Object.entries(BIOME_SOUNDSCAPES)) {
         expect(scape.reverbMix).toBeGreaterThanOrEqual(0);
         expect(scape.reverbMix).toBeLessThanOrEqual(1);
       }
@@ -344,7 +344,7 @@ describe('SoundSynthesizer', () => {
 
     it('no biome has negative/failure sounds in captions', () => {
       const forbiddenWords = ['fail', 'error', 'wrong', 'bad', 'negative', 'punishment'];
-      for (const [id, scape] of Object.entries(BIOME_SOUNDSCAPES)) {
+      for (const [, scape] of Object.entries(BIOME_SOUNDSCAPES)) {
         const all = [
           scape.ambientCaption,
           scape.musicCaptions.ambient,

@@ -201,7 +201,6 @@ describe('MusicGenerator', () => {
   describe('crossfade', () => {
     it('does not crossfade to same biome', () => {
       generator.generateLayer('workshop', 'ambient');
-      const layers = generator.getActiveLayers();
       generator.crossfade('workshop', 'workshop', 2000);
       // Nothing should change
       expect(generator.isLayerPlaying('ambient')).toBe(true);
