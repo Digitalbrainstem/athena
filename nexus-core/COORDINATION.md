@@ -199,3 +199,28 @@ continuous connected world. Key changes:
 - Tests: movement, interaction, biomes, visual regression
 - Run: `node e2e/run-tests.mjs`
 - NOTHING is done until E2E passes on Overwatch
+
+### Audio Generation Pipeline (Fish Audio on Overwatch)
+Fish Audio runs on Overwatch (192.168.3.8) RTX 4060, port 8090.
+ALL audio is pre-generated as .ogg files, NOT runtime TTS.
+
+Voice lines to generate:
+- Nexus Voice: ~20 lines (female, warm, futuristic)
+- 6 companion types × 200+ dialogue templates = ~1,200+ files
+- Quest narration: 4,017 quest intros + outros = ~8,000 files
+- Codex fragments: 101 readings
+- Mystery reveals: 12
+- NPC dialogue: per-biome voices
+
+Ambiance & Music:
+- 27 biome ambient loops (real sounds, not synth oscillators)
+- 27 biome music tracks (3 layers each: ambient/activity/intensity)
+- Transition sounds between biomes
+
+SFX:
+- Interaction chimes, footsteps (6 terrain types), doors, crafting
+- Discovery sparkles, quest completion, UI sounds
+
+File structure: client/public/audio/{voices,ambiance,sfx,music,quests}/
+Game loads by ID — zero runtime TTS, works offline.
+Atlas nightly batch generates audio for new quests.
