@@ -55,7 +55,9 @@ async function boot(): Promise<void> {
 
   // Load the selected profile into the engine
   await core.loadProfile(profileId);
-  debug('core', 'Profile loaded:', profileId);
+  // Force one tick so WorldSystem loads biome data from DB
+  core.update(1 / 60, []);
+  debug('core', 'Profile loaded + first tick:', profileId);
 
   // Log initial scene graph
   const initialSG = core.getSceneGraph();
