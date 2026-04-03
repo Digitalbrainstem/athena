@@ -4,6 +4,7 @@ import type { Disposable } from '../types.js';
 import { MaterialLibrary, type BiomePalette } from './materials.js';
 import { ProceduralModelGenerator, hasGenerator } from './procedural-models.js';
 import { BiomeEnvironmentGenerator, type BiomeEnvironmentConfig } from './biome-environments.js';
+import { CompanionModelGenerator, type CompanionModel } from './companion-models.js';
 
 // ---------------------------------------------------------------------------
 // AssetManager — top-level entry point for the entire asset system
@@ -13,15 +14,18 @@ export class AssetManager implements Disposable {
   readonly materials: MaterialLibrary;
   readonly models: ProceduralModelGenerator;
   readonly biomes: BiomeEnvironmentGenerator;
+  readonly companions: CompanionModelGenerator;
 
   private readonly modelCache = new Map<string, THREE.Group>();
   private readonly biomeCache = new Map<string, THREE.Group>();
+  private readonly companionCache = new Map<string, THREE.Group>();
   private disposed = false;
 
   constructor() {
     this.materials = new MaterialLibrary();
     this.models = new ProceduralModelGenerator(this.materials);
     this.biomes = new BiomeEnvironmentGenerator(this.materials, this.models);
+    this.companions = new CompanionModelGenerator(this.materials, this.models);
   }
 
   // ---- Models -----------------------------------------------------------
@@ -39,6 +43,23 @@ export class AssetManager implements Disposable {
   /** Check if a model type is known (has a dedicated generator, not fallback). */
   hasModel(objectType: string): boolean {
     return hasGenerator(objectType);
+  }
+
+  // ---- Companion models --------------------------------------------------
+
+  /** Get (or generate & cache) a companion model for a type + tier. */
+  getCompanionModel(companionType: string, tier: MasteryTier): CompanionModel {
+    const key = `companion:${companionType}:${tier}`;
+    let group = this.companionCache.get(key);
+    if (!group) {
+      const model = this.companions.generate(companionType, tier);
+      group = model.group;
+      this.companionCache.set(key, group);
+      // Return the original on first call
+      return model;
+    }
+    // For cached hits, generate a fresh model (new animation state + materials)
+    return this.companions.generate(companionType, tier);
   }
 
   // ---- Biome environments -----------------------------------------------
@@ -86,6 +107,12 @@ export class AssetManager implements Disposable {
     }
     this.biomeCache.clear();
 
+    for (const group of this.companionCache.values()) {
+      disposeGroup(group);
+    }
+    this.companionCache.clear();
+
+    this.companions.dispose();
     this.models.dispose();
     this.materials.dispose();
   }
