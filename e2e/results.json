@@ -1,18 +1,33 @@
 {
-  "timestamp": "2026-04-03T07:26:58.119Z",
+  "timestamp": "2026-04-03T12:00:06.484Z",
   "gameUrl": "http://192.168.2.10:3000",
   "overwatch": "root@192.168.3.8",
   "container": "athena-test",
   "suites": [
     {
+      "suite": "movement",
+      "success": false,
+      "output": "╔══════════════════════════════════════════════════════════╗\n║         MOVEMENT PHYSICS E2E TEST                      ║\n╚══════════════════════════════════════════════════════════╝\nTarget: http://192.168.2.10:3000\n\n→ Loading game...\n\n════════════════════════════════════════════════════════════\n  TEST SUMMARY\n════════════════════════════════════════════════════════════\n  \u001b[31m✗\u001b[0m Test execution\n────────────────────────────────────────────────────────────\n  \u001b[32m0 passed\u001b[0m  \u001b[31m1 failed\u001b[0m  \u001b[33m0 skipped\u001b[0m\n════════════════════════════════════════════════════════════\n"
+    },
+    {
+      "suite": "interaction",
+      "success": false,
+      "output": "╔══════════════════════════════════════════════════════════╗\n║         INTERACTION E2E TEST                           ║\n╚══════════════════════════════════════════════════════════╝\nTarget: http://192.168.2.10:3000\n\n→ Loading game...\n\n════════════════════════════════════════════════════════════\n  TEST SUMMARY\n════════════════════════════════════════════════════════════\n  \u001b[31m✗\u001b[0m Test execution\n────────────────────────────────────────────────────────────\n  \u001b[32m0 passed\u001b[0m  \u001b[31m1 failed\u001b[0m  \u001b[33m0 skipped\u001b[0m\n════════════════════════════════════════════════════════════\n"
+    },
+    {
+      "suite": "biomes",
+      "success": false,
+      "output": "╔══════════════════════════════════════════════════════════╗\n║         ALL BIOMES E2E TEST (27 biomes)                ║\n╚══════════════════════════════════════════════════════════╝\nTarget: http://192.168.2.10:3000\n\n→ Loading game...\n\n════════════════════════════════════════════════════════════\n  TEST SUMMARY\n════════════════════════════════════════════════════════════\n  \u001b[31m✗\u001b[0m Test execution\n────────────────────────────────────────────────────────────\n  \u001b[32m0 passed\u001b[0m  \u001b[31m1 failed\u001b[0m  \u001b[33m0 skipped\u001b[0m\n════════════════════════════════════════════════════════════\n"
+    },
+    {
       "suite": "visual",
       "success": false,
-      "output": "╔══════════════════════════════════════════════════════════╗\n║         VISUAL REGRESSION E2E TEST                     ║\n╚══════════════════════════════════════════════════════════╝\nTarget: http://192.168.2.10:3000\nReference dir: /root/e2e-tests/reference\nScreenshot dir: /root/e2e-tests/screenshots\nDiff threshold: 15.0%\n\n→ Loading game...\n  → Creating profile: name=\"TestPlayer\", age=\"18+\"\n  → Profile created: hqzha2szrtcqooxm\n\n─── Canvas rendering check ───\n  Canvas: 1280×720, hasSize: true\n\n─── Workshop visual snapshot ───\n  Diff ratio: 98.6% (threshold: 15.0%)\n  Match: false\n\n─── Scene graph sanity check ───\n  Objects: 5\n  Ground: #8B6914\n  Sky: #D4A574\n  FPS: 8\n\n─── Multiple angle screenshots ───\n  north: diff 0.0% — OK\n  east: diff 0.0% — OK\n  south: diff 99.1% — CHANGED\n  west: diff 98.8% — CHANGED\n\n─── Profile screen already passed (game loaded) ───\n\n════════════════════════════════════════════════════════════\n  TEST SUMMARY\n════════════════════════════════════════════════════════════\n  \u001b[32m✓\u001b[0m Profile creation\n  \u001b[32m✓\u001b[0m Game loop running\n  \u001b[32m✓\u001b[0m Canvas renders with non-zero size\n  \u001b[31m✗\u001b[0m Workshop visual regression\n  \u001b[32m✓\u001b[0m Scene graph has objects and is running\n  \u001b[32m✓\u001b[0m Visual: north view\n  \u001b[32m✓\u001b[0m Visual: east view\n  \u001b[31m✗\u001b[0m Visual: south view\n  \u001b[31m✗\u001b[0m Visual: west view\n  \u001b[32m✓\u001b[0m Profile screen rendered successfully\n────────────────────────────────────────────────────────────\n  \u001b[32m7 passed\u001b[0m  \u001b[31m3 failed\u001b[0m  \u001b[33m0 skipped\u001b[0m\n════════════════════════════════════════════════════════════\n"
+      "output": "╔══════════════════════════════════════════════════════════╗\n║         VISUAL REGRESSION E2E TEST                     ║\n╚══════════════════════════════════════════════════════════╝\nTarget: http://192.168.2.10:3000\nReference dir: /root/e2e-tests/reference\nScreenshot dir: /root/e2e-tests/screenshots\nDiff threshold: 15.0%\n\n→ Loading game...\n\n════════════════════════════════════════════════════════════\n  TEST SUMMARY\n════════════════════════════════════════════════════════════\n  \u001b[31m✗\u001b[0m Test execution\n────────────────────────────────────────────────────────────\n  \u001b[32m0 passed\u001b[0m  \u001b[31m1 failed\u001b[0m  \u001b[33m0 skipped\u001b[0m\n════════════════════════════════════════════════════════════\n"
     }
   ],
   "overall": {
-    "total": 1,
+    "total": 4,
     "passed": 0,
-    "failed": 1
+    "failed": 4
   }
 }

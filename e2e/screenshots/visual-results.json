@@ -1,81 +1,15 @@
 {
   "test": "visual",
-  "passed": 7,
-  "failed": 3,
+  "passed": 0,
+  "failed": 1,
   "skipped": 0,
-  "total": 10,
+  "total": 1,
   "results": [
     {
-      "name": "Profile creation",
-      "pass": true,
-      "timestamp": "2026-04-03T07:26:35.483Z"
-    },
-    {
-      "name": "Game loop running",
-      "pass": true,
-      "timestamp": "2026-04-03T07:26:35.544Z"
-    },
-    {
-      "name": "Canvas renders with non-zero size",
-      "pass": true,
-      "timestamp": "2026-04-03T07:26:37.957Z",
-      "exists": true,
-      "width": 1280,
-      "height": 720,
-      "hasSize": true
-    },
-    {
-      "name": "Workshop visual regression",
+      "name": "Test execution",
       "pass": false,
-      "timestamp": "2026-04-03T07:26:39.055Z",
-      "diffPercent": "98.6",
-      "refSize": 22259,
-      "newSize": 22385
-    },
-    {
-      "name": "Scene graph has objects and is running",
-      "pass": true,
-      "timestamp": "2026-04-03T07:26:39.144Z",
-      "objectCount": 5,
-      "groundColor": "#8B6914",
-      "skyColor": "#D4A574",
-      "skyType": "gradient",
-      "cameraPosition": {
-        "x": 0,
-        "y": 1.6,
-        "z": 0
-      },
-      "fps": 8,
-      "isRunning": true
-    },
-    {
-      "name": "Visual: north view",
-      "pass": true,
-      "timestamp": "2026-04-03T07:26:42.374Z",
-      "diffPercent": "0.0"
-    },
-    {
-      "name": "Visual: east view",
-      "pass": true,
-      "timestamp": "2026-04-03T07:26:44.773Z",
-      "diffPercent": "0.0"
-    },
-    {
-      "name": "Visual: south view",
-      "pass": false,
-      "timestamp": "2026-04-03T07:26:47.413Z",
-      "diffPercent": "99.1"
-    },
-    {
-      "name": "Visual: west view",
-      "pass": false,
-      "timestamp": "2026-04-03T07:26:49.988Z",
-      "diffPercent": "98.8"
-    },
-    {
-      "name": "Profile screen rendered successfully",
-      "pass": true,
-      "timestamp": "2026-04-03T07:26:49.988Z"
+      "timestamp": "2026-04-03T11:59:57.793Z",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://192.168.2.10:3000/\nCall log:\n  - navigating to \"http://192.168.2.10:3000/\", waiting until \"domcontentloaded\"\n"
     }
   ],
   "consoleErrors": []

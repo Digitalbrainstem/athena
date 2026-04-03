@@ -17,6 +17,7 @@ import { AccessibilityManager } from './a11y/accessibility-manager.js';
 import { OfflineManager } from './net/offline.js';
 import { registerServiceWorker } from './net/sw-register.js';
 import { AssetManager } from './assets/asset-manager.js';
+import { WorldManager } from './world/world-manager.js';
 import type { Disposable } from './types.js';
 
 const DEBUG = import.meta.env.DEV;
@@ -157,6 +158,13 @@ async function boot(): Promise<void> {
   if (isMobile) loop.setMobile(true);
   disposables.push(loop);
 
+  // --- Connected Overworld ---
+  const worldManager = new WorldManager(sceneRenderer.scene);
+  sceneRenderer.setWorldManager(worldManager);
+  loop.setWorldManager(worldManager);
+  disposables.push(worldManager);
+  debug('world', 'WorldManager created — overworld terrain, landmarks, and paths loaded');
+
   // Offline support — announce network status changes to screen readers
   const offlineMgr = new OfflineManager((text) => {
     a11y.processAnnouncements([{ text, priority: 'polite', category: 'system' }]);
@@ -196,6 +204,14 @@ async function boot(): Promise<void> {
         core.worldSystem.changeBiome(biomeId);
         core.update(1 / 60, []);
       },
+      get worldMode() { return worldManager.mode; },
+      get activeBiomeId() { return worldManager.activeBiomeId; },
+      get terrainHeight() {
+        const pos = fpCam.getEyePosition();
+        return worldManager.getHeightAt(pos.x, pos.z);
+      },
+      async enterBiome() { return worldManager.enterBiome(); },
+      async exitBiome() { return worldManager.exitBiome(); },
     };
   }
 
@@ -238,6 +254,39 @@ async function boot(): Promise<void> {
 
     // Interact with highlighted object → trigger companion dialogue + interaction SFX
     if (action.type === 'interact') {
+      // WorldManager biome entry/exit takes priority
+      if (worldManager.isOverworld()) {
+        const nearby = worldManager.nearbyBiome;
+        if (nearby && nearby.entranceDistance < 5) {
+          void worldManager.enterBiome().then((biomeId) => {
+            if (biomeId) {
+              // Move player inside
+              const pos = worldManager.getEntryPosition(biomeId);
+              if (pos) {
+                fpCam.seedPosition(pos.x, pos.z);
+                core.setPlayerPosition(pos.x, pos.z);
+              }
+              // Switch core to this biome for objects/audio
+              core.worldSystem.discoverBiome(biomeId);
+              core.worldSystem.changeBiome(biomeId);
+              core.update(1 / 60, []);
+              debug('world', `Entered biome: ${biomeId}`);
+            }
+          });
+          return;
+        }
+      } else if (worldManager.isInside() && worldManager.isNearDoor) {
+        void worldManager.exitBiome().then(() => {
+          const pos = worldManager.getExitPosition();
+          if (pos) {
+            fpCam.seedPosition(pos.x, pos.z);
+            core.setPlayerPosition(pos.x, pos.z);
+          }
+          debug('world', 'Exited to overworld');
+        });
+        return;
+      }
+
       const sg = core.getSceneGraph();
       const highlighted = sg.objects.find(o => o.highlight && o.interactable);
       if (highlighted?.interactable) {

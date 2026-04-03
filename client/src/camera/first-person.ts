@@ -13,6 +13,8 @@ const STOP_THRESHOLD = 0.05;
 const EYE_HEIGHT = 1.6;
 const PLAYER_RADIUS = 0.3;
 
+export type HeightProvider = (x: number, z: number) => number;
+
 export class FirstPersonCamera implements Disposable {
   private yaw = 0;
   private pitch = 0;
@@ -36,6 +38,9 @@ export class FirstPersonCamera implements Disposable {
   // Collision objects (updated each frame from scene graph)
   private collisionBoxes: { cx: number; cz: number; hx: number; hz: number }[] = [];
 
+  // Terrain height provider (from WorldManager)
+  private heightProvider: HeightProvider | null = null;
+
   constructor() {
     this.abort = new AbortController();
     const opts: AddEventListenerOptions = { signal: this.abort.signal };
@@ -47,6 +52,16 @@ export class FirstPersonCamera implements Disposable {
   seedPosition(x: number, z: number): void {
     this.posX = x;
     this.posZ = z;
+  }
+
+  /** Set the height provider for terrain-following. */
+  setHeightProvider(provider: HeightProvider | null): void {
+    this.heightProvider = provider;
+  }
+
+  /** Add extra collision boxes (e.g. interior walls from WorldManager) */
+  addExtraCollisionBoxes(boxes: { cx: number; cz: number; hx: number; hz: number }[]): void {
+    this.collisionBoxes.push(...boxes);
   }
 
   flushLookActions(): GameAction[] {
@@ -176,9 +191,12 @@ export class FirstPersonCamera implements Disposable {
     return { yaw: this.yaw, pitch: this.pitch };
   }
 
-  /** Get the camera position at eye height. */
+  /** Get the camera position at eye height, following terrain. */
   getEyePosition(): { x: number; y: number; z: number } {
-    return { x: this.posX, y: EYE_HEIGHT, z: this.posZ };
+    const groundY = this.heightProvider
+      ? this.heightProvider(this.posX, this.posZ)
+      : 0;
+    return { x: this.posX, y: groundY + EYE_HEIGHT, z: this.posZ };
   }
 
   requestPointerLock(element: HTMLElement): void {

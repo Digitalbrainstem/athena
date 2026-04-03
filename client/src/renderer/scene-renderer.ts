@@ -8,6 +8,7 @@ import { SkyRenderer } from './sky-renderer.js';
 import { GroundRenderer } from './ground-renderer.js';
 import type { AssetManager } from '../assets/asset-manager.js';
 import type { CompanionModel } from '../assets/companion-models.js';
+import type { WorldManager } from '../world/world-manager.js';
 
 const LOD_PROFILES = {
   low:    { pixelRatioCap: 1,   antialias: false },
@@ -44,6 +45,7 @@ export class SceneRenderer implements Disposable {
   private companionModel: CompanionModel | null = null;
   private companionTime = 0;
   private assetManager: AssetManager | null = null;
+  private worldManager: WorldManager | null = null;
 
   constructor(canvas: HTMLCanvasElement, initialTier: LODTier = 'medium') {
     this.lodTier = initialTier;
@@ -67,6 +69,7 @@ export class SceneRenderer implements Disposable {
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 500);
+    this.camera.far = 600;
 
     this.objectFactory = new ObjectFactory();
     this.lightManager = new LightManager(this.scene);
@@ -82,6 +85,11 @@ export class SceneRenderer implements Disposable {
   setAssetManager(manager: AssetManager): void {
     this.assetManager = manager;
     this.objectFactory.setAssetManager(manager);
+  }
+
+  /** Connect the WorldManager for overworld rendering. */
+  setWorldManager(wm: WorldManager): void {
+    this.worldManager = wm;
   }
 
   /** Replace the default companion orb with a proper companion character model. */
@@ -106,11 +114,41 @@ export class SceneRenderer implements Disposable {
 
     this.syncCamera(sceneGraph.camera);
     this.skyRenderer.sync(sceneGraph.sky);
-    this.groundRenderer.sync(sceneGraph.ground);
-    this.lightManager.sync(sceneGraph.lights);
-    this.syncObjects(sceneGraph.objects);
-    this.updateCompanion(sceneGraph.camera);
 
+    // When WorldManager is active, it provides terrain/interior instead of the flat ground
+    if (this.worldManager) {
+      if (this.worldManager.isOverworld()) {
+        // Overworld mode: terrain is the ground, hide default ground.
+        // Don't render biome objects (they're inside buildings).
+        this.groundRenderer.sync({ ...sceneGraph.ground, color: '#000000', size: { width: 0, depth: 0 } });
+        this.lightManager.sync(sceneGraph.lights);
+        this.syncObjects([]); // Clear biome objects
+      } else if (this.worldManager.isInside()) {
+        // Inside mode: interior provides floor, render biome objects at offset
+        this.groundRenderer.sync({ ...sceneGraph.ground, color: '#000000', size: { width: 0, depth: 0 } });
+        this.lightManager.sync(sceneGraph.lights);
+        const offset = this.worldManager.getBiomeOffset();
+        const offsetObjects = sceneGraph.objects.map((obj) => ({
+          ...obj,
+          position: {
+            x: obj.position.x + offset.x,
+            y: obj.position.y + offset.y,
+            z: obj.position.z + offset.z,
+          },
+        }));
+        this.syncObjects(offsetObjects);
+      } else {
+        // Transitioning: render nothing extra
+        this.lightManager.sync(sceneGraph.lights);
+      }
+    } else {
+      // No WorldManager: original behavior
+      this.groundRenderer.sync(sceneGraph.ground);
+      this.lightManager.sync(sceneGraph.lights);
+      this.syncObjects(sceneGraph.objects);
+    }
+
+    this.updateCompanion(sceneGraph.camera);
     this.gl.render(this.scene, this.camera);
   }
 
