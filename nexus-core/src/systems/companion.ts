@@ -86,6 +86,7 @@ export class CompanionSystem implements System {
   private companionRepo: CompanionRepository | null = null;
   private pendingInteractions: CompanionInteraction[] = [];
   private activeProfileId: string | null = null;
+  private dialogueQueue: Array<{ speaker: string; text: string }> = [];
 
   setRepository(repo: CompanionRepository): void {
     this.companionRepo = repo;
@@ -134,10 +135,21 @@ export class CompanionSystem implements System {
     }
   }
 
+  /** Drain all queued dialogue lines (consumed by WorldSystem each frame). */
+  drainDialogue(): Array<{ speaker: string; text: string }> {
+    const lines = this.dialogueQueue.splice(0);
+    return lines;
+  }
+
   private handleGreet(state: CompanionState): void {
     if (!this.companionRepo) return;
     this.companionRepo.adjustTrust(state.profileId, 0.01);
     this.addMemory(state.profileId, 'interaction', 'Player greeted companion', 0.3);
+    const style = getDialogueStyle(state.personalityStage);
+    const text = style.formality === 'casual'
+      ? "Hey there! Ready for an adventure? Let's see what we can discover today!"
+      : "Welcome back! I've been looking forward to exploring together.";
+    this.dialogueQueue.push({ speaker: state.name, text });
   }
 
   private handleHint(state: CompanionState, context?: string): void {
@@ -156,11 +168,35 @@ export class CompanionSystem implements System {
   private handleEncourage(state: CompanionState): void {
     if (!this.companionRepo) return;
     this.addMemory(state.profileId, 'interaction', 'Encouraged player', 0.4);
+    const phrases = [
+      "You're doing great! Keep going!",
+      "I knew you could figure that out!",
+      "Nice work — I can see you're getting the hang of this.",
+    ];
+    const text = phrases[Math.floor(Math.random() * phrases.length)]!;
+    this.dialogueQueue.push({ speaker: state.name, text });
   }
 
   private handleReact(state: CompanionState, context?: string): void {
     if (!this.companionRepo) return;
     this.addMemory(state.profileId, 'interaction', `Reacted to: ${context ?? 'event'}`, 0.3);
+    const name = (context ?? 'this')
+      .replace(/^examine_/, '')
+      .replace(/_/g, ' ');
+    const style = getDialogueStyle(state.personalityStage);
+    const phrases = style.formality === 'casual'
+      ? [
+          `Ooh, look at ${name}! I wonder what it does?`,
+          `${name}! This looks really interesting. Want to take a closer look?`,
+          `I bet ${name} has a story to tell. Let's find out!`,
+        ]
+      : [
+          `Interesting — ${name} seems worth investigating.`,
+          `Let's examine ${name} more closely. There could be something to learn here.`,
+          `${name}. I have a feeling this is important.`,
+        ];
+    const text = phrases[Math.floor(Math.random() * phrases.length)]!;
+    this.dialogueQueue.push({ speaker: state.name, text });
   }
 
   private addMemory(profileId: string, type: CompanionMemory['type'], content: string, importance: number): void {

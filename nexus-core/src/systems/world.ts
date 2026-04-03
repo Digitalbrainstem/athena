@@ -4,8 +4,10 @@ import type { System } from '../ecs/system.js';
 import type { World } from '../ecs/world.js';
 import type { WorldStateRepository } from '../db/repositories/world-state.js';
 import type { BiomeDefinition, WorldState, InventoryEntry } from '../types/world.js';
-import type { SceneGraph, SceneObject, SceneLight, AudioCue } from '../types/scene.js';
+import type { SceneGraph, SceneObject, SceneLight, AudioCue, Caption } from '../types/scene.js';
 import { updateHighlights } from '../scene/graph.js';
+import { playSfx } from '../scene/audio-cues.js';
+import { generateCaptions } from '../accessibility/captions.js';
 
 // --- Biome Definitions ---
 
@@ -3155,6 +3157,9 @@ export class WorldSystem implements System {
   private worldStateRepo: WorldStateRepository | null = null;
   private activeProfileId: string | null = null;
   private cachedWorldState: WorldState | null = null;
+  private previousBiomeId: string | null = null;
+  private pendingDialogue: { speaker: string; text: string } | null = null;
+  private pendingSfx: AudioCue[] = [];
   setRepository(repo: WorldStateRepository): void {
     this.worldStateRepo = repo;
   }
@@ -3191,6 +3196,16 @@ export class WorldSystem implements System {
       this.cachedWorldState = this.worldStateRepo.get(this.activeProfileId) ?? null;
     }
     return this.cachedWorldState;
+  }
+
+  /** Queue dialogue to appear in the next scene graph frame. */
+  queueDialogue(speaker: string, text: string): void {
+    this.pendingDialogue = { speaker, text };
+  }
+
+  /** Queue a one-shot SFX to play in the next scene graph frame. */
+  queueSfx(asset: string, volume = 1.0): void {
+    this.pendingSfx.push(playSfx(asset, volume));
   }
 
   changeBiome(biomeId: string): boolean {
@@ -3364,6 +3379,55 @@ export class WorldSystem implements System {
 
     const audio: AudioCue[] = [];
 
+    // Biome ambient sound — fade in on biome change, maintain while in same biome
+    const currentBiomeId = biomeDef.id;
+    const ambientAsset = `${currentBiomeId}-ambient`;
+    if (this.previousBiomeId !== currentBiomeId) {
+      // Biome changed — fade out old ambient, fade in new
+      if (this.previousBiomeId) {
+        audio.push({
+          id: `ambient-${this.previousBiomeId}-ambient`,
+          type: 'ambient',
+          action: 'fade_out',
+          asset: `${this.previousBiomeId}-ambient`,
+          volume: 0,
+          loop: true,
+        });
+      }
+      audio.push({
+        id: `ambient-${ambientAsset}`,
+        type: 'ambient',
+        action: 'fade_in',
+        asset: ambientAsset,
+        volume: 0.5,
+        loop: true,
+        captionText: biomeDef.name
+          ? `[${biomeDef.name} ambient sounds]`
+          : `[${currentBiomeId} ambient sounds]`,
+      });
+      this.previousBiomeId = currentBiomeId;
+    }
+
+    // Drain any queued one-shot SFX
+    if (this.pendingSfx.length > 0) {
+      audio.push(...this.pendingSfx);
+      this.pendingSfx = [];
+    }
+
+    // Generate captions from audio cues
+    const captions: Caption[] = generateCaptions(audio);
+
+    // Dialogue state from queued companion/NPC speech
+    let dialogueActive = false;
+    let dialogueText: string | undefined;
+    let dialogueSpeaker: string | undefined;
+    if (this.pendingDialogue) {
+      dialogueActive = true;
+      dialogueText = this.pendingDialogue.text;
+      dialogueSpeaker = this.pendingDialogue.speaker;
+      this.pendingDialogue = null;
+    }
+
     // Player position for highlight proximity checks
     const playerPos = { x: cameraPos.x, y: 0, z: cameraPos.z };
 
@@ -3389,14 +3453,16 @@ export class WorldSystem implements System {
       },
       ui: {
         elements: [],
-        dialogueActive: false,
+        dialogueActive,
+        dialogueText,
+        dialogueSpeaker,
         inventoryOpen: false,
         mapOpen: false,
         paused: false,
       },
       audio,
       announcements: [],
-      captions: [],
+      captions,
     };
 
     // Update highlight state based on player proximity to interactable objects

@@ -48,7 +48,7 @@ export class ProceduralModelGenerator {
   // ---- public entry point ------------------------------------------------
 
   generate(objectType: string, tier: MasteryTier): THREE.Group {
-    const fn = (GENERATORS as Record<string, GeneratorFn>)[objectType];
+    const fn = resolveGenerator(objectType);
     if (fn) return fn(this.lib, tier, this);
     // Fallback — generic box with a color based on the object type hash
     return this.generateFallback(objectType, tier);
@@ -116,6 +116,22 @@ export class ProceduralModelGenerator {
 // ---------------------------------------------------------------------------
 
 type GeneratorFn = (lib: MaterialLibrary, tier: MasteryTier, gen: ProceduralModelGenerator) => THREE.Group;
+
+/** Convert snake_case to camelCase for modelId lookup. */
+function toCamel(s: string): string {
+  return s.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
+}
+
+/** Resolve a generator function by objectType, trying exact match then camelCase. */
+function resolveGenerator(objectType: string): GeneratorFn | undefined {
+  const gens = GENERATORS as Record<string, GeneratorFn>;
+  return gens[objectType] ?? gens[toCamel(objectType)];
+}
+
+/** Check if a generator exists for an object type (exact or snake_case). */
+export function hasGenerator(objectType: string): boolean {
+  return resolveGenerator(objectType) !== undefined;
+}
 
 const GENERATORS: Record<string, GeneratorFn> = {
   // -------------------------------------------------------------------
@@ -1108,6 +1124,325 @@ const GENERATORS: Record<string, GeneratorFn> = {
     const bucket = mesh(g.cylinder(0.1, 0.08, 0.15, s), wood, [0, 0.075, 0]);
     const handle = mesh(g.torus(0.06, 0.008, 4, s), lib.get('iron', tier), [0, 0.16, 0]);
     return makeGroup(bucket, handle);
+  },
+
+  // --- Additional biome generators ---
+
+  ancientTree: (lib, tier, g) => {
+    const s = seg(tier);
+    const bark = lib.get('wood', tier);
+    const leaf = lib.get('foliage', tier);
+    const trunk = mesh(g.cylinder(0.25, 0.35, 2.0, s), bark, [0, 1.0, 0]);
+    const roots = mesh(g.cone(0.5, 0.4, s), bark, [0, 0.2, 0]);
+    const crown1 = mesh(g.sphere(1.2, s, s), leaf, [0, 2.8, 0]);
+    const crown2 = mesh(g.sphere(0.9, s, s), leaf, [0.5, 2.4, 0.3]);
+    const crown3 = mesh(g.sphere(0.8, s, s), leaf, [-0.4, 2.5, -0.2]);
+    const branch = mesh(g.cylinder(0.06, 0.04, 0.8, s), bark, [0.5, 1.8, 0], [0, 0, 0.7]);
+    return makeGroup(trunk, roots, crown1, crown2, crown3, branch);
+  },
+
+  mushroomRing: (lib, tier, g) => {
+    const s = seg(tier);
+    const stem = lib.get('bone', tier);
+    const cap = new THREE.MeshStandardMaterial({ color: 0xff4040, roughness: 0.6, metalness: 0.0 });
+    const parts: THREE.Object3D[] = [];
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2;
+      const r = 0.6;
+      const px = Math.cos(a) * r;
+      const pz = Math.sin(a) * r;
+      const h = 0.1 + Math.random() * 0.15;
+      parts.push(mesh(g.cylinder(0.02, 0.025, h, s), stem, [px, h / 2, pz]));
+      parts.push(mesh(g.sphere(0.06, s, s), cap, [px, h + 0.03, pz]));
+    }
+    return makeGroup(...parts);
+  },
+
+  prism: (_lib, _tier, g) => {
+    const glass = new THREE.MeshStandardMaterial({
+      color: 0xeeeeff, roughness: 0.05, metalness: 0.1,
+      transparent: true, opacity: 0.6,
+    });
+    const body = mesh(g.cylinder(0.2, 0.2, 0.5, 3), glass, [0, 0.25, 0]);
+    const base = mesh(g.box(0.3, 0.05, 0.3, 1), new THREE.MeshStandardMaterial({ color: 0x888899, roughness: 0.6 }), [0, 0.025, 0]);
+    const rainbow = new THREE.MeshStandardMaterial({
+      color: 0xff8800, emissive: 0xff4400, emissiveIntensity: 0.3,
+      roughness: 0.3, metalness: 0.0,
+    });
+    const beam = mesh(g.box(0.02, 0.02, 0.6, 1), rainbow, [0.2, 0.25, -0.3], [0, 0.3, 0]);
+    return makeGroup(body, base, beam);
+  },
+
+  planetMobile: (lib, tier, g) => {
+    const s = seg(tier);
+    const iron = lib.get('iron', tier);
+    const arm = mesh(g.cylinder(0.01, 0.01, 1.0, s), iron, [0, 1.2, 0]);
+    const sun = mesh(g.sphere(0.12, s, s), new THREE.MeshStandardMaterial({
+      color: 0xffcc00, emissive: 0xffaa00, emissiveIntensity: 0.5, roughness: 0.3,
+    }), [0, 0.8, 0]);
+    const p1 = mesh(g.sphere(0.05, s, s), new THREE.MeshStandardMaterial({ color: 0x4488ff, roughness: 0.5 }), [0.3, 0.9, 0]);
+    const p2 = mesh(g.sphere(0.07, s, s), new THREE.MeshStandardMaterial({ color: 0xcc6633, roughness: 0.7 }), [-0.4, 0.75, 0.1]);
+    const p3 = mesh(g.sphere(0.04, s, s), new THREE.MeshStandardMaterial({ color: 0xaaaaaa, roughness: 0.6 }), [0.15, 1.05, -0.2]);
+    return makeGroup(arm, sun, p1, p2, p3);
+  },
+
+  windTurbine: (lib, tier, g) => {
+    const s = seg(tier);
+    const metal = lib.get('iron', tier);
+    const tower = mesh(g.cylinder(0.08, 0.12, 2.0, s), metal, [0, 1.0, 0]);
+    const hub = mesh(g.sphere(0.08, s, s), metal, [0, 2.05, 0]);
+    const blade = new THREE.MeshStandardMaterial({ color: 0xeeeeee, roughness: 0.4, metalness: 0.2 });
+    const b1 = mesh(g.box(0.06, 0.8, 0.02, 1), blade, [0, 2.5, 0.05]);
+    const b2 = mesh(g.box(0.06, 0.8, 0.02, 1), blade, [0.35, 1.75, 0.05], [0, 0, 2.1]);
+    const b3 = mesh(g.box(0.06, 0.8, 0.02, 1), blade, [-0.35, 1.75, 0.05], [0, 0, -2.1]);
+    return makeGroup(tower, hub, b1, b2, b3);
+  },
+
+  solarPanels: (lib, tier, g) => {
+    const s = seg(tier);
+    const metal = lib.get('iron', tier);
+    const panel = new THREE.MeshStandardMaterial({ color: 0x1a1a5e, roughness: 0.3, metalness: 0.4 });
+    const post1 = mesh(g.cylinder(0.03, 0.03, 0.6, s), metal, [-0.3, 0.3, 0]);
+    const post2 = mesh(g.cylinder(0.03, 0.03, 0.6, s), metal, [0.3, 0.3, 0]);
+    const face = mesh(g.box(0.8, 0.02, 0.5, 1), panel, [0, 0.65, 0], [0.3, 0, 0]);
+    const frame = mesh(g.box(0.84, 0.03, 0.54, 1), metal, [0, 0.65, 0], [0.3, 0, 0]);
+    return makeGroup(post1, post2, face, frame);
+  },
+
+  weatherVane: (lib, tier, g) => {
+    const s = seg(tier);
+    const metal = lib.get('iron', tier);
+    const pole = mesh(g.cylinder(0.02, 0.025, 1.0, s), metal, [0, 0.5, 0]);
+    const arrow = mesh(g.cone(0.04, 0.2, s), metal, [0, 1.05, 0], [0, 0, Math.PI / 2]);
+    const tail = mesh(g.box(0.15, 0.1, 0.01, 1), metal, [-0.1, 1.05, 0]);
+    const nsBar = mesh(g.cylinder(0.008, 0.008, 0.3, s), metal, [0, 0.85, 0], [0, 0, Math.PI / 2]);
+    return makeGroup(pole, arrow, tail, nsBar);
+  },
+
+  anatomyModel: (lib, tier, g) => {
+    const s = seg(tier);
+    const skin = new THREE.MeshStandardMaterial({ color: 0xddaa88, roughness: 0.7, metalness: 0.0 });
+    const torso = mesh(g.cylinder(0.2, 0.15, 0.6, s), skin, [0, 0.8, 0]);
+    const head = mesh(g.sphere(0.12, s, s), skin, [0, 1.2, 0]);
+    const base = mesh(g.cylinder(0.15, 0.15, 0.05, s), lib.get('iron', tier), [0, 0.025, 0]);
+    const stand = mesh(g.cylinder(0.02, 0.02, 0.5, s), lib.get('iron', tier), [0, 0.275, 0]);
+    const armL = mesh(g.cylinder(0.03, 0.025, 0.4, s), skin, [-0.22, 0.85, 0], [0, 0, 0.3]);
+    const armR = mesh(g.cylinder(0.03, 0.025, 0.4, s), skin, [0.22, 0.85, 0], [0, 0, -0.3]);
+    return makeGroup(base, stand, torso, head, armL, armR);
+  },
+
+  patientWard: (lib, tier, g) => {
+    const s = seg(tier);
+    const white = new THREE.MeshStandardMaterial({ color: 0xf0f0f0, roughness: 0.5 });
+    const metal = lib.get('iron', tier);
+    const bed = mesh(g.box(0.6, 0.08, 1.2, 1), white, [0, 0.45, 0]);
+    const headboard = mesh(g.box(0.6, 0.3, 0.04, 1), metal, [0, 0.6, -0.58]);
+    const footboard = mesh(g.box(0.6, 0.2, 0.04, 1), metal, [0, 0.5, 0.58]);
+    const legFL = mesh(g.cylinder(0.02, 0.02, 0.41, s), metal, [-0.27, 0.205, 0.55]);
+    const legFR = mesh(g.cylinder(0.02, 0.02, 0.41, s), metal, [0.27, 0.205, 0.55]);
+    const legBL = mesh(g.cylinder(0.02, 0.02, 0.41, s), metal, [-0.27, 0.205, -0.55]);
+    const legBR = mesh(g.cylinder(0.02, 0.02, 0.41, s), metal, [0.27, 0.205, -0.55]);
+    const pillow = mesh(g.box(0.35, 0.06, 0.2, 1), white, [0, 0.52, -0.4]);
+    return makeGroup(bed, headboard, footboard, legFL, legFR, legBL, legBR, pillow);
+  },
+
+  surgeryGallery: (lib, tier, g) => {
+    const s = seg(tier);
+    const glass = new THREE.MeshStandardMaterial({
+      color: 0xccddee, roughness: 0.1, metalness: 0.0, transparent: true, opacity: 0.4,
+    });
+    const metal = lib.get('iron', tier);
+    const wall = mesh(g.box(1.5, 1.0, 0.05, 1), glass, [0, 0.8, 0]);
+    const rail = mesh(g.cylinder(0.015, 0.015, 1.5, s), metal, [0, 0.5, 0.05], [0, 0, Math.PI / 2]);
+    const light = mesh(g.cylinder(0.15, 0.15, 0.03, s), new THREE.MeshStandardMaterial({
+      color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 0.4, roughness: 0.2,
+    }), [0, 1.4, -0.1]);
+    const arm = mesh(g.cylinder(0.01, 0.01, 0.3, s), metal, [0, 1.25, -0.1]);
+    return makeGroup(wall, rail, light, arm);
+  },
+
+  triageStation: (_lib, _tier, g) => {
+    const red = new THREE.MeshStandardMaterial({ color: 0xdd3333, roughness: 0.5 });
+    const white = new THREE.MeshStandardMaterial({ color: 0xf0f0f0, roughness: 0.5 });
+    const desk = mesh(g.box(0.8, 0.04, 0.5, 1), white, [0, 0.72, 0]);
+    const front = mesh(g.box(0.8, 0.72, 0.04, 1), white, [0, 0.36, 0.23]);
+    const crossV = mesh(g.box(0.04, 0.2, 0.01, 1), red, [0.0, 1.0, 0.24]);
+    const crossH = mesh(g.box(0.2, 0.04, 0.01, 1), red, [0.0, 1.0, 0.24]);
+    const clipboard = mesh(g.box(0.15, 0.2, 0.01, 1), new THREE.MeshStandardMaterial({ color: 0xd4a574, roughness: 0.7 }), [0.2, 0.78, 0]);
+    return makeGroup(desk, front, crossV, crossH, clipboard);
+  },
+
+  rehabRoom: (lib, tier, g) => {
+    const s = seg(tier);
+    const mat = new THREE.MeshStandardMaterial({ color: 0x88bb88, roughness: 0.6 });
+    const foam = new THREE.MeshStandardMaterial({ color: 0x6688cc, roughness: 0.8 });
+    const padMat = mesh(g.box(0.8, 0.08, 1.5, 1), foam, [0, 0.04, 0]);
+    const ball = mesh(g.sphere(0.2, s, s), mat, [0.5, 0.2, -0.4]);
+    const step = mesh(g.box(0.4, 0.15, 0.4, 1), lib.get('wood', tier), [-0.5, 0.075, 0.3]);
+    const bar = mesh(g.cylinder(0.015, 0.015, 1.0, s), lib.get('iron', tier), [-0.8, 0.5, 0], [0, 0, Math.PI / 2]);
+    const barPost1 = mesh(g.cylinder(0.02, 0.02, 0.8, s), lib.get('iron', tier), [-0.3, 0.4, 0]);
+    const barPost2 = mesh(g.cylinder(0.02, 0.02, 0.8, s), lib.get('iron', tier), [-1.3, 0.4, 0]);
+    return makeGroup(padMat, ball, step, bar, barPost1, barPost2);
+  },
+
+  teddyStation: (lib, tier, g) => {
+    const s = seg(tier);
+    const brown = new THREE.MeshStandardMaterial({ color: 0x8B6914, roughness: 0.9 });
+    const body = mesh(g.sphere(0.15, s, s), brown, [0, 0.25, 0]);
+    const head = mesh(g.sphere(0.1, s, s), brown, [0, 0.42, 0]);
+    const earL = mesh(g.sphere(0.04, 6, 6), brown, [-0.07, 0.5, 0]);
+    const earR = mesh(g.sphere(0.04, 6, 6), brown, [0.07, 0.5, 0]);
+    const armL = mesh(g.sphere(0.05, 6, 6), brown, [-0.17, 0.28, 0]);
+    const armR = mesh(g.sphere(0.05, 6, 6), brown, [0.17, 0.28, 0]);
+    const shelf = mesh(g.box(0.8, 0.04, 0.3, 1), lib.get('wood', tier), [0, 0.08, 0]);
+    return makeGroup(shelf, body, head, earL, earR, armL, armR);
+  },
+
+  cropField: (lib, tier, g) => {
+    const s = seg(tier);
+    const dirt = new THREE.MeshStandardMaterial({ color: 0x6B4226, roughness: 0.9 });
+    const green = lib.get('foliage', tier);
+    const plot = mesh(g.box(1.5, 0.06, 1.0, 1), dirt, [0, 0.03, 0]);
+    const parts: THREE.Object3D[] = [plot];
+    for (let row = 0; row < 3; row++) {
+      for (let col = 0; col < 5; col++) {
+        const px = -0.5 + col * 0.25;
+        const pz = -0.3 + row * 0.3;
+        parts.push(mesh(g.cone(0.03, 0.15 + Math.random() * 0.1, s), green, [px, 0.12, pz]));
+      }
+    }
+    return makeGroup(...parts);
+  },
+
+  animalPen: (lib, tier, g) => {
+    const s = seg(tier);
+    const wood = lib.get('wood', tier);
+    const parts: THREE.Object3D[] = [];
+    // Fence posts and rails
+    const positions = [
+      [-0.6, 0, -0.6], [0.6, 0, -0.6], [0.6, 0, 0.6], [-0.6, 0, 0.6],
+    ] as [number, number, number][];
+    for (const [px, , pz] of positions) {
+      parts.push(mesh(g.cylinder(0.03, 0.03, 0.5, s), wood, [px, 0.25, pz]));
+    }
+    // Rails
+    parts.push(mesh(g.box(1.2, 0.03, 0.03, 1), wood, [0, 0.35, -0.6]));
+    parts.push(mesh(g.box(1.2, 0.03, 0.03, 1), wood, [0, 0.2, -0.6]));
+    parts.push(mesh(g.box(0.03, 0.03, 1.2, 1), wood, [0.6, 0.35, 0]));
+    parts.push(mesh(g.box(0.03, 0.03, 1.2, 1), wood, [-0.6, 0.35, 0]));
+    parts.push(mesh(g.box(1.2, 0.03, 0.03, 1), wood, [0, 0.35, 0.6]));
+    // Hay bale
+    parts.push(mesh(g.cylinder(0.12, 0.12, 0.2, s), new THREE.MeshStandardMaterial({ color: 0xDAA520, roughness: 0.9 }), [0.2, 0.1, 0.2]));
+    return makeGroup(...parts);
+  },
+
+  greenhouse: (lib, tier, g) => {
+    const glass = new THREE.MeshStandardMaterial({
+      color: 0xaaddbb, roughness: 0.1, metalness: 0.0, transparent: true, opacity: 0.35,
+    });
+    const metal = lib.get('iron', tier);
+    const frame1 = mesh(g.box(0.03, 0.8, 0.03, 1), metal, [-0.4, 0.4, -0.3]);
+    const frame2 = mesh(g.box(0.03, 0.8, 0.03, 1), metal, [0.4, 0.4, -0.3]);
+    const frame3 = mesh(g.box(0.03, 0.8, 0.03, 1), metal, [-0.4, 0.4, 0.3]);
+    const frame4 = mesh(g.box(0.03, 0.8, 0.03, 1), metal, [0.4, 0.4, 0.3]);
+    const roof = mesh(g.box(0.86, 0.02, 0.66, 1), glass, [0, 0.82, 0], [0.15, 0, 0]);
+    const wallF = mesh(g.box(0.86, 0.8, 0.02, 1), glass, [0, 0.4, -0.3]);
+    const wallB = mesh(g.box(0.86, 0.8, 0.02, 1), glass, [0, 0.4, 0.3]);
+    const wallL = mesh(g.box(0.02, 0.8, 0.62, 1), glass, [-0.4, 0.4, 0]);
+    const wallR = mesh(g.box(0.02, 0.8, 0.62, 1), glass, [0.4, 0.4, 0]);
+    const pot = mesh(g.cylinder(0.06, 0.05, 0.08, 8), new THREE.MeshStandardMaterial({ color: 0xaa5533, roughness: 0.8 }), [0, 0.04, 0]);
+    return makeGroup(frame1, frame2, frame3, frame4, roof, wallF, wallB, wallL, wallR, pot);
+  },
+
+  farmWeather: (lib, tier, g) => {
+    const s = seg(tier);
+    const wood = lib.get('wood', tier);
+    const metal = lib.get('iron', tier);
+    const pole = mesh(g.cylinder(0.03, 0.04, 1.2, s), wood, [0, 0.6, 0]);
+    const vane = mesh(g.cone(0.04, 0.2, s), metal, [0, 1.25, 0], [0, 0, Math.PI / 2]);
+    const cup1 = mesh(g.sphere(0.03, 6, 6), metal, [0.1, 1.15, 0]);
+    const cup2 = mesh(g.sphere(0.03, 6, 6), metal, [-0.05, 1.15, 0.08]);
+    const cup3 = mesh(g.sphere(0.03, 6, 6), metal, [-0.05, 1.15, -0.08]);
+    const thermometer = mesh(g.cylinder(0.01, 0.01, 0.2, s), new THREE.MeshStandardMaterial({ color: 0xcc2222, roughness: 0.3 }), [0.05, 0.8, 0.04]);
+    return makeGroup(pole, vane, cup1, cup2, cup3, thermometer);
+  },
+
+  irrigation: (lib, tier, g) => {
+    const s = seg(tier);
+    const metal = lib.get('iron', tier);
+    const pipe1 = mesh(g.cylinder(0.03, 0.03, 1.0, s), metal, [0, 0.15, 0], [0, 0, Math.PI / 2]);
+    const pipe2 = mesh(g.cylinder(0.03, 0.03, 0.6, s), metal, [0.5, 0.15, 0.3], [Math.PI / 2, 0, 0]);
+    const valve = mesh(g.torus(0.05, 0.01, 6, s), new THREE.MeshStandardMaterial({ color: 0xcc3333, roughness: 0.4 }), [-0.5, 0.15, 0]);
+    const sprinkler = mesh(g.cone(0.04, 0.08, s), metal, [0.5, 0.22, 0.6]);
+    const base = mesh(g.cylinder(0.06, 0.08, 0.04, s), metal, [0.5, 0.02, 0.6]);
+    return makeGroup(pipe1, pipe2, valve, sprinkler, base);
+  },
+
+  wateringCan: (_lib, tier, g) => {
+    const s = seg(tier);
+    const metal = new THREE.MeshStandardMaterial({ color: 0x55aa55, roughness: 0.5, metalness: 0.3 });
+    const body = mesh(g.cylinder(0.1, 0.08, 0.2, s), metal, [0, 0.1, 0]);
+    const spout = mesh(g.cylinder(0.015, 0.03, 0.15, s), metal, [0.1, 0.18, 0], [0, 0, -0.6]);
+    const handle = mesh(g.torus(0.06, 0.01, 4, s), metal, [-0.02, 0.22, 0]);
+    const rose = mesh(g.sphere(0.03, 6, 6), metal, [0.18, 0.22, 0]);
+    return makeGroup(body, spout, handle, rose);
+  },
+
+  magnifyingGlass: (lib, tier, g) => {
+    const s = seg(tier);
+    const glass = new THREE.MeshStandardMaterial({
+      color: 0xeeeeff, roughness: 0.05, metalness: 0.0, transparent: true, opacity: 0.3,
+    });
+    const gold = new THREE.MeshStandardMaterial({ color: 0xccaa44, roughness: 0.3, metalness: 0.5 });
+    const lens = mesh(g.torus(0.12, 0.015, s, s), gold, [0, 0.35, 0]);
+    const lensFill = mesh(g.cylinder(0.11, 0.11, 0.005, s), glass, [0, 0.35, 0]);
+    const handle = mesh(g.cylinder(0.02, 0.025, 0.25, s), lib.get('wood', tier), [0, 0.1, 0]);
+    return makeGroup(lens, lensFill, handle);
+  },
+
+  commDish: (lib, tier, g) => {
+    const s = seg(tier);
+    const metal = lib.get('iron', tier);
+    const white = new THREE.MeshStandardMaterial({ color: 0xeeeeee, roughness: 0.3, metalness: 0.3 });
+    const base = mesh(g.cylinder(0.15, 0.2, 0.1, s), metal, [0, 0.05, 0]);
+    const pole = mesh(g.cylinder(0.03, 0.03, 0.8, s), metal, [0, 0.45, 0]);
+    const dish = mesh(g.sphere(0.35, s, s), white, [0, 0.9, 0], [0.4, 0, 0], [1, 0.3, 1]);
+    const feed = mesh(g.cylinder(0.015, 0.01, 0.2, s), metal, [0, 0.95, -0.15], [-0.4, 0, 0]);
+    return makeGroup(base, pole, dish, feed);
+  },
+
+  galtonBoard: (lib, tier, g) => {
+    const wood = lib.get('wood', tier);
+    const glass = new THREE.MeshStandardMaterial({
+      color: 0xeeeeff, roughness: 0.1, transparent: true, opacity: 0.4,
+    });
+    const frame = mesh(g.box(0.6, 0.8, 0.04, 1), wood, [0, 0.5, 0]);
+    const front = mesh(g.box(0.56, 0.76, 0.01, 1), glass, [0, 0.5, 0.025]);
+    const parts: THREE.Object3D[] = [frame, front];
+    // Pegs
+    const peg = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.4, metalness: 0.5 });
+    for (let row = 0; row < 5; row++) {
+      const cols = row + 2;
+      for (let col = 0; col < cols; col++) {
+        const px = -0.1 * (cols - 1) / 2 + col * 0.1;
+        const py = 0.7 - row * 0.1;
+        parts.push(mesh(g.sphere(0.012, 6, 6), peg, [px, py, 0.02]));
+      }
+    }
+    return makeGroup(...parts);
+  },
+
+  acousticsRoom: (lib, tier, g) => {
+    const s = seg(tier);
+    const foam = new THREE.MeshStandardMaterial({ color: 0x444466, roughness: 0.95 });
+    const wood = lib.get('wood', tier);
+    const floor = mesh(g.box(1.0, 0.04, 1.0, 1), wood, [0, 0.02, 0]);
+    const wallL = mesh(g.box(0.04, 0.7, 1.0, 1), foam, [-0.5, 0.37, 0]);
+    const wallR = mesh(g.box(0.04, 0.7, 1.0, 1), foam, [0.5, 0.37, 0]);
+    const wallB = mesh(g.box(1.0, 0.7, 0.04, 1), foam, [0, 0.37, -0.5]);
+    const speaker = mesh(g.box(0.15, 0.2, 0.12, 1), new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.5 }), [0, 0.5, -0.44]);
+    const cone = mesh(g.cylinder(0.04, 0.05, 0.02, s), new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.3 }), [0, 0.5, -0.37]);
+    return makeGroup(floor, wallL, wallR, wallB, speaker, cone);
   },
 };
 

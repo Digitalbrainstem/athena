@@ -12,9 +12,29 @@ export class AudioManager implements Disposable {
   private readonly audioCache = new Map<string, AudioBuffer>();
   private disposed = false;
 
+  /**
+   * Inject a pre-created AudioContext (created on user gesture).
+   * This ensures the browser allows audio playback.
+   */
+  setContext(context: AudioContext): void {
+    this.ctx = context;
+    if (this.ctx.state === 'suspended') {
+      void this.ctx.resume();
+    }
+    this.synthesizer = null;
+    this.audioCache.clear();
+    console.log(`[Audio] AudioContext set — state: ${this.ctx.state}, sampleRate: ${this.ctx.sampleRate}`);
+  }
+
+  /** Get the AudioContext (may be null if not yet initialized). */
+  getContext(): AudioContext | null {
+    return this.ctx;
+  }
+
   private ensureContext(): AudioContext {
     if (!this.ctx) {
       this.ctx = new AudioContext();
+      console.log(`[Audio] AudioContext created lazily — state: ${this.ctx.state}`);
     }
     if (this.ctx.state === 'suspended') {
       void this.ctx.resume();
@@ -38,6 +58,7 @@ export class AudioManager implements Disposable {
     if (this.disposed || cues.length === 0) return;
 
     for (const cue of cues) {
+      console.log(`[Audio] Processing cue: ${cue.action} "${cue.asset}" (type=${cue.type}, id=${cue.id})`);
       switch (cue.action) {
         case 'play': this.play(cue); break;
         case 'stop': this.stop(cue.id); break;
@@ -74,6 +95,7 @@ export class AudioManager implements Disposable {
 
     source.start(0);
     this.activeSources.set(cue.id, { source, gain });
+    console.log(`[Audio] Playing "${cue.asset}" → BufferSource(${buffer.duration.toFixed(2)}s, loop=${cue.loop}) → GainNode(${cue.volume}) → destination (ctx.state=${ctx.state})`);
 
     source.onended = () => {
       this.activeSources.delete(cue.id);
@@ -110,6 +132,7 @@ export class AudioManager implements Disposable {
     source.start(0);
 
     this.activeSources.set(cue.id, { source, gain });
+    console.log(`[Audio] Fading in "${cue.asset}" → BufferSource(${buffer.duration.toFixed(2)}s, loop=${cue.loop}) → GainNode(0→${cue.volume}) → destination (ctx.state=${ctx.state})`);
     source.onended = () => { this.activeSources.delete(cue.id); };
   }
 

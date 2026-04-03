@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import type { MasteryTier } from '@nexus-academy/core';
 import type { Disposable } from '../types.js';
 import { MaterialLibrary, type BiomePalette } from './materials.js';
-import { ProceduralModelGenerator, PROCEDURAL_OBJECT_TYPES } from './procedural-models.js';
+import { ProceduralModelGenerator, hasGenerator } from './procedural-models.js';
 import { BiomeEnvironmentGenerator, type BiomeEnvironmentConfig } from './biome-environments.js';
 
 // ---------------------------------------------------------------------------
@@ -38,7 +38,7 @@ export class AssetManager implements Disposable {
 
   /** Check if a model type is known (has a dedicated generator, not fallback). */
   hasModel(objectType: string): boolean {
-    return PROCEDURAL_OBJECT_TYPES.includes(objectType);
+    return hasGenerator(objectType);
   }
 
   // ---- Biome environments -----------------------------------------------

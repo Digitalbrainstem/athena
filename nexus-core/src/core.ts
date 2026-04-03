@@ -220,6 +220,13 @@ export class NexusCore {
     // Update all systems
     this.world.update(dt);
 
+    // Drain companion dialogue into the world system for scene graph
+    const dialogueLines = this.companionSystem.drainDialogue();
+    if (dialogueLines.length > 0) {
+      const line = dialogueLines[0]!;
+      this.worldSystem.queueDialogue(line.speaker, line.text);
+    }
+
     // Rebuild scene graph
     this.sceneGraph = this.worldSystem.buildSceneGraph(this.world);
   }

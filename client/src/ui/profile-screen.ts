@@ -279,7 +279,7 @@ export class ProfileScreen implements Disposable {
     createBtn.type = 'button';
     createBtn.className = 'create-btn';
     createBtn.setAttribute('aria-label', 'Create new player');
-    createBtn.textContent = 'Start Adventure!';
+    createBtn.textContent = 'Enter the Nexus';
 
     createBtn.addEventListener('click', () => {
       const name = nameInput.value.trim();
@@ -330,7 +330,7 @@ export class ProfileScreen implements Disposable {
         const btn = this.overlay?.querySelector<HTMLButtonElement>('.create-btn');
         if (btn) {
           btn.disabled = false;
-          btn.textContent = 'Start Adventure!';
+          btn.textContent = 'Enter the Nexus';
         }
       });
   }

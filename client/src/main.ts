@@ -129,6 +129,23 @@ async function boot(): Promise<void> {
     else if (!loop.isRunning) loop.start();
   });
 
+  // Expose debug bridge for E2E tests (dev mode only)
+  if (DEBUG) {
+    (window as any).__nexus_debug = {
+      get cameraPosition() { return fpCam.getEyePosition(); },
+      get cameraVelocity() { return { vx: (fpCam as any).vx ?? 0, vz: (fpCam as any).vz ?? 0 }; },
+      get sceneGraph() { return core.getSceneGraph(); },
+      get sceneObjects() { return core.getSceneGraph().objects.length; },
+      get groundColor() { return core.getSceneGraph().ground.color; },
+      get skyColor() { return core.getSceneGraph().sky.primaryColor; },
+      get fps() { return loop.fps; },
+      get isRunning() { return loop.isRunning; },
+      get profileId() { return profileId; },
+      get currentBiome() { return core.getSceneGraph().ground; },
+      setPlayerPosition(x: number, z: number) { fpCam.seedPosition(x, z); core.setPlayerPosition(x, z); },
+    };
+  }
+
   // Start the game loop immediately after profile selection
   debug('core', 'Starting game loop...');
   debug('render', 'SceneRenderer:', sceneRenderer ? 'initialized' : 'NULL');
