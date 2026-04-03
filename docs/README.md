@@ -29,6 +29,8 @@
 | 19 | [ACCESSIBILITY.md](19-ACCESSIBILITY.md) | Visual, motor, cognitive, and auditory accessibility — full spec |
 | 20 | [SCREEN_TIME_SAFETY.md](20-SCREEN_TIME_SAFETY.md) | Parental controls, screen time philosophy, COPPA compliance, child protection |
 | 21 | [MARKETING_PITCH.md](21-MARKETING_PITCH.md) | The pitch: problem, positioning, trailer concept, competitive landscape, why free |
+| — | [CURRICULUM_SKILL_COUNTS.md](CURRICULUM_SKILL_COUNTS.md) | Complete 14-subject, 11,400-skill curriculum breakdown with source validation |
+| — | [STYLE_GUIDE.md](STYLE_GUIDE.md) | Visual identity: colors, typography, components, animation, per-tier adaptation |
 
 ## Suggested Reading Order
 
@@ -67,6 +69,6 @@
 
 ---
 
-**Version:** 2.1 — Added Core Principles, interest-driven theming, Atlas-optional architecture
+**Version:** 3.0 — Updated for 27 biomes, 4,017 quests, 11,400-skill curriculum, Bayesian IRT calibration, Flow Engine, Style Guide
 **Date:** July 2025
 **Author:** Derek Thomas / DigitalBrainstem

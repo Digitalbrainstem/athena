@@ -232,22 +232,39 @@ Typically 2x to 3x the expected load."
 
 ## The Economy
 
-The in-game economy runs on real economic principles. No microtransactions — knowledge
-is the only real currency (see [01-VISION.md](01-VISION.md)), but the in-game economy
-uses gold/silver/copper as the medium of exchange.
+The in-game economy runs on real economic principles with **real supply and demand
+dynamics**. No microtransactions — knowledge is the only real currency (see
+[01-VISION.md](01-VISION.md)), but the in-game economy uses gold/silver/copper as
+the medium of exchange.
 
 ### Economic Mechanics
 
 | Mechanic | How It Works | What It Teaches |
 |----------|-------------|----------------|
-| **Trading** | Buy/sell at Trading Post with NPC merchants | Supply/demand, negotiation |
-| **Price fluctuation** | Prices change based on world events and player actions | Market dynamics |
+| **Trading** | Buy/sell at Trading Post and Marketplace with NPC merchants | Supply/demand, negotiation |
+| **Price fluctuation** | Prices change based on world events, player actions, and real supply/demand simulation | Market dynamics |
 | **Crafting profit** | Raw materials → crafted goods at higher value | Value-added economics |
 | **Investment** | Build infrastructure that generates passive income | ROI, compound growth |
 | **Scarcity** | Rare materials command premium prices | Supply/demand, resource allocation |
 | **Currency exchange** | Different regions use different currencies | Exchange rates, conversion |
 | **Taxes/fees** | Trading Post charges fees, maintained by government | Public finance basics |
 | **Debt/credit** | Borrow from the bank for large purchases (Builder+) | Interest, compound growth, risk |
+| **Entrepreneurship** | Start businesses in the Marketplace biome | Profit margins, supply chains, risk management |
+
+### Real Supply & Demand
+
+The economy uses a genuine supply/demand simulation, not scripted price lists:
+
+- **Supply** is driven by what players and NPCs produce — more iron mined means lower iron prices
+- **Demand** is driven by what's needed — a building boom increases demand for lumber
+- **World events affect markets** — a storm destroying crops raises food prices; a new
+  mine discovery crashes ore prices
+- **Player actions have real economic consequences** — cornering the market on a resource
+  affects availability for everyone (in multiplayer), or affects NPC behavior (in single player)
+- **Seasonal cycles** — agricultural goods fluctuate with growing seasons; trading routes
+  shift with weather patterns
+- **Economic feedback loops** — high prices incentivize production, which increases supply,
+  which lowers prices — the invisible hand, experienced firsthand
 
 ### Economy by Tier
 

@@ -268,11 +268,24 @@ for the full mapping.
 
 ### Mastery Levels Per Skill
 
-Each skill node tracks:
+Each skill node tracks mastery using **Bayesian Item Response Theory (IRT)** — a
+probabilistic model that estimates the player's true ability from observed responses.
+Unlike simple percentage-correct scoring, Bayesian IRT accounts for question difficulty,
+response time, and uncertainty in the estimate.
+
+**How Bayesian IRT works in practice:**
+- Each skill has a posterior distribution over ability (not a single number)
+- Easy questions answered correctly provide less information than hard ones
+- The model updates after every interaction using Bayes' theorem
+- Uncertainty decreases as more evidence accumulates
+- A player who gets a hard question right jumps more than one who gets an easy question right
+
+The system maintains these fields per skill:
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `level` | 0.0 – 1.0 | Overall mastery estimate |
+| `level` | 0.0 – 1.0 | Overall mastery estimate (posterior mean) |
+| `uncertainty` | 0.0 – 1.0 | Confidence in the estimate (posterior variance) |
 | `retention_score` | 0.0 – 1.0 | Can they do it after time passes? |
 | `transfer_score` | 0.0 – 1.0 | Can they apply it in new contexts? |
 | `depth_score` | 0.0 – 1.0 | Can they explain it to the companion? |
@@ -295,6 +308,57 @@ A skill is considered **struggling** when:
 - Player actively avoids quests requiring this skill
 
 Struggling skills trigger gap detection and targeted remediation through Atlas.
+
+---
+
+## The Flow Engine
+
+The Flow Engine is the real-time difficulty management system that keeps every player
+in their optimal learning zone. It operates during gameplay (unlike Atlas, which works
+between sessions) and handles three critical functions:
+
+### Dynamic Difficulty Adjustment
+
+The Flow Engine adjusts challenge difficulty in real-time based on player performance:
+
+```
+Per-skill difficulty adjustment:
+  3+ consecutive successes (fast) → increase difficulty 15%
+  2 consecutive successes (normal) → increase difficulty 5%
+  1 success after struggle → maintain current level
+  1 failure → reduce difficulty 10%, offer contextual hint
+  2+ failures → reduce difficulty 20%, companion scaffolds actively
+  3+ failures → pivot to prerequisite skill, return later
+```
+
+Adjustments are **per-skill, not global**. A player can be challenged in math while
+getting scaffolding in chemistry. The engine tracks each skill independently.
+
+### Struggle Detection
+
+The Flow Engine monitors for signs of frustration in real-time:
+
+| Signal | Detection | Response |
+|--------|-----------|----------|
+| Repeated identical wrong answers | Player stuck in a loop | Companion: "Let's try a different approach" |
+| Response time increasing per attempt | Frustration building | Reduce complexity, offer concrete hint |
+| Input becoming erratic (random taps) | Disengagement | Surprise event or suggest a different activity |
+| Long pauses between attempts | Thinking OR giving up | After 15s, gentle check-in; after 30s, offer help |
+| Correct answer followed by long pause | Uncertain success | Companion validates: "That's exactly right!" |
+
+### Anti-Frustration Design
+
+When struggle is detected, the Flow Engine applies graduated interventions:
+
+1. **Hint cascade** — Hints progress from vague to specific to direct
+2. **Companion scaffolding** — Companion works through a simpler version alongside the player
+3. **Graceful pivot** — Seamlessly transition to a prerequisite quest that builds the missing skill
+4. **Never announce failure** — The companion says "Let's try something else" not "You got it wrong"
+5. **Return with confidence** — After the player succeeds at the prerequisite, the original
+   challenge returns naturally, often in a slightly different form
+
+The Flow Engine ensures no player ever hits a wall. The game always has somewhere
+productive and engaging to go, regardless of the player's current ability level.
 
 ---
 
@@ -480,8 +544,7 @@ we've failed. The progression system exists to ensure that moment never comes.
 
 There is no anti-cheat system in Nexus Academy. There doesn't need to be — because
 there is nothing to cheat. The architecture of the game makes cheating either impossible,
-pointless, or indistinguishable from learning. See [00-CORE_PRINCIPLES.md](00-CORE_PRINCIPLES.md)
-Principle XII: All Learning Counts.
+pointless, or indistinguishable from learning.
 
 ### Why Traditional Cheating Doesn't Work Here
 

@@ -14,6 +14,11 @@ Each subject section lists concepts by mastery tier with:
 - **Game mechanic** — How it manifests in gameplay
 - **Example** — A specific in-game scenario
 
+The full curriculum spans **14 subjects and ~11,400 discrete skills** from preschool
+through post-graduate level. See [CURRICULUM_SKILL_COUNTS.md](CURRICULUM_SKILL_COUNTS.md)
+for the complete breakdown by subject and tier, including source validation from Khan
+Academy, IXL, OpenStax, Common Core, NGSS, CSTA, AP frameworks, and MIT OCW.
+
 For biome details, see [02-WORLD_DESIGN.md](02-WORLD_DESIGN.md). For how mastery is
 tracked, see [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md). For quest structure, see
 [05-GAMEPLAY_LOOPS.md](05-GAMEPLAY_LOOPS.md).

@@ -36,9 +36,39 @@ Audio Engine
 
 ---
 
-## Companion Voice
+### The Nexus Voice
 
-### Primary: Fish Audio TTS
+Separate from the companion, the **Nexus Voice** is the voice of the world itself —
+female, futuristic, warm but cosmic. Think Cortana meets the ship's AI, but with
+genuine warmth underneath the precision.
+
+**Characteristics:**
+- Confident, knowing, slightly mysterious — she knows more than she says
+- Slight reverb + subtle harmonics — like she's speaking from everywhere at once
+- NOT robotic, NOT monotone, NOT cold — there's warmth underneath the precision
+- She sounds like she CHOSE to welcome you, not like she was programmed to
+
+**The Nexus Voice speaks rarely (~20 times in the entire game):**
+
+| Moment | Line |
+|--------|------|
+| First launch | *"Welcome to the Nexus. Everything you need to know is already inside you. We're just going to help you find it."* |
+| Returning player | *"Welcome back."* |
+| After long absence | *"It's been a while. The Nexus has been waiting."* |
+| Tier transitions | *"You've grown. The world grows with you."* |
+| Major discoveries | *"You're beginning to see."* |
+| First Founder fragment | *"Someone left this for you. A long time ago."* |
+| Nexus Core arrival | *"You made it. You always could."* |
+| Hidden room discovery | *silence* — she has nothing to say. The journal speaks for itself. |
+
+The companion is personal (your friend). The Nexus Voice is cosmic (the world itself).
+Two different relationships, two different audio treatments.
+
+**Audio treatment:** Nexus Voice uses Frost color (`#22d3ee`) in captions and
+letter-spacing in text rendering. See [STYLE_GUIDE.md](../docs/STYLE_GUIDE.md) for the
+full visual treatment of Nexus Voice text.
+
+### Primary Companion Voice: Fish Audio TTS
 
 Fish Audio provides the companion's main voice — warm, expressive, and
 character-consistent. Multiple voice profiles are available:

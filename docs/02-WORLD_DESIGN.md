@@ -53,6 +53,15 @@ emerge naturally from the setting, characters, resources, and challenges.
 | **The Shipyard** | Engineering, Physics, Chemistry | Docks and drydocks. Build vehicles from carts to starships. Fuel chemistry, propulsion physics, structural engineering, navigation systems. See [03-TRAVEL_MECHANICS.md](03-TRAVEL_MECHANICS.md). |
 | **The Music Hall** | Music Theory, Physics, Math | A grand concert hall. Instrument crafting, acoustic design, harmony and melody, rhythm mathematics, sound wave physics. |
 | **The Gallery** | Art, Design, Math, History | A creative studio and museum. Perspective drawing, color theory, symmetry, art history periods, design principles, visual storytelling. |
+| **The Hospital** | Medicine, Health, Anatomy, First Aid | A working medical center. Triage patients, learn anatomy through diagnosis, practice first aid, study nutrition and pharmacology. Foundation tier learns body parts and hygiene; Innovator tier runs full differential diagnoses. |
+| **The Farm** | Biology, Agriculture, Economics, Ecology | A living agricultural operation. Plant crops with real growing seasons, raise animals, manage soil chemistry, balance ecosystems, and sell produce at market — connecting biology to economics naturally. |
+| **The Laboratory** | Physics, Chemistry, Scientific Method | A proper research laboratory. Design experiments with controls and variables, use real instruments (spectroscopes, centrifuges, oscilloscopes), follow the scientific method from hypothesis through conclusion. |
+| **The Digital World** | Computer Science, Networking, Cybersecurity, AI | A virtual landscape inside the machine. Navigate networks, build firewalls, train simple AI models, understand how the internet works from packets to protocols. The Code Forge builds programs; the Digital World explores systems. |
+| **The Space Station** | Physics, Astronomy, Engineering | An orbital platform above the planet. Life support engineering, microgravity experiments, Earth observation, satellite deployment, and the staging point for interplanetary missions (see [03-TRAVEL_MECHANICS.md](03-TRAVEL_MECHANICS.md)). |
+| **The Debate Hall** | Philosophy, Logic, Rhetoric, Ethics | A forum for ideas. Construct arguments, identify logical fallacies, explore ethical dilemmas, practice rhetoric, and engage in structured debate. The Arena tests strategy; the Debate Hall tests reasoning about ideas. |
+| **The Newsroom** | Language Arts, Writing, Journalism | A working newsroom where stories matter. Research events, verify sources, write articles under deadline, distinguish fact from opinion, and publish a newspaper that NPCs actually read and react to. |
+| **The Theater** | Language Arts, Literature, Performance | A grand stage for storytelling. Write scripts, direct scenes, perform monologues, study dramatic structure, and experience literature from the inside — not by reading about plays, but by putting them on. |
+| **The Marketplace** | Economics, Math, Entrepreneurship | A bustling commercial hub beyond the Trading Post. Start businesses, manage supply chains, calculate profit margins, negotiate contracts, and learn entrepreneurship by running actual in-game enterprises with real economic consequences. |
 
 ### Dynamic Biomes
 
@@ -449,6 +458,40 @@ Everything the player builds persists:
 
 This persistence creates ownership and investment. The player cares about their world
 because it's truly theirs — shaped by every choice they've made.
+
+---
+
+## Consequence-Based Boundaries
+
+The Nexus has no invisible walls. Every boundary is a **consequence**, not a restriction.
+
+### How It Works
+
+Instead of preventing the player from going somewhere, the world makes unreachable areas
+unreachable for REAL reasons:
+
+| Traditional Boundary | Nexus Equivalent | What It Teaches |
+|---------------------|-----------------|-----------------|
+| Invisible wall | Ocean too rough for current boat | Need better navigation / shipbuilding |
+| "You can't go there yet" | Mountain pass blocked by avalanche | Need engineering to clear it or find alternate route |
+| Level-locked door | Ancient lock requires mathematics | Need specific knowledge to open |
+| Fog of war | Compass doesn't work near magnetic anomaly | Need better instruments / understanding of magnetism |
+| Loading screen barrier | Bridge collapsed — companion suggests repair | Need physics/engineering to rebuild |
+
+### Design Rules
+
+1. **Every boundary has a visible, logical reason.** The player can SEE why they can't
+   proceed — and can reason about what they'd need to overcome it.
+2. **Boundaries are knowledge-gates, not time-gates.** A player who understands the
+   required concept can pass immediately, regardless of how long they've played.
+3. **The companion acknowledges the boundary honestly.** "That storm is too strong for
+   our boat. We'd need to understand wind patterns better — or build a sturdier hull."
+4. **Overcoming a boundary always teaches something.** The solution IS the lesson.
+5. **No boundary is permanent.** Every obstacle has a solution rooted in real knowledge.
+
+This system reinforces the core philosophy: knowledge is the only currency that opens
+the world. The player never feels arbitrarily blocked — they feel challenged to learn
+what's needed.
 
 ---
 

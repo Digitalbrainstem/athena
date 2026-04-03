@@ -90,26 +90,39 @@ like the first play session — not an assessment.
 
 1. **Welcome:** Companion greets the player, introduces itself, begins exploring together
 2. **Natural challenges:** Environment presents progressively harder challenges per subject
-3. **Binary search:** Each response adjusts the next challenge up or down on the skill scale
+3. **Bayesian IRT estimation:** Each response updates the posterior ability estimate —
+   harder questions answered correctly provide more information than easy ones
 4. **No scores visible:** Player never knows they're being assessed
 5. **Feels like gameplay:** Same mechanics, same rewards, same companion behavior
 6. **Duration:** 15-30 minutes (20-30 interactions across subjects)
-7. **Result:** Complete skill profile seeded across all subject areas
+7. **Result:** Complete skill profile with calibrated uncertainty estimates per subject
 
 ### Calibration Accuracy
 
-The zone uses adaptive testing with binary search:
+The zone uses **Bayesian Item Response Theory (IRT)** — the same statistical framework
+used by the GRE, GMAT, and MAP Growth assessments, adapted for gameplay-disguised
+calibration:
 
 ```
-Start at age-expected level
-  → Correct (fast)   → jump up 2 levels
-  → Correct (slow)   → jump up 1 level  
-  → Incorrect        → drop 1 level
-  → No attempt       → skip subject, try later
+Start at age-expected ability prior
+  → Present challenge at estimated ability level
+  → Correct (fast)   → posterior shifts up, uncertainty decreases
+  → Correct (slow)   → posterior shifts up slightly, uncertainty decreases
+  → Incorrect        → posterior shifts down, uncertainty decreases
+  → No attempt       → skip subject, maintain prior, try later
   
-3-5 interactions per subject → ±1 level accuracy
+The model selects the MOST INFORMATIVE question next — the one that
+will reduce uncertainty the most, regardless of difficulty direction.
+
+3-5 interactions per subject → calibrated estimate with known uncertainty
 Covers: math, reading, science, logic, spatial, vocabulary
 ```
+
+Bayesian IRT is superior to binary search for calibration because:
+- It accounts for question difficulty (not all questions are equal)
+- It produces uncertainty estimates (the system knows what it doesn't know)
+- It converges faster with fewer questions
+- It handles partial knowledge gracefully (not just "can/can't")
 
 ### Example: Age 10 Entry
 
@@ -299,11 +312,53 @@ These settings are per-profile and parent-controlled.
 
 ---
 
+## Focus Mode
+
+Focus Mode provides structured, goal-oriented study within the game world. It has
+**three entry points**, all leading to the same focused experience:
+
+### Entry Points
+
+| Entry Point | How It's Accessed | Typical Use Case |
+|-------------|-------------------|-----------------|
+| **Companion-initiated** | Companion suggests it based on struggle detection | "I noticed bridges are tricky. Want to practice building for a bit?" |
+| **Parent Dashboard** | Parent assigns a focus area from the dashboard | "Work on fractions this week" — appears as a natural companion quest |
+| **Study Forge biome** | Player voluntarily enters the Study Forge biome | Self-directed practice when the player WANTS to improve at something |
+
+### How Focus Mode Works
+
+Focus Mode narrows the quest selection to a specific skill area while maintaining
+full gameplay immersion:
+
+1. **Skill targeting** — Quests are selected to reinforce a specific skill or skill cluster
+2. **Biome-appropriate** — Practice happens in the biome that naturally teaches the skill
+   (fractions → Alchemist's Lab recipes, geometry → Architect's Domain)
+3. **Graduated difficulty** — Starts at the player's current level and builds up
+4. **Invisible framing** — The player never sees "Focus Mode: Fractions." They see
+   a series of engaging quests that happen to involve fractions
+5. **Natural exit** — Focus Mode ends when the player demonstrates improved mastery
+   or after a set number of quests (whichever comes first)
+
+### Focus Mode Rules
+
+- **Never punitive.** Focus Mode is always framed as an opportunity, never as remediation.
+  The companion is enthusiastic, not corrective.
+- **Parent-assigned focus is invisible.** If a parent requests "more math practice," the
+  player sees more math-heavy quests appear naturally — they never see a "your parent
+  assigned this" message.
+- **Player-initiated focus is celebrated.** Choosing to practice shows metacognitive
+  awareness — the companion acknowledges this: "You want to work on building? I love
+  that. Let's get into it."
+- **Time-limited.** Focus sessions last 15-30 minutes maximum, then the game returns
+  to normal variety. Sustained focus on one skill risks fatigue.
+
+---
+
 ## Research Required
 
 Before building against this document, complete the following research:
 
-- [ ] **Adaptive testing for calibration** — Study Item Response Theory (IRT) and Computerized Adaptive Testing (CAT). Review how the GRE, GMAT, and MAP Growth assessments calibrate student ability in 20-30 items. Adapt for gameplay-disguised calibration.
+- [ ] **Adaptive testing for calibration** — Study Item Response Theory (IRT) and Computerized Adaptive Testing (CAT). Review how the GRE, GMAT, and MAP Growth assessments calibrate student ability in 20-30 items. Adapt for gameplay-disguised calibration. **Note:** Bayesian IRT has been selected as the calibration approach — research should focus on implementation details and parameter tuning.
 - [ ] **Offline-first database sync** — Evaluate CRDTs (Conflict-free Replicated Data Types) for multi-device progress merge. Study Automerge, Yjs, and cr-sqlite. Benchmark sync performance for our data model.
 - [ ] **Child profile UX** — Review how existing children's platforms handle profiles: Netflix Kids, Disney+, PBS Kids, Khan Academy Kids. Identify best practices for avatar-based login and minimal-auth flows.
 - [ ] **Interest profiling without demographics** — Research recommendation systems that avoid demographic bias. Study Spotify's taste profile system. Review fairness-aware recommendation research. Ensure our interest tracking can't inadvertently create gendered clusters.

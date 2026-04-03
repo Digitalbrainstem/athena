@@ -38,7 +38,6 @@ When principles conflict, resolve by tier. Higher tiers always prevail.
 - **Principle VIII:** Mastery Over Speed
 - **Principle IX:** Atlas Enhances, Never Required
 - **Principle X:** Grounded in Evidence
-- **Principle XI:** All Learning Counts
 
 ---
 
@@ -309,47 +308,6 @@ the full truth — never a falsehood that will need to be unlearned later.
 
 ---
 
-## Principle XI: All Learning Counts
-
-> *Looking up an answer IS learning. Asking a friend IS learning. Researching online
-> IS learning. There is no cheating — because the "cheat" is the goal.*
-
-The game doesn't care HOW a player gained knowledge. It only cares whether they can
-**apply** it. A player who looks up the chemical formula for water and then successfully
-uses it to synthesize water in the Alchemist's Lab has learned something real. A player
-who asks their parent for help with a bridge calculation and then builds the bridge has
-learned something real. A player who watches a YouTube video about orbital mechanics
-and then plots a Hohmann transfer has learned something real.
-
-**There is no cheating in Nexus Academy** because the thing people would "cheat" to
-get — knowledge — is the thing we want them to have. The "cheat" IS the goal.
-
-**What this means:**
-- **No anti-cheat systems.** No "did you really figure this out yourself?" verification.
-  No proctoring. No lockdown browser. No "you must work alone."
-- **Looking things up is encouraged.** The companion might even suggest it: "I'm not
-  sure about that either. Want to look it up?"
-- **Collaboration is celebrated.** Asking a friend, a parent, or a teacher for help is
-  a valid learning strategy — and one of the most effective ones (see
-  [14-MULTIPLAYER.md](14-MULTIPLAYER.md) for sibling and classroom collaboration).
-- **External resources are welcome.** If a player watches a Khan Academy video about
-  fractions and then comes back and nails the potion recipe — great. That's learning.
-- **The mastery system catches bluffs naturally.** You can't fake understanding long-term
-  because the Ender Protocol tests through novel application, not recall. Spaced
-  repetition returns weeks later with variations. Impossible challenges probe real
-  comprehension. Cross-subject transfer quests require genuine understanding, not
-  memorized answers. See the Anti-Cheat by Design section in
-  [06-MASTERY_SYSTEM.md](06-MASTERY_SYSTEM.md).
-
-**Why this principle matters:** Traditional education treats external help as cheating.
-This teaches children that learning is a solo test of recall, and that using available
-resources is dishonest. That's the opposite of how the real world works. In the real
-world, the best engineers look things up. The best scientists collaborate. The best
-doctors consult references. We're building a game that prepares people for reality —
-not for a testing regime.
-
----
-
 ## Applying These Principles
 
 Every design decision should pass this checklist:
@@ -365,7 +323,6 @@ Every design decision should pass this checklist:
 9. ☐ Does it rush the player? (Principle VIII)
 10. ☐ Does it require Atlas to function? (Principle IX)
 11. ☐ Is the content factually accurate? (Principle X)
-12. ☐ Does it punish players for using external resources or help? (Principle XI)
 
 If any answer is wrong, fix the feature — not the principle.
 

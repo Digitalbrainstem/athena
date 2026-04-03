@@ -108,15 +108,33 @@ Every quest follows a structured JSON format:
 
 ### Handcrafted Content (Human-Authored)
 
+The game ships with **4,017 handcrafted quests** across all biomes and the first two
+mastery tiers, providing an estimated **8,273+ hours of unique gameplay** per player —
+over 10× more content than any single player needs.
+
 | Use Case | Volume | Quality |
 |----------|--------|---------|
+| Foundation tier quests | 37 across 3 biomes (workshop/forest/caverns) | Highest — first play experience |
+| Discovery tier quests | ~1,000 across all 27 biomes (~37 per biome) | High — core content |
 | Calibration zone quests | ~50 quests | Highest — must accurately assess every subject |
 | Story quests (The Founders arc) | ~100 quests | Highest — narrative quality matters |
 | Tier transition quests | ~20 per transition | High — defines the tier shift experience |
-| Seed quests per biome | ~30 per biome (540 total) | High — first quests a player encounters |
-| Tutorial/onboarding | ~20 quests | Highest — first impressions are everything |
+| Total handcrafted | **4,017 quests** | Human-authored, educationally validated |
 
-Total handcrafted: ~1,000 quests for Phase 1.
+### Content Hours Model
+
+| Metric | Value |
+|--------|-------|
+| Total handcrafted quests | 4,017 |
+| Average quest duration | ~15-30 minutes |
+| Estimated total content hours | 8,273+ |
+| Hours a daily player (1hr/day, age 2-18) accumulates | ~5,840 |
+| Content-to-need ratio | >10× — no player exhausts content |
+
+The curriculum covers 14 subjects and ~11,400 discrete skills (see
+[CURRICULUM_SKILL_COUNTS.md](CURRICULUM_SKILL_COUNTS.md)). With Atlas generating
+additional personalized content between sessions, the effective content library is
+unlimited.
 
 ### Atlas-Generated Content
 
@@ -277,6 +295,61 @@ voice-only content pushed to them.
 5. Satellite reports last-sync timestamp
 6. Progress from satellite sessions syncs back to server
 ```
+
+---
+
+## Procedural Quest Engine
+
+Beyond handcrafted and Atlas-generated quests, the **Procedural Quest Engine** generates
+quests from templates at runtime, providing infinite variety without requiring Atlas
+connectivity.
+
+### How It Works
+
+The engine uses **51 quest templates** across **23 game mechanics**, combined with an
+**anti-repetition tracker** that ensures no player encounters the same quest pattern
+too frequently.
+
+```
+Procedural Quest Generation:
+  1. Select template based on player's current skills and biome
+  2. Parameterize with context (numbers, materials, characters, setting)
+  3. Anti-repetition check: has the player seen this template recently?
+     → If yes, select alternate template or modify parameters significantly
+  4. Difficulty calibration via Bayesian IRT estimates
+  5. Generate companion dialogue hooks
+  6. Validate educational accuracy (built-in rules engine)
+  7. Serve to player as a natural world event
+```
+
+### Template Example
+
+```json
+{
+  "template_id": "bridge-construction",
+  "mechanic": "building",
+  "parameters": {
+    "gap_width": {"min": 3, "max": 50, "unit": "meters", "scales_with": "math.geometry"},
+    "material": {"options": ["wood", "stone", "metal", "crystal"], "scales_with": "tier"},
+    "load_requirement": {"min": 50, "max": 10000, "unit": "kg", "scales_with": "physics.forces"},
+    "environmental_factor": ["wind", "water_current", "earthquake", "none"]
+  },
+  "skills_tested": ["math.geometry.angles", "physics.forces.balance", "engineering.structures"],
+  "anti_repetition_cooldown_days": 14
+}
+```
+
+### Anti-Repetition Tracker
+
+The tracker maintains a sliding window of recent quest patterns per player:
+
+- **Template cooldown** — Each template has a minimum interval before reuse (7-30 days)
+- **Mechanic variety** — No more than 2 quests of the same mechanic type per session
+- **Biome rotation** — Encourages exploration across biomes rather than camping
+- **Parameter variation** — Even when a template repeats, numbers, context, and characters differ significantly
+
+This system ensures that even in standalone mode (no Atlas), the game never runs out
+of fresh, educationally valid content.
 
 ---
 

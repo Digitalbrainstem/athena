@@ -151,6 +151,37 @@ just feel that the world is getting richer and more detailed — because it is, 
 
 ## Color System
 
+### Visual Identity
+
+For the complete visual identity specification — including color palettes, typography,
+component styling, animation guidelines, and per-tier visual adaptation — see
+[STYLE_GUIDE.md](STYLE_GUIDE.md). The Style Guide is the authoritative reference for
+all UI and visual design decisions.
+
+### Interest-Adaptive UI
+
+The UI background adapts to the player's detected interests. The Interest Tracking
+system (see [02-WORLD_DESIGN.md](02-WORLD_DESIGN.md)) provides behavior-based weights —
+the UI blends themes proportionally:
+
+| Interest | Background Treatment |
+|----------|---------------------|
+| Nature | Soft greens, dappled light, leaf particle hints |
+| Space | Deep indigo, distant stars, subtle nebula wisps |
+| Technology | Dark surface, faint green terminal glow, circuit trace lines |
+| Art | Watercolor wash gradients, paint splatter accents at edges |
+| Music | Sound wave patterns in background, warm concert hall gold |
+| Building | Blueprint grid overlay, copper schematic line traces |
+| Ocean | Deep blue gradients, gentle caustic light patterns |
+| Animals | Warm earth tones, subtle paw print / feather patterns |
+| Sparkly/Crystal | Amethyst base, floating diamond light particles |
+
+**Blending:** If a player loves nature AND space, they get a forest with stars visible
+through the canopy. If they love tech AND music, they get a sound-wave visualizer with
+circuit-board aesthetics. The UI should feel like the world is seeping into the menus —
+not two separate experiences. See [STYLE_GUIDE.md](STYLE_GUIDE.md) for full
+implementation details.
+
 ### Accent Colors
 
 Two accent colors used across all tiers for UI elements:

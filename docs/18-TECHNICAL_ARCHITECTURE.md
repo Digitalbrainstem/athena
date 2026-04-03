@@ -532,8 +532,7 @@ The game periodically checks Atlas connectivity (every 5 minutes):
 
 ## AI Asset Pipeline
 
-Per [00-CORE_PRINCIPLES.md](00-CORE_PRINCIPLES.md) Principle XI (No Artificial Limits),
-we use AI tools throughout the asset pipeline. Every AI-generated asset passes through
+We use AI tools throughout the asset pipeline. Every AI-generated asset passes through
 validation and human review before reaching players.
 
 ### Pipeline Overview
