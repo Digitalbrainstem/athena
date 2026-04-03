@@ -173,17 +173,30 @@ async function boot(): Promise<void> {
 
   canvas.addEventListener('click', () => {
     if (!fpCam.isPointerLocked && loop.isRunning) fpCam.requestPointerLock(canvas);
+    // Resume AudioContext on any click (browser policy may suspend it)
+    if (audioCtx.state === 'suspended') {
+      void audioCtx.resume().then(() => {
+        debug('audio', 'AudioContext resumed on click');
+      });
+    }
   });
+
+  // Track last spoken dialogue to avoid re-speaking the same line each frame
+  let lastDialogueText = '';
 
   input.onAction((action) => {
     if (action.type === 'pause' && fpCam.isPointerLocked) fpCam.exitPointerLock();
 
-    // Interact with highlighted object → trigger companion dialogue
+    // Interact with highlighted object → trigger companion dialogue + interaction SFX
     if (action.type === 'interact') {
       const sg = core.getSceneGraph();
       const highlighted = sg.objects.find(o => o.highlight && o.interactable);
       if (highlighted?.interactable) {
         const name = highlighted.interactable.prompt.replace(/^Interact with /, '');
+
+        // Play interaction chime SFX
+        core.worldSystem.queueSfx('discovery-sparkle', 0.6);
+
         core.companionSystem.queueInteraction({
           type: 'react',
           profileId,
@@ -192,6 +205,21 @@ async function boot(): Promise<void> {
       }
     }
   });
+
+  // Poll for dialogue each frame and speak it via companion voice
+  const dialoguePoll = setInterval(() => {
+    const sg = core.getSceneGraph();
+    if (sg.ui.dialogueActive && sg.ui.dialogueText && sg.ui.dialogueText !== lastDialogueText) {
+      lastDialogueText = sg.ui.dialogueText;
+      const emotion = sg.ui.dialogueText.includes('!')
+        ? 'excited' as const
+        : 'neutral' as const;
+      void companionVoice.speak(sg.ui.dialogueText, emotion);
+    } else if (!sg.ui.dialogueActive) {
+      lastDialogueText = '';
+    }
+  }, 200);
+  disposables.push({ dispose: () => clearInterval(dialoguePoll) });
 }
 
 function init(): void {

@@ -95,7 +95,7 @@ export class AudioManager implements Disposable {
 
     source.start(0);
     this.activeSources.set(cue.id, { source, gain });
-    console.log(`[Audio] Playing "${cue.asset}" → BufferSource(${buffer.duration.toFixed(2)}s, loop=${cue.loop}) → GainNode(${cue.volume}) → destination (ctx.state=${ctx.state})`);
+    console.log(`[Audio] Playing "${cue.asset}" → BufferSource(${(buffer.duration ?? 0).toFixed(2)}s, loop=${cue.loop}) → GainNode(${cue.volume}) → destination (ctx.state=${ctx.state})`);
 
     source.onended = () => {
       this.activeSources.delete(cue.id);
@@ -132,7 +132,7 @@ export class AudioManager implements Disposable {
     source.start(0);
 
     this.activeSources.set(cue.id, { source, gain });
-    console.log(`[Audio] Fading in "${cue.asset}" → BufferSource(${buffer.duration.toFixed(2)}s, loop=${cue.loop}) → GainNode(0→${cue.volume}) → destination (ctx.state=${ctx.state})`);
+    console.log(`[Audio] Fading in "${cue.asset}" → BufferSource(${(buffer.duration ?? 0).toFixed(2)}s, loop=${cue.loop}) → GainNode(0→${cue.volume}) → destination (ctx.state=${ctx.state})`);
     source.onended = () => { this.activeSources.delete(cue.id); };
   }
 

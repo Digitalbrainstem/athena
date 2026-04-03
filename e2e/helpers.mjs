@@ -150,7 +150,7 @@ export async function createProfileAndEnter(page, name = 'TestPlayer', ageRange 
   // Type the player name
   const nameInput = await page.$('#profile-name');
   if (nameInput) {
-    await nameInput.click();
+    await nameInput.click({ force: true });
     await nameInput.fill(name);
   }
 
@@ -163,13 +163,13 @@ export async function createProfileAndEnter(page, name = 'TestPlayer', ageRange 
   // Click first avatar option (fox)
   const avatarBtn = await page.$('.avatar-option');
   if (avatarBtn) {
-    await avatarBtn.click();
+    await avatarBtn.click({ force: true });
   }
 
   // Click "Start Adventure!" button
   const createBtn = await page.$('.create-btn');
   if (createBtn) {
-    await createBtn.click();
+    await createBtn.click({ force: true });
   }
 
   // Wait for profile screen to disappear and game to start

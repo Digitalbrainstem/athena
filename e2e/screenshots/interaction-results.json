@@ -1,0 +1,61 @@
+{
+  "test": "interaction",
+  "passed": 4,
+  "failed": 3,
+  "skipped": 0,
+  "total": 7,
+  "results": [
+    {
+      "name": "Profile creation",
+      "pass": true,
+      "timestamp": "2026-04-03T06:38:36.810Z",
+      "profileId": "4a4xdzzburgyolh3"
+    },
+    {
+      "name": "Game loop running",
+      "pass": true,
+      "timestamp": "2026-04-03T06:38:36.958Z"
+    },
+    {
+      "name": "Interaction prompt appears near objects",
+      "pass": false,
+      "timestamp": "2026-04-03T06:38:46.386Z",
+      "promptText": "Press E to examine the Anvil"
+    },
+    {
+      "name": "E key opens companion dialogue",
+      "pass": false,
+      "timestamp": "2026-04-03T06:38:54.190Z",
+      "dialogueText": ""
+    },
+    {
+      "name": "Companion system initialized",
+      "pass": true,
+      "timestamp": "2026-04-03T06:38:57.164Z",
+      "uiState": {
+        "dialogueActive": false,
+        "dialogueText": null,
+        "dialogueSpeaker": null
+      }
+    },
+    {
+      "name": "HUD elements exist (crosshair, prompt, dialogue)",
+      "pass": true,
+      "timestamp": "2026-04-03T06:38:57.491Z",
+      "hudElements": {
+        "crosshair": true,
+        "prompt": true,
+        "dialogue": true,
+        "fpsCounter": true,
+        "captionContainer": true
+      }
+    },
+    {
+      "name": "Interactable objects reachable from spawn",
+      "pass": false,
+      "timestamp": "2026-04-03T06:39:11.894Z",
+      "interactablesFound": 0
+    }
+  ],
+  "consoleErrors": []
+}

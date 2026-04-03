@@ -1,0 +1,16 @@
+{
+  "test": "movement",
+  "passed": 0,
+  "failed": 1,
+  "skipped": 0,
+  "total": 1,
+  "results": [
+    {
+      "name": "Test execution",
+      "pass": false,
+      "timestamp": "2026-04-03T06:38:26.651Z",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <section class=\"create-section\" aria-labelledby=\"create-profile-heading\">…</section> from <div role=\"main\" id=\"profile-screen\" aria-label=\"Profile selection\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <section class=\"create-section\" aria-labelledby=\"create-profile-heading\">…</section> from <div role=\"main\" id=\"profile-screen\" aria-label=\"Profile selection\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    58 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <section class=\"create-section\" aria-labelledby=\"create-profile-heading\">…</section> from <div role=\"main\" id=\"profile-screen\" aria-label=\"Profile selection\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    }
+  ],
+  "consoleErrors": []
+}
