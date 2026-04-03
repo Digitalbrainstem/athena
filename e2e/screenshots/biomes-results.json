@@ -8,18 +8,18 @@
     {
       "name": "Profile creation",
       "pass": true,
-      "timestamp": "2026-04-03T07:16:03.971Z",
-      "profileId": "flqa18k0afszn6zp"
+      "timestamp": "2026-04-03T07:22:21.144Z",
+      "profileId": "mh84rf3ihxyf66wr"
     },
     {
       "name": "Game loop running",
       "pass": true,
-      "timestamp": "2026-04-03T07:16:04.037Z"
+      "timestamp": "2026-04-03T07:22:21.220Z"
     },
     {
       "name": "Biome: workshop",
       "pass": true,
-      "timestamp": "2026-04-03T07:16:06.696Z",
+      "timestamp": "2026-04-03T07:22:24.102Z",
       "screenshot": "/root/e2e-tests/screenshots/workshop.png",
       "objects": 5,
       "groundColor": "#8B6914",
@@ -29,12 +29,12 @@
     {
       "name": "Workshop: WASD movement",
       "pass": true,
-      "timestamp": "2026-04-03T07:16:09.200Z"
+      "timestamp": "2026-04-03T07:22:26.589Z"
     },
     {
       "name": "Biome: alchemist-lab",
       "pass": true,
-      "timestamp": "2026-04-03T07:16:13.166Z",
+      "timestamp": "2026-04-03T07:22:30.603Z",
       "screenshot": "/root/e2e-tests/screenshots/alchemist-lab.png",
       "objects": 3,
       "groundColor": "#3D3D3D",
@@ -44,7 +44,7 @@
     {
       "name": "Biome: crystal-caverns",
       "pass": true,
-      "timestamp": "2026-04-03T07:16:16.549Z",
+      "timestamp": "2026-04-03T07:22:33.964Z",
       "screenshot": "/root/e2e-tests/screenshots/crystal-caverns.png",
       "objects": 3,
       "groundColor": "#2F4F4F",
@@ -54,7 +54,7 @@
     {
       "name": "Biome: living-forest",
       "pass": true,
-      "timestamp": "2026-04-03T07:16:19.911Z",
+      "timestamp": "2026-04-03T07:22:37.595Z",
       "screenshot": "/root/e2e-tests/screenshots/living-forest.png",
       "objects": 3,
       "groundColor": "#228B22",
@@ -64,7 +64,7 @@
     {
       "name": "Biome: library-echoes",
       "pass": true,
-      "timestamp": "2026-04-03T07:16:23.502Z",
+      "timestamp": "2026-04-03T07:22:41.160Z",
       "screenshot": "/root/e2e-tests/screenshots/library-echoes.png",
       "objects": 3,
       "groundColor": "#F5F5DC",
@@ -74,7 +74,7 @@
     {
       "name": "Biome: ancient-ruins",
       "pass": true,
-      "timestamp": "2026-04-03T07:16:27.303Z",
+      "timestamp": "2026-04-03T07:22:44.871Z",
       "screenshot": "/root/e2e-tests/screenshots/ancient-ruins.png",
       "objects": 7,
       "groundColor": "#C4A46C",
@@ -84,7 +84,7 @@
     {
       "name": "Biome: time-rift",
       "pass": true,
-      "timestamp": "2026-04-03T07:16:31.313Z",
+      "timestamp": "2026-04-03T07:22:49.023Z",
       "screenshot": "/root/e2e-tests/screenshots/time-rift.png",
       "objects": 7,
       "groundColor": "#2F1F4F",
@@ -94,7 +94,7 @@
     {
       "name": "Biome: explorers-map",
       "pass": true,
-      "timestamp": "2026-04-03T07:16:35.152Z",
+      "timestamp": "2026-04-03T07:22:52.899Z",
       "screenshot": "/root/e2e-tests/screenshots/explorers-map.png",
       "objects": 7,
       "groundColor": "#A0522D",
@@ -104,7 +104,7 @@
     {
       "name": "Biome: gallery",
       "pass": true,
-      "timestamp": "2026-04-03T07:16:38.593Z",
+      "timestamp": "2026-04-03T07:22:56.707Z",
       "screenshot": "/root/e2e-tests/screenshots/gallery.png",
       "objects": 7,
       "groundColor": "#F5F5F5",
@@ -114,7 +114,7 @@
     {
       "name": "Biome: newsroom",
       "pass": true,
-      "timestamp": "2026-04-03T07:16:42.134Z",
+      "timestamp": "2026-04-03T07:23:00.047Z",
       "screenshot": "/root/e2e-tests/screenshots/newsroom.png",
       "objects": 7,
       "groundColor": "#696969",
@@ -124,7 +124,7 @@
     {
       "name": "Biome: theater",
       "pass": true,
-      "timestamp": "2026-04-03T07:16:45.634Z",
+      "timestamp": "2026-04-03T07:23:03.511Z",
       "screenshot": "/root/e2e-tests/screenshots/theater.png",
       "objects": 7,
       "groundColor": "#3D1C02",
@@ -134,7 +134,7 @@
     {
       "name": "Biome: marketplace",
       "pass": true,
-      "timestamp": "2026-04-03T07:16:49.499Z",
+      "timestamp": "2026-04-03T07:23:07.372Z",
       "screenshot": "/root/e2e-tests/screenshots/marketplace.png",
       "objects": 7,
       "groundColor": "#A9A9A9",
@@ -144,7 +144,7 @@
     {
       "name": "Biome: observatory",
       "pass": true,
-      "timestamp": "2026-04-03T07:16:52.894Z",
+      "timestamp": "2026-04-03T07:23:10.781Z",
       "screenshot": "/root/e2e-tests/screenshots/observatory.png",
       "objects": 10,
       "groundColor": "#2F2F3F",
@@ -154,7 +154,7 @@
     {
       "name": "Biome: storm-tower",
       "pass": true,
-      "timestamp": "2026-04-03T07:16:56.680Z",
+      "timestamp": "2026-04-03T07:23:14.514Z",
       "screenshot": "/root/e2e-tests/screenshots/storm-tower.png",
       "objects": 11,
       "groundColor": "#4A4A4A",
@@ -164,7 +164,7 @@
     {
       "name": "Biome: healers-sanctuary",
       "pass": true,
-      "timestamp": "2026-04-03T07:17:00.303Z",
+      "timestamp": "2026-04-03T07:23:18.261Z",
       "screenshot": "/root/e2e-tests/screenshots/healers-sanctuary.png",
       "objects": 9,
       "groundColor": "#E8E8E0",
@@ -174,7 +174,7 @@
     {
       "name": "Biome: hospital",
       "pass": true,
-      "timestamp": "2026-04-03T07:17:03.860Z",
+      "timestamp": "2026-04-03T07:23:22.065Z",
       "screenshot": "/root/e2e-tests/screenshots/hospital.png",
       "objects": 9,
       "groundColor": "#E8E8E8",
@@ -184,7 +184,7 @@
     {
       "name": "Biome: farm",
       "pass": true,
-      "timestamp": "2026-04-03T07:17:07.816Z",
+      "timestamp": "2026-04-03T07:23:25.968Z",
       "screenshot": "/root/e2e-tests/screenshots/farm.png",
       "objects": 11,
       "groundColor": "#6B4226",
@@ -194,7 +194,7 @@
     {
       "name": "Biome: laboratory",
       "pass": true,
-      "timestamp": "2026-04-03T07:17:11.590Z",
+      "timestamp": "2026-04-03T07:23:29.628Z",
       "screenshot": "/root/e2e-tests/screenshots/laboratory.png",
       "objects": 11,
       "groundColor": "#D0D0D0",
@@ -204,7 +204,7 @@
     {
       "name": "Biome: architects-domain",
       "pass": true,
-      "timestamp": "2026-04-03T07:17:15.508Z",
+      "timestamp": "2026-04-03T07:23:33.233Z",
       "screenshot": "/root/e2e-tests/screenshots/architects-domain.png",
       "objects": 7,
       "groundColor": "#B0A89A",
@@ -214,7 +214,7 @@
     {
       "name": "Biome: shipyard",
       "pass": true,
-      "timestamp": "2026-04-03T07:17:19.236Z",
+      "timestamp": "2026-04-03T07:23:36.858Z",
       "screenshot": "/root/e2e-tests/screenshots/shipyard.png",
       "objects": 7,
       "groundColor": "#6B4226",
@@ -224,7 +224,7 @@
     {
       "name": "Biome: code-forge",
       "pass": true,
-      "timestamp": "2026-04-03T07:17:22.890Z",
+      "timestamp": "2026-04-03T07:23:40.530Z",
       "screenshot": "/root/e2e-tests/screenshots/code-forge.png",
       "objects": 7,
       "groundColor": "#1C1C1C",
@@ -234,7 +234,7 @@
     {
       "name": "Biome: digital-world",
       "pass": true,
-      "timestamp": "2026-04-03T07:17:26.436Z",
+      "timestamp": "2026-04-03T07:23:44.311Z",
       "screenshot": "/root/e2e-tests/screenshots/digital-world.png",
       "objects": 7,
       "groundColor": "#0A0A1F",
@@ -244,7 +244,7 @@
     {
       "name": "Biome: space-station",
       "pass": true,
-      "timestamp": "2026-04-03T07:17:30.008Z",
+      "timestamp": "2026-04-03T07:23:48.018Z",
       "screenshot": "/root/e2e-tests/screenshots/space-station.png",
       "objects": 7,
       "groundColor": "#2A2A3A",
@@ -254,7 +254,7 @@
     {
       "name": "Biome: debate-hall",
       "pass": true,
-      "timestamp": "2026-04-03T07:17:33.351Z",
+      "timestamp": "2026-04-03T07:23:51.916Z",
       "screenshot": "/root/e2e-tests/screenshots/debate-hall.png",
       "objects": 7,
       "groundColor": "#E8DCC8",
@@ -264,7 +264,7 @@
     {
       "name": "Biome: trading-post",
       "pass": true,
-      "timestamp": "2026-04-03T07:17:37.093Z",
+      "timestamp": "2026-04-03T07:23:55.776Z",
       "screenshot": "/root/e2e-tests/screenshots/trading-post.png",
       "objects": 7,
       "groundColor": "#9E8E7E",
@@ -274,7 +274,7 @@
     {
       "name": "Biome: arena",
       "pass": true,
-      "timestamp": "2026-04-03T07:17:40.974Z",
+      "timestamp": "2026-04-03T07:23:59.675Z",
       "screenshot": "/root/e2e-tests/screenshots/arena.png",
       "objects": 7,
       "groundColor": "#4A4A5A",
@@ -284,7 +284,7 @@
     {
       "name": "Biome: music-hall",
       "pass": true,
-      "timestamp": "2026-04-03T07:17:44.731Z",
+      "timestamp": "2026-04-03T07:24:03.642Z",
       "screenshot": "/root/e2e-tests/screenshots/music-hall.png",
       "objects": 7,
       "groundColor": "#5C3317",
