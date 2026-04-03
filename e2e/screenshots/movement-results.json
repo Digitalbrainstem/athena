@@ -1,15 +1,63 @@
 {
   "test": "movement",
-  "passed": 0,
-  "failed": 1,
+  "passed": 9,
+  "failed": 0,
   "skipped": 0,
-  "total": 1,
+  "total": 9,
   "results": [
     {
-      "name": "Test execution",
-      "pass": false,
-      "timestamp": "2026-04-03T06:38:26.651Z",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <section class=\"create-section\" aria-labelledby=\"create-profile-heading\">…</section> from <div role=\"main\" id=\"profile-screen\" aria-label=\"Profile selection\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <section class=\"create-section\" aria-labelledby=\"create-profile-heading\">…</section> from <div role=\"main\" id=\"profile-screen\" aria-label=\"Profile selection\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    58 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <section class=\"create-section\" aria-labelledby=\"create-profile-heading\">…</section> from <div role=\"main\" id=\"profile-screen\" aria-label=\"Profile selection\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+      "name": "Profile creation",
+      "pass": true,
+      "timestamp": "2026-04-03T06:44:39.049Z",
+      "profileId": "2cel5i6ykq27zslf"
+    },
+    {
+      "name": "Game loop running",
+      "pass": true,
+      "timestamp": "2026-04-03T06:44:39.131Z"
+    },
+    {
+      "name": "W key moves forward (Z decreases)",
+      "pass": true,
+      "timestamp": "2026-04-03T06:44:42.738Z",
+      "startZ": 0,
+      "endZ": -0.014814814814814815
+    },
+    {
+      "name": "Friction stops movement within ~1s",
+      "pass": true,
+      "timestamp": "2026-04-03T06:44:44.597Z"
+    },
+    {
+      "name": "S key moves backward (Z increases)",
+      "pass": true,
+      "timestamp": "2026-04-03T06:44:45.980Z",
+      "startZ": -0.014814814814814815,
+      "endZ": -0.003703703703703704
+    },
+    {
+      "name": "A key strafes left (X changes)",
+      "pass": true,
+      "timestamp": "2026-04-03T06:44:47.959Z",
+      "startX": 0,
+      "endX": -0.007407407407407408
+    },
+    {
+      "name": "D key strafes right (X changes)",
+      "pass": true,
+      "timestamp": "2026-04-03T06:44:50.051Z",
+      "startX": -0.007407407407407408,
+      "endX": 0
+    },
+    {
+      "name": "Speed does not exceed maximum",
+      "pass": true,
+      "timestamp": "2026-04-03T06:44:53.361Z"
+    },
+    {
+      "name": "Collision bounds movement",
+      "pass": true,
+      "timestamp": "2026-04-03T06:44:58.520Z"
     }
   ],
   "consoleErrors": []

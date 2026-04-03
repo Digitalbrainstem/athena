@@ -433,9 +433,9 @@ export function printSummary(results) {
   console.log('\n' + '═'.repeat(60));
   console.log('  TEST SUMMARY');
   console.log('═'.repeat(60));
-  const passed = results.filter(r => r.pass).length;
-  const failed = results.filter(r => !r.pass).length;
-  const skipped = results.filter(r => r.pass === null).length;
+  const passed = results.filter(r => r.pass === true).length;
+  const failed = results.filter(r => r.pass === false).length;
+  const skipped = results.filter(r => r.pass == null).length;
 
   for (const r of results) {
     const icon = r.pass === true ? '✓' : r.pass === false ? '✗' : '○';
