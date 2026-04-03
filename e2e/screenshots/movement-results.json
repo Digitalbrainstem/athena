@@ -8,56 +8,56 @@
     {
       "name": "Profile creation",
       "pass": true,
-      "timestamp": "2026-04-03T06:44:39.049Z",
-      "profileId": "2cel5i6ykq27zslf"
+      "timestamp": "2026-04-03T06:48:30.989Z",
+      "profileId": "6wefzcoen6sri5bz"
     },
     {
       "name": "Game loop running",
       "pass": true,
-      "timestamp": "2026-04-03T06:44:39.131Z"
+      "timestamp": "2026-04-03T06:48:31.066Z"
     },
     {
       "name": "W key moves forward (Z decreases)",
       "pass": true,
-      "timestamp": "2026-04-03T06:44:42.738Z",
+      "timestamp": "2026-04-03T06:48:34.611Z",
       "startZ": 0,
-      "endZ": -0.014814814814814815
+      "endZ": -0.011111111111111112
     },
     {
       "name": "Friction stops movement within ~1s",
       "pass": true,
-      "timestamp": "2026-04-03T06:44:44.597Z"
+      "timestamp": "2026-04-03T06:48:36.531Z"
     },
     {
       "name": "S key moves backward (Z increases)",
       "pass": true,
-      "timestamp": "2026-04-03T06:44:45.980Z",
-      "startZ": -0.014814814814814815,
-      "endZ": -0.003703703703703704
+      "timestamp": "2026-04-03T06:48:37.877Z",
+      "startZ": -0.011111111111111112,
+      "endZ": 0
     },
     {
       "name": "A key strafes left (X changes)",
       "pass": true,
-      "timestamp": "2026-04-03T06:44:47.959Z",
+      "timestamp": "2026-04-03T06:48:39.945Z",
       "startX": 0,
-      "endX": -0.007407407407407408
+      "endX": -0.011111111111111112
     },
     {
       "name": "D key strafes right (X changes)",
       "pass": true,
-      "timestamp": "2026-04-03T06:44:50.051Z",
-      "startX": -0.007407407407407408,
+      "timestamp": "2026-04-03T06:48:42.096Z",
+      "startX": -0.011111111111111112,
       "endX": 0
     },
     {
       "name": "Speed does not exceed maximum",
       "pass": true,
-      "timestamp": "2026-04-03T06:44:53.361Z"
+      "timestamp": "2026-04-03T06:48:45.386Z"
     },
     {
       "name": "Collision bounds movement",
       "pass": true,
-      "timestamp": "2026-04-03T06:44:58.520Z"
+      "timestamp": "2026-04-03T06:48:50.348Z"
     }
   ],
   "consoleErrors": []

@@ -56,3 +56,8 @@ content/generated/
 # OS
 .DS_Store
 *.log
+
+# E2E test output
+e2e/screenshots/
+e2e/reference/
+e2e/results.json
