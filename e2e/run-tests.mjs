@@ -54,6 +54,7 @@ const RESULTS_FILE = join(__dirname, 'results.json');
 const TEST_SUITES = {
   movement:    { file: 'test-movement.mjs',    label: 'Movement Physics' },
   interaction: { file: 'test-interaction.mjs',  label: 'Interaction System' },
+  quest:       { file: 'test-quest.mjs',        label: 'Quest System' },
   biomes:      { file: 'test-all-biomes.mjs',   label: 'All Biomes' },
   visual:      { file: 'test-visual.mjs',       label: 'Visual Regression' },
 };
@@ -217,6 +218,7 @@ function copyTestFiles() {
     'helpers.mjs',
     'test-movement.mjs',
     'test-interaction.mjs',
+    'test-quest.mjs',
     'test-all-biomes.mjs',
     'test-visual.mjs',
   ];

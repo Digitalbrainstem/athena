@@ -29,6 +29,10 @@ function mockCore(): NexusCore {
     getPlayerPosition: vi.fn(() => ({ x: 0, z: 0 })),
     setPlayerPosition: vi.fn(),
     destroy: vi.fn(),
+    getActiveQuests: vi.fn(() => []),
+    getQuestById: vi.fn(() => undefined),
+    getCurrentBiome: vi.fn(() => 'workshop'),
+    selectAvailableQuests: vi.fn(() => []),
   } as unknown as NexusCore;
 }
 
@@ -90,6 +94,12 @@ function mockHud(): HUD {
     setCrosshairVisible: vi.fn(),
     processAnnouncements: vi.fn(),
     processCaptions: vi.fn(),
+    showQuestPanel: vi.fn(),
+    hideQuestPanel: vi.fn(),
+    showQuestHint: vi.fn(),
+    showQuestComplete: vi.fn(),
+    showQuestIndicator: vi.fn(),
+    hideQuestIndicator: vi.fn(),
     dispose: vi.fn(),
   } as unknown as HUD;
 }

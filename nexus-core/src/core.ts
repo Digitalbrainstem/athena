@@ -35,7 +35,7 @@ import { createEmptySceneGraph } from './scene/graph.js';
 import type { GameAction } from './types/actions.js';
 import type { SceneGraph } from './types/scene.js';
 import type { Profile, CreateProfileInput, MasteryRecord } from './types/profile.js';
-import type { QuestProgress } from './types/quest.js';
+import type { QuestProgress, Quest } from './types/quest.js';
 import type { CompanionState } from './types/companion.js';
 import { allQuests } from './data/quests/index.js';
 
@@ -308,6 +308,38 @@ export class NexusCore {
 
   getCompanionState(): CompanionState | undefined {
     return this.companionSystem.getState();
+  }
+
+  // --- Quest Helpers ---
+
+  /** Get a quest definition by ID. */
+  getQuestById(questId: string): Quest | undefined {
+    return this.quests.getById(questId);
+  }
+
+  /** Select available quests for the current player in the given biome. */
+  selectAvailableQuests(biome: string): Quest[] {
+    if (!this.activeProfileId) return [];
+    const players = this.world.query(['player']);
+    const playerComp = players[0] !== undefined
+      ? this.world.getComponent(players[0], 'player')
+      : null;
+    const tier = playerComp?.masteryTier ?? 'foundation';
+    return this.questSystem.selectQuests({
+      profileId: this.activeProfileId,
+      biome,
+      masteryTier: tier,
+    });
+  }
+
+  /** Get the currently active biome from the player entity. */
+  getCurrentBiome(): string {
+    const players = this.world.query(['player']);
+    if (players[0] !== undefined) {
+      const comp = this.world.getComponent(players[0], 'player');
+      if (comp?.activeBiome) return comp.activeBiome as string;
+    }
+    return 'workshop';
   }
 
   // --- World Access ---
