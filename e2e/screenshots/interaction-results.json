@@ -8,18 +8,18 @@
     {
       "name": "Profile creation",
       "pass": true,
-      "timestamp": "2026-04-03T12:17:54.525Z",
-      "profileId": "2uky4afz9dka65kv"
+      "timestamp": "2026-04-03T12:26:21.407Z",
+      "profileId": "zgkj54giupc7htiq"
     },
     {
       "name": "Game loop running",
       "pass": true,
-      "timestamp": "2026-04-03T12:17:54.680Z"
+      "timestamp": "2026-04-03T12:26:21.541Z"
     },
     {
       "name": "Interaction prompt appears near objects",
       "pass": true,
-      "timestamp": "2026-04-03T12:18:00.370Z",
+      "timestamp": "2026-04-03T12:26:28.157Z",
       "promptText": "Press E to examine the Anvil",
       "highlightInfo": {
         "total": 5,
@@ -38,23 +38,23 @@
     {
       "name": "E key opens companion dialogue",
       "pass": true,
-      "timestamp": "2026-04-03T12:18:06.227Z",
-      "dialogueText": "Buddy: Ooh, look at anvil! I wonder what it does?"
+      "timestamp": "2026-04-03T12:26:35.208Z",
+      "dialogueText": "Buddy: anvil! This looks really interesting. Want to take a closer look?"
     },
     {
       "name": "Companion system initialized",
       "pass": true,
-      "timestamp": "2026-04-03T12:18:07.523Z",
+      "timestamp": "2026-04-03T12:26:37.434Z",
       "uiState": {
         "dialogueActive": true,
-        "dialogueText": "Ooh, look at anvil! I wonder what it does?",
+        "dialogueText": "anvil! This looks really interesting. Want to take a closer look?",
         "dialogueSpeaker": "Buddy"
       }
     },
     {
       "name": "HUD elements exist (crosshair, prompt, dialogue)",
       "pass": true,
-      "timestamp": "2026-04-03T12:18:07.760Z",
+      "timestamp": "2026-04-03T12:26:37.698Z",
       "hudElements": {
         "crosshair": true,
         "prompt": true,
@@ -66,7 +66,7 @@
     {
       "name": "Interactable objects reachable from spawn",
       "pass": true,
-      "timestamp": "2026-04-03T12:18:21.496Z",
+      "timestamp": "2026-04-03T12:26:51.377Z",
       "interactablesFound": 1
     }
   ],
