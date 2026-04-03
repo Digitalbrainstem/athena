@@ -201,9 +201,9 @@ describe('NexusCore Integration', () => {
     const graph = core.getSceneGraph();
 
     // Camera
-    expect(graph.camera.fov).toBe(60);
+    expect(graph.camera.fov).toBe(70);
     expect(graph.camera.near).toBe(0.1);
-    expect(graph.camera.far).toBe(1000);
+    expect(graph.camera.far).toBe(500);
 
     // Sky and ground
     expect(graph.sky.type).toBeTruthy();

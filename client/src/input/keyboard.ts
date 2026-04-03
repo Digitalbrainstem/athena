@@ -4,6 +4,10 @@ import type { InputProvider, ActionCallback } from '../types.js';
 interface KeyState { forward: boolean; backward: boolean; left: boolean; right: boolean; }
 const INITIAL_KEY_STATE: KeyState = Object.freeze({ forward: false, backward: false, left: false, right: false });
 
+/** Sentinel action returned by mapKey for movement keys — only used to signal
+ *  that the key was recognised so we can call preventDefault. Never emitted. */
+const MOVEMENT_SENTINEL: GameAction = { type: 'move', source: 'keyboard' };
+
 export class KeyboardInput implements InputProvider {
   readonly name = 'keyboard' as const;
   private emit: ActionCallback | null = null;
@@ -36,10 +40,15 @@ export class KeyboardInput implements InputProvider {
   private onKeyDown = (e: KeyboardEvent): void => {
     if (e.repeat) return;
     const action = this.mapKey(e.code, true);
-    if (action) { e.preventDefault(); this.emit?.(action); }
+    if (action) e.preventDefault();
+    // Only emit non-movement actions (movement is emitted via the interval)
+    if (action && action !== MOVEMENT_SENTINEL) this.emit?.(action);
   };
 
-  private onKeyUp = (e: KeyboardEvent): void => { this.mapKey(e.code, false); };
+  private onKeyUp = (e: KeyboardEvent): void => {
+    const action = this.mapKey(e.code, false);
+    if (action) e.preventDefault();
+  };
   private onVisibilityChange = (): void => { if (document.hidden) this.resetKeys(); };
   private resetKeys = (): void => { this.keys = { ...INITIAL_KEY_STATE }; };
 
@@ -52,12 +61,15 @@ export class KeyboardInput implements InputProvider {
     this.emit?.({ type: 'move', source: 'keyboard', payload });
   };
 
+  /** Map key to action. Returns the action for immediate-fire keys, or a
+   *  sentinel for movement keys (which fire via the interval), or null
+   *  for unmapped keys. Any non-null return means the key was recognized. */
   private mapKey(code: string, down: boolean): GameAction | null {
     switch (code) {
-      case 'KeyW': case 'ArrowUp': this.keys.forward = down; return null;
-      case 'KeyS': case 'ArrowDown': this.keys.backward = down; return null;
-      case 'KeyA': case 'ArrowLeft': this.keys.left = down; return null;
-      case 'KeyD': case 'ArrowRight': this.keys.right = down; return null;
+      case 'KeyW': case 'ArrowUp': this.keys.forward = down; return down ? MOVEMENT_SENTINEL : MOVEMENT_SENTINEL;
+      case 'KeyS': case 'ArrowDown': this.keys.backward = down; return down ? MOVEMENT_SENTINEL : MOVEMENT_SENTINEL;
+      case 'KeyA': case 'ArrowLeft': this.keys.left = down; return down ? MOVEMENT_SENTINEL : MOVEMENT_SENTINEL;
+      case 'KeyD': case 'ArrowRight': this.keys.right = down; return down ? MOVEMENT_SENTINEL : MOVEMENT_SENTINEL;
       case 'KeyE': return down ? { type: 'interact', source: 'keyboard' } : null;
       case 'KeyI': return down ? { type: 'inventory', source: 'keyboard' } : null;
       case 'KeyM': return down ? { type: 'map', source: 'keyboard' } : null;

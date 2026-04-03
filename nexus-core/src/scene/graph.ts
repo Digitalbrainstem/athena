@@ -59,11 +59,11 @@ export function updateHighlights(
 export function createEmptySceneGraph(): SceneGraph {
   return {
     camera: {
-      position: { x: 0, y: 5, z: 10 },
-      rotation: { x: -0.3, y: 0, z: 0 },
-      fov: 60,
+      position: { x: 0, y: 1.6, z: 5 },
+      rotation: { x: 0, y: Math.PI, z: 0 },
+      fov: 70,
       near: 0.1,
-      far: 1000,
+      far: 500,
     },
     lights: [],
     objects: [],

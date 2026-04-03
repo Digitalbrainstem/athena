@@ -15,6 +15,9 @@ const LOD_PROFILES = {
 
 export type LODTier = keyof typeof LOD_PROFILES;
 
+const COMPANION_COLOR = 0x22d3ee; // Frost
+const COMPANION_GLOW = 0xa78bfa;  // Aurora
+
 export class SceneRenderer implements Disposable {
   readonly gl: THREE.WebGLRenderer;
   readonly scene: THREE.Scene;
@@ -33,6 +36,10 @@ export class SceneRenderer implements Disposable {
   private predictiveYaw = 0;
   private predictivePitch = 0;
   private hasPredictiveLook = false;
+
+  // Companion orb
+  private companionGroup: THREE.Group | null = null;
+  private companionTime = 0;
 
   constructor(canvas: HTMLCanvasElement, initialTier: LODTier = 'medium') {
     this.lodTier = initialTier;
@@ -62,6 +69,8 @@ export class SceneRenderer implements Disposable {
     this.skyRenderer = new SkyRenderer(this.scene);
     this.groundRenderer = new GroundRenderer(this.scene);
 
+    this.createCompanionOrb();
+
     window.addEventListener('resize', this.onResize);
   }
 
@@ -78,6 +87,7 @@ export class SceneRenderer implements Disposable {
     this.groundRenderer.sync(sceneGraph.ground);
     this.lightManager.sync(sceneGraph.lights);
     this.syncObjects(sceneGraph.objects);
+    this.updateCompanion(sceneGraph.camera);
 
     this.gl.render(this.scene, this.camera);
   }
@@ -114,12 +124,79 @@ export class SceneRenderer implements Disposable {
     }
     this.entityGroups.clear();
 
+    if (this.companionGroup) {
+      this.scene.remove(this.companionGroup);
+      this.companionGroup = null;
+    }
+
     this.lightManager.dispose();
     this.skyRenderer.dispose();
     this.groundRenderer.dispose();
     this.objectFactory.dispose();
     this.gl.dispose();
   }
+
+  // -- Companion orb -------------------------------------------------------
+
+  private createCompanionOrb(): void {
+    const group = new THREE.Group();
+
+    // Core sphere
+    const coreGeo = new THREE.SphereGeometry(0.15, 16, 12);
+    const coreMat = new THREE.MeshStandardMaterial({
+      color: COMPANION_COLOR,
+      emissive: COMPANION_COLOR,
+      emissiveIntensity: 0.6,
+      roughness: 0.2,
+      metalness: 0.3,
+    });
+    const core = new THREE.Mesh(coreGeo, coreMat);
+    group.add(core);
+
+    // Outer glow shell
+    const glowGeo = new THREE.SphereGeometry(0.22, 12, 8);
+    const glowMat = new THREE.MeshStandardMaterial({
+      color: COMPANION_GLOW,
+      emissive: COMPANION_GLOW,
+      emissiveIntensity: 0.4,
+      transparent: true,
+      opacity: 0.25,
+      roughness: 0.0,
+      metalness: 0.0,
+    });
+    const glow = new THREE.Mesh(glowGeo, glowMat);
+    group.add(glow);
+
+    // Point light to illuminate surroundings
+    const light = new THREE.PointLight(COMPANION_COLOR, 0.5, 4);
+    group.add(light);
+
+    this.companionGroup = group;
+    this.scene.add(group);
+  }
+
+  private updateCompanion(cam: CameraDescriptor): void {
+    if (!this.companionGroup) return;
+    this.companionTime += 0.016;
+
+    // Float beside the player (offset to the right and forward)
+    const yaw = cam.rotation.y;
+    const offsetRight = 0.8;
+    const offsetForward = -1.2;
+    const baseY = cam.position.y - 0.3;
+
+    const rx = cam.position.x + Math.sin(yaw + Math.PI / 2) * offsetRight + Math.sin(yaw) * offsetForward;
+    const rz = cam.position.z + Math.cos(yaw + Math.PI / 2) * offsetRight + Math.cos(yaw) * offsetForward;
+
+    // Gentle bobbing
+    const bob = Math.sin(this.companionTime * 2) * 0.08;
+    this.companionGroup.position.set(rx, baseY + bob, rz);
+
+    // Slow rotation
+    this.companionGroup.rotation.y += 0.01;
+  }
+
+  // -- Camera / objects ----------------------------------------------------
 
   private syncCamera(desc: CameraDescriptor): void {
     this.camera.fov = desc.fov;

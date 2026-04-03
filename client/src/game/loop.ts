@@ -1,4 +1,4 @@
-import type { NexusCore, SceneGraph, GameAction } from '@nexus-academy/core';
+import type { NexusCore, SceneGraph, GameAction, MovePayload } from '@nexus-academy/core';
 import type { Disposable } from '../types.js';
 import type { InputManager } from '../input/manager.js';
 import type { SceneRenderer } from '../renderer/scene-renderer.js';
@@ -90,10 +90,27 @@ export class GameLoop implements Disposable {
 
     let steps = 0;
     while (this.accumulator >= this.fixedDt && steps < MAX_STEPS_PER_FRAME) {
-      const actions: GameAction[] = [
+      const rawActions: GameAction[] = [
         ...this.inputManager.flush(),
         ...this.fpCam.flushLookActions(),
       ];
+
+      // Feed raw movement input into the FP camera's velocity system
+      for (const a of rawActions) {
+        if (a.type === 'move' && a.payload && 'direction' in a.payload) {
+          const mp = a.payload as MovePayload;
+          this.fpCam.setMoveInput(mp.direction.x, mp.direction.z, mp.running);
+        }
+      }
+
+      // Update velocity physics (acceleration / friction / clamping)
+      this.fpCam.updateMovement(this.fixedDt);
+
+      // Replace raw move actions with smoothed ones from the velocity system
+      const nonMoveActions = rawActions.filter(a => a.type !== 'move');
+      const smoothedMoves = this.fpCam.flushMoveActions();
+      const actions = [...nonMoveActions, ...smoothedMoves];
+
       this.core.update(this.fixedDt, actions);
       this.accumulator -= this.fixedDt;
       steps++;
@@ -102,6 +119,10 @@ export class GameLoop implements Disposable {
     if (steps >= MAX_STEPS_PER_FRAME) this.accumulator = 0;
 
     const sceneGraph: SceneGraph = this.core.getSceneGraph();
+
+    // Show / hide interaction prompts based on highlight state
+    this.updateInteractionPrompt(sceneGraph);
+
     this.sceneRenderer.render(sceneGraph);
     this.audioManager.process(sceneGraph.audio);
     this.hud.update(sceneGraph.ui);
@@ -109,4 +130,15 @@ export class GameLoop implements Disposable {
     this.hud.processCaptions(sceneGraph.captions);
     this.hud.updateFPS(this._fps);
   };
+
+  /** Show an interaction prompt when a highlighted interactable is nearby. */
+  private updateInteractionPrompt(scene: SceneGraph): void {
+    const highlighted = scene.objects.find(o => o.highlight && o.interactable);
+    if (highlighted?.interactable) {
+      const name = highlighted.interactable.prompt.replace(/^Interact with /, '');
+      this.hud.showPrompt(`Press E to examine the ${name}`);
+    } else {
+      this.hud.hidePrompt();
+    }
+  }
 }

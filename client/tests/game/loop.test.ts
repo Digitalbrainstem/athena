@@ -45,6 +45,9 @@ function mockInputManager(): InputManager {
 function mockFpCam(): FirstPersonCamera {
   return {
     flushLookActions: vi.fn(() => []),
+    flushMoveActions: vi.fn(() => []),
+    setMoveInput: vi.fn(),
+    updateMovement: vi.fn(),
     getPredictiveRotation: vi.fn(() => ({ yaw: 0, pitch: 0 })),
     requestPointerLock: vi.fn(),
     exitPointerLock: vi.fn(),
@@ -154,8 +157,12 @@ describe('GameLoop', () => {
     runFrame(0);
     runFrame(16.67);
 
+    // Movement is fed to fpCam.setMoveInput then smoothed via updateMovement
+    expect(fpCam.setMoveInput).toHaveBeenCalledWith(1, 0, false);
+    expect(fpCam.updateMovement).toHaveBeenCalled();
+    // Look actions are still passed through directly
     const updateCall = (core.update as ReturnType<typeof vi.fn>).mock.calls[0];
-    expect(updateCall[1]).toEqual(expect.arrayContaining([moveAction, lookAction]));
+    expect(updateCall[1]).toEqual(expect.arrayContaining([lookAction]));
   });
 
   it('stop prevents further frames', () => {

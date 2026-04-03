@@ -199,6 +199,6 @@ describe('WorldSystem', () => {
 
     const graph = worldSystem.buildSceneGraph(world);
     expect(graph.camera.position.x).toBe(10);
-    expect(graph.camera.position.z).toBe(30); // player z + 10
+    expect(graph.camera.position.z).toBe(20); // first-person — camera at player z
   });
 });

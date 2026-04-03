@@ -27,7 +27,7 @@ async function boot(): Promise<void> {
   a11y.init();
   disposables.push(a11y);
 
-  const core = await NexusCore.create({ debug: DEBUG });
+  const core = await NexusCore.create({ debug: DEBUG, sqliteWasmUrl: '/sql-wasm.wasm' });
   disposables.push({ dispose: () => { void core.destroy(); } });
 
   // --- Profile selection / creation ---
@@ -116,7 +116,6 @@ async function boot(): Promise<void> {
   });
 
   // Start the game loop immediately after profile selection
-  fpCam.requestPointerLock(canvas);
   loop.start();
 
   canvas.addEventListener('click', () => {
@@ -125,6 +124,20 @@ async function boot(): Promise<void> {
 
   input.onAction((action) => {
     if (action.type === 'pause' && fpCam.isPointerLocked) fpCam.exitPointerLock();
+
+    // Interact with highlighted object → trigger companion dialogue
+    if (action.type === 'interact') {
+      const sg = core.getSceneGraph();
+      const highlighted = sg.objects.find(o => o.highlight && o.interactable);
+      if (highlighted?.interactable) {
+        const name = highlighted.interactable.prompt.replace(/^Interact with /, '');
+        core.companionSystem.queueInteraction({
+          type: 'react',
+          profileId,
+          context: `examine_${name.toLowerCase().replace(/\s+/g, '_')}`,
+        });
+      }
+    }
   });
 }
 

@@ -97,25 +97,20 @@ export class ObjectFactory implements Disposable {
 
   /**
    * Create a Three.js object for a SceneObject. Returns a Mesh for primitive
-   * types (box/sphere/cylinder/plane). For meshType 'model' with a modelId,
-   * returns a procedural Group when the AssetManager knows the model, or falls
-   * back to a box otherwise.
+   * types (box/sphere/cylinder/plane). For objects with a modelId that the
+   * AssetManager recognises, returns a procedural Group regardless of meshType.
    */
   createMesh(obj: SceneObject): THREE.Mesh {
     const { renderable, position, rotation } = obj;
 
-    // Attempt procedural model resolution for 'model' meshType
-    if (renderable.meshType === 'model' && renderable.modelId && this.assetManager) {
+    // Attempt procedural model resolution when a modelId is present
+    if (renderable.modelId && this.assetManager) {
       if (this.assetManager.hasModel(renderable.modelId)) {
         const group = this.assetManager.getModel(renderable.modelId, DEFAULT_TIER);
         group.position.set(position.x, position.y, position.z);
         group.rotation.set(rotation.x, rotation.y, rotation.z);
         group.visible = renderable.visible;
         this.proceduralGroups.set(obj.entityId, group);
-        // Return a dummy mesh that we won't actually add — SceneRenderer will
-        // check for the group instead. We still need to return a Mesh to
-        // satisfy the current API contract. The caller (SceneRenderer.syncObjects)
-        // will use getProceduralGroup to get the real object.
         const placeholder = new THREE.Mesh(
           this.getGeometry('box', { x: 0.01, y: 0.01, z: 0.01 }),
           this.getMaterial(renderable.color, renderable.material),
@@ -154,6 +149,16 @@ export class ObjectFactory implements Disposable {
       group.position.set(position.x, position.y, position.z);
       group.rotation.set(rotation.x, rotation.y, rotation.z);
       group.visible = renderable.visible;
+
+      // Toggle highlight glow on child meshes
+      group.traverse((child) => {
+        if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
+          if (obj.highlight) {
+            child.material.emissive = child.material.emissive ?? new THREE.Color(0x000000);
+            child.material.emissiveIntensity = Math.max(child.material.emissiveIntensity, 0.25);
+          }
+        }
+      });
       return;
     }
 

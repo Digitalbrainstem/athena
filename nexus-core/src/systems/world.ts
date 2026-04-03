@@ -5,6 +5,7 @@ import type { World } from '../ecs/world.js';
 import type { WorldStateRepository } from '../db/repositories/world-state.js';
 import type { BiomeDefinition, WorldState, InventoryEntry } from '../types/world.js';
 import type { SceneGraph, SceneObject, SceneLight, AudioCue } from '../types/scene.js';
+import { updateHighlights } from '../scene/graph.js';
 
 // --- Biome Definitions ---
 
@@ -18,32 +19,57 @@ export const BIOME_DEFINITIONS: BiomeDefinition[] = [
       {
         id: 'workbench',
         name: 'Workbench',
-        meshType: 'box',
+        meshType: 'model',
+        modelId: 'workbench',
         color: '#8B4513',
-        scale: { x: 2, y: 1, z: 1 },
-        position: { x: 0, y: 0.5, z: -3 },
+        scale: { x: 1, y: 1, z: 1 },
+        position: { x: 0, y: 0, z: -3 },
         interactionType: 'craft',
         teaches: ['engineering.basics'],
       },
       {
         id: 'gear-wall',
         name: 'Gear Display Wall',
-        meshType: 'plane',
+        meshType: 'model',
+        modelId: 'toolRack',
         color: '#4A4A4A',
-        scale: { x: 4, y: 3, z: 0.1 },
-        position: { x: -5, y: 1.5, z: -5 },
+        scale: { x: 1.5, y: 1.5, z: 1.5 },
+        position: { x: -5, y: 0, z: -5 },
         interactionType: 'examine',
         teaches: ['math.geometry', 'science.physics'],
       },
       {
         id: 'blueprint-table',
         name: 'Blueprint Table',
-        meshType: 'box',
+        meshType: 'model',
+        modelId: 'draftingTable',
         color: '#2F4F4F',
-        scale: { x: 1.5, y: 0.8, z: 1.5 },
-        position: { x: 4, y: 0.4, z: -2 },
+        scale: { x: 1, y: 1, z: 1 },
+        position: { x: 4, y: 0, z: -2 },
         interactionType: 'use',
         teaches: ['math.geometry', 'engineering.structures'],
+      },
+      {
+        id: 'anvil',
+        name: 'Anvil',
+        meshType: 'model',
+        modelId: 'anvil',
+        color: '#696969',
+        scale: { x: 1, y: 1, z: 1 },
+        position: { x: -2, y: 0, z: 0 },
+        interactionType: 'examine',
+        teaches: ['engineering.materials', 'science.physics'],
+      },
+      {
+        id: 'gear-display',
+        name: 'Gear Mechanism',
+        meshType: 'model',
+        modelId: 'gear',
+        color: '#CD9B1D',
+        scale: { x: 2, y: 2, z: 2 },
+        position: { x: -5, y: 1.5, z: -3 },
+        interactionType: 'examine',
+        teaches: ['math.geometry', 'engineering.mechanics'],
       },
     ],
     ambientLighting: {
@@ -55,8 +81,9 @@ export const BIOME_DEFINITIONS: BiomeDefinition[] = [
     },
     groundType: 'wood',
     groundColor: '#8B6914',
-    skyType: 'color',
-    skyPrimaryColor: '#87CEEB',
+    skyType: 'gradient',
+    skyPrimaryColor: '#D4A574',
+    skySecondaryColor: '#87CEEB',
   },
   {
     id: 'alchemist-lab',
@@ -3239,6 +3266,13 @@ export class WorldSystem implements System {
         color: biomeDef.ambientLighting.directionalColor,
         intensity: biomeDef.ambientLighting.directionalIntensity,
       },
+      {
+        entityId: -3,
+        position: { x: 0, y: 10, z: 0 },
+        lightType: 'hemisphere',
+        color: '#FFF0D4',
+        intensity: 0.6,
+      },
     ];
 
     // Add light entities
@@ -3319,25 +3353,28 @@ export class WorldSystem implements System {
     // Player camera
     const players = world.query(['player', 'position']);
     const playerEntity = players[0];
-    let cameraPos = { x: 0, y: 5, z: 10 };
-    let cameraRot = { x: -0.3, y: 0, z: 0 };
+    let cameraPos = { x: 0, y: 1.6, z: 5 };
+    let cameraRot = { x: 0, y: Math.PI, z: 0 };
 
     if (playerEntity !== undefined) {
       const pos = world.getComponent(playerEntity, 'position');
       if (pos) {
-        cameraPos = { x: pos.x, y: pos.y + 5, z: pos.z + 10 };
+        cameraPos = { x: pos.x, y: pos.y + 1.6, z: pos.z };
       }
     }
 
     const audio: AudioCue[] = [];
 
-    return {
+    // Player position for highlight proximity checks
+    const playerPos = { x: cameraPos.x, y: 0, z: cameraPos.z };
+
+    const graph: SceneGraph = {
       camera: {
         position: cameraPos,
         rotation: cameraRot,
-        fov: 60,
+        fov: 70,
         near: 0.1,
-        far: 1000,
+        far: 500,
       },
       lights,
       objects,
@@ -3362,5 +3399,8 @@ export class WorldSystem implements System {
       announcements: [],
       captions: [],
     };
+
+    // Update highlight state based on player proximity to interactable objects
+    return updateHighlights(graph, playerPos);
   }
 }
