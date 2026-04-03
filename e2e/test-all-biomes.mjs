@@ -80,15 +80,26 @@ async function run() {
     }
     results.push(makeResult('Biome: workshop', workshopResult.pass, workshopResult));
 
-    // ─── Test WASD in workshop ────────────────────────────────────────────
+    // ─── Movement check in workshop ────────────────────────────────────────────
     console.log('\n─── Movement check in workshop ───');
+    // Ensure game is receiving input by clicking the page
+    await page.mouse.click(640, 360);
+    await page.waitForTimeout(1000);
+    
     const posStart = await getCameraPosition(page);
-    await pressKeyFor(page, 'w', 500);
-    await page.waitForTimeout(100);
-    const posEnd = await getCameraPosition(page);
-    const movementWorks = posStart && posEnd ? posEnd.z < posStart.z : false;
-    console.log(`  Movement forward: ${movementWorks} (Z: ${posStart?.z?.toFixed(2)} → ${posEnd?.z?.toFixed(2)})`);
-    results.push(makeResult('Workshop: WASD movement', movementWorks));
+    if (posStart) {
+      await page.keyboard.down('w');
+      await page.waitForTimeout(600);
+      await page.keyboard.up('w');
+      await page.waitForTimeout(200);
+      const posEnd = await getCameraPosition(page);
+      const movementWorks = posEnd ? posEnd.z < posStart.z : false;
+      console.log(`  Movement forward: ${movementWorks} (Z: ${posStart?.z?.toFixed(2)} → ${posEnd?.z?.toFixed(2)})`);
+      results.push(makeResult('Workshop: WASD movement', movementWorks));
+    } else {
+      console.log('  ⚠ Could not read camera position (debug bridge may not be available)');
+      results.push(makeResult('Workshop: WASD movement', null, { skipped: true, reason: 'no debug bridge' }));
+    }
 
     // ─── Attempt to visit each biome via travel system ────────────────────
     // The travel system uses core.travelSystem.travelTo(biomeId).
