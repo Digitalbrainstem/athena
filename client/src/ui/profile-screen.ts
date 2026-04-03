@@ -1,17 +1,31 @@
 // Profile screen — accessible HTML overlay for creating/selecting profiles.
-// Shown before the 3D scene when no profile is active.
-// Foundation tier: big avatar icons, no typing required per spec.
+// Shown after the portal gateway dissolves. Companion picker shows 3D model
+// previews instead of plain emoji, with personality descriptions.
 
+import * as THREE from 'three';
 import type { NexusCore, Profile, MasteryTier } from '@nexus-academy/core';
 import type { Disposable } from '../types.js';
 
-const AVATAR_OPTIONS: { id: string; emoji: string; label: string }[] = [
-  { id: 'fox', emoji: '🦊', label: 'Fox' },
-  { id: 'owl', emoji: '🦉', label: 'Owl' },
-  { id: 'rabbit', emoji: '🐰', label: 'Rabbit' },
-  { id: 'bear', emoji: '🐻', label: 'Bear' },
-  { id: 'cat', emoji: '🐱', label: 'Cat' },
-  { id: 'dragon', emoji: '🐉', label: 'Dragon' },
+// ---------------------------------------------------------------------------
+// Companion data with personality descriptions
+// ---------------------------------------------------------------------------
+
+interface CompanionInfo {
+  id: string;
+  emoji: string;
+  label: string;
+  description: string;
+  color: number;
+  accentColor: number;
+}
+
+const COMPANION_OPTIONS: CompanionInfo[] = [
+  { id: 'fox',    emoji: '🦊', label: 'Fox',    description: 'Curious and quick, always sniffing out adventure',       color: 0xff6b2b, accentColor: 0xffa040 },
+  { id: 'owl',    emoji: '🦉', label: 'Owl',    description: 'Wise and patient, sees what others miss',               color: 0x8b6914, accentColor: 0xd4a574 },
+  { id: 'rabbit', emoji: '🐰', label: 'Rabbit', description: 'Gentle and kind, makes everything feel safe',           color: 0xf5f0e8, accentColor: 0xffc0cb },
+  { id: 'bear',   emoji: '🐻', label: 'Bear',   description: 'Steady and strong, always by your side',                color: 0x8b4513, accentColor: 0xd2691e },
+  { id: 'cat',    emoji: '🐱', label: 'Cat',    description: 'Clever and playful, finds the fun in everything',       color: 0x555555, accentColor: 0x22d3ee },
+  { id: 'dragon', emoji: '🐉', label: 'Dragon', description: 'Bold and brave, never afraid to try',                   color: 0x228b22, accentColor: 0xffd700 },
 ];
 
 const AGE_RANGES: { value: string; label: string; tier: MasteryTier }[] = [
@@ -29,6 +43,14 @@ export class ProfileScreen implements Disposable {
   private overlay: HTMLElement | null = null;
   private disposed = false;
   private resolveSelection: ((result: ProfileScreenResult) => void) | null = null;
+
+  // 3D companion preview state
+  private previewRenderers: THREE.WebGLRenderer[] = [];
+  private previewScenes: THREE.Scene[] = [];
+  private previewCameras: THREE.PerspectiveCamera[] = [];
+  private previewMeshes: THREE.Group[] = [];
+  private previewAnimId = 0;
+  private previewStartTime = 0;
 
   /**
    * Show the profile screen overlay and wait for the user to select or create a profile.
@@ -55,9 +77,28 @@ export class ProfileScreen implements Disposable {
   dispose(): void {
     if (this.disposed) return;
     this.disposed = true;
+    this.stopPreviews();
     this.overlay?.remove();
     this.overlay = null;
     this.resolveSelection = null;
+  }
+
+  private stopPreviews(): void {
+    cancelAnimationFrame(this.previewAnimId);
+    for (const r of this.previewRenderers) r.dispose();
+    for (const scene of this.previewScenes) {
+      scene.traverse((obj) => {
+        if (obj instanceof THREE.Mesh) {
+          obj.geometry.dispose();
+          if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose());
+          else obj.material.dispose();
+        }
+      });
+    }
+    this.previewRenderers = [];
+    this.previewScenes = [];
+    this.previewCameras = [];
+    this.previewMeshes = [];
   }
 
   // ---------------------------------------------------------------------------
@@ -124,7 +165,7 @@ export class ProfileScreen implements Disposable {
       const avatar = document.createElement('span');
       avatar.className = 'profile-card-avatar';
       avatar.setAttribute('aria-hidden', 'true');
-      const match = AVATAR_OPTIONS.find((a) => a.id === profile.avatarData);
+      const match = COMPANION_OPTIONS.find((a) => a.id === profile.avatarData);
       avatar.textContent = match?.emoji ?? '🌟';
       card.appendChild(avatar);
 
@@ -215,9 +256,9 @@ export class ProfileScreen implements Disposable {
 
     section.appendChild(ageGroup);
 
-    // Avatar picker (Foundation-friendly: big tap targets, no typing)
+    // Companion picker with 3D previews + personality descriptions
     const avatarGroup = document.createElement('div');
-    avatarGroup.className = 'form-group';
+    avatarGroup.className = 'form-group companion-picker-group';
 
     const avatarLabel = document.createElement('span');
     avatarLabel.id = 'avatar-label';
@@ -230,22 +271,43 @@ export class ProfileScreen implements Disposable {
     avatarGrid.setAttribute('role', 'radiogroup');
     avatarGrid.setAttribute('aria-labelledby', 'avatar-label');
 
-    let selectedAvatar = AVATAR_OPTIONS[0]!.id;
+    let selectedAvatar = COMPANION_OPTIONS[0]!.id;
 
-    for (const opt of AVATAR_OPTIONS) {
+    for (const opt of COMPANION_OPTIONS) {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'avatar-option';
       btn.setAttribute('role', 'radio');
       btn.setAttribute('aria-checked', opt.id === selectedAvatar ? 'true' : 'false');
-      btn.setAttribute('aria-label', opt.label);
+      btn.setAttribute('aria-label', `${opt.label} — ${opt.description}`);
       btn.dataset.avatarId = opt.id;
 
+      // 3D preview canvas
+      const previewCanvas = document.createElement('canvas');
+      previewCanvas.className = 'companion-preview-canvas';
+      previewCanvas.width = 80;
+      previewCanvas.height = 80;
+      previewCanvas.setAttribute('aria-hidden', 'true');
+      btn.appendChild(previewCanvas);
+
+      // Emoji fallback (hidden when canvas works, shown in tests/no-WebGL)
       const emoji = document.createElement('span');
       emoji.className = 'avatar-emoji';
       emoji.setAttribute('aria-hidden', 'true');
       emoji.textContent = opt.emoji;
       btn.appendChild(emoji);
+
+      // Companion name
+      const nameEl = document.createElement('span');
+      nameEl.className = 'companion-name';
+      nameEl.textContent = opt.label;
+      btn.appendChild(nameEl);
+
+      // Personality description
+      const desc = document.createElement('span');
+      desc.className = 'companion-desc';
+      desc.textContent = opt.description;
+      btn.appendChild(desc);
 
       if (opt.id === selectedAvatar) {
         btn.classList.add('selected');
@@ -261,11 +323,24 @@ export class ProfileScreen implements Disposable {
         btn.setAttribute('aria-checked', 'true');
       });
 
+      // Hover/focus greeting animation handled in animation loop
+      btn.addEventListener('mouseenter', () => btn.classList.add('greeting'));
+      btn.addEventListener('mouseleave', () => btn.classList.remove('greeting'));
+      btn.addEventListener('focus', () => btn.classList.add('greeting'));
+      btn.addEventListener('blur', () => btn.classList.remove('greeting'));
+
       avatarGrid.appendChild(btn);
+
+      // Set up 3D preview for this companion
+      this.initCompanionPreview(previewCanvas, opt);
     }
 
     avatarGroup.appendChild(avatarGrid);
     section.appendChild(avatarGroup);
+
+    // Start preview animations
+    this.previewStartTime = performance.now();
+    this.animatePreviews();
 
     // Error display
     const errorEl = document.createElement('p');
@@ -294,6 +369,7 @@ export class ProfileScreen implements Disposable {
 
       const selectedAge = AGE_RANGES.find(a => a.value === ageSelect.value);
       const tier = selectedAge?.tier ?? 'foundation';
+      this.stopPreviews();
       this.createAndSelect(core, name, selectedAvatar as string, tier);
     });
 
@@ -306,6 +382,7 @@ export class ProfileScreen implements Disposable {
   // ---------------------------------------------------------------------------
 
   private selectProfile(profileId: string): void {
+    this.stopPreviews();
     this.overlay?.remove();
     this.overlay = null;
     this.resolveSelection?.({ profileId });
@@ -334,4 +411,248 @@ export class ProfileScreen implements Disposable {
         }
       });
   }
+
+  // ---------------------------------------------------------------------------
+  // 3D companion previews
+  // ---------------------------------------------------------------------------
+
+  private initCompanionPreview(canvas: HTMLCanvasElement, info: CompanionInfo): void {
+    try {
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true,
+        alpha: true,
+      });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(80, 80);
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 50);
+      camera.position.set(0, 0.3, 2.2);
+      camera.lookAt(0, 0.1, 0);
+
+      // Lighting
+      const ambient = new THREE.AmbientLight(0xffffff, 0.6);
+      scene.add(ambient);
+      const key = new THREE.DirectionalLight(0xffffff, 0.8);
+      key.position.set(2, 3, 2);
+      scene.add(key);
+
+      // Build a simple stylized companion shape
+      const group = this.buildCompanionShape(info);
+      scene.add(group);
+
+      // Hide emoji fallback since WebGL is available
+      const emojiEl = canvas.parentElement?.querySelector('.avatar-emoji');
+      if (emojiEl) (emojiEl as HTMLElement).style.display = 'none';
+
+      this.previewRenderers.push(renderer);
+      this.previewScenes.push(scene);
+      this.previewCameras.push(camera);
+      this.previewMeshes.push(group);
+    } catch {
+      // WebGL not available — emoji fallback remains visible
+    }
+  }
+
+  private buildCompanionShape(info: CompanionInfo): THREE.Group {
+    const group = new THREE.Group();
+    const main = new THREE.Color(info.color);
+    const accent = new THREE.Color(info.accentColor);
+
+    const bodyMat = new THREE.MeshStandardMaterial({
+      color: main,
+      roughness: 0.5,
+      metalness: 0.1,
+    });
+    const accentMat = new THREE.MeshStandardMaterial({
+      color: accent,
+      emissive: accent,
+      emissiveIntensity: 0.2,
+      roughness: 0.3,
+    });
+
+    // Body — slightly squashed sphere
+    const body = new THREE.Mesh(
+      new THREE.SphereGeometry(0.4, 16, 12),
+      bodyMat,
+    );
+    body.scale.set(1, 0.9, 0.85);
+    group.add(body);
+
+    // Head
+    const head = new THREE.Mesh(
+      new THREE.SphereGeometry(0.28, 16, 12),
+      bodyMat,
+    );
+    head.position.set(0, 0.5, 0);
+    group.add(head);
+
+    // Eyes — two small dark spheres
+    const eyeMat = new THREE.MeshStandardMaterial({ color: 0x111111 });
+    const leftEye = new THREE.Mesh(new THREE.SphereGeometry(0.04, 8, 6), eyeMat);
+    leftEye.position.set(-0.1, 0.55, 0.24);
+    group.add(leftEye);
+
+    const rightEye = new THREE.Mesh(new THREE.SphereGeometry(0.04, 8, 6), eyeMat);
+    rightEye.position.set(0.1, 0.55, 0.24);
+    group.add(rightEye);
+
+    // Accent feature — varies by companion
+    switch (info.id) {
+      case 'fox': {
+        // Pointed ears
+        const earGeo = new THREE.ConeGeometry(0.08, 0.2, 4);
+        const leftEar = new THREE.Mesh(earGeo, accentMat);
+        leftEar.position.set(-0.15, 0.75, 0);
+        leftEar.rotation.z = 0.15;
+        group.add(leftEar);
+        const rightEar = new THREE.Mesh(earGeo, accentMat);
+        rightEar.position.set(0.15, 0.75, 0);
+        rightEar.rotation.z = -0.15;
+        group.add(rightEar);
+        // Bushy tail
+        const tail = new THREE.Mesh(
+          new THREE.SphereGeometry(0.15, 8, 6),
+          accentMat,
+        );
+        tail.position.set(0, 0.05, -0.5);
+        tail.scale.set(0.7, 0.7, 1.3);
+        group.add(tail);
+        break;
+      }
+      case 'owl': {
+        // Wide flat ears (tufts)
+        const tuftGeo = new THREE.ConeGeometry(0.06, 0.18, 4);
+        const lt = new THREE.Mesh(tuftGeo, accentMat);
+        lt.position.set(-0.18, 0.78, 0);
+        lt.rotation.z = 0.3;
+        group.add(lt);
+        const rt = new THREE.Mesh(tuftGeo, accentMat);
+        rt.position.set(0.18, 0.78, 0);
+        rt.rotation.z = -0.3;
+        group.add(rt);
+        // Beak
+        const beak = new THREE.Mesh(
+          new THREE.ConeGeometry(0.05, 0.1, 6),
+          new THREE.MeshStandardMaterial({ color: 0xffa500 }),
+        );
+        beak.position.set(0, 0.48, 0.28);
+        beak.rotation.x = Math.PI / 2;
+        group.add(beak);
+        break;
+      }
+      case 'rabbit': {
+        // Long ears
+        const earGeo = new THREE.CapsuleGeometry(0.05, 0.3, 4, 8);
+        const le = new THREE.Mesh(earGeo, accentMat);
+        le.position.set(-0.1, 0.9, -0.05);
+        le.rotation.z = 0.1;
+        group.add(le);
+        const re = new THREE.Mesh(earGeo, accentMat);
+        re.position.set(0.1, 0.9, -0.05);
+        re.rotation.z = -0.1;
+        group.add(re);
+        break;
+      }
+      case 'bear': {
+        // Round ears
+        const earGeo = new THREE.SphereGeometry(0.1, 8, 6);
+        const le = new THREE.Mesh(earGeo, bodyMat);
+        le.position.set(-0.2, 0.72, 0);
+        group.add(le);
+        const re = new THREE.Mesh(earGeo, bodyMat);
+        re.position.set(0.2, 0.72, 0);
+        group.add(re);
+        // Snout
+        const snout = new THREE.Mesh(
+          new THREE.SphereGeometry(0.1, 8, 6),
+          accentMat,
+        );
+        snout.position.set(0, 0.45, 0.25);
+        snout.scale.set(1, 0.7, 0.8);
+        group.add(snout);
+        break;
+      }
+      case 'cat': {
+        // Pointed ears
+        const earGeo = new THREE.ConeGeometry(0.07, 0.15, 4);
+        const le = new THREE.Mesh(earGeo, bodyMat);
+        le.position.set(-0.15, 0.75, 0);
+        group.add(le);
+        const re = new THREE.Mesh(earGeo, bodyMat);
+        re.position.set(0.15, 0.75, 0);
+        group.add(re);
+        // Tail — curved cylinder
+        const tailGeo = new THREE.CylinderGeometry(0.03, 0.02, 0.5, 8);
+        const tail = new THREE.Mesh(tailGeo, accentMat);
+        tail.position.set(0, 0.2, -0.5);
+        tail.rotation.x = -0.5;
+        group.add(tail);
+        break;
+      }
+      case 'dragon': {
+        // Horns
+        const hornGeo = new THREE.ConeGeometry(0.05, 0.2, 6);
+        const lh = new THREE.Mesh(hornGeo, accentMat);
+        lh.position.set(-0.12, 0.8, -0.05);
+        lh.rotation.z = 0.3;
+        group.add(lh);
+        const rh = new THREE.Mesh(hornGeo, accentMat);
+        rh.position.set(0.12, 0.8, -0.05);
+        rh.rotation.z = -0.3;
+        group.add(rh);
+        // Wings (flat triangles)
+        const wingGeo = new THREE.BufferGeometry();
+        wingGeo.setAttribute('position', new THREE.Float32BufferAttribute([
+          0, 0, 0,  -0.5, 0.3, -0.1,  -0.2, -0.2, -0.15,
+        ], 3));
+        wingGeo.computeVertexNormals();
+        const lw = new THREE.Mesh(wingGeo, accentMat);
+        lw.position.set(-0.3, 0.2, -0.1);
+        group.add(lw);
+        const rwGeo = new THREE.BufferGeometry();
+        rwGeo.setAttribute('position', new THREE.Float32BufferAttribute([
+          0, 0, 0,  0.5, 0.3, -0.1,  0.2, -0.2, -0.15,
+        ], 3));
+        rwGeo.computeVertexNormals();
+        const rw = new THREE.Mesh(rwGeo, accentMat);
+        rw.position.set(0.3, 0.2, -0.1);
+        group.add(rw);
+        break;
+      }
+    }
+
+    return group;
+  }
+
+  private animatePreviews = (): void => {
+    if (this.disposed || this.previewRenderers.length === 0) return;
+    this.previewAnimId = requestAnimationFrame(this.animatePreviews);
+
+    const elapsed = (performance.now() - this.previewStartTime) / 1000;
+
+    for (let i = 0; i < this.previewRenderers.length; i++) {
+      const group = this.previewMeshes[i];
+      const renderer = this.previewRenderers[i];
+      const scene = this.previewScenes[i];
+      const camera = this.previewCameras[i];
+      if (!group || !renderer || !scene || !camera) continue;
+
+      // Slow rotation
+      group.rotation.y = elapsed * 0.5;
+
+      // Gentle bobbing
+      group.position.y = Math.sin(elapsed * 1.5 + i) * 0.03;
+
+      // Greeting animation on hover — bounce
+      const btn = renderer.domElement.parentElement;
+      if (btn?.classList.contains('greeting')) {
+        group.position.y += Math.sin(elapsed * 6) * 0.05;
+        group.rotation.y = elapsed * 1.5; // Faster spin
+      }
+
+      renderer.render(scene, camera);
+    }
+  };
 }

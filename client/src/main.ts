@@ -9,7 +9,9 @@ import { TouchInput } from './input/touch.js';
 import { FirstPersonCamera } from './camera/first-person.js';
 import { AudioManager } from './audio/audio-manager.js';
 import { CompanionVoiceManager } from './audio/companion-voice.js';
+import { NexusVoice } from './audio/nexus-voice.js';
 import { HUD } from './ui/hud.js';
+import { PortalScreen } from './ui/portal-screen.js';
 import { ProfileScreen } from './ui/profile-screen.js';
 import { AccessibilityManager } from './a11y/accessibility-manager.js';
 import { OfflineManager } from './net/offline.js';
@@ -36,6 +38,28 @@ async function boot(): Promise<void> {
   const core = await NexusCore.create({ debug: DEBUG, sqliteWasmUrl: '/sql-wasm.wasm' });
   debug('core', 'NexusCore created');
   disposables.push({ dispose: () => { void core.destroy(); } });
+
+  // --- Portal Gateway (title screen) ---
+  // Hide the default click-to-play overlay — portal replaces it
+  const clickOverlay = document.getElementById('click-to-play');
+  clickOverlay?.classList.add('hidden');
+
+  const portalScreen = new PortalScreen();
+  disposables.push(portalScreen);
+
+  // Nexus Voice — speaks as the portal opens
+  const nexusVoice = new NexusVoice();
+  disposables.push(nexusVoice);
+
+  // Show portal and start Nexus Voice in parallel
+  const portalPromise = portalScreen.show();
+  // Slight delay so the portal light appears first, then the voice
+  setTimeout(() => {
+    void nexusVoice.speak('welcome');
+  }, 800);
+
+  await portalPromise;
+  debug('ui', 'Portal gateway complete — entering profile screen');
 
   // --- Profile selection / creation ---
   const profileScreen = new ProfileScreen();
@@ -88,9 +112,8 @@ async function boot(): Promise<void> {
     });
   }
 
-  // --- Remove any leftover overlay, reveal canvas ---
-  const overlay = document.getElementById('click-to-play');
-  overlay?.classList.add('hidden');
+  // --- Remove any leftover overlays, reveal canvas ---
+  // (Portal overlay already removed; this catches edge cases)
 
   // --- Initialize renderers & input ---
   const assetManager = new AssetManager();

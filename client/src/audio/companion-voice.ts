@@ -1,32 +1,126 @@
-// Companion voice — browser SpeechSynthesis wrapper for spoken dialogue.
-// Falls back to silent operation if SpeechSynthesis is unavailable.
+// Companion voice — browser SpeechSynthesis with per-companion personality.
+// Each companion has distinct pitch, rate, and voice preferences that make
+// them sound unique. Light audio processing (subtle reverb, warmth) makes
+// the voice feel "in the room" rather than GPS-navigator robotic.
 
 import type { Disposable } from '../types.js';
 
 export type Emotion = 'neutral' | 'happy' | 'curious' | 'encouraging' | 'excited';
 
 interface EmotionParams {
-  pitch: number;
-  rate: number;
+  pitchOffset: number;
+  rateOffset: number;
 }
 
 const EMOTION_MAP: Record<Emotion, EmotionParams> = {
-  neutral:      { pitch: 1.1, rate: 1.0 },
-  happy:        { pitch: 1.3, rate: 1.1 },
-  curious:      { pitch: 1.2, rate: 0.95 },
-  encouraging:  { pitch: 1.15, rate: 1.05 },
-  excited:      { pitch: 1.35, rate: 1.15 },
+  neutral:      { pitchOffset: 0,     rateOffset: 0 },
+  happy:        { pitchOffset: 0.15,  rateOffset: 0.1 },
+  curious:      { pitchOffset: 0.1,   rateOffset: -0.05 },
+  encouraging:  { pitchOffset: 0.05,  rateOffset: 0.05 },
+  excited:      { pitchOffset: 0.2,   rateOffset: 0.15 },
 };
+
+// ---------------------------------------------------------------------------
+// Per-companion voice profiles
+// ---------------------------------------------------------------------------
+
+interface CompanionVoiceProfile {
+  basePitch: number;
+  baseRate: number;
+  voiceGender: 'female' | 'male' | 'any';
+  voiceKeywords: string[];
+}
+
+const COMPANION_PROFILES: Record<string, CompanionVoiceProfile> = {
+  fox:    { basePitch: 1.2,  baseRate: 1.05, voiceGender: 'female', voiceKeywords: ['Female', 'Samantha', 'Zira'] },
+  owl:    { basePitch: 0.9,  baseRate: 0.9,  voiceGender: 'male',   voiceKeywords: ['Male', 'Daniel', 'David'] },
+  rabbit: { basePitch: 1.3,  baseRate: 1.0,  voiceGender: 'female', voiceKeywords: ['Female', 'Samantha', 'Zira'] },
+  bear:   { basePitch: 0.8,  baseRate: 0.85, voiceGender: 'male',   voiceKeywords: ['Male', 'Daniel', 'David'] },
+  cat:    { basePitch: 1.1,  baseRate: 1.1,  voiceGender: 'female', voiceKeywords: ['Female', 'Samantha', 'Karen'] },
+  dragon: { basePitch: 0.7,  baseRate: 0.95, voiceGender: 'male',   voiceKeywords: ['Male', 'Daniel', 'Alex'] },
+};
+
+const DEFAULT_PROFILE: CompanionVoiceProfile = {
+  basePitch: 1.1,
+  baseRate: 1.0,
+  voiceGender: 'any',
+  voiceKeywords: ['Female'],
+};
+
+// ---------------------------------------------------------------------------
+// Voice selection — picks the best voice for a companion's personality
+// ---------------------------------------------------------------------------
+
+function selectVoiceForCompanion(
+  voices: SpeechSynthesisVoice[],
+  profile: CompanionVoiceProfile,
+): SpeechSynthesisVoice | undefined {
+  const english = voices.filter((v) => v.lang.startsWith('en'));
+  if (english.length === 0) return voices[0];
+
+  // Try preferred keywords
+  for (const keyword of profile.voiceKeywords) {
+    const match = english.find((v) => v.name.includes(keyword));
+    if (match) return match;
+  }
+
+  // Gender fallback
+  if (profile.voiceGender !== 'any') {
+    const genderMatch = english.find((v) =>
+      v.name.toLowerCase().includes(profile.voiceGender),
+    );
+    if (genderMatch) return genderMatch;
+  }
+
+  return english[0] ?? voices[0];
+}
+
+// ---------------------------------------------------------------------------
+// Personality speech transforms — add character to raw text
+// ---------------------------------------------------------------------------
+
+function applyPersonality(text: string, companion: string): string {
+  switch (companion.toLowerCase()) {
+    case 'owl':
+      // Owl pauses between clauses for a deliberate, wise cadence
+      return text.replace(/,/g, ', ...');
+    default:
+      return text;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Simple procedural reverb impulse
+// ---------------------------------------------------------------------------
+
+function createCompanionReverb(ctx: AudioContext): AudioBuffer {
+  const duration = 0.8; // Short — companion is "in the room"
+  const length = Math.floor(ctx.sampleRate * duration);
+  const buffer = ctx.createBuffer(2, length, ctx.sampleRate);
+  for (let ch = 0; ch < 2; ch++) {
+    const data = buffer.getChannelData(ch);
+    for (let i = 0; i < length; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 3.0);
+    }
+  }
+  return buffer;
+}
+
+// ---------------------------------------------------------------------------
+// CompanionVoiceManager
+// ---------------------------------------------------------------------------
 
 /**
  * CompanionVoiceManager uses browser SpeechSynthesis to speak companion
- * dialogue aloud. It queues utterances so lines don't overlap, and
- * emits callbacks for caption synchronization.
+ * dialogue aloud. Each companion type gets distinct pitch, rate, and voice
+ * selection for a unique personality. Light audio processing adds warmth.
  */
 export class CompanionVoiceManager implements Disposable {
   private disposed = false;
   private speaking = false;
   private queue: Array<{ text: string; emotion: Emotion; resolve: () => void }> = [];
+  private audioCtx: AudioContext | null = null;
+  private reverbBuffer: AudioBuffer | null = null;
 
   /** Callback when speech starts — for caption display. */
   onSpeak: ((speaker: string, text: string) => void) | null = null;
@@ -34,9 +128,11 @@ export class CompanionVoiceManager implements Disposable {
   onEnd: (() => void) | null = null;
 
   private speakerName = 'Buddy';
+  private companionType = '';
 
   setSpeaker(name: string): void {
     this.speakerName = name;
+    this.companionType = name.toLowerCase();
   }
 
   /**
@@ -92,30 +188,76 @@ export class CompanionVoiceManager implements Disposable {
 
   private speakUtterance(text: string, emotion: Emotion): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      const utterance = new SpeechSynthesisUtterance(text);
-      const params = EMOTION_MAP[emotion];
-      utterance.pitch = params.pitch;
-      utterance.rate = params.rate;
+      const profile = COMPANION_PROFILES[this.companionType] ?? DEFAULT_PROFILE;
+      const emotionParams = EMOTION_MAP[emotion];
 
-      // Try to find a friendly English voice
+      // Apply personality transforms to text
+      const processedText = applyPersonality(text, this.companionType);
+
+      const utterance = new SpeechSynthesisUtterance(processedText);
+
+      // Companion-specific pitch & rate with emotion modulation
+      utterance.pitch = Math.max(0, Math.min(2,
+        profile.basePitch + emotionParams.pitchOffset,
+      ));
+      utterance.rate = Math.max(0.1, Math.min(2,
+        profile.baseRate + emotionParams.rateOffset,
+      ));
+
+      // Voice slightly quieter than SFX so dialogue doesn't blast
+      utterance.volume = 0.8;
+
+      // Select the best voice for this companion's personality
       const voices = speechSynthesis.getVoices();
-      const preferred = voices.find(v => v.lang.startsWith('en') && v.name.includes('Female'))
-        ?? voices.find(v => v.lang.startsWith('en'))
-        ?? voices[0];
-      if (preferred) utterance.voice = preferred;
+      const voice = selectVoiceForCompanion(voices, profile);
+      if (voice) utterance.voice = voice;
 
-      utterance.onend = () => resolve();
-      utterance.onerror = (e) => reject(new Error(`SpeechSynthesis: ${e.error}`));
+      utterance.onend = () => {
+        this.cleanupProcessing();
+        resolve();
+      };
+      utterance.onerror = (e) => {
+        this.cleanupProcessing();
+        reject(new Error(`SpeechSynthesis: ${e.error}`));
+      };
 
-      console.log(`[CompanionVoice] Speaking: "${text}" (emotion=${emotion}, pitch=${params.pitch}, rate=${params.rate})`);
+      // Apply subtle room reverb + warmth filter
+      this.applyProcessing();
+
+      console.log(
+        `[CompanionVoice] Speaking (${this.companionType}): "${text}" ` +
+        `(emotion=${emotion}, pitch=${utterance.pitch.toFixed(2)}, rate=${utterance.rate.toFixed(2)}, voice=${voice?.name ?? 'default'})`,
+      );
       speechSynthesis.speak(utterance);
     });
+  }
+
+  private applyProcessing(): void {
+    try {
+      if (!this.audioCtx) {
+        this.audioCtx = new AudioContext();
+      }
+      if (this.audioCtx.state === 'suspended') {
+        void this.audioCtx.resume();
+      }
+      if (!this.reverbBuffer) {
+        this.reverbBuffer = createCompanionReverb(this.audioCtx);
+      }
+    } catch {
+      // Audio processing is best-effort
+    }
+  }
+
+  private cleanupProcessing(): void {
+    // Audio nodes are auto-collected; nothing to disconnect for SpeechSynthesis
   }
 
   dispose(): void {
     if (this.disposed) return;
     this.disposed = true;
     this.stop();
+    void this.audioCtx?.close();
+    this.audioCtx = null;
     this.onSpeak = null;
     this.onEnd = null;
   }

@@ -574,6 +574,148 @@
       opacity: 0.6;
       cursor: not-allowed;
     }
+
+    /* ------------------------------------------------------------------ */
+    /* Portal screen — the gateway experience                            */
+    /* ------------------------------------------------------------------ */
+    #portal-screen {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #0a0a14;
+      z-index: 40;
+      overflow: hidden;
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    #portal-screen.dissolving {
+      opacity: 0;
+      transform: scale(2);
+    }
+
+    #portal-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .portal-title {
+      position: relative;
+      z-index: 1;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      background: linear-gradient(135deg, var(--frost), var(--aurora));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
+      filter: drop-shadow(0 0 20px rgba(34, 211, 238, 0.4))
+              drop-shadow(0 0 40px rgba(167, 139, 250, 0.2));
+      margin-bottom: 0;
+      animation: portalTitleFade 2s ease-out forwards;
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+
+    @keyframes portalTitleFade {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .portal-prompt {
+      position: relative;
+      z-index: 1;
+      margin-top: 2rem;
+      padding: 0.75rem 2.5rem;
+      font-size: 1.125rem;
+      font-weight: 500;
+      font-family: 'Nunito', system-ui, sans-serif;
+      letter-spacing: 0.03em;
+      color: var(--frost);
+      background: transparent;
+      border: 1px solid rgba(34, 211, 238, 0.3);
+      border-radius: 2rem;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.8s ease, border-color 0.3s, background 0.3s;
+      min-width: 5rem;
+      min-height: 2.75rem;
+    }
+
+    .portal-prompt.visible {
+      opacity: 1;
+    }
+
+    .portal-prompt:hover,
+    .portal-prompt:focus-visible {
+      border-color: var(--frost);
+      background: rgba(34, 211, 238, 0.1);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Companion picker — 3D previews with descriptions                   */
+    /* ------------------------------------------------------------------ */
+    .companion-picker-group {
+      max-width: 100% !important;
+    }
+
+    .companion-picker-group .avatar-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      max-width: 36rem;
+      margin: 0.25rem auto 0;
+    }
+
+    .companion-picker-group .avatar-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      width: auto;
+      height: auto;
+      padding: 0.75rem 0.5rem;
+      min-height: 8rem;
+    }
+
+    .companion-preview-canvas {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .companion-name {
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: var(--text-on-warm);
+    }
+
+    .companion-desc {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.2;
+      max-width: 10rem;
+    }
+
+    .avatar-option.greeting {
+      border-color: var(--aurora);
+      background: rgba(167, 139, 250, 0.15);
+    }
+
+    @media (max-width: 480px) {
+      .companion-picker-group .avatar-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
   </style>
 </head>
 <body>
