@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { fbm, ridgedNoise } from './noise.js';
+import { fbm, ridgedNoise, noise2D } from './noise.js';
 import type { Disposable } from '../types.js';
 
 // ---------------------------------------------------------------------------
@@ -379,10 +379,15 @@ export const PATH_CONNECTIONS: PathConnection[] = [
 
 const COL_GRASS = new THREE.Color(0x5a8f3c);
 const COL_GRASS_DARK = new THREE.Color(0x3d6b2e);
+const COL_GRASS_BRIGHT = new THREE.Color(0x7cb850);
+const COL_GRASS_YELLOW = new THREE.Color(0xa8b43c);
 const COL_DIRT = new THREE.Color(0x8b7355);
 const COL_STONE = new THREE.Color(0x808080);
 const COL_SAND = new THREE.Color(0xd2b48c);
 const COL_ROCK = new THREE.Color(0x6b6b6b);
+const COL_FLOWER_PURPLE = new THREE.Color(0xa78bfa);
+const COL_FLOWER_YELLOW = new THREE.Color(0xf0c040);
+const COL_FLOWER_WHITE = new THREE.Color(0xdde8d0);
 
 // ---------------------------------------------------------------------------
 // OverworldTerrain — the living ground of the Nexus
@@ -393,11 +398,13 @@ const TERRAIN_SEGMENTS = 200;
 
 export class OverworldTerrain implements Disposable {
   readonly mesh: THREE.Mesh;
+  readonly decorations: THREE.Group;
   private readonly heights: Float32Array;
   private readonly size: number;
   private readonly segments: number;
   private geometry: THREE.PlaneGeometry;
   private material: THREE.MeshStandardMaterial;
+  private readonly decorationMeshes: THREE.Mesh[] = [];
 
   constructor(biomes: BiomeLocation[], pathConnections: PathConnection[]) {
     this.size = TERRAIN_SIZE;
@@ -426,6 +433,11 @@ export class OverworldTerrain implements Disposable {
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.receiveShadow = true;
     this.mesh.name = 'overworld-terrain';
+
+    // Scatter decorative objects (rocks, grass tufts, flowers, trees)
+    this.decorations = new THREE.Group();
+    this.decorations.name = 'terrain-decorations';
+    this.generateDecorations(biomes, pathConnections);
   }
 
   /** Get interpolated terrain height at any world position */
@@ -455,6 +467,10 @@ export class OverworldTerrain implements Disposable {
   dispose(): void {
     this.geometry.dispose();
     this.material.dispose();
+    for (const m of this.decorationMeshes) {
+      m.geometry.dispose();
+      if (m.material instanceof THREE.Material) m.material.dispose();
+    }
   }
 
   // -- Height generation ----------------------------------------------------
@@ -467,11 +483,20 @@ export class OverworldTerrain implements Disposable {
       const wx = positions.getX(i);
       const wz = positions.getZ(i);
 
-      // Base terrain from layered noise
-      let h = fbm(wx * 0.008, wz * 0.008, 5) * 10 - 2;
+      // Base terrain from layered noise — increased amplitude for real hills
+      let h = fbm(wx * 0.008, wz * 0.008, 5) * 14 - 3;
 
-      // Gentle rolling hills
-      h += fbm(wx * 0.025 + 100, wz * 0.025 + 100, 3) * 3;
+      // Rolling hills (medium frequency)
+      h += fbm(wx * 0.025 + 100, wz * 0.025 + 100, 3) * 5;
+
+      // Micro-detail bumps (high frequency, small amplitude)
+      h += fbm(wx * 0.06 + 50, wz * 0.06 + 50, 2) * 1.5;
+
+      // Occasional deeper valleys
+      const valleyNoise = fbm(wx * 0.012 + 200, wz * 0.012 + 200, 3);
+      if (valleyNoise < 0.35) {
+        h -= (0.35 - valleyNoise) * 12;
+      }
 
       // Mountain ridges at edges (decorative boundary)
       const edgeDist = Math.max(
@@ -480,7 +505,7 @@ export class OverworldTerrain implements Disposable {
       );
       if (edgeDist > 0.7) {
         const edgeFactor = (edgeDist - 0.7) / 0.3;
-        h += ridgedNoise(wx * 0.02, wz * 0.02, 3) * 20 * edgeFactor * edgeFactor;
+        h += ridgedNoise(wx * 0.02, wz * 0.02, 3) * 25 * edgeFactor * edgeFactor;
       }
 
       // Flatten near each biome and blend smoothly
@@ -538,9 +563,33 @@ export class OverworldTerrain implements Disposable {
       const wz = positions.getZ(i);
       const wy = positions.getY(i);
 
-      // Base color: grass with noise variation
+      // Base color: grass with noise variation — multiple frequencies for richness
       const grassT = fbm(wx * 0.05, wz * 0.05, 2);
+      const grassT2 = noise2D(wx * 0.12 + 30, wz * 0.12 + 30);
       const base = new THREE.Color().lerpColors(COL_GRASS, COL_GRASS_DARK, grassT);
+
+      // Bright grass patches on south-facing slopes and mid-elevations
+      if (grassT2 > 0.55 && wy > 0 && wy < 5) {
+        base.lerp(COL_GRASS_BRIGHT, (grassT2 - 0.55) * 2.2);
+      }
+
+      // Dry yellowed grass in valleys and flat areas
+      if (wy < 0.5 && grassT2 < 0.35) {
+        base.lerp(COL_GRASS_YELLOW, (0.35 - grassT2) * 1.5);
+      }
+
+      // Wildflower patches — small colored bursts
+      const flowerNoise = noise2D(wx * 0.3 + 77, wz * 0.3 + 77);
+      const flowerRegion = noise2D(wx * 0.04 + 150, wz * 0.04 + 150);
+      if (flowerRegion > 0.62 && wy > -0.5 && wy < 6) {
+        if (flowerNoise > 0.82) {
+          base.lerp(COL_FLOWER_PURPLE, 0.5);
+        } else if (flowerNoise > 0.74) {
+          base.lerp(COL_FLOWER_YELLOW, 0.45);
+        } else if (flowerNoise > 0.68) {
+          base.lerp(COL_FLOWER_WHITE, 0.35);
+        }
+      }
 
       // Height-based blending: rock on steep/high areas
       if (wy > 6) {
@@ -649,5 +698,209 @@ export class OverworldTerrain implements Disposable {
     let t = ((px - x1) * dx + (pz - z1) * dz) / lenSq;
     t = Math.max(0, Math.min(1, t));
     return this.distToPoint(px, pz, x1 + t * dx, z1 + t * dz);
+  }
+
+  // -- Decoration generation ------------------------------------------------
+
+  /** Check if a point is too close to any biome center or town square */
+  private isNearBiome(x: number, z: number, biomes: BiomeLocation[], margin: number): boolean {
+    // Town square
+    if (Math.sqrt(x * x + z * z) < 22) return true;
+    for (const b of biomes) {
+      const dx = x - b.worldPosition.x;
+      const dz = z - b.worldPosition.z;
+      if (Math.sqrt(dx * dx + dz * dz) < b.flatRadius + margin) return true;
+    }
+    return false;
+  }
+
+  /** Check if a point is on a path */
+  private isOnPath(
+    x: number, z: number,
+    biomes: BiomeLocation[],
+    connections: PathConnection[],
+    width: number,
+  ): boolean {
+    const segs = this.buildPathSegments(biomes, connections);
+    for (const seg of segs) {
+      if (this.distToSegment(x, z, seg.x1, seg.z1, seg.x2, seg.z2) < width) return true;
+    }
+    return false;
+  }
+
+  private generateDecorations(biomes: BiomeLocation[], paths: PathConnection[]): void {
+
+    // --- Rocks (InstancedMesh for performance) ---
+    const rockGeo = new THREE.DodecahedronGeometry(0.4, 0);
+    const rockMat = new THREE.MeshStandardMaterial({ color: 0x7a7a72, roughness: 0.95 });
+    const rockCount = 400;
+    const rockMesh = new THREE.InstancedMesh(rockGeo, rockMat, rockCount);
+    rockMesh.name = 'deco-rocks';
+
+    const dummy = new THREE.Object3D();
+    let rockIdx = 0;
+    for (let attempt = 0; attempt < rockCount * 3 && rockIdx < rockCount; attempt++) {
+      const x = (noise2D(attempt * 0.73, 0.1) - 0.5) * this.size * 0.9;
+      const z = (noise2D(0.2, attempt * 0.73) - 0.5) * this.size * 0.9;
+      if (this.isNearBiome(x, z, biomes, 4)) continue;
+      if (this.isOnPath(x, z, biomes, paths, 3.5)) continue;
+      const y = this.getHeightAt(x, z);
+      if (y < -1.5 || y > 12) continue;
+
+      const scale = 0.3 + noise2D(attempt * 1.1, attempt * 0.7) * 0.8;
+      dummy.position.set(x, y - 0.1, z);
+      dummy.rotation.set(
+        noise2D(attempt * 0.5, 0.3) * 0.4,
+        noise2D(0.3, attempt * 0.5) * Math.PI * 2,
+        noise2D(attempt * 0.9, 0.7) * 0.3,
+      );
+      dummy.scale.set(scale, scale * 0.6, scale);
+      dummy.updateMatrix();
+
+      // Slight color variation per instance
+      const shade = 0.7 + noise2D(attempt * 0.31, attempt * 0.61) * 0.3;
+      rockMesh.setMatrixAt(rockIdx, dummy.matrix);
+      rockMesh.setColorAt(rockIdx, new THREE.Color(shade * 0.48, shade * 0.47, shade * 0.43));
+      rockIdx++;
+    }
+    rockMesh.count = rockIdx;
+    rockMesh.instanceMatrix.needsUpdate = true;
+    if (rockMesh.instanceColor) rockMesh.instanceColor.needsUpdate = true;
+    this.decorations.add(rockMesh);
+    this.decorationMeshes.push(rockMesh);
+
+    // --- Grass tufts (small green vertical quads) ---
+    const grassGeo = new THREE.ConeGeometry(0.15, 0.5, 4);
+    const grassMat = new THREE.MeshStandardMaterial({ color: 0x5a9f3c, roughness: 0.9 });
+    const grassCount = 800;
+    const grassMesh = new THREE.InstancedMesh(grassGeo, grassMat, grassCount);
+    grassMesh.name = 'deco-grass';
+
+    let grassIdx = 0;
+    for (let attempt = 0; attempt < grassCount * 2 && grassIdx < grassCount; attempt++) {
+      const x = (noise2D(attempt * 0.37 + 5, 0.9) - 0.5) * this.size * 0.85;
+      const z = (noise2D(0.8, attempt * 0.37 + 5) - 0.5) * this.size * 0.85;
+      if (this.isNearBiome(x, z, biomes, 2)) continue;
+      const y = this.getHeightAt(x, z);
+      if (y < -1 || y > 10) continue;
+
+      const scale = 0.5 + noise2D(attempt * 0.8, attempt * 0.2) * 1.0;
+      dummy.position.set(x, y + 0.15, z);
+      dummy.rotation.set(0, noise2D(attempt * 0.4, 0.6) * Math.PI * 2, 0);
+      dummy.scale.set(scale, scale, scale);
+      dummy.updateMatrix();
+
+      const g = 0.35 + noise2D(attempt * 0.22, attempt * 0.44) * 0.25;
+      grassMesh.setMatrixAt(grassIdx, dummy.matrix);
+      grassMesh.setColorAt(grassIdx, new THREE.Color(0.25, g, 0.18));
+      grassIdx++;
+    }
+    grassMesh.count = grassIdx;
+    grassMesh.instanceMatrix.needsUpdate = true;
+    if (grassMesh.instanceColor) grassMesh.instanceColor.needsUpdate = true;
+    this.decorations.add(grassMesh);
+    this.decorationMeshes.push(grassMesh);
+
+    // --- Flowers (tiny colored spheres) ---
+    const flowerGeo = new THREE.SphereGeometry(0.1, 4, 3);
+    const flowerMat = new THREE.MeshStandardMaterial({ roughness: 0.7 });
+    const flowerCount = 500;
+    const flowerMesh = new THREE.InstancedMesh(flowerGeo, flowerMat, flowerCount);
+    flowerMesh.name = 'deco-flowers';
+
+    const flowerColors = [
+      new THREE.Color(0xa78bfa), // Aurora purple
+      new THREE.Color(0xf0c040), // Yellow
+      new THREE.Color(0xe87090), // Pink
+      new THREE.Color(0x60b0f0), // Blue
+      new THREE.Color(0xffffff), // White
+    ];
+
+    let flowerIdx = 0;
+    for (let attempt = 0; attempt < flowerCount * 3 && flowerIdx < flowerCount; attempt++) {
+      const x = (noise2D(attempt * 0.51 + 10, 0.3) - 0.5) * this.size * 0.8;
+      const z = (noise2D(0.4, attempt * 0.51 + 10) - 0.5) * this.size * 0.8;
+      // Flowers cluster in patches
+      const patchNoise = noise2D(x * 0.04 + 150, z * 0.04 + 150);
+      if (patchNoise < 0.55) continue;
+      if (this.isNearBiome(x, z, biomes, 2)) continue;
+      const y = this.getHeightAt(x, z);
+      if (y < -0.5 || y > 8) continue;
+
+      dummy.position.set(x, y + 0.2, z);
+      dummy.rotation.set(0, 0, 0);
+      const s = 0.6 + noise2D(attempt * 0.6, attempt * 0.3) * 0.6;
+      dummy.scale.set(s, s, s);
+      dummy.updateMatrix();
+
+      const colorIdx = Math.floor(noise2D(attempt * 0.99, attempt * 0.11) * flowerColors.length);
+      flowerMesh.setMatrixAt(flowerIdx, dummy.matrix);
+      flowerMesh.setColorAt(flowerIdx, flowerColors[colorIdx]!);
+      flowerIdx++;
+    }
+    flowerMesh.count = flowerIdx;
+    flowerMesh.instanceMatrix.needsUpdate = true;
+    if (flowerMesh.instanceColor) flowerMesh.instanceColor.needsUpdate = true;
+    this.decorations.add(flowerMesh);
+    this.decorationMeshes.push(flowerMesh);
+
+    // --- Trees (between biomes, along paths) ---
+    const trunkGeo = new THREE.CylinderGeometry(0.15, 0.25, 2.5, 5);
+    const trunkMat = new THREE.MeshStandardMaterial({ color: 0x6b4226, roughness: 0.95 });
+    const canopyGeo = new THREE.SphereGeometry(1.5, 6, 5);
+    const canopyMat = new THREE.MeshStandardMaterial({ color: 0x3d7a2e, roughness: 0.85 });
+
+    const treeCount = 250;
+    const trunkMesh = new THREE.InstancedMesh(trunkGeo, trunkMat, treeCount);
+    trunkMesh.name = 'deco-tree-trunks';
+    const canopyMesh = new THREE.InstancedMesh(canopyGeo, canopyMat, treeCount);
+    canopyMesh.name = 'deco-tree-canopies';
+
+    let treeIdx = 0;
+    for (let attempt = 0; attempt < treeCount * 4 && treeIdx < treeCount; attempt++) {
+      const x = (noise2D(attempt * 0.43 + 20, 0.7) - 0.5) * this.size * 0.85;
+      const z = (noise2D(0.6, attempt * 0.43 + 20) - 0.5) * this.size * 0.85;
+
+      // Trees cluster in groves
+      const groveNoise = noise2D(x * 0.03 + 300, z * 0.03 + 300);
+      if (groveNoise < 0.4) continue;
+
+      if (this.isNearBiome(x, z, biomes, 5)) continue;
+      if (this.isOnPath(x, z, biomes, paths, 3)) continue;
+      const y = this.getHeightAt(x, z);
+      if (y < -0.5 || y > 10) continue;
+
+      const treeScale = 0.7 + noise2D(attempt * 0.88, attempt * 0.33) * 0.8;
+      const trunkHeight = 2.5 * treeScale;
+
+      // Trunk
+      dummy.position.set(x, y + trunkHeight * 0.5, z);
+      dummy.rotation.set(0, noise2D(attempt * 0.15, 0.85) * Math.PI * 2, 0);
+      dummy.scale.set(treeScale, treeScale, treeScale);
+      dummy.updateMatrix();
+      trunkMesh.setMatrixAt(treeIdx, dummy.matrix);
+
+      // Canopy (above trunk)
+      dummy.position.set(x, y + trunkHeight + 0.8 * treeScale, z);
+      const canopyScale = treeScale * (0.8 + noise2D(attempt * 0.6, attempt * 0.9) * 0.5);
+      dummy.scale.set(canopyScale, canopyScale * 0.75, canopyScale);
+      dummy.updateMatrix();
+      canopyMesh.setMatrixAt(treeIdx, dummy.matrix);
+
+      // Vary canopy color
+      const gv = 0.22 + noise2D(attempt * 0.44, attempt * 0.77) * 0.2;
+      canopyMesh.setColorAt(treeIdx, new THREE.Color(0.15, gv, 0.12));
+
+      treeIdx++;
+    }
+    trunkMesh.count = treeIdx;
+    canopyMesh.count = treeIdx;
+    trunkMesh.instanceMatrix.needsUpdate = true;
+    canopyMesh.instanceMatrix.needsUpdate = true;
+    if (canopyMesh.instanceColor) canopyMesh.instanceColor.needsUpdate = true;
+    this.decorations.add(trunkMesh);
+    this.decorations.add(canopyMesh);
+    this.decorationMeshes.push(trunkMesh);
+    this.decorationMeshes.push(canopyMesh);
   }
 }

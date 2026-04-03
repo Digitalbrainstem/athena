@@ -8,18 +8,18 @@
     {
       "name": "Profile creation",
       "pass": true,
-      "timestamp": "2026-04-03T12:26:21.407Z",
-      "profileId": "zgkj54giupc7htiq"
+      "timestamp": "2026-04-03T22:36:56.020Z",
+      "profileId": "56ccjrbpkm729qku"
     },
     {
       "name": "Game loop running",
       "pass": true,
-      "timestamp": "2026-04-03T12:26:21.541Z"
+      "timestamp": "2026-04-03T22:36:56.188Z"
     },
     {
       "name": "Interaction prompt appears near objects",
       "pass": true,
-      "timestamp": "2026-04-03T12:26:28.157Z",
+      "timestamp": "2026-04-03T22:37:02.339Z",
       "promptText": "Press E to examine the Anvil",
       "highlightInfo": {
         "total": 5,
@@ -38,23 +38,23 @@
     {
       "name": "E key opens companion dialogue",
       "pass": true,
-      "timestamp": "2026-04-03T12:26:35.208Z",
-      "dialogueText": "Buddy: anvil! This looks really interesting. Want to take a closer look?"
+      "timestamp": "2026-04-03T22:37:10.613Z",
+      "dialogueText": "Buddy: I bet anvil has a story to tell. Let's find out!"
     },
     {
       "name": "Companion system initialized",
       "pass": true,
-      "timestamp": "2026-04-03T12:26:37.434Z",
+      "timestamp": "2026-04-03T22:37:13.126Z",
       "uiState": {
         "dialogueActive": true,
-        "dialogueText": "anvil! This looks really interesting. Want to take a closer look?",
+        "dialogueText": "I bet anvil has a story to tell. Let's find out!",
         "dialogueSpeaker": "Buddy"
       }
     },
     {
       "name": "HUD elements exist (crosshair, prompt, dialogue)",
       "pass": true,
-      "timestamp": "2026-04-03T12:26:37.698Z",
+      "timestamp": "2026-04-03T22:37:13.365Z",
       "hudElements": {
         "crosshair": true,
         "prompt": true,
@@ -66,7 +66,7 @@
     {
       "name": "Interactable objects reachable from spawn",
       "pass": true,
-      "timestamp": "2026-04-03T12:26:51.377Z",
+      "timestamp": "2026-04-03T22:37:27.898Z",
       "interactablesFound": 1
     }
   ],

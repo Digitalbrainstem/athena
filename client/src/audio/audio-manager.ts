@@ -91,7 +91,7 @@ export class AudioManager implements Disposable {
 
     // --- Ambient bus with reverb ---
     this.ambientBus = ctx.createGain();
-    this.ambientBus.gain.value = 0.45;
+    this.ambientBus.gain.value = 0.05;
 
     this.ambientDryGain = ctx.createGain();
     this.ambientDryGain.gain.value = 0.7;

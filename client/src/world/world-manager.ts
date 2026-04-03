@@ -132,6 +132,7 @@ export class WorldManager implements Disposable {
     // Terrain
     this.terrain = new OverworldTerrain(BIOME_LOCATIONS, PATH_CONNECTIONS);
     this.overworldGroup.add(this.terrain.mesh);
+    this.overworldGroup.add(this.terrain.decorations);
 
     // Landmarks
     this.landmarks = new LandmarkManager(BIOME_LOCATIONS);

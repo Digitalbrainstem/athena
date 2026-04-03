@@ -156,12 +156,12 @@ export class GameLoop implements Disposable {
 
     const sceneGraph: SceneGraph = this.core.getSceneGraph();
 
-    // Update collision boxes for the camera from scene objects
-    this.fpCam.updateCollisionBoxes(sceneGraph.objects);
-
-    // Add interior wall collision boxes when inside a building
-    if (this.worldManager) {
+    // Update collision boxes — only inside buildings (overworld has no invisible walls)
+    if (this.worldManager && !this.worldManager.isOverworld()) {
+      this.fpCam.updateCollisionBoxes(sceneGraph.objects);
       this.fpCam.addExtraCollisionBoxes(this.worldManager.getExtraCollisionBoxes());
+    } else {
+      this.fpCam.updateCollisionBoxes([]);
     }
 
     // Override scene graph camera with client-authoritative position & rotation

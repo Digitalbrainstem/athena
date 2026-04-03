@@ -8,56 +8,56 @@
     {
       "name": "Profile creation",
       "pass": true,
-      "timestamp": "2026-04-03T12:25:39.358Z",
-      "profileId": "3eoiqagor6u6zfxt"
+      "timestamp": "2026-04-03T22:36:12.705Z",
+      "profileId": "fh0ze9b4t38wh10f"
     },
     {
       "name": "Game loop running",
       "pass": true,
-      "timestamp": "2026-04-03T12:25:39.519Z"
+      "timestamp": "2026-04-03T22:36:12.864Z"
     },
     {
       "name": "W key moves forward (Z decreases)",
       "pass": true,
-      "timestamp": "2026-04-03T12:25:44.903Z",
+      "timestamp": "2026-04-03T22:36:18.904Z",
       "startZ": 0,
       "endZ": -0.003703703703703704
     },
     {
       "name": "Friction stops movement within ~1s",
       "pass": true,
-      "timestamp": "2026-04-03T12:25:47.177Z"
+      "timestamp": "2026-04-03T22:36:21.014Z"
     },
     {
       "name": "S key moves backward (Z increases)",
       "pass": true,
-      "timestamp": "2026-04-03T12:25:49.300Z",
+      "timestamp": "2026-04-03T22:36:22.959Z",
       "startZ": -0.003703703703703704,
-      "endZ": 0
+      "endZ": 0.003703703703703704
     },
     {
       "name": "A key strafes left (X changes)",
       "pass": true,
-      "timestamp": "2026-04-03T12:25:51.841Z",
+      "timestamp": "2026-04-03T22:36:25.268Z",
       "startX": 0,
-      "endX": -0.007407407407407408
+      "endX": -0.003703703703703704
     },
     {
       "name": "D key strafes right (X changes)",
       "pass": true,
-      "timestamp": "2026-04-03T12:25:54.488Z",
-      "startX": -0.007407407407407408,
+      "timestamp": "2026-04-03T22:36:27.966Z",
+      "startX": -0.003703703703703704,
       "endX": 0
     },
     {
       "name": "Speed does not exceed maximum",
       "pass": true,
-      "timestamp": "2026-04-03T12:25:58.249Z"
+      "timestamp": "2026-04-03T22:36:31.907Z"
     },
     {
       "name": "Collision bounds movement",
       "pass": true,
-      "timestamp": "2026-04-03T12:26:04.220Z"
+      "timestamp": "2026-04-03T22:36:38.082Z"
     }
   ],
   "consoleErrors": []

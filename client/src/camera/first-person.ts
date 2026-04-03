@@ -108,8 +108,8 @@ export class FirstPersonCamera implements Disposable {
       const nz = this.targetDz / len;
       const sinY = Math.sin(this.yaw);
       const cosY = Math.cos(this.yaw);
-      worldDx = nx * cosY - nz * sinY;
-      worldDz = nx * sinY + nz * cosY;
+      worldDx = nx * cosY + nz * sinY;
+      worldDz = -nx * sinY + nz * cosY;
     }
 
     if (worldDx !== 0 || worldDz !== 0) {

@@ -165,6 +165,10 @@ async function boot(): Promise<void> {
   disposables.push(worldManager);
   debug('world', 'WorldManager created — overworld terrain, landmarks, and paths loaded');
 
+  // Spawn player at town-square center, ground level
+  fpCam.seedPosition(0, 0);
+  core.setPlayerPosition(0, 0);
+
   // Offline support — announce network status changes to screen readers
   const offlineMgr = new OfflineManager((text) => {
     a11y.processAnnouncements([{ text, priority: 'polite', category: 'system' }]);
