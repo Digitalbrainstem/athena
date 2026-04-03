@@ -2,6 +2,11 @@ import type { AudioCue, Vec3 } from '../types.js';
 import type { Disposable } from '../types.js';
 import { SoundSynthesizer } from './synthesizer.js';
 import { hasSFX } from './sfx-library.js';
+import { BiomeAmbientGenerator } from './biome-ambient-generator.js';
+import { ProceduralMusic } from './procedural-music.js';
+import { FootstepManager } from './footsteps.js';
+import { generateImpulseResponse, getReverbForBiome, getReverbConfig } from './reverb-presets.js';
+import type { ReverbPreset } from './reverb-presets.js';
 
 const FADE_DURATION_MS = 1000;
 
@@ -11,6 +16,25 @@ export class AudioManager implements Disposable {
   private readonly activeSources = new Map<string, { source: AudioBufferSourceNode; gain: GainNode }>();
   private readonly audioCache = new Map<string, AudioBuffer>();
   private disposed = false;
+
+  // --- Atmosphere subsystems ---
+  private ambientGenerator: BiomeAmbientGenerator | null = null;
+  private musicGen: ProceduralMusic | null = null;
+  private footstepMgr: FootstepManager | null = null;
+
+  // --- Audio routing ---
+  private sfxBus: GainNode | null = null;
+  private ambientDryGain: GainNode | null = null;
+  private ambientWetGain: GainNode | null = null;
+  private convolver: ConvolverNode | null = null;
+  private ambientBus: GainNode | null = null;
+  private musicBus: GainNode | null = null;
+  private footstepBus: GainNode | null = null;
+
+  // --- State ---
+  private currentBiomeId: string | null = null;
+  private currentReverbPreset: ReverbPreset | null = null;
+  private readonly irCache = new Map<ReverbPreset, AudioBuffer>();
 
   /**
    * Inject a pre-created AudioContext (created on user gesture).
@@ -23,6 +47,7 @@ export class AudioManager implements Disposable {
     }
     this.synthesizer = null;
     this.audioCache.clear();
+    this.initAtmosphere(context);
     console.log(`[Audio] AudioContext set — state: ${this.ctx.state}, sampleRate: ${this.ctx.sampleRate}`);
   }
 
@@ -54,11 +79,135 @@ export class AudioManager implements Disposable {
     return this.ensureSynthesizer();
   }
 
+  // -----------------------------------------------------------------------
+  // Atmosphere initialization
+  // -----------------------------------------------------------------------
+
+  private initAtmosphere(ctx: AudioContext): void {
+    // --- SFX bus (direct to destination) ---
+    this.sfxBus = ctx.createGain();
+    this.sfxBus.gain.value = 0.8;
+    this.sfxBus.connect(ctx.destination);
+
+    // --- Ambient bus with reverb ---
+    this.ambientBus = ctx.createGain();
+    this.ambientBus.gain.value = 0.45;
+
+    this.ambientDryGain = ctx.createGain();
+    this.ambientDryGain.gain.value = 0.7;
+
+    this.ambientWetGain = ctx.createGain();
+    this.ambientWetGain.gain.value = 0.3;
+
+    this.convolver = ctx.createConvolver();
+
+    this.ambientBus.connect(this.ambientDryGain);
+    this.ambientBus.connect(this.convolver);
+    this.convolver.connect(this.ambientWetGain);
+    this.ambientDryGain.connect(ctx.destination);
+    this.ambientWetGain.connect(ctx.destination);
+
+    // Initialize convolver with outdoor IR
+    this.setReverbPreset('outdoor');
+
+    // --- Music bus (direct to destination, no reverb) ---
+    this.musicBus = ctx.createGain();
+    this.musicBus.gain.value = 0.35;
+    this.musicBus.connect(ctx.destination);
+
+    // --- Footstep bus (through shared reverb) ---
+    this.footstepBus = ctx.createGain();
+    this.footstepBus.gain.value = 0.6;
+    this.footstepBus.connect(ctx.destination);
+    this.footstepBus.connect(this.convolver);
+
+    // --- Create subsystems ---
+    this.ambientGenerator = new BiomeAmbientGenerator(ctx, this.ambientBus);
+    this.musicGen = new ProceduralMusic(ctx, this.musicBus);
+    this.footstepMgr = new FootstepManager(ctx, this.footstepBus, this.ensureSynthesizer());
+
+    console.log('[Audio] Atmosphere subsystems initialized');
+  }
+
+  // -----------------------------------------------------------------------
+  // Public atmosphere API
+  // -----------------------------------------------------------------------
+
+  /**
+   * Start the full atmosphere for a biome (ambient + music + reverb).
+   * Called from main.ts on first load and from intercepted audio cues.
+   */
+  startAtmosphere(biomeId: string): void {
+    if (this.disposed || biomeId === this.currentBiomeId) return;
+    this.currentBiomeId = biomeId;
+
+    console.log(`[Audio] Starting atmosphere for biome: ${biomeId}`);
+
+    // Switch ambient soundscape
+    this.ambientGenerator?.startBiome(biomeId);
+
+    // Switch music
+    this.musicGen?.startBiome(biomeId);
+
+    // Update reverb
+    const preset = getReverbForBiome(biomeId);
+    this.setReverbPreset(preset);
+  }
+
+  /**
+   * Tick footstep system — call from game loop each frame.
+   * @param dt Frame delta in seconds
+   * @param speed Player speed in units/s
+   * @param groundType Ground type string (e.g. 'wood', 'grass', 'stone')
+   */
+  tickMovement(dt: number, speed: number, groundType: string): void {
+    this.footstepMgr?.tick(dt, speed, groundType);
+  }
+
+  /** Get the current biome ID the atmosphere is playing for. */
+  getCurrentBiome(): string | null {
+    return this.currentBiomeId;
+  }
+
+  // -----------------------------------------------------------------------
+  // Reverb management
+  // -----------------------------------------------------------------------
+
+  private setReverbPreset(preset: ReverbPreset): void {
+    if (!this.ctx || !this.convolver || preset === this.currentReverbPreset) return;
+
+    let ir = this.irCache.get(preset);
+    if (!ir) {
+      ir = generateImpulseResponse(this.ctx, preset);
+      this.irCache.set(preset, ir);
+    }
+
+    this.convolver.buffer = ir;
+    this.currentReverbPreset = preset;
+
+    // Adjust wet/dry balance from preset config
+    const cfg = getReverbConfig(preset);
+    if (this.ambientDryGain && this.ambientWetGain) {
+      const t = this.ctx.currentTime + 0.5;
+      this.ambientDryGain.gain.linearRampToValueAtTime(1 - cfg.mix, t);
+      this.ambientWetGain.gain.linearRampToValueAtTime(cfg.mix, t);
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  // Audio cue processing
+  // -----------------------------------------------------------------------
+
   process(cues: AudioCue[]): void {
     if (this.disposed || cues.length === 0) return;
 
     for (const cue of cues) {
-      console.log(`[Audio] Processing cue: ${cue.action} "${cue.asset}" (type=${cue.type}, id=${cue.id})`);
+      // Intercept ambient cues → route to BiomeAmbientGenerator
+      if (cue.type === 'ambient') {
+        this.handleAmbientCue(cue);
+        continue;
+      }
+
       switch (cue.action) {
         case 'play': this.play(cue); break;
         case 'stop': this.stop(cue.id); break;
@@ -66,6 +215,14 @@ export class AudioManager implements Disposable {
         case 'fade_out': this.fadeOut(cue.id); break;
       }
     }
+  }
+
+  private handleAmbientCue(cue: AudioCue): void {
+    if (cue.action === 'fade_in' && cue.asset.endsWith('-ambient')) {
+      const biomeId = cue.asset.replace('-ambient', '');
+      this.startAtmosphere(biomeId);
+    }
+    // fade_out is handled by the crossfade in startAtmosphere
   }
 
   private play(cue: AudioCue): void {
@@ -90,12 +247,13 @@ export class AudioManager implements Disposable {
     if (cue.position) {
       this.connectSpatial(ctx, gain, cue.position);
     } else {
-      gain.connect(ctx.destination);
+      // Route SFX through the SFX bus (or direct to destination if not ready)
+      const dest = this.sfxBus ?? ctx.destination;
+      gain.connect(dest);
     }
 
     source.start(0);
     this.activeSources.set(cue.id, { source, gain });
-    console.log(`[Audio] Playing "${cue.asset}" → BufferSource(${(buffer.duration ?? 0).toFixed(2)}s, loop=${cue.loop}) → GainNode(${cue.volume}) → destination (ctx.state=${ctx.state})`);
 
     source.onended = () => {
       this.activeSources.delete(cue.id);
@@ -128,11 +286,11 @@ export class AudioManager implements Disposable {
     gain.gain.linearRampToValueAtTime(cue.volume, ctx.currentTime + FADE_DURATION_MS / 1000);
 
     source.connect(gain);
-    gain.connect(ctx.destination);
+    const dest = this.sfxBus ?? ctx.destination;
+    gain.connect(dest);
     source.start(0);
 
     this.activeSources.set(cue.id, { source, gain });
-    console.log(`[Audio] Fading in "${cue.asset}" → BufferSource(${(buffer.duration ?? 0).toFixed(2)}s, loop=${cue.loop}) → GainNode(0→${cue.volume}) → destination (ctx.state=${ctx.state})`);
     source.onended = () => { this.activeSources.delete(cue.id); };
   }
 
@@ -195,11 +353,20 @@ export class AudioManager implements Disposable {
     if (this.disposed) return;
     this.disposed = true;
 
+    // Stop atmosphere subsystems
+    this.ambientGenerator?.dispose();
+    this.ambientGenerator = null;
+    this.musicGen?.dispose();
+    this.musicGen = null;
+    this.footstepMgr?.dispose();
+    this.footstepMgr = null;
+
     for (const entry of this.activeSources.values()) {
       try { entry.source.stop(); } catch { /* already stopped */ }
     }
     this.activeSources.clear();
     this.audioCache.clear();
+    this.irCache.clear();
 
     if (this.synthesizer) {
       this.synthesizer.clearCache();

@@ -74,6 +74,7 @@ function mockSceneRenderer(): SceneRenderer {
 function mockAudioManager(): AudioManager {
   return {
     process: vi.fn(),
+    tickMovement: vi.fn(),
     dispose: vi.fn(),
   } as unknown as AudioManager;
 }

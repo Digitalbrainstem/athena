@@ -12,3 +12,8 @@ export type { SFXRecipe, SFXType, OscType } from './sfx-library.js';
 export { BIOME_SOUNDSCAPES, BIOME_COUNT, getBiomeSoundscape, getAllBiomeIds,
   getBiomeAmbientCaption, getBiomeMusicCaption } from './biome-soundscapes.js';
 export type { BiomeSoundscape, MusicLayer } from './biome-soundscapes.js';
+export { BiomeAmbientGenerator } from './biome-ambient-generator.js';
+export { ProceduralMusic } from './procedural-music.js';
+export { FootstepManager } from './footsteps.js';
+export { generateImpulseResponse, getReverbForBiome, getReverbConfig } from './reverb-presets.js';
+export type { ReverbPreset, ReverbConfig } from './reverb-presets.js';

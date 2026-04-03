@@ -207,6 +207,19 @@ async function boot(): Promise<void> {
   debug('input', 'InputManager ready');
   loop.start();
 
+  // --- Initialize biome atmosphere from pre-tick audio cues ---
+  // The first core.update() emits a fade_in for the starting biome's ambient,
+  // but that happens before the AudioManager exists. Extract the biome and
+  // start the atmosphere explicitly.
+  const initialBiomeCue = initialSG.audio.find(
+    (c) => c.type === 'ambient' && c.action === 'fade_in' && c.asset.endsWith('-ambient'),
+  );
+  const startingBiome = initialBiomeCue
+    ? initialBiomeCue.asset.replace('-ambient', '')
+    : 'workshop';
+  audioManager.startAtmosphere(startingBiome);
+  debug('audio', `Atmosphere started for biome: ${startingBiome}`);
+
   canvas.addEventListener('click', () => {
     if (!isMobile && !fpCam.isPointerLocked && loop.isRunning) fpCam.requestPointerLock(canvas);
     // Resume AudioContext on any click/tap (browser policy may suspend it)

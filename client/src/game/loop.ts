@@ -6,6 +6,7 @@ import type { SceneRenderer } from '../renderer/scene-renderer.js';
 import type { FirstPersonCamera } from '../camera/first-person.js';
 import type { AudioManager } from '../audio/audio-manager.js';
 import type { HUD } from '../ui/hud.js';
+import type { WorldManager } from '../world/world-manager.js';
 import { debug, debugSceneGraph } from '../debug.js';
 
 const DEFAULT_FIXED_DT = 1 / 60;
@@ -25,6 +26,11 @@ export class GameLoop implements Disposable {
   private positionSeeded = false;
   private mobile = false;
 
+  // --- Footstep movement tracking ---
+  private lastPosX = 0;
+  private lastPosZ = 0;
+  private positionTracked = false;
+
   private readonly fixedDt: number;
   private readonly core: NexusCore;
   private readonly inputManager: InputManager;
@@ -32,6 +38,7 @@ export class GameLoop implements Disposable {
   private readonly sceneRenderer: SceneRenderer;
   private readonly audioManager: AudioManager;
   private readonly hud: HUD;
+  private worldManager: WorldManager | null = null;
 
   constructor(
     core: NexusCore,
@@ -49,6 +56,12 @@ export class GameLoop implements Disposable {
     this.audioManager = audioManager;
     this.hud = hud;
     this.fixedDt = fixedDt;
+  }
+
+  /** Connect the WorldManager for overworld integration. */
+  setWorldManager(wm: WorldManager): void {
+    this.worldManager = wm;
+    this.fpCam.setHeightProvider((x, z) => wm.getHeightAt(x, z));
   }
 
   start(): void {
@@ -146,6 +159,11 @@ export class GameLoop implements Disposable {
     // Update collision boxes for the camera from scene objects
     this.fpCam.updateCollisionBoxes(sceneGraph.objects);
 
+    // Add interior wall collision boxes when inside a building
+    if (this.worldManager) {
+      this.fpCam.addExtraCollisionBoxes(this.worldManager.getExtraCollisionBoxes());
+    }
+
     // Override scene graph camera with client-authoritative position & rotation
     const rot = this.fpCam.getPredictiveRotation();
     const eye = this.fpCam.getEyePosition();
@@ -154,6 +172,18 @@ export class GameLoop implements Disposable {
       position: eye,
       rotation: { x: rot.pitch, y: rot.yaw, z: 0 },
     };
+
+    // Update WorldManager with player position
+    if (this.worldManager) {
+      this.worldManager.update(this.fpCam.posX, this.fpCam.posZ, frameDt);
+
+      // Override sky when in overworld
+      if (this.worldManager.isOverworld()) {
+        sceneGraph.sky = this.worldManager.getOverworldSky();
+        // Reduce fog density for overworld so landmarks are visible at distance
+        sceneGraph.sky.type = 'gradient';
+      }
+    }
 
     // Recompute highlights using the client-authoritative camera position.
     // The scene graph was built with the ECS player position which should
@@ -174,8 +204,37 @@ export class GameLoop implements Disposable {
     // Show / hide interaction prompts based on highlight state
     this.updateInteractionPrompt(highlighted);
 
+    // WorldManager biome proximity prompts
+    if (this.worldManager) {
+      if (this.worldManager.isOverworld()) {
+        const nearby = this.worldManager.nearbyBiome;
+        if (nearby && nearby.entranceDistance < 5) {
+          this.hud.showPrompt(`Press E to enter ${nearby.biome.name}`);
+        }
+      } else if (this.worldManager.isInside() && this.worldManager.isNearDoor) {
+        this.hud.showPrompt('Press E to exit');
+      }
+    }
+
     this.sceneRenderer.render(highlighted);
     this.audioManager.process(highlighted.audio);
+
+    // --- Footstep triggering based on movement ---
+    const groundType = highlighted.ground?.type ?? 'grass';
+    if (!this.positionTracked) {
+      this.lastPosX = eye.x;
+      this.lastPosZ = eye.z;
+      this.positionTracked = true;
+    } else {
+      const dx = eye.x - this.lastPosX;
+      const dz = eye.z - this.lastPosZ;
+      const dist = Math.sqrt(dx * dx + dz * dz);
+      const speed = frameDt > 0 ? dist / frameDt : 0;
+      this.lastPosX = eye.x;
+      this.lastPosZ = eye.z;
+      this.audioManager.tickMovement(frameDt, speed, groundType);
+    }
+
     this.hud.update(highlighted.ui);
     this.hud.processAnnouncements(highlighted.announcements);
     this.hud.processCaptions(highlighted.captions);
