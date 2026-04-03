@@ -269,19 +269,47 @@ export class WorldManager implements Disposable {
     this._mode = 'exiting';
 
     await this.transition.crossfade(() => {
-      // Remove interior
-      if (this._activeInterior) {
-        this.interiorGroup.remove(this._activeInterior.group);
-        this._activeInterior.dispose();
-        this._activeInterior = null;
-      }
-      this.scene.remove(this.interiorGroup);
-
-      // Show overworld
+      this.cleanupInterior();
       this.scene.add(this.overworldGroup);
       this._activeBiomeId = null;
       this._mode = 'overworld';
     });
+  }
+
+  /**
+   * Synchronously enter a biome (for testing / debug bridge).
+   * Skips the crossfade animation.
+   */
+  forceEnterBiome(biomeId: string): void {
+    const biome = getBiomeLocation(biomeId);
+    if (!biome) return;
+
+    // Clean up any existing interior
+    this.cleanupInterior();
+
+    // Hide overworld
+    this.scene.remove(this.overworldGroup);
+
+    // Create interior if it's a building type
+    if (hasBuildingInterior(biomeId)) {
+      this._activeInterior = new BuildingInterior(biome);
+      this.interiorGroup.add(this._activeInterior.group);
+    }
+
+    this.scene.add(this.interiorGroup);
+    this._activeBiomeId = biomeId;
+    this._mode = 'inside';
+  }
+
+  /**
+   * Synchronously exit to overworld (for testing / debug bridge).
+   */
+  forceExitBiome(): void {
+    this.cleanupInterior();
+    this.scene.remove(this.interiorGroup);
+    this.scene.add(this.overworldGroup);
+    this._activeBiomeId = null;
+    this._mode = 'overworld';
   }
 
   /** Get the position the player should be teleported to when entering a biome */
@@ -313,7 +341,7 @@ export class WorldManager implements Disposable {
     this.pathNetwork.dispose();
     this.skyDome.dispose();
     this.transition.dispose();
-    if (this._activeInterior) this._activeInterior.dispose();
+    this.cleanupInterior();
 
     this.scene.remove(this.overworldGroup);
     this.scene.remove(this.interiorGroup);
@@ -328,6 +356,14 @@ export class WorldManager implements Disposable {
   }
 
   // -- Private helpers ------------------------------------------------------
+
+  private cleanupInterior(): void {
+    if (this._activeInterior) {
+      this.interiorGroup.remove(this._activeInterior.group);
+      this._activeInterior.dispose();
+      this._activeInterior = null;
+    }
+  }
 
   private findNearestBiome(px: number, pz: number): NearbyBiome | null {
     let nearest: NearbyBiome | null = null;

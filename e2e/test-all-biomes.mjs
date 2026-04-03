@@ -69,7 +69,11 @@ async function run() {
     await page.waitForTimeout(500);
 
     // ─── Verify the starting biome (workshop) ─────────────────────────────
+    // In the connected overworld, player starts in the town square.
+    // Use the debug bridge to enter the workshop biome for verification.
     console.log('\n─── Verifying starting biome: workshop ───');
+    await page.evaluate(() => window.__nexus_debug?.changeBiome('workshop'));
+    await page.waitForTimeout(500);
     const workshopResult = await verifyBiome(page, 'workshop', SCREENSHOT_DIR);
     console.log(`  Objects: ${workshopResult.objects}`);
     console.log(`  Ground: ${workshopResult.groundColor}`);

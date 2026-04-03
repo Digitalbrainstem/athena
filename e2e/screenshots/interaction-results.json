@@ -1,15 +1,73 @@
 {
   "test": "interaction",
-  "passed": 0,
-  "failed": 1,
+  "passed": 7,
+  "failed": 0,
   "skipped": 0,
-  "total": 1,
+  "total": 7,
   "results": [
     {
-      "name": "Test execution",
-      "pass": false,
-      "timestamp": "2026-04-03T11:59:56.341Z",
-      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://192.168.2.10:3000/\nCall log:\n  - navigating to \"http://192.168.2.10:3000/\", waiting until \"domcontentloaded\"\n"
+      "name": "Profile creation",
+      "pass": true,
+      "timestamp": "2026-04-03T12:17:54.525Z",
+      "profileId": "2uky4afz9dka65kv"
+    },
+    {
+      "name": "Game loop running",
+      "pass": true,
+      "timestamp": "2026-04-03T12:17:54.680Z"
+    },
+    {
+      "name": "Interaction prompt appears near objects",
+      "pass": true,
+      "timestamp": "2026-04-03T12:18:00.370Z",
+      "promptText": "Press E to examine the Anvil",
+      "highlightInfo": {
+        "total": 5,
+        "highlighted": 1,
+        "interactable": 5,
+        "highlightedNames": [
+          "Interact with Anvil"
+        ],
+        "cameraPos": {
+          "x": -1,
+          "y": 1.6,
+          "z": 0
+        }
+      }
+    },
+    {
+      "name": "E key opens companion dialogue",
+      "pass": true,
+      "timestamp": "2026-04-03T12:18:06.227Z",
+      "dialogueText": "Buddy: Ooh, look at anvil! I wonder what it does?"
+    },
+    {
+      "name": "Companion system initialized",
+      "pass": true,
+      "timestamp": "2026-04-03T12:18:07.523Z",
+      "uiState": {
+        "dialogueActive": true,
+        "dialogueText": "Ooh, look at anvil! I wonder what it does?",
+        "dialogueSpeaker": "Buddy"
+      }
+    },
+    {
+      "name": "HUD elements exist (crosshair, prompt, dialogue)",
+      "pass": true,
+      "timestamp": "2026-04-03T12:18:07.760Z",
+      "hudElements": {
+        "crosshair": true,
+        "prompt": true,
+        "dialogue": true,
+        "fpsCounter": true,
+        "captionContainer": true
+      }
+    },
+    {
+      "name": "Interactable objects reachable from spawn",
+      "pass": true,
+      "timestamp": "2026-04-03T12:18:21.496Z",
+      "interactablesFound": 1
     }
   ],
   "consoleErrors": []

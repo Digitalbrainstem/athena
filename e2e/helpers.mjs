@@ -131,6 +131,17 @@ export async function waitForGameReady(page, timeoutMs = 30_000) {
 export async function createProfileAndEnter(page, name = 'TestPlayer', ageRange = '18+') {
   console.log(`  → Creating profile: name="${name}", age="${ageRange}"`);
 
+  // Handle the Portal Screen ("Step Inside" button) if present
+  const portalBtn = await page.waitForSelector('.portal-prompt', { timeout: 8_000 }).catch(() => null);
+  if (portalBtn) {
+    // The prompt may take ~2s to become visible (animation)
+    await page.waitForTimeout(2500);
+    await portalBtn.click({ force: true });
+    // Wait for portal dissolution animation (1.2s + buffer)
+    await page.waitForTimeout(2000);
+    console.log('  → Portal screen dismissed');
+  }
+
   // Wait for profile screen to appear (it shows on first visit with no profiles)
   const profileScreen = await page.waitForSelector('#profile-screen', { timeout: 15_000 }).catch(() => null);
 

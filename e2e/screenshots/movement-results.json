@@ -1,15 +1,63 @@
 {
   "test": "movement",
-  "passed": 0,
-  "failed": 1,
+  "passed": 9,
+  "failed": 0,
   "skipped": 0,
-  "total": 1,
+  "total": 9,
   "results": [
     {
-      "name": "Test execution",
-      "pass": false,
-      "timestamp": "2026-04-03T11:59:55.520Z",
-      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://192.168.2.10:3000/\nCall log:\n  - navigating to \"http://192.168.2.10:3000/\", waiting until \"domcontentloaded\"\n"
+      "name": "Profile creation",
+      "pass": true,
+      "timestamp": "2026-04-03T12:17:12.791Z",
+      "profileId": "60vfztaetuea5a3q"
+    },
+    {
+      "name": "Game loop running",
+      "pass": true,
+      "timestamp": "2026-04-03T12:17:12.935Z"
+    },
+    {
+      "name": "W key moves forward (Z decreases)",
+      "pass": true,
+      "timestamp": "2026-04-03T12:17:18.970Z",
+      "startZ": 0,
+      "endZ": -0.003703703703703704
+    },
+    {
+      "name": "Friction stops movement within ~1s",
+      "pass": true,
+      "timestamp": "2026-04-03T12:17:20.995Z"
+    },
+    {
+      "name": "S key moves backward (Z increases)",
+      "pass": true,
+      "timestamp": "2026-04-03T12:17:22.667Z",
+      "startZ": -0.003703703703703704,
+      "endZ": 0
+    },
+    {
+      "name": "A key strafes left (X changes)",
+      "pass": true,
+      "timestamp": "2026-04-03T12:17:25.484Z",
+      "startX": 0,
+      "endX": -0.007407407407407408
+    },
+    {
+      "name": "D key strafes right (X changes)",
+      "pass": true,
+      "timestamp": "2026-04-03T12:17:28.029Z",
+      "startX": -0.007407407407407408,
+      "endX": -0.003703703703703704
+    },
+    {
+      "name": "Speed does not exceed maximum",
+      "pass": true,
+      "timestamp": "2026-04-03T12:17:31.799Z"
+    },
+    {
+      "name": "Collision bounds movement",
+      "pass": true,
+      "timestamp": "2026-04-03T12:17:37.450Z"
     }
   ],
   "consoleErrors": []

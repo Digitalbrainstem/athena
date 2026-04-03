@@ -202,6 +202,8 @@ async function boot(): Promise<void> {
       changeBiome(biomeId: string) {
         core.worldSystem.discoverBiome(biomeId);
         core.worldSystem.changeBiome(biomeId);
+        // Also switch WorldManager to show the biome interior
+        worldManager.forceEnterBiome(biomeId);
         core.update(1 / 60, []);
       },
       get worldMode() { return worldManager.mode; },
