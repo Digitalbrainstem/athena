@@ -248,3 +248,24 @@ Total models needed: 1,093
 Estimated generation time: 3.5-5 hours
 Output: client/public/models/{category}/{model-name}.glb
 Game loads GLB via Three.js GLTFLoader — replacing procedural geometry.
+
+### Full Universe Scope (updated 2026-04-03)
+
+GROUND LAYER: 27 Earth biomes, connected overworld, town square hub
+SPACE LAYER: Solar system (moon, mars, gas giant, asteroids) + galaxy
+ALIEN WORLDS: 5 planets (Crystal, Ocean, Jungle, Desert, Ice)
+NEXUS CORE: Center of galaxy, endgame destination
+
+Content totals:
+- 1,903 3D model assets (TRELLIS 2 on 7900 XT)
+- 82,155 voice lines (Fish Audio on 4060)
+- 10,458 music tracks / 622 hours (DiffRhythm + HeartMuLa)
+- 13,600 NPC templates (modular: 400 parts → 13,600 unique characters)
+- 4,017 handcrafted quests
+- 11,400 skill nodes
+- 27 Earth biomes + 5 alien worlds + space stations + Nexus Core
+
+NPC system: modular character assembly
+- 30 body types × 50 faces × 100 hairstyles × 80 outfits × 40 accessories
+- 20-30 NPCs visible at once per biome, others cycle by time/season/quest
+- 5 alien species with unique designs per world
