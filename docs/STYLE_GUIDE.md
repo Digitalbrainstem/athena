@@ -52,18 +52,21 @@ As the portal opens, a voice speaks:
 > you. We're just going to help you find it."*
 
 **The Nexus Voice is:**
-- Androgynous / beyond gender — processed to feel more than human
-- Futuristic but warm — confident, knowing, not cold
-- Slight reverb + subtle harmonics — like it's coming from the world itself
-- NOT robotic, NOT monotone, NOT aggressive
+- Female, futuristic — think Cortana meets the ship's AI, but warmer
+- Confident, knowing, slightly mysterious — she knows more than she says
+- Slight reverb + subtle harmonics — like she's speaking from everywhere at once
+- NOT robotic, NOT monotone, NOT cold — there's warmth underneath the precision
+- She sounds like she CHOSE to welcome you, not like she was programmed to
 
 **The Nexus Voice speaks rarely (20 times in the entire game):**
-- First launch: Full welcome
-- Returning: *"Welcome back."*
+- First launch: Full welcome — *"Welcome to the Nexus. Everything you need to know is already inside you. We're just going to help you find it."*
+- Returning: *"Welcome back."* — warm, like she remembers you
 - After long absence: *"It's been a while. The Nexus has been waiting."*
 - Tier transitions: *"You've grown. The world grows with you."*
 - Major discoveries: *"You're beginning to see."*
+- First Founder fragment: *"Someone left this for you. A long time ago."*
 - Nexus Core arrival: *"You made it. You always could."*
+- Hidden room discovery: *silence* — she has nothing to say. The journal speaks for itself.
 
 The companion is personal (your friend). The Nexus Voice is cosmic (the
 world itself). Two different relationships.
