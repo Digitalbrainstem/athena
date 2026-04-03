@@ -3,6 +3,7 @@ import { SceneRenderer } from './renderer/scene-renderer.js';
 import { GameLoop } from './game/loop.js';
 import { InputManager } from './input/manager.js';
 import { KeyboardInput } from './input/keyboard.js';
+import { debug, debugSceneGraph, debugError } from './debug.js';
 import { TouchInput } from './input/touch.js';
 import { FirstPersonCamera } from './camera/first-person.js';
 import { AudioManager } from './audio/audio-manager.js';
@@ -28,6 +29,7 @@ async function boot(): Promise<void> {
   disposables.push(a11y);
 
   const core = await NexusCore.create({ debug: DEBUG, sqliteWasmUrl: '/sql-wasm.wasm' });
+  debug('core', 'NexusCore created');
   disposables.push({ dispose: () => { void core.destroy(); } });
 
   // --- Profile selection / creation ---
@@ -53,6 +55,12 @@ async function boot(): Promise<void> {
 
   // Load the selected profile into the engine
   await core.loadProfile(profileId);
+  debug('core', 'Profile loaded:', profileId);
+
+  // Log initial scene graph
+  const initialSG = core.getSceneGraph();
+  debug('scene', 'Initial scene graph after profile load:');
+  debugSceneGraph(initialSG);
 
   // Queue a companion greeting for first entry
   const companionState = core.getCompanionState();
@@ -116,6 +124,11 @@ async function boot(): Promise<void> {
   });
 
   // Start the game loop immediately after profile selection
+  debug('core', 'Starting game loop...');
+  debug('render', 'SceneRenderer:', sceneRenderer ? 'initialized' : 'NULL');
+  debug('render', 'AssetManager:', assetManager ? 'initialized' : 'NULL');
+  debug('camera', 'FirstPersonCamera:', fpCam ? 'initialized' : 'NULL');
+  debug('input', 'InputManager providers:', input.providerCount ?? 'unknown');
   loop.start();
 
   canvas.addEventListener('click', () => {

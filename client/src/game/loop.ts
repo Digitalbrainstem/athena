@@ -5,6 +5,7 @@ import type { SceneRenderer } from '../renderer/scene-renderer.js';
 import type { FirstPersonCamera } from '../camera/first-person.js';
 import type { AudioManager } from '../audio/audio-manager.js';
 import type { HUD } from '../ui/hud.js';
+import { debug, debugSceneGraph } from '../debug.js';
 
 const DEFAULT_FIXED_DT = 1 / 60;
 const MAX_FRAME_TIME = 0.25;
@@ -119,6 +120,15 @@ export class GameLoop implements Disposable {
     if (steps >= MAX_STEPS_PER_FRAME) this.accumulator = 0;
 
     const sceneGraph: SceneGraph = this.core.getSceneGraph();
+
+    // Debug: log scene graph on first frame
+    if (this.frameCount === 1) {
+      debug('scene', 'First frame scene graph:');
+      debugSceneGraph(sceneGraph);
+      debug('render', 'Ground:', sceneGraph.ground);
+      debug('render', 'Sky:', sceneGraph.sky);
+      debug('camera', 'Camera:', sceneGraph.camera);
+    }
 
     // Show / hide interaction prompts based on highlight state
     this.updateInteractionPrompt(sceneGraph);
