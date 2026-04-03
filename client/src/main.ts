@@ -8,6 +8,7 @@ import { initDebugBridge } from './debug-bridge.js';
 import { TouchInput } from './input/touch.js';
 import { FirstPersonCamera } from './camera/first-person.js';
 import { AudioManager } from './audio/audio-manager.js';
+import { CompanionVoiceManager } from './audio/companion-voice.js';
 import { HUD } from './ui/hud.js';
 import { ProfileScreen } from './ui/profile-screen.js';
 import { AccessibilityManager } from './a11y/accessibility-manager.js';
@@ -63,6 +64,14 @@ async function boot(): Promise<void> {
   core.update(1 / 60, []);
   debug('core', 'Profile loaded + first tick:', profileId);
 
+  // --- AudioContext — MUST be created during or after a user gesture ---
+  // Profile selection is a click event, so the browser will allow audio.
+  const audioCtx = new AudioContext();
+  debug('audio', `AudioContext created — state: ${audioCtx.state}, sampleRate: ${audioCtx.sampleRate}`);
+  if (audioCtx.state === 'suspended') {
+    void audioCtx.resume();
+  }
+
   // Log initial scene graph
   const initialSG = core.getSceneGraph();
   debug('scene', 'Initial scene graph after profile load:');
@@ -100,7 +109,15 @@ async function boot(): Promise<void> {
   disposables.push(fpCam);
 
   const audioManager = new AudioManager();
+  audioManager.setContext(audioCtx);
   disposables.push(audioManager);
+
+  // --- Companion Voice (browser SpeechSynthesis) ---
+  const companionVoice = new CompanionVoiceManager();
+  if (companionState) {
+    companionVoice.setSpeaker(companionState.name);
+  }
+  disposables.push(companionVoice);
 
   const hud = new HUD();
   hud.init(DEBUG, a11y);

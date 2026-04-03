@@ -22,7 +22,7 @@
 // ═══════════════════════════════════════════════════════════════════════════
 
 import { execSync, execFileSync, spawn } from 'child_process';
-import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'fs';
+import { writeFileSync, existsSync, mkdirSync, readdirSync } from 'fs';
 import { dirname, join, basename } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -221,7 +221,7 @@ function copyTestFiles() {
     'test-visual.mjs',
   ];
 
-  // Copy files via ssh+docker cp pipeline
+  // Copy files via scp to Overwatch host, then docker cp into container
   for (const file of testFiles) {
     const localPath = join(__dirname, file);
     if (!existsSync(localPath)) {
@@ -229,25 +229,13 @@ function copyTestFiles() {
       continue;
     }
 
-    const content = readFileSync(localPath, 'utf-8');
-    // Pipe content into container via docker exec
-    const escapedContent = content.replace(/\\/g, '\\\\').replace(/'/g, "'\\''").replace(/\$/g, '\\$');
     try {
-      sshCmd(
-        `docker exec -i ${CONTAINER} bash -c "cat > ${CONTAINER_WORKDIR}/${file}" << 'TESTEOF'\n${content}\nTESTEOF`,
-        { timeout: 15_000 },
-      );
-    } catch {
-      // Fallback: write via echo (less reliable for large files but works)
-      try {
-        // Use a temporary file on Overwatch host, then docker cp
-        const remoteTmp = `/tmp/athena-e2e-${file}`;
-        scpToOverwatch(localPath, remoteTmp);
-        sshCmd(`docker cp ${remoteTmp} ${CONTAINER}:${CONTAINER_WORKDIR}/${file}`, { timeout: 15_000 });
-        sshCmd(`rm -f ${remoteTmp}`, { timeout: 5_000 });
-      } catch (err2) {
-        logErr(`Failed to copy ${file}: ${err2.message}`);
-      }
+      const remoteTmp = `/tmp/athena-e2e-${file}`;
+      scpToOverwatch(localPath, remoteTmp);
+      sshExec(`docker cp ${remoteTmp} ${CONTAINER}:${CONTAINER_WORKDIR}/${file}`, { timeout: 15_000 });
+      sshExec(`rm -f ${remoteTmp}`, { timeout: 5_000 });
+    } catch (err) {
+      logErr(`Failed to copy ${file}: ${err.message}`);
     }
   }
 
@@ -260,8 +248,8 @@ function copyTestFiles() {
       const remoteTmp = `/tmp/athena-ref-${ref}`;
       try {
         scpToOverwatch(localRef, remoteTmp);
-        sshCmd(`docker cp ${remoteTmp} ${CONTAINER}:${CONTAINER_WORKDIR}/reference/${ref}`, { timeout: 15_000 });
-        sshCmd(`rm -f ${remoteTmp}`, { timeout: 5_000 });
+        sshExec(`docker cp ${remoteTmp} ${CONTAINER}:${CONTAINER_WORKDIR}/reference/${ref}`, { timeout: 15_000 });
+        sshExec(`rm -f ${remoteTmp}`, { timeout: 5_000 });
       } catch (err) {
         logWarn(`Failed to copy reference ${ref}: ${err.message}`);
       }
@@ -301,10 +289,10 @@ function copyResultsBack() {
   // Copy screenshots from container to Overwatch host, then to Blue
   try {
     const remoteTmp = '/tmp/athena-e2e-screenshots';
-    sshCmd(`rm -rf ${remoteTmp} && docker cp ${CONTAINER}:${CONTAINER_WORKDIR}/screenshots ${remoteTmp}`, { timeout: 30_000 });
+    sshExec(`rm -rf ${remoteTmp} && docker cp ${CONTAINER}:${CONTAINER_WORKDIR}/screenshots ${remoteTmp}`, { timeout: 30_000 });
 
     // List files and copy each
-    const files = sshCmd(`ls ${remoteTmp}/`, { timeout: 5_000 }).trim().split('\n').filter(Boolean);
+    const files = sshExec(`ls ${remoteTmp}/`, { timeout: 5_000 }).trim().split('\n').filter(Boolean);
     for (const file of files) {
       try {
         scpFromOverwatch(`${remoteTmp}/${file}`, join(SCREENSHOT_DIR, file));
@@ -313,7 +301,7 @@ function copyResultsBack() {
       }
     }
 
-    sshCmd(`rm -rf ${remoteTmp}`, { timeout: 5_000 });
+    sshExec(`rm -rf ${remoteTmp}`, { timeout: 5_000 });
     logOk(`Copied ${files.length} files to ${SCREENSHOT_DIR}/`);
   } catch (err) {
     logErr(`Failed to copy screenshots: ${err.message}`);
@@ -322,15 +310,15 @@ function copyResultsBack() {
   // Also copy any new reference images back
   try {
     const remoteTmp = '/tmp/athena-e2e-reference';
-    sshCmd(`rm -rf ${remoteTmp} && docker cp ${CONTAINER}:${CONTAINER_WORKDIR}/reference ${remoteTmp}`, { timeout: 30_000 });
-    const files = sshCmd(`ls ${remoteTmp}/`, { timeout: 5_000 }).trim().split('\n').filter(Boolean);
+    sshExec(`rm -rf ${remoteTmp} && docker cp ${CONTAINER}:${CONTAINER_WORKDIR}/reference ${remoteTmp}`, { timeout: 30_000 });
+    const files = sshExec(`ls ${remoteTmp}/`, { timeout: 5_000 }).trim().split('\n').filter(Boolean);
     mkdirSync(REFERENCE_DIR, { recursive: true });
     for (const file of files) {
       try {
         scpFromOverwatch(`${remoteTmp}/${file}`, join(REFERENCE_DIR, file));
       } catch { /* ignore copy failures for reference */ }
     }
-    sshCmd(`rm -rf ${remoteTmp}`, { timeout: 5_000 });
+    sshExec(`rm -rf ${remoteTmp}`, { timeout: 5_000 });
     if (files.length > 0) logOk(`Updated ${files.length} reference images`);
   } catch { /* reference copy is best-effort */ }
 }

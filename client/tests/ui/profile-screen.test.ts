@@ -63,7 +63,7 @@ describe('ProfileScreen', () => {
 
     const createBtn = overlay!.querySelector<HTMLButtonElement>('.create-btn');
     expect(createBtn).not.toBeNull();
-    expect(createBtn!.textContent).toBe('Start Adventure!');
+    expect(createBtn!.textContent).toBe('Enter the Nexus');
 
     nameInput!.value = 'Tester';
     createBtn!.click();
