@@ -141,3 +141,61 @@ server/               ← Optional FastAPI sync layer
 - [ ] Gender-neutral language
 - [ ] All audio has captionText
 - [ ] Hints available on every step
+
+---
+
+## Current Build Phase (2026-04-03)
+
+### Major Architectural Change: Connected Overworld
+The game is being rebuilt from disconnected floating platforms into a
+continuous connected world. Key changes:
+
+1. Central town square hub connecting all 27 biomes via paths
+2. Each biome has EXTERIOR (landmark visible from distance) + INTERIOR (enclosed space)
+3. Buildings have walls, ceiling, door, windows, atmosphere
+4. Natural biomes (forest, caverns) are open-air but enveloping
+5. Terrain with height variation, paths, rivers, bridges
+6. NPCs, animals, day/night, weather make world feel alive
+7. No loading screens between biomes — one continuous world
+8. Consequence-based boundaries, no invisible walls
+
+### Audio Overhaul
+- Each biome has distinct ambient soundscape (synthesized)
+- Procedural music per biome (pentatonic, adaptive layers)
+- SFX on all interactions (footsteps, chimes, doors)
+- Companion voice with personality per type (not generic TTS)
+- Nexus Voice: female futuristic-warm, welcome on first launch
+- Reverb presets per space (outdoor dry, cave echo, room medium)
+
+### Portal Gateway
+- First screen: swirling Frost→Aurora particle portal
+- Nexus Voice speaks welcome
+- "Step Inside" prompt
+- Portal dissolves into profile creation
+
+### Companion Characters
+- 6 types: fox, owl, rabbit, bear, cat, dragon
+- 3D models (not emoji, not orbs)
+- Personality-specific voice parameters
+- Follow player, face when speaking, gesture toward objects
+
+### Mobile Web
+- Virtual joystick (left side) for movement
+- Touch-drag (right side) for camera rotation
+- No pointer lock needed
+- Touch targets 80x80dp+ for Foundation tier
+
+### Key Documents
+- docs/STYLE_GUIDE.md — Visual identity LAW
+- docs/16-ART_DIRECTION.md — Per-tier visual style
+- docs/02-WORLD_DESIGN.md — Biome descriptions
+- docs/17-AUDIO_DESIGN.md — Sound design
+- docs/13-INPUT_CONTROLS.md — All input methods
+- docs/19-ACCESSIBILITY.md — A11y requirements
+- docs/00-CORE_PRINCIPLES.md — Non-negotiable principles
+
+### E2E Testing
+- Playwright on Overwatch (192.168.3.8) Docker container
+- Tests: movement, interaction, biomes, visual regression
+- Run: `node e2e/run-tests.mjs`
+- NOTHING is done until E2E passes on Overwatch
