@@ -136,10 +136,10 @@ export class FlowEngine implements System {
   /** Per-profile attempt history (profileId → records) */
   private readonly attemptHistory = new Map<string, ChallengeAttemptRecord[]>();
 
-  /** Per-challenge attempt counts for current session (challengeId → count) */
+  /** Per-profile per-challenge attempt counts (profileId:challengeId → count) */
   private readonly challengeAttemptCounts = new Map<string, number>();
 
-  /** Per-challenge tolerance multipliers */
+  /** Per-profile per-challenge tolerance multipliers (profileId:challengeId → multiplier) */
   private readonly toleranceMultipliers = new Map<string, number>();
 
   /** Per-profile recent mechanic history */
@@ -180,6 +180,7 @@ export class FlowEngine implements System {
    * Updates rolling statistics, attempt counts, and mechanic history.
    */
   recordAttempt(profileId: string, challengeId: string, outcome: AttemptOutcome): void {
+    const key = `${profileId}:${challengeId}`;
     const record: ChallengeAttemptRecord = {
       profileId,
       challengeId,
@@ -204,22 +205,22 @@ export class FlowEngine implements System {
     }
 
     // Update per-challenge attempt count
-    const currentCount = this.challengeAttemptCounts.get(challengeId) ?? 0;
-    this.challengeAttemptCounts.set(challengeId, currentCount + 1);
+    const currentCount = this.challengeAttemptCounts.get(key) ?? 0;
+    this.challengeAttemptCounts.set(key, currentCount + 1);
 
     // If succeeded or redirected, reset challenge attempt count
     if (outcome.success) {
-      this.challengeAttemptCounts.set(challengeId, 0);
-      this.toleranceMultipliers.delete(challengeId);
+      this.challengeAttemptCounts.set(key, 0);
+      this.toleranceMultipliers.delete(key);
     }
 
     // Update tolerance multiplier based on attempt escalation
     if (!outcome.success) {
-      const attempts = this.challengeAttemptCounts.get(challengeId) ?? 0;
+      const attempts = this.challengeAttemptCounts.get(key) ?? 0;
       if (attempts >= ALTERNATIVE_MIN_ATTEMPTS) {
-        const currentTolerance = this.toleranceMultipliers.get(challengeId) ?? BASE_TOLERANCE;
+        const currentTolerance = this.toleranceMultipliers.get(key) ?? BASE_TOLERANCE;
         this.toleranceMultipliers.set(
-          challengeId,
+          key,
           Math.min(MAX_TOLERANCE, currentTolerance + 0.1),
         );
       }
@@ -232,8 +233,8 @@ export class FlowEngine implements System {
         mechanics = [];
         this.mechanicHistory.set(profileId, mechanics);
       }
-      // Only add on first attempt or success (avoid counting retries)
-      if (outcome.attemptNumber === 1 || outcome.success) {
+      // Only add on first attempt (avoid counting retries)
+      if (outcome.attemptNumber === 1) {
         mechanics.push(record.mechanic);
         if (mechanics.length > MECHANIC_HISTORY_SIZE) {
           mechanics.splice(0, mechanics.length - MECHANIC_HISTORY_SIZE);
@@ -279,23 +280,24 @@ export class FlowEngine implements System {
    * Check if a challenge needs scaffolding based on attempt count.
    * Returns null if no intervention is needed (attempts 1–3).
    */
-  shouldScaffold(challengeId: string): ScaffoldAction | null {
-    const attempts = this.challengeAttemptCounts.get(challengeId) ?? 0;
+  shouldScaffold(profileId: string, challengeId: string): ScaffoldAction | null {
+    const key = `${profileId}:${challengeId}`;
+    const attempts = this.challengeAttemptCounts.get(key) ?? 0;
 
     if (attempts < OBSERVE_MIN_ATTEMPTS) {
       return null;
     }
 
     if (attempts <= OBSERVE_MAX_ATTEMPTS) {
-      return this.createScaffold('observe', challengeId);
+      return this.createScaffold('observe', profileId, challengeId);
     }
 
     if (attempts <= ALTERNATIVE_MAX_ATTEMPTS) {
-      return this.createScaffold('alternative', challengeId);
+      return this.createScaffold('alternative', profileId, challengeId);
     }
 
     // 8+ attempts: redirect to prerequisite
-    return this.createScaffold('redirect', challengeId);
+    return this.createScaffold('redirect', profileId, challengeId);
   }
 
   /**
@@ -361,8 +363,9 @@ export class FlowEngine implements System {
    * Get the dynamic tolerance multiplier for a challenge.
    * Returns 1.0 normally, up to 1.5 when the player is struggling.
    */
-  getToleranceMultiplier(challengeId: string): number {
-    return this.toleranceMultipliers.get(challengeId) ?? BASE_TOLERANCE;
+  getToleranceMultiplier(profileId: string, challengeId: string): number {
+    const key = `${profileId}:${challengeId}`;
+    return this.toleranceMultipliers.get(key) ?? BASE_TOLERANCE;
   }
 
   /**
@@ -386,9 +389,10 @@ export class FlowEngine implements System {
   /**
    * Reset the attempt count for a challenge (e.g., after redirect).
    */
-  resetChallengeAttempts(challengeId: string): void {
-    this.challengeAttemptCounts.set(challengeId, 0);
-    this.toleranceMultipliers.delete(challengeId);
+  resetChallengeAttempts(profileId: string, challengeId: string): void {
+    const key = `${profileId}:${challengeId}`;
+    this.challengeAttemptCounts.set(key, 0);
+    this.toleranceMultipliers.delete(key);
   }
 
   /**
@@ -398,6 +402,13 @@ export class FlowEngine implements System {
     this.attemptHistory.delete(profileId);
     this.mechanicHistory.delete(profileId);
     this.masteryLevels.delete(profileId);
+    const prefix = `${profileId}:`;
+    for (const key of [...this.challengeAttemptCounts.keys()]) {
+      if (key.startsWith(prefix)) this.challengeAttemptCounts.delete(key);
+    }
+    for (const key of [...this.toleranceMultipliers.keys()]) {
+      if (key.startsWith(prefix)) this.toleranceMultipliers.delete(key);
+    }
   }
 
   // --- Private helpers ---
@@ -458,11 +469,12 @@ export class FlowEngine implements System {
     return 'flow';
   }
 
-  private createScaffold(type: ScaffoldType, challengeId: string): ScaffoldAction {
+  private createScaffold(type: ScaffoldType, profileId: string, challengeId: string): ScaffoldAction {
+    const key = `${profileId}:${challengeId}`;
     const challengeInfo = this.challengeRegistry.get(challengeId);
 
     if (type === 'observe') {
-      const idx = (this.challengeAttemptCounts.get(challengeId) ?? 0) % OBSERVE_MESSAGES.length;
+      const idx = (this.challengeAttemptCounts.get(key) ?? 0) % OBSERVE_MESSAGES.length;
       return {
         type: 'observe',
         message: OBSERVE_MESSAGES[idx],
@@ -470,7 +482,7 @@ export class FlowEngine implements System {
     }
 
     if (type === 'alternative') {
-      const idx = (this.challengeAttemptCounts.get(challengeId) ?? 0) % ALTERNATIVE_MESSAGES.length;
+      const idx = (this.challengeAttemptCounts.get(key) ?? 0) % ALTERNATIVE_MESSAGES.length;
       return {
         type: 'alternative',
         message: ALTERNATIVE_MESSAGES[idx],
@@ -481,11 +493,23 @@ export class FlowEngine implements System {
     if (challengeInfo) {
       const prereqs = SKILL_PREREQUISITES[challengeInfo.skill];
       if (prereqs && prereqs.length > 0) {
-        const targetSkill = prereqs[0]!;
+        // Find weakest prerequisite based on player mastery
+        const levels = this.masteryLevels.get(profileId);
+        let targetSkill = prereqs[0]!;
+        if (levels) {
+          let weakestLevel = levels.get(prereqs[0]!) ?? 0;
+          for (const prereq of prereqs) {
+            const level = levels.get(prereq) ?? 0;
+            if (level < weakestLevel) {
+              weakestLevel = level;
+              targetSkill = prereq;
+            }
+          }
+        }
         const targetBiome = SKILL_BIOME_MAP[targetSkill] ?? 'workshop';
         const biomeDisplay = this.formatBiomeName(targetBiome);
         const messageTemplate = REDIRECT_MESSAGES[
-          (this.challengeAttemptCounts.get(challengeId) ?? 0) % REDIRECT_MESSAGES.length
+          (this.challengeAttemptCounts.get(key) ?? 0) % REDIRECT_MESSAGES.length
         ] ?? REDIRECT_MESSAGES[0]!;
 
         return {

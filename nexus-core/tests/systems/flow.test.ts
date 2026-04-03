@@ -152,7 +152,7 @@ describe('FlowEngine', () => {
 
       for (let i = 1; i <= 3; i++) {
         engine.recordAttempt('p1', cid, makeFailure(i));
-        expect(engine.shouldScaffold(cid)).toBeNull();
+        expect(engine.shouldScaffold('p1', cid)).toBeNull();
       }
     });
 
@@ -163,7 +163,7 @@ describe('FlowEngine', () => {
       for (let i = 1; i <= 4; i++) {
         engine.recordAttempt('p1', cid, makeFailure(i));
       }
-      const scaffold = engine.shouldScaffold(cid);
+      const scaffold = engine.shouldScaffold('p1', cid);
       expect(scaffold).not.toBeNull();
       expect(scaffold!.type).toBe('observe');
       expect(scaffold!.message).toBeTruthy();
@@ -176,7 +176,7 @@ describe('FlowEngine', () => {
       for (let i = 1; i <= 6; i++) {
         engine.recordAttempt('p1', cid, makeFailure(i));
       }
-      const scaffold = engine.shouldScaffold(cid);
+      const scaffold = engine.shouldScaffold('p1', cid);
       expect(scaffold).not.toBeNull();
       expect(scaffold!.type).toBe('alternative');
       expect(scaffold!.message).toBeTruthy();
@@ -189,7 +189,7 @@ describe('FlowEngine', () => {
       for (let i = 1; i <= 8; i++) {
         engine.recordAttempt('p1', cid, makeFailure(i));
       }
-      const scaffold = engine.shouldScaffold(cid);
+      const scaffold = engine.shouldScaffold('p1', cid);
       expect(scaffold).not.toBeNull();
       expect(scaffold!.type).toBe('redirect');
     });
@@ -201,7 +201,7 @@ describe('FlowEngine', () => {
       for (let i = 1; i <= 8; i++) {
         engine.recordAttempt('p1', cid, makeFailure(i));
       }
-      const scaffold = engine.shouldScaffold(cid);
+      const scaffold = engine.shouldScaffold('p1', cid);
       expect(scaffold!.type).toBe('redirect');
       // math.algebra prereqs are math.equations and math.expressions
       expect(scaffold!.targetSkill).toBe('math.equations');
@@ -215,10 +215,10 @@ describe('FlowEngine', () => {
       for (let i = 1; i <= 5; i++) {
         engine.recordAttempt('p1', cid, makeFailure(i));
       }
-      expect(engine.shouldScaffold(cid)).not.toBeNull();
+      expect(engine.shouldScaffold('p1', cid)).not.toBeNull();
 
       engine.recordAttempt('p1', cid, makeSuccess(6));
-      expect(engine.shouldScaffold(cid)).toBeNull();
+      expect(engine.shouldScaffold('p1', cid)).toBeNull();
     });
 
     it('provides fallback redirect for skills without prerequisites', () => {
@@ -228,7 +228,7 @@ describe('FlowEngine', () => {
       for (let i = 1; i <= 8; i++) {
         engine.recordAttempt('p1', cid, makeFailure(i));
       }
-      const scaffold = engine.shouldScaffold(cid);
+      const scaffold = engine.shouldScaffold('p1', cid);
       expect(scaffold!.type).toBe('redirect');
       expect(scaffold!.message).toBeTruthy();
     });
@@ -240,7 +240,7 @@ describe('FlowEngine', () => {
       for (let i = 1; i <= 4; i++) {
         engine.recordAttempt('p1', cid, makeFailure(i));
       }
-      const scaffold = engine.shouldScaffold(cid);
+      const scaffold = engine.shouldScaffold('p1', cid);
       const msg = scaffold!.message!.toLowerCase();
       expect(msg).not.toContain('wrong');
       expect(msg).not.toContain('failed');
@@ -281,7 +281,7 @@ describe('FlowEngine', () => {
 
   describe('getToleranceMultiplier', () => {
     it('returns 1.0 by default', () => {
-      expect(engine.getToleranceMultiplier('any-challenge')).toBe(1.0);
+      expect(engine.getToleranceMultiplier('p1', 'any-challenge')).toBe(1.0);
     });
 
     it('increases after 6+ failed attempts', () => {
@@ -291,7 +291,7 @@ describe('FlowEngine', () => {
       for (let i = 1; i <= 7; i++) {
         engine.recordAttempt('p1', cid, makeFailure(i));
       }
-      expect(engine.getToleranceMultiplier(cid)).toBeGreaterThan(1.0);
+      expect(engine.getToleranceMultiplier('p1', cid)).toBeGreaterThan(1.0);
     });
 
     it('resets to 1.0 on success', () => {
@@ -301,10 +301,10 @@ describe('FlowEngine', () => {
       for (let i = 1; i <= 7; i++) {
         engine.recordAttempt('p1', cid, makeFailure(i));
       }
-      expect(engine.getToleranceMultiplier(cid)).toBeGreaterThan(1.0);
+      expect(engine.getToleranceMultiplier('p1', cid)).toBeGreaterThan(1.0);
 
       engine.recordAttempt('p1', cid, makeSuccess(8));
-      expect(engine.getToleranceMultiplier(cid)).toBe(1.0);
+      expect(engine.getToleranceMultiplier('p1', cid)).toBe(1.0);
     });
 
     it('never exceeds 1.5', () => {
@@ -314,7 +314,7 @@ describe('FlowEngine', () => {
       for (let i = 1; i <= 50; i++) {
         engine.recordAttempt('p1', cid, makeFailure(i));
       }
-      expect(engine.getToleranceMultiplier(cid)).toBeLessThanOrEqual(1.5);
+      expect(engine.getToleranceMultiplier('p1', cid)).toBeLessThanOrEqual(1.5);
     });
   });
 
@@ -449,9 +449,9 @@ describe('FlowEngine', () => {
       }
       engine.recordAttempt('p1', 'retry-1', makeSuccess(6));
 
-      // Should have 2 entries: first attempt + success
+      // Should have 1 entry: first attempt only (retries and eventual success are not re-counted)
       const recent = engine.getRecentMechanics('p1', 10);
-      expect(recent.length).toBe(2);
+      expect(recent.length).toBe(1);
     });
   });
 
@@ -465,7 +465,7 @@ describe('FlowEngine', () => {
         engine.recordAttempt('p1', 'reg-1', makeFailure(i));
       }
 
-      const scaffold = engine.shouldScaffold('reg-1');
+      const scaffold = engine.shouldScaffold('p1', 'reg-1');
       // math.algebra first prereq is math.equations
       expect(scaffold!.targetSkill).toBe('math.equations');
     });
@@ -481,12 +481,12 @@ describe('FlowEngine', () => {
       for (let i = 1; i <= 7; i++) {
         engine.recordAttempt('p1', cid, makeFailure(i));
       }
-      expect(engine.shouldScaffold(cid)).not.toBeNull();
-      expect(engine.getToleranceMultiplier(cid)).toBeGreaterThan(1.0);
+      expect(engine.shouldScaffold('p1', cid)).not.toBeNull();
+      expect(engine.getToleranceMultiplier('p1', cid)).toBeGreaterThan(1.0);
 
-      engine.resetChallengeAttempts(cid);
-      expect(engine.shouldScaffold(cid)).toBeNull();
-      expect(engine.getToleranceMultiplier(cid)).toBe(1.0);
+      engine.resetChallengeAttempts('p1', cid);
+      expect(engine.shouldScaffold('p1', cid)).toBeNull();
+      expect(engine.getToleranceMultiplier('p1', cid)).toBe(1.0);
     });
   });
 
@@ -527,7 +527,7 @@ describe('FlowEngine', () => {
       for (let i = 1; i <= 8; i++) {
         engine.recordAttempt('p1', 'unreg-scaffold', makeFailure(i));
       }
-      const scaffold = engine.shouldScaffold('unreg-scaffold');
+      const scaffold = engine.shouldScaffold('p1', 'unreg-scaffold');
       expect(scaffold!.type).toBe('redirect');
       expect(scaffold!.message).toBeTruthy();
     });
