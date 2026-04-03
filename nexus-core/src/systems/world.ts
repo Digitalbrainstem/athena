@@ -3164,24 +3164,23 @@ export class WorldSystem implements System {
     this.cachedWorldState = null;
   }
 
-  update(world: World, _dt: number): void {
+  update(_world: World, _dt: number): void {
     if (!this.activeProfileId || !this.worldStateRepo) return;
 
-    // Process move actions
-    const actions = world.peekActions();
-    for (const action of actions) {
-      if (action.type === 'move' && action.payload && 'direction' in action.payload) {
-        // Movement updates player position entities
-        const players = world.query(['player', 'position']);
-        for (const entity of players) {
-          const pos = world.getComponent(entity, 'position');
-          const payload = action.payload as { direction: { x: number; z: number }; running: boolean };
-          if (pos) {
-            const speed = payload.running ? 8 : 4;
-            pos.x += payload.direction.x * speed * _dt;
-            pos.z += payload.direction.z * speed * _dt;
-          }
-        }
+    // Movement is handled client-side (FirstPersonCamera owns velocity &
+    // friction). The client writes the authoritative position back into the
+    // ECS via setPlayerPosition(), so we do NOT apply movement here.
+  }
+
+  /** Called by the client to write the authoritative camera position back
+   *  into the ECS so the scene-graph builder can read it. */
+  setPlayerPosition(world: World, x: number, z: number): void {
+    const players = world.query(['player', 'position']);
+    for (const entity of players) {
+      const pos = world.getComponent(entity, 'position');
+      if (pos) {
+        pos.x = x;
+        pos.z = z;
       }
     }
   }
@@ -3354,7 +3353,7 @@ export class WorldSystem implements System {
     const players = world.query(['player', 'position']);
     const playerEntity = players[0];
     let cameraPos = { x: 0, y: 1.6, z: 5 };
-    let cameraRot = { x: 0, y: Math.PI, z: 0 };
+    let cameraRot = { x: 0, y: 0, z: 0 };
 
     if (playerEntity !== undefined) {
       const pos = world.getComponent(playerEntity, 'position');

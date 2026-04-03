@@ -3,7 +3,8 @@ import { SceneRenderer } from './renderer/scene-renderer.js';
 import { GameLoop } from './game/loop.js';
 import { InputManager } from './input/manager.js';
 import { KeyboardInput } from './input/keyboard.js';
-import { debug, debugSceneGraph, debugError } from './debug.js';
+import { debug, debugSceneGraph } from './debug.js';
+import { initDebugBridge } from './debug-bridge.js';
 import { TouchInput } from './input/touch.js';
 import { FirstPersonCamera } from './camera/first-person.js';
 import { AudioManager } from './audio/audio-manager.js';
@@ -20,6 +21,9 @@ const DEBUG = import.meta.env.DEV;
 const disposables: Disposable[] = [];
 
 async function boot(): Promise<void> {
+  // Start debug bridge — pipes browser console to terminal via WebSocket
+  initDebugBridge();
+  
   const canvas = document.getElementById('game-canvas') as HTMLCanvasElement | null;
   if (!canvas) { console.error('[Nexus] Could not find #game-canvas element'); return; }
 
@@ -130,7 +134,7 @@ async function boot(): Promise<void> {
   debug('render', 'SceneRenderer:', sceneRenderer ? 'initialized' : 'NULL');
   debug('render', 'AssetManager:', assetManager ? 'initialized' : 'NULL');
   debug('camera', 'FirstPersonCamera:', fpCam ? 'initialized' : 'NULL');
-  debug('input', 'InputManager providers:', input.providerCount ?? 'unknown');
+  debug('input', 'InputManager ready');
   loop.start();
 
   canvas.addEventListener('click', () => {

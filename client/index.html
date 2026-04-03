@@ -7,19 +7,29 @@
   <meta name="theme-color" content="#22d3ee" />
   <link rel="manifest" href="/manifest.json" />
   <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;700&display=swap" rel="stylesheet" />
   <title>Nexus Academy</title>
   <style>
     /* ------------------------------------------------------------------ */
-    /* Custom properties                                                  */
+    /* Custom properties — Style Guide                                    */
     /* ------------------------------------------------------------------ */
     :root {
       --a11y-font-size: 1rem;
       --a11y-line-spacing: 1.4;
       --frost: #22d3ee;
       --aurora: #a78bfa;
-      --bg: #0a0a1a;
-      --text: #e2e8f0;
-      --text-muted: #94a3b8;
+      --sunrise: #FFDAB9;
+      --amber: #D4A574;
+      --deep-space: #0f172a;
+      --text-on-warm: #1E1B2E;
+      --text-on-dark: #F5F0E8;
+      --text-muted: #94A3B8;
+      --error: #F97171;
+      --success: #FBBF24;
+      --bg-warm: linear-gradient(135deg, #FFDAB9, #87CEEB);
+      --bg-dark-translucent: rgba(26, 27, 46, 0.85);
     }
 
     /* ------------------------------------------------------------------ */
@@ -35,9 +45,9 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: var(--bg);
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-      color: var(--text);
+      background: var(--bg-warm);
+      font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text-on-warm);
       font-size: var(--a11y-font-size);
       line-height: var(--a11y-line-spacing);
       -webkit-tap-highlight-color: transparent;
@@ -76,22 +86,22 @@
     }
 
     /* ------------------------------------------------------------------ */
-    /* Crosshair                                                          */
+    /* Crosshair — subtle dot                                             */
     /* ------------------------------------------------------------------ */
     #crosshair {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 0.375rem;
-      height: 0.375rem;
+      width: 4px;
+      height: 4px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.8);
-      box-shadow: 0 0 4px rgba(34, 211, 238, 0.6);
+      background: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 0 3px rgba(34, 211, 238, 0.4);
     }
 
     /* ------------------------------------------------------------------ */
-    /* Interaction prompt                                                  */
+    /* Interaction prompt — Frost border, dark translucent bg              */
     /* ------------------------------------------------------------------ */
     #interaction-prompt {
       position: absolute;
@@ -99,10 +109,11 @@
       left: 50%;
       transform: translateX(-50%);
       padding: 0.5rem 1.25rem;
-      background: rgba(10, 10, 26, 0.75);
+      background: var(--bg-dark-translucent);
       border: 1px solid var(--frost);
       border-radius: 0.5rem;
       font-size: 0.875rem;
+      font-weight: 500;
       color: var(--frost);
       opacity: 0;
       transition: opacity 0.2s ease;
@@ -117,7 +128,7 @@
     }
 
     /* ------------------------------------------------------------------ */
-    /* FPS counter (debug only)                                           */
+    /* FPS counter (debug only) — Aurora colored                          */
     /* ------------------------------------------------------------------ */
     #fps-counter {
       position: absolute;
@@ -130,7 +141,7 @@
     }
 
     /* ------------------------------------------------------------------ */
-    /* Dialogue box                                                        */
+    /* Dialogue box — Aurora border, warm bg, speaker name                */
     /* ------------------------------------------------------------------ */
     #dialogue-box {
       position: absolute;
@@ -139,11 +150,13 @@
       transform: translateX(-50%);
       max-width: 80vw;
       padding: 0.75rem 1.5rem;
-      background: rgba(10, 10, 26, 0.85);
+      background: var(--bg-dark-translucent);
       border: 1px solid var(--aurora);
       border-radius: 0.5rem;
-      font-size: 1rem;
-      color: var(--text);
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--text-on-dark);
+      box-shadow: 0 0 12px rgba(167, 139, 250, 0.15);
     }
 
     /* ------------------------------------------------------------------ */
@@ -167,7 +180,7 @@
       background: rgba(0, 0, 0, 0.75);
       border-radius: 0.25rem;
       font-size: 0.9375rem;
-      color: #fff;
+      color: var(--text-on-dark);
       text-align: center;
     }
 
@@ -201,7 +214,7 @@
     }
 
     /* ------------------------------------------------------------------ */
-    /* Click-to-play overlay                                              */
+    /* Click-to-play overlay — warm gradient                              */
     /* ------------------------------------------------------------------ */
     #click-to-play {
       position: fixed;
@@ -210,7 +223,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: rgba(10, 10, 26, 0.85);
+      background: var(--bg-warm);
       z-index: 20;
     }
 
@@ -234,7 +247,8 @@
       padding: 0.75rem 2rem;
       font-size: 1.125rem;
       font-weight: 600;
-      color: var(--bg);
+      font-family: 'Nunito', system-ui, sans-serif;
+      color: var(--text-on-warm);
       background: linear-gradient(135deg, var(--frost), var(--aurora));
       border: none;
       border-radius: 0.5rem;
@@ -274,8 +288,8 @@
     /* High contrast mode                                                  */
     /* ------------------------------------------------------------------ */
     .high-contrast {
-      --bg: #000;
-      --text: #fff;
+      --text-on-warm: #000;
+      --text-on-dark: #fff;
       --frost: #00ffff;
       --aurora: #ff80ff;
       --text-muted: #ccc;
@@ -325,7 +339,7 @@
     }
 
     /* ------------------------------------------------------------------ */
-    /* Profile screen overlay                                              */
+    /* Profile screen overlay — warm sunrise gradient                     */
     /* ------------------------------------------------------------------ */
     #profile-screen {
       position: fixed;
@@ -335,14 +349,15 @@
       align-items: center;
       justify-content: center;
       gap: 1.5rem;
-      background: var(--bg);
+      background: var(--bg-warm);
       z-index: 30;
       padding: 1rem;
       overflow-y: auto;
+      color: var(--text-on-warm);
     }
 
     #profile-screen h1 {
-      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      font-size: clamp(2rem, 5vw, 3rem);
       font-weight: 700;
       background: linear-gradient(135deg, var(--frost), var(--aurora));
       -webkit-background-clip: text;
@@ -351,7 +366,7 @@
     }
 
     .profile-subtitle {
-      font-size: 1rem;
+      font-size: 1.125rem;
       color: var(--text-muted);
     }
 
@@ -364,10 +379,11 @@
     #profile-screen h2 {
       font-size: 1.125rem;
       margin-bottom: 0.75rem;
-      color: var(--text-muted);
+      color: var(--text-on-warm);
+      opacity: 0.7;
     }
 
-    /* Profile cards */
+    /* Profile cards — warm styling */
     .profile-list {
       display: flex;
       flex-wrap: wrap;
@@ -382,11 +398,11 @@
       align-items: center;
       gap: 0.25rem;
       padding: 1rem 1.5rem;
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.3);
+      border: 2px solid rgba(30, 27, 46, 0.15);
       border-radius: 0.75rem;
       cursor: pointer;
-      color: var(--text);
+      color: var(--text-on-warm);
       font-size: 1rem;
       min-width: 8rem;
       min-height: 5rem;
@@ -395,18 +411,18 @@
 
     .profile-card:hover, .profile-card:focus-visible {
       border-color: var(--frost);
-      background: rgba(34, 211, 238, 0.08);
+      background: rgba(34, 211, 238, 0.15);
     }
 
     .profile-card-avatar {
-      font-size: 2rem;
+      font-size: 2.5rem;
     }
 
     .profile-card-name {
       font-weight: 600;
     }
 
-    /* Create form */
+    /* Create form — warm inputs */
     .create-section {
       display: flex;
       flex-direction: column;
@@ -426,21 +442,29 @@
     .form-group label {
       font-size: 0.875rem;
       font-weight: 600;
-      color: var(--text-muted);
+      color: var(--text-on-warm);
+      opacity: 0.7;
     }
 
-    .form-group input {
+    .form-group input,
+    .form-group select {
       padding: 0.625rem 0.75rem;
       font-size: 1rem;
-      border: 2px solid rgba(255, 255, 255, 0.15);
+      font-family: 'Nunito', system-ui, sans-serif;
+      border: 2px solid rgba(30, 27, 46, 0.15);
       border-radius: 0.5rem;
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text);
+      background: rgba(255, 255, 255, 0.5);
+      color: var(--text-on-warm);
       outline: none;
     }
 
-    .form-group input:focus {
+    .form-group input:focus,
+    .form-group select:focus {
       border-color: var(--frost);
+    }
+
+    .form-group input::placeholder {
+      color: var(--text-muted);
     }
 
     .form-help {
@@ -450,11 +474,17 @@
 
     .form-error {
       font-size: 0.875rem;
-      color: #f87171;
+      color: var(--error);
       min-height: 1.25rem;
     }
 
-    /* Avatar picker */
+    /* Avatar picker — larger, warmer */
+    #avatar-label {
+      font-weight: 600;
+      color: var(--text-on-warm);
+      opacity: 0.7;
+    }
+
     .avatar-grid {
       display: flex;
       flex-wrap: wrap;
@@ -467,41 +497,43 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 3.5rem;
-      height: 3.5rem;
-      border: 2px solid rgba(255, 255, 255, 0.1);
+      width: 4rem;
+      height: 4rem;
+      border: 2px solid rgba(30, 27, 46, 0.15);
       border-radius: 0.75rem;
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.3);
       cursor: pointer;
       transition: border-color 0.15s, background 0.15s;
     }
 
     .avatar-option:hover, .avatar-option:focus-visible {
       border-color: var(--aurora);
-      background: rgba(167, 139, 250, 0.08);
+      background: rgba(167, 139, 250, 0.15);
     }
 
     .avatar-option.selected {
       border-color: var(--aurora);
-      background: rgba(167, 139, 250, 0.15);
+      background: rgba(167, 139, 250, 0.2);
       box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.3);
     }
 
     .avatar-emoji {
-      font-size: 1.5rem;
+      font-size: 1.75rem;
     }
 
     .create-btn {
       padding: 0.75rem 2rem;
       font-size: 1.125rem;
-      font-weight: 600;
-      color: var(--bg);
+      font-weight: 700;
+      font-family: 'Nunito', system-ui, sans-serif;
+      color: var(--text-on-warm);
       background: linear-gradient(135deg, var(--frost), var(--aurora));
       border: none;
       border-radius: 0.5rem;
       cursor: pointer;
       min-width: 10rem;
       min-height: 2.75rem;
+      transition: opacity 0.15s;
     }
 
     .create-btn:hover {

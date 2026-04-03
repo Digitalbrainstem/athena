@@ -113,7 +113,7 @@ describe('Workshop first-playable integration', () => {
     expect(after.map((p) => p.name).sort()).toEqual(['Player1', 'Player2']);
   });
 
-  it('camera position tracks player position after movement', async () => {
+  it('camera position tracks player position via setPlayerPosition', async () => {
     const profile = await core.createProfile({ name: 'MoveTest' });
     await core.loadProfile(profile.id);
 
@@ -122,14 +122,9 @@ describe('Workshop first-playable integration', () => {
     const sgBefore = core.getSceneGraph();
     const camBefore = sgBefore.camera.position;
 
-    // Send a move action
-    core.update(1 / 60, [
-      {
-        type: 'move',
-        source: 'keyboard',
-        payload: { direction: { x: 1, z: 0 }, running: false },
-      },
-    ]);
+    // Movement is client-authoritative: write position via API
+    core.setPlayerPosition(5, 0);
+    core.update(1 / 60, []);
 
     const sgAfter = core.getSceneGraph();
     const camAfter = sgAfter.camera.position;
@@ -166,7 +161,7 @@ describe('Workshop first-playable integration', () => {
     expect(sg.ground.type).toBe('wood');
     expect(sg.ground.size.width).toBeGreaterThan(0);
     expect(sg.ground.size.depth).toBeGreaterThan(0);
-    expect(sg.sky.type).toBe('color');
+    expect(sg.sky.type).toBe('gradient');
     expect(sg.sky.primaryColor).toBeTruthy();
   });
 });

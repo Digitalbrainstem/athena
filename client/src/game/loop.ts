@@ -18,8 +18,10 @@ export class GameLoop implements Disposable {
   private accumulator = 0;
   private disposed = false;
   private frameCount = 0;
+  private firstFrameLogged = false;
   private fpsAccumulator = 0;
   private _fps = 0;
+  private positionSeeded = false;
 
   private readonly fixedDt: number;
   private readonly core: NexusCore;
@@ -87,6 +89,13 @@ export class GameLoop implements Disposable {
       this.fpsAccumulator = 0;
     }
 
+    // Seed the camera position from ECS once
+    if (!this.positionSeeded) {
+      this.positionSeeded = true;
+      const ecsPos = this.core.getPlayerPosition();
+      this.fpCam.seedPosition(ecsPos.x, ecsPos.z);
+    }
+
     this.accumulator += frameDt;
 
     let steps = 0;
@@ -104,8 +113,11 @@ export class GameLoop implements Disposable {
         }
       }
 
-      // Update velocity physics (acceleration / friction / clamping)
+      // Update velocity physics (acceleration / friction / clamping / collision)
       this.fpCam.updateMovement(this.fixedDt);
+
+      // Write authoritative position back into the ECS
+      this.core.setPlayerPosition(this.fpCam.posX, this.fpCam.posZ);
 
       // Replace raw move actions with smoothed ones from the velocity system
       const nonMoveActions = rawActions.filter(a => a.type !== 'move');
@@ -121,8 +133,21 @@ export class GameLoop implements Disposable {
 
     const sceneGraph: SceneGraph = this.core.getSceneGraph();
 
-    // Debug: log scene graph on first frame
-    if (this.frameCount === 1) {
+    // Update collision boxes for the camera from scene objects
+    this.fpCam.updateCollisionBoxes(sceneGraph.objects);
+
+    // Override scene graph camera with client-authoritative position & rotation
+    const rot = this.fpCam.getPredictiveRotation();
+    const eye = this.fpCam.getEyePosition();
+    sceneGraph.camera = {
+      ...sceneGraph.camera,
+      position: eye,
+      rotation: { x: rot.pitch, y: rot.yaw, z: 0 },
+    };
+
+    // Debug: log scene graph once on first frame only
+    if (!this.firstFrameLogged) {
+      this.firstFrameLogged = true;
       debug('scene', 'First frame scene graph:');
       debugSceneGraph(sceneGraph);
       debug('render', 'Ground:', sceneGraph.ground);

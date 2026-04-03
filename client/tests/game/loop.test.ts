@@ -26,6 +26,8 @@ function mockCore(): NexusCore {
   return {
     update: vi.fn(),
     getSceneGraph: vi.fn(() => sg),
+    getPlayerPosition: vi.fn(() => ({ x: 0, z: 0 })),
+    setPlayerPosition: vi.fn(),
     destroy: vi.fn(),
   } as unknown as NexusCore;
 }
@@ -48,7 +50,12 @@ function mockFpCam(): FirstPersonCamera {
     flushMoveActions: vi.fn(() => []),
     setMoveInput: vi.fn(),
     updateMovement: vi.fn(),
+    updateCollisionBoxes: vi.fn(),
     getPredictiveRotation: vi.fn(() => ({ yaw: 0, pitch: 0 })),
+    getEyePosition: vi.fn(() => ({ x: 0, y: 1.6, z: 0 })),
+    seedPosition: vi.fn(),
+    posX: 0,
+    posZ: 0,
     requestPointerLock: vi.fn(),
     exitPointerLock: vi.fn(),
     isPointerLocked: false,

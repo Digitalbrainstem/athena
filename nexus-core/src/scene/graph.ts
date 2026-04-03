@@ -60,7 +60,7 @@ export function createEmptySceneGraph(): SceneGraph {
   return {
     camera: {
       position: { x: 0, y: 1.6, z: 5 },
-      rotation: { x: 0, y: Math.PI, z: 0 },
+      rotation: { x: 0, y: 0, z: 0 },
       fov: 70,
       near: 0.1,
       far: 500,

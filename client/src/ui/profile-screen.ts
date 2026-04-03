@@ -14,6 +14,15 @@ const AVATAR_OPTIONS: { id: string; emoji: string; label: string }[] = [
   { id: 'dragon', emoji: '🐉', label: 'Dragon' },
 ];
 
+const AGE_RANGES: { value: string; label: string; tier: MasteryTier }[] = [
+  { value: '2-5', label: '2–5 years', tier: 'foundation' },
+  { value: '6-10', label: '6–10 years', tier: 'discovery' },
+  { value: '11-14', label: '11–14 years', tier: 'builder' },
+  { value: '15-18', label: '15–18 years', tier: 'innovator' },
+  { value: '18+', label: '18+ years', tier: 'creator' },
+  { value: 'none', label: "I'd rather not say", tier: 'foundation' },
+];
+
 export type ProfileScreenResult = { profileId: string };
 
 export class ProfileScreen implements Disposable {
@@ -178,6 +187,34 @@ export class ProfileScreen implements Disposable {
 
     section.appendChild(nameGroup);
 
+    // Age range selector
+    const ageGroup = document.createElement('div');
+    ageGroup.className = 'form-group';
+
+    const ageLabel = document.createElement('label');
+    ageLabel.setAttribute('for', 'profile-age');
+    ageLabel.textContent = 'Age range';
+    ageGroup.appendChild(ageLabel);
+
+    const ageSelect = document.createElement('select');
+    ageSelect.id = 'profile-age';
+    ageSelect.setAttribute('aria-describedby', 'age-help');
+    for (const opt of AGE_RANGES) {
+      const option = document.createElement('option');
+      option.value = opt.value;
+      option.textContent = opt.label;
+      ageSelect.appendChild(option);
+    }
+    ageGroup.appendChild(ageSelect);
+
+    const ageHelp = document.createElement('small');
+    ageHelp.id = 'age-help';
+    ageHelp.className = 'form-help';
+    ageHelp.textContent = 'Helps calibrate your starting experience';
+    ageGroup.appendChild(ageHelp);
+
+    section.appendChild(ageGroup);
+
     // Avatar picker (Foundation-friendly: big tap targets, no typing)
     const avatarGroup = document.createElement('div');
     avatarGroup.className = 'form-group';
@@ -254,7 +291,10 @@ export class ProfileScreen implements Disposable {
       errorEl.textContent = '';
       createBtn.disabled = true;
       createBtn.textContent = 'Creating…';
-      this.createAndSelect(core, name, selectedAvatar as string, 'foundation');
+
+      const selectedAge = AGE_RANGES.find(a => a.value === ageSelect.value);
+      const tier = selectedAge?.tier ?? 'foundation';
+      this.createAndSelect(core, name, selectedAvatar as string, tier);
     });
 
     section.appendChild(createBtn);

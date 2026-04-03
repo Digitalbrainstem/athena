@@ -1,8 +1,8 @@
 import type { GameAction, MovePayload } from '@nexus-academy/core';
 import type { InputProvider, ActionCallback } from '../types.js';
 
-interface KeyState { forward: boolean; backward: boolean; left: boolean; right: boolean; }
-const INITIAL_KEY_STATE: KeyState = Object.freeze({ forward: false, backward: false, left: false, right: false });
+interface KeyState { forward: boolean; backward: boolean; left: boolean; right: boolean; running: boolean }
+const INITIAL_KEY_STATE: KeyState = Object.freeze({ forward: false, backward: false, left: false, right: false, running: false });
 
 /** Sentinel action returned by mapKey for movement keys — only used to signal
  *  that the key was recognised so we can call preventDefault. Never emitted. */
@@ -53,11 +53,11 @@ export class KeyboardInput implements InputProvider {
   private resetKeys = (): void => { this.keys = { ...INITIAL_KEY_STATE }; };
 
   private emitMovement = (): void => {
-    const { forward, backward, left, right } = this.keys;
+    const { forward, backward, left, right, running } = this.keys;
     if (!forward && !backward && !left && !right) return;
     const dx = (left ? -1 : 0) + (right ? 1 : 0);
     const dz = (forward ? -1 : 0) + (backward ? 1 : 0);
-    const payload: MovePayload = { direction: { x: dx, z: dz }, running: false };
+    const payload: MovePayload = { direction: { x: dx, z: dz }, running };
     this.emit?.({ type: 'move', source: 'keyboard', payload });
   };
 
@@ -70,6 +70,7 @@ export class KeyboardInput implements InputProvider {
       case 'KeyS': case 'ArrowDown': this.keys.backward = down; return down ? MOVEMENT_SENTINEL : MOVEMENT_SENTINEL;
       case 'KeyA': case 'ArrowLeft': this.keys.left = down; return down ? MOVEMENT_SENTINEL : MOVEMENT_SENTINEL;
       case 'KeyD': case 'ArrowRight': this.keys.right = down; return down ? MOVEMENT_SENTINEL : MOVEMENT_SENTINEL;
+      case 'ShiftLeft': case 'ShiftRight': this.keys.running = down; return down ? MOVEMENT_SENTINEL : MOVEMENT_SENTINEL;
       case 'KeyE': return down ? { type: 'interact', source: 'keyboard' } : null;
       case 'KeyI': return down ? { type: 'inventory', source: 'keyboard' } : null;
       case 'KeyM': return down ? { type: 'map', source: 'keyboard' } : null;

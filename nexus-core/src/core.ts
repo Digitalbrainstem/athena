@@ -229,6 +229,22 @@ export class NexusCore {
     return this.sceneGraph;
   }
 
+  /** Write the client-authoritative player position back into the ECS.
+   *  Called by the game loop after the FirstPersonCamera updates. */
+  setPlayerPosition(x: number, z: number): void {
+    this.worldSystem.setPlayerPosition(this.world, x, z);
+  }
+
+  /** Read the current ECS player position (for the client to seed the camera). */
+  getPlayerPosition(): { x: number; z: number } {
+    const players = this.world.query(['player', 'position']);
+    if (players[0] !== undefined) {
+      const pos = this.world.getComponent(players[0], 'position');
+      if (pos) return { x: pos.x, z: pos.z };
+    }
+    return { x: 0, z: 0 };
+  }
+
   // --- Profile Management ---
 
   async createProfile(data: CreateProfileInput): Promise<Profile> {

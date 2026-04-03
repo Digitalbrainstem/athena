@@ -61,7 +61,7 @@ describe('NexusCore Integration', () => {
     expect(graph.objects.length).toBeGreaterThan(0);
   });
 
-  it('processes movement actions', async () => {
+  it('sets player position via client-authoritative API', async () => {
     core = await NexusCore.create();
 
     const profile = await core.createProfile({ name: 'Mover' });
@@ -74,17 +74,14 @@ describe('NexusCore Integration', () => {
     const playerEntity = players[0]!;
     const posBefore = world.getComponent(playerEntity, 'position');
     expect(posBefore).toBeDefined();
-    const startX = posBefore!.x;
 
-    // Move right
-    core.update(1.0, [{
-      type: 'move',
-      source: 'keyboard',
-      payload: { direction: { x: 1, z: 0 }, running: false },
-    }]);
+    // Movement is now client-authoritative via setPlayerPosition (the
+    // WorldSystem no longer applies speed*dt). Verify the API works.
+    core.setPlayerPosition(5, 10);
 
     const posAfter = world.getComponent(playerEntity, 'position');
-    expect(posAfter!.x).toBeGreaterThan(startX);
+    expect(posAfter!.x).toBe(5);
+    expect(posAfter!.z).toBe(10);
   });
 
   it('accesses mastery data', async () => {

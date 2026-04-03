@@ -23,8 +23,11 @@ describe('SkyRenderer', () => {
 
   it('handles gradient sky type', () => {
     sky.sync({ type: 'gradient', primaryColor: '#87CEEB', secondaryColor: '#E0F7FA' });
-    expect(scene.background).toBeInstanceOf(THREE.Color);
+    // Gradient uses a sky mesh, so background may be null; fog is set
     expect(scene.fog).toBeDefined();
+    // A sky sphere mesh should exist in the scene
+    const hasSkyMesh = scene.children.some(c => c instanceof THREE.Mesh);
+    expect(hasSkyMesh).toBe(true);
   });
 
   it('handles skybox type with fallback', () => {
