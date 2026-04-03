@@ -107,7 +107,8 @@ async function boot(): Promise<void> {
 
   const input = new InputManager();
   input.register(new KeyboardInput());
-  if ('ontouchstart' in window) input.register(new TouchInput());
+  const isMobile = 'ontouchstart' in window && window.innerWidth < 1024;
+  if ('ontouchstart' in window) input.register(new TouchInput(isMobile));
   disposables.push(input);
 
   const fpCam = new FirstPersonCamera();
@@ -126,9 +127,11 @@ async function boot(): Promise<void> {
 
   const hud = new HUD();
   hud.init(DEBUG, a11y);
+  if (isMobile) hud.setMobile(true);
   disposables.push(hud);
 
   const loop = new GameLoop(core, input, fpCam, sceneRenderer, audioManager, hud);
+  if (isMobile) loop.setMobile(true);
   disposables.push(loop);
 
   // Offline support — announce network status changes to screen readers
@@ -182,8 +185,8 @@ async function boot(): Promise<void> {
   loop.start();
 
   canvas.addEventListener('click', () => {
-    if (!fpCam.isPointerLocked && loop.isRunning) fpCam.requestPointerLock(canvas);
-    // Resume AudioContext on any click (browser policy may suspend it)
+    if (!isMobile && !fpCam.isPointerLocked && loop.isRunning) fpCam.requestPointerLock(canvas);
+    // Resume AudioContext on any click/tap (browser policy may suspend it)
     if (audioCtx.state === 'suspended') {
       void audioCtx.resume().then(() => {
         debug('audio', 'AudioContext resumed on click');

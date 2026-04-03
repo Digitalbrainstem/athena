@@ -1,4 +1,4 @@
-import type { NexusCore, SceneGraph, GameAction, MovePayload } from '@nexus-academy/core';
+import type { NexusCore, SceneGraph, GameAction, MovePayload, LookPayload } from '@nexus-academy/core';
 import { updateHighlights } from '@nexus-academy/core';
 import type { Disposable } from '../types.js';
 import type { InputManager } from '../input/manager.js';
@@ -23,6 +23,7 @@ export class GameLoop implements Disposable {
   private fpsAccumulator = 0;
   private _fps = 0;
   private positionSeeded = false;
+  private mobile = false;
 
   private readonly fixedDt: number;
   private readonly core: NexusCore;
@@ -72,6 +73,9 @@ export class GameLoop implements Disposable {
   get isRunning(): boolean { return this.running; }
   get fixedTimestep(): number { return this.fixedDt; }
 
+  /** Enable mobile-specific behaviour (touch prompts, etc.). */
+  setMobile(mobile: boolean): void { this.mobile = mobile; }
+
   private tick = (now: number): void => {
     if (!this.running) return;
     this.rafId = requestAnimationFrame(this.tick);
@@ -111,6 +115,11 @@ export class GameLoop implements Disposable {
         if (a.type === 'move' && a.payload && 'direction' in a.payload) {
           const mp = a.payload as MovePayload;
           this.fpCam.setMoveInput(mp.direction.x, mp.direction.z, mp.running);
+        }
+        // Apply touch/gamepad look actions to the camera (mouse look handled internally)
+        if (a.type === 'look' && a.source !== 'mouse' && a.payload && 'deltaX' in a.payload) {
+          const lp = a.payload as LookPayload;
+          this.fpCam.applyLook(lp.deltaX, lp.deltaY);
         }
       }
 
@@ -178,7 +187,10 @@ export class GameLoop implements Disposable {
     const highlighted = scene.objects.find(o => o.highlight && o.interactable);
     if (highlighted?.interactable) {
       const name = highlighted.interactable.prompt.replace(/^Interact with /, '');
-      this.hud.showPrompt(`Press E to examine the ${name}`);
+      const text = this.mobile
+        ? `Tap to examine the ${name}`
+        : `Press E to examine the ${name}`;
+      this.hud.showPrompt(text);
     } else {
       this.hud.hidePrompt();
     }

@@ -190,6 +190,12 @@ export class FirstPersonCamera implements Disposable {
     if (document.pointerLockElement) document.exitPointerLock();
   }
 
+  /** Apply external look input (touch or gamepad). Updates yaw/pitch directly. */
+  applyLook(deltaX: number, deltaY: number): void {
+    this.yaw += deltaX;
+    this.pitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, this.pitch + deltaY));
+  }
+
   get isPointerLocked(): boolean { return this.pointerLocked; }
 
   dispose(): void {

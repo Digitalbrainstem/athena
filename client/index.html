@@ -285,6 +285,36 @@
     }
 
     /* ------------------------------------------------------------------ */
+    /* Mobile adaptations                                                  */
+    /* ------------------------------------------------------------------ */
+    body.mobile #crosshair {
+      display: none !important;
+    }
+
+    body.mobile #dialogue-box {
+      max-width: 95vw;
+      font-size: 1.25rem;
+      bottom: 18%;
+      padding: 1rem 1.5rem;
+    }
+
+    body.mobile #interaction-prompt {
+      font-size: 1rem;
+      padding: 0.75rem 1.5rem;
+      bottom: 28%;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    body.mobile #fps-counter {
+      font-size: 0.875rem;
+      top: 0.75rem;
+      right: 1rem;
+    }
+
+    /* ------------------------------------------------------------------ */
     /* High contrast mode                                                  */
     /* ------------------------------------------------------------------ */
     .high-contrast {

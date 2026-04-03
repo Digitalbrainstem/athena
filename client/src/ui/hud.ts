@@ -11,6 +11,7 @@ export class HUD implements Disposable {
   private debug = false;
   private disposed = false;
   private promptTimeout: ReturnType<typeof setTimeout> | null = null;
+  private mobile = false;
 
   init(debug = false, a11yManager?: AccessibilityManager): void {
     this.debug = debug;
@@ -21,6 +22,15 @@ export class HUD implements Disposable {
     this.dialogueEl = document.getElementById('dialogue-box');
     if (this.fpsEl) this.fpsEl.classList.toggle('hud-hidden', !debug);
   }
+
+  /** Activate mobile layout — hides crosshair, adds body class for CSS. */
+  setMobile(mobile: boolean): void {
+    this.mobile = mobile;
+    document.body.classList.toggle('mobile', mobile);
+    if (mobile) this.setCrosshairVisible(false);
+  }
+
+  get isMobile(): boolean { return this.mobile; }
 
   update(ui: UIState): void {
     if (this.disposed) return;

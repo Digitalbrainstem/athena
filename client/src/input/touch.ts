@@ -1,20 +1,33 @@
 import type { GameAction, MovePayload } from '@nexus-academy/core';
 import type { InputProvider, ActionCallback } from '../types.js';
+import { TouchCameraController } from './touch-camera.js';
+import { VirtualJoystick } from './virtual-joystick.js';
 
-const DEAD_ZONE = 0.15;
-const MAX_RADIUS = 60;
 const SWIPE_THRESHOLD = 80;
+const TAP_MAX_DURATION = 300; // ms — longer than this is a drag, not a tap
+const TAP_MAX_DISTANCE = 15; // px — more movement than this is a drag
+
+interface RightTouchRecord { x: number; y: number; time: number }
 
 export class TouchInput implements InputProvider {
   readonly name = 'touch' as const;
   private emit: ActionCallback | null = null;
   private abort: AbortController | null = null;
-  private joystickActive = false;
-  private joystickOrigin = { x: 0, y: 0 };
-  private joystickTouchId: number | null = null;
   private moveInterval: ReturnType<typeof setInterval> | null = null;
-  private currentDir = { x: 0, z: 0 };
-  private rightTouchStart = new Map<number, number>();
+  private readonly camera: TouchCameraController;
+  private readonly joystick: VirtualJoystick;
+  private readonly rightTouchStarts = new Map<number, RightTouchRecord>();
+  private readonly mobile: boolean;
+
+  constructor(mobile = false) {
+    this.mobile = mobile;
+    this.camera = new TouchCameraController();
+    this.joystick = new VirtualJoystick();
+    if (mobile) {
+      this.joystick.mount();
+      this.joystick.show();
+    }
+  }
 
   attach(emit: ActionCallback): void {
     this.detach();
@@ -32,25 +45,34 @@ export class TouchInput implements InputProvider {
     this.abort?.abort();
     this.abort = null;
     if (this.moveInterval !== null) { clearInterval(this.moveInterval); this.moveInterval = null; }
-    this.joystickActive = false;
-    this.joystickTouchId = null;
-    this.currentDir = { x: 0, z: 0 };
-    this.rightTouchStart.clear();
+    this.rightTouchStarts.clear();
     this.emit = null;
   }
 
-  dispose(): void { this.detach(); }
+  dispose(): void {
+    this.detach();
+    this.joystick.dispose();
+  }
+
+  // -- Touch handlers -------------------------------------------------------
 
   private onTouchStart = (e: TouchEvent): void => {
     for (let i = 0; i < e.changedTouches.length; i++) {
       const t = e.changedTouches[i];
-      if (t.clientX < window.innerWidth / 2 && !this.joystickActive) {
-        this.joystickActive = true;
-        this.joystickTouchId = t.identifier;
-        this.joystickOrigin = { x: t.clientX, y: t.clientY };
+
+      // Left half → virtual joystick (movement)
+      if (this.joystick.claimTouch(t)) {
         e.preventDefault();
-      } else if (t.clientX >= window.innerWidth / 2) {
-        this.rightTouchStart.set(t.identifier, t.clientX);
+        continue;
+      }
+
+      // Right half
+      if (t.clientX >= window.innerWidth / 2) {
+        if (this.mobile) this.camera.claimTouch(t);
+        this.rightTouchStarts.set(t.identifier, {
+          x: t.clientX, y: t.clientY, time: performance.now(),
+        });
+        e.preventDefault();
       }
     }
   };
@@ -58,18 +80,17 @@ export class TouchInput implements InputProvider {
   private onTouchMove = (e: TouchEvent): void => {
     for (let i = 0; i < e.changedTouches.length; i++) {
       const t = e.changedTouches[i];
-      if (t.identifier === this.joystickTouchId) {
+
+      if (this.joystick.handleMove(t)) {
         e.preventDefault();
-        const dx = t.clientX - this.joystickOrigin.x;
-        const dy = t.clientY - this.joystickOrigin.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < MAX_RADIUS * DEAD_ZONE) {
-          this.currentDir = { x: 0, z: 0 };
-        } else {
-          const clamped = Math.min(dist, MAX_RADIUS);
-          const scale = clamped / MAX_RADIUS;
-          const angle = Math.atan2(dy, dx);
-          this.currentDir = { x: Math.cos(angle) * scale, z: Math.sin(angle) * scale };
+        continue;
+      }
+
+      if (this.mobile) {
+        const look = this.camera.handleMove(t);
+        if (look) {
+          this.fire({ type: 'look', source: 'touch', payload: look });
+          e.preventDefault();
         }
       }
     }
@@ -78,17 +99,30 @@ export class TouchInput implements InputProvider {
   private onTouchEnd = (e: TouchEvent): void => {
     for (let i = 0; i < e.changedTouches.length; i++) {
       const t = e.changedTouches[i];
-      if (t.identifier === this.joystickTouchId) {
-        this.joystickActive = false;
-        this.joystickTouchId = null;
-        this.currentDir = { x: 0, z: 0 };
-      } else {
-        const startX = this.rightTouchStart.get(t.identifier);
-        this.rightTouchStart.delete(t.identifier);
-        if (startX !== undefined) {
-          if (t.clientX - startX < -SWIPE_THRESHOLD) { this.fire({ type: 'back', source: 'touch' }); }
-          else { this.fire({ type: 'interact', source: 'touch' }); }
+
+      if (this.joystick.releaseTouch(t.identifier)) continue;
+      if (this.mobile) this.camera.releaseTouch(t.identifier);
+
+      const start = this.rightTouchStarts.get(t.identifier);
+      this.rightTouchStarts.delete(t.identifier);
+      if (!start) continue;
+
+      const elapsed = performance.now() - start.time;
+      const dx = t.clientX - start.x;
+      const dy = t.clientY - start.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      // Swipe left → back (both modes)
+      if (dx < -SWIPE_THRESHOLD) {
+        this.fire({ type: 'back', source: 'touch' });
+      } else if (this.mobile) {
+        // Mobile: only short taps fire interact (long drags are camera look)
+        if (elapsed < TAP_MAX_DURATION && dist < TAP_MAX_DISTANCE) {
+          this.fire({ type: 'interact', source: 'touch' });
         }
+      } else {
+        // Non-mobile: any right-side touch end is interact (old behavior)
+        this.fire({ type: 'interact', source: 'touch' });
       }
     }
   };
@@ -96,20 +130,20 @@ export class TouchInput implements InputProvider {
   private onTouchCancel = (e: TouchEvent): void => {
     for (let i = 0; i < e.changedTouches.length; i++) {
       const t = e.changedTouches[i];
-      if (t.identifier === this.joystickTouchId) {
-        this.joystickActive = false;
-        this.joystickTouchId = null;
-        this.currentDir = { x: 0, z: 0 };
-      }
-      this.rightTouchStart.delete(t.identifier);
+      this.joystick.releaseTouch(t.identifier);
+      this.camera.releaseTouch(t.identifier);
+      this.rightTouchStarts.delete(t.identifier);
     }
   };
 
+  // -- Movement emission (16ms interval) ------------------------------------
+
   private emitMovement = (): void => {
-    if (this.currentDir.x === 0 && this.currentDir.z === 0) return;
+    const { x, z, magnitude } = this.joystick.getInput();
+    if (x === 0 && z === 0) return;
     const payload: MovePayload = {
-      direction: { ...this.currentDir },
-      running: false,
+      direction: { x, z },
+      running: magnitude > 0.75,
     };
     this.fire({ type: 'move', source: 'touch', payload });
   };
