@@ -224,3 +224,27 @@ SFX:
 File structure: client/public/audio/{voices,ambiance,sfx,music,quests}/
 Game loads by ID — zero runtime TTS, works offline.
 Atlas nightly batch generates audio for new quests.
+
+### 3D Asset Pipeline (TRELLIS 2 on Overwatch 7900 XT)
+TRELLIS-AMD generates real 3D GLB models from reference images.
+Runs on 7900 XT (20GB VRAM), cloned to /mnt/user/appdata/trellis/TRELLIS-AMD/
+
+Total models needed: 1,093
+- Companion characters: 66 (6 types × variants + emotions)
+- UI/screens: 41
+- Building exteriors: 97
+- Building interiors: 327  
+- Natural biome objects: 77
+- Per-biome specific objects: 247 (workshop, observatory, alchemist, etc.)
+- Other biome objects: 176
+- NPCs: 50
+- Overworld: 43
+- Vehicles: 9
+- Crafting/building: 48
+- Weather/effects: 10
+- Quest objects: 73
+- Easter eggs: 5
+
+Estimated generation time: 3.5-5 hours
+Output: client/public/models/{category}/{model-name}.glb
+Game loads GLB via Three.js GLTFLoader — replacing procedural geometry.
