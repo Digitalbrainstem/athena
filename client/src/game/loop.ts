@@ -1,4 +1,4 @@
-import type { NexusCore, SceneGraph, GameAction, MovePayload, LookPayload } from '@nexus-academy/core';
+import type { NexusCore, SceneGraph, GameAction, MovePayload, LookPayload, Quest } from '@nexus-academy/core';
 import { updateHighlights } from '@nexus-academy/core';
 import type { Disposable } from '../types.js';
 import type { InputManager } from '../input/manager.js';
@@ -9,9 +9,17 @@ import type { HUD } from '../ui/hud.js';
 import type { WorldManager } from '../world/world-manager.js';
 import { debug, debugSceneGraph } from '../debug.js';
 
+/** Callback to check for nearby NPCs. Returns NPC name if one is in range, null otherwise. */
+export type NpcProximityChecker = (playerX: number, playerZ: number) => string | null;
+
 const DEFAULT_FIXED_DT = 1 / 60;
 const MAX_FRAME_TIME = 0.25;
 const MAX_STEPS_PER_FRAME = 8;
+
+/** Cooldown before offering the next quest after completion (seconds). */
+const QUEST_OFFER_COOLDOWN = 10;
+/** How often to check for available quests (seconds). */
+const QUEST_CHECK_INTERVAL = 5;
 
 export class GameLoop implements Disposable {
   private running = false;
@@ -30,6 +38,16 @@ export class GameLoop implements Disposable {
   private lastPosX = 0;
   private lastPosZ = 0;
   private positionTracked = false;
+
+  // --- Quest state tracking ---
+  private lastQuestId: string | null = null;
+  private lastStepsCompleted = -1;
+  private questCompleteCooldown = 0;
+  private questCheckTimer = 0;
+  private questOfferPending = false;
+
+  // --- NPC proximity ---
+  private npcProximityChecker: NpcProximityChecker | null = null;
 
   private readonly fixedDt: number;
   private readonly core: NexusCore;
@@ -62,6 +80,11 @@ export class GameLoop implements Disposable {
   setWorldManager(wm: WorldManager): void {
     this.worldManager = wm;
     this.fpCam.setHeightProvider((x, z) => wm.getHeightAt(x, z));
+  }
+
+  /** Set a callback for NPC proximity detection. */
+  setNpcProximityChecker(checker: NpcProximityChecker): void {
+    this.npcProximityChecker = checker;
   }
 
   start(): void {
@@ -213,6 +236,13 @@ export class GameLoop implements Disposable {
         }
       } else if (this.worldManager.isInside() && this.worldManager.isNearDoor) {
         this.hud.showPrompt('Press E to exit');
+      } else if (this.worldManager.isInside() && this.npcProximityChecker) {
+        // NPC proximity prompt — only when inside a biome
+        const npcName = this.npcProximityChecker(eye.x, eye.z);
+        if (npcName) {
+          const action = this.mobile ? 'Tap' : 'Press E';
+          this.hud.showPrompt(`${action} to talk to ${npcName}`);
+        }
       }
     }
 
@@ -239,7 +269,99 @@ export class GameLoop implements Disposable {
     this.hud.processAnnouncements(highlighted.announcements);
     this.hud.processCaptions(highlighted.captions);
     this.hud.updateFPS(this._fps);
+
+    // --- Quest HUD sync ---
+    this.updateQuestPanel(frameDt, highlighted);
   };
+
+  /** Callback invoked when the loop detects a quest should be offered. */
+  private questOfferCallback: ((quests: Quest[]) => void) | null = null;
+
+  /** Callback invoked when a quest completes (for celebration/companion dialogue). */
+  private questCompleteCallback: ((quest: Quest) => void) | null = null;
+
+  /** Register a callback for when a quest offer is detected. */
+  onQuestOffer(cb: (quests: Quest[]) => void): void { this.questOfferCallback = cb; }
+
+  /** Register a callback for when a quest is completed. */
+  onQuestComplete(cb: (quest: Quest) => void): void { this.questCompleteCallback = cb; }
+
+  /** Update quest panel each frame — check active quests, detect completion, trigger offers. */
+  private updateQuestPanel(frameDt: number, _scene: SceneGraph): void {
+    const activeQuests = this.core.getActiveQuests();
+
+    if (activeQuests.length > 0) {
+      const progress = activeQuests[0]!;
+      const quest = this.core.getQuestById(progress.questId);
+
+      if (quest) {
+        // Detect completion (status still 'active' means in-progress)
+        if (progress.status === 'completed' || progress.stepsCompleted >= quest.content.steps.length) {
+          // Quest just completed — check if we already handled it
+          if (this.lastQuestId === quest.id && this.lastStepsCompleted < quest.content.steps.length) {
+            this.hud.showQuestComplete(quest.title);
+            this.questCompleteCooldown = QUEST_OFFER_COOLDOWN;
+            this.questOfferPending = false;
+            this.questCompleteCallback?.(quest);
+            debug('quest', `Quest completed: ${quest.title}`);
+          }
+          this.lastQuestId = null;
+          this.lastStepsCompleted = -1;
+        } else {
+          // Active quest in progress
+          this.hud.showQuestPanel(quest, progress);
+
+          // Show quest indicator when near a relevant object
+          const currentStep = quest.content.steps[progress.stepsCompleted];
+          if (currentStep?.targetId) {
+            const objectNearby = _scene.objects.find(
+              o => o.highlight && o.interactable,
+            );
+            if (objectNearby) {
+              this.hud.showQuestIndicator('✦ Quest objective');
+            } else {
+              this.hud.hideQuestIndicator();
+            }
+          } else {
+            this.hud.hideQuestIndicator();
+          }
+
+          this.lastQuestId = quest.id;
+          this.lastStepsCompleted = progress.stepsCompleted;
+        }
+      }
+    } else {
+      // No active quests — maybe offer one
+      this.hud.hideQuestPanel();
+      this.hud.hideQuestIndicator();
+      this.lastQuestId = null;
+      this.lastStepsCompleted = -1;
+
+      // Cooldown timer after completion
+      if (this.questCompleteCooldown > 0) {
+        this.questCompleteCooldown -= frameDt;
+        return;
+      }
+
+      // Periodic check for available quests
+      this.questCheckTimer += frameDt;
+      if (this.questCheckTimer >= QUEST_CHECK_INTERVAL && !this.questOfferPending) {
+        this.questCheckTimer = 0;
+        const biome = this.core.getCurrentBiome();
+        const available = this.core.selectAvailableQuests(biome);
+        if (available.length > 0) {
+          this.questOfferPending = true;
+          this.questOfferCallback?.(available);
+          debug('quest', `Offering ${available.length} quest(s) in ${biome}`);
+        }
+      }
+    }
+  }
+
+  /** Mark the quest offer as consumed (called after player accepts or dismisses). */
+  clearQuestOffer(): void {
+    this.questOfferPending = false;
+  }
 
   /** Show an interaction prompt when a highlighted interactable is nearby. */
   private updateInteractionPrompt(scene: SceneGraph): void {

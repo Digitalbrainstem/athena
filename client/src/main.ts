@@ -1,4 +1,5 @@
 import { NexusCore } from '@nexus-academy/core';
+import type { Quest } from '@nexus-academy/core';
 import { SceneRenderer } from './renderer/scene-renderer.js';
 import { GameLoop } from './game/loop.js';
 import { InputManager } from './input/manager.js';
@@ -13,6 +14,10 @@ import { NexusVoice } from './audio/nexus-voice.js';
 import { HUD } from './ui/hud.js';
 import { PortalScreen } from './ui/portal-screen.js';
 import { ProfileScreen } from './ui/profile-screen.js';
+import { NpcDialoguePanel, findNearestNpc, npcsInBiome, BIOME_NPCS } from './ui/npc-dialogue.js';
+import type { NpcEntity } from './ui/npc-dialogue.js';
+import { TradePanel } from './ui/trade-panel.js';
+import { CalibrationFlow } from './game/calibration-flow.js';
 import { AccessibilityManager } from './a11y/accessibility-manager.js';
 import { OfflineManager } from './net/offline.js';
 import { registerServiceWorker } from './net/sw-register.js';
@@ -154,6 +159,23 @@ async function boot(): Promise<void> {
   if (isMobile) hud.setMobile(true);
   disposables.push(hud);
 
+  // --- NPC Interaction + Trading ---
+  const npcDialogue = new NpcDialoguePanel();
+  disposables.push(npcDialogue);
+
+  const tradePanel = new TradePanel();
+  disposables.push(tradePanel);
+
+  // --- Calibration Flow ---
+  const calibrationFlow = new CalibrationFlow();
+  disposables.push(calibrationFlow);
+
+  // --- Companion speech helper ---
+  const companionSpeak = (text: string): void => {
+    const speaker = core.getCompanionState()?.name ?? 'Companion';
+    core.worldSystem.queueDialogue(speaker, text);
+  };
+
   const loop = new GameLoop(core, input, fpCam, sceneRenderer, audioManager, hud);
   if (isMobile) loop.setMobile(true);
   disposables.push(loop);
@@ -162,8 +184,46 @@ async function boot(): Promise<void> {
   const worldManager = new WorldManager(sceneRenderer.scene);
   sceneRenderer.setWorldManager(worldManager);
   loop.setWorldManager(worldManager);
+
+  // Wire NPC proximity detection into the game loop
+  loop.setNpcProximityChecker((px, pz) => {
+    const biomeId = worldManager.activeBiomeId ?? core.getCurrentBiome();
+    const npc = findNearestNpc(biomeId, px, pz);
+    return npc ? npc.name : null;
+  });
+
   disposables.push(worldManager);
   debug('world', 'WorldManager created — overworld terrain, landmarks, and paths loaded');
+
+  // --- Crafting + Map Panels ---
+  const handleFastTravel = (biomeId: string): void => {
+    // Fast-travel: switch core biome and world manager
+    core.worldSystem.discoverBiome(biomeId);
+    core.worldSystem.changeBiome(biomeId);
+    worldManager.forceEnterBiome(biomeId);
+    const pos = worldManager.getEntryPosition(biomeId);
+    if (pos) {
+      fpCam.seedPosition(pos.x, pos.z);
+      core.setPlayerPosition(pos.x, pos.z);
+    }
+    core.update(1 / 60, []);
+    debug('travel', `Fast-traveled to biome: ${biomeId}`);
+  };
+
+  hud.initCraftPanel({
+    core,
+    profileId,
+    onCompanionSpeak: companionSpeak,
+  });
+
+  hud.initMapPanel({
+    core,
+    profileId,
+    worldManager,
+    onCompanionSpeak: companionSpeak,
+    onTravelTo: handleFastTravel,
+  });
+  debug('ui', 'Crafting and map panels initialized');
 
   // Spawn player at town-square center, ground level
   fpCam.seedPosition(0, 0);
@@ -218,6 +278,87 @@ async function boot(): Promise<void> {
       },
       async enterBiome() { return worldManager.enterBiome(); },
       async exitBiome() { return worldManager.exitBiome(); },
+
+      // --- Quest debug bridge ---
+      get activeQuests() {
+        const quests = core.getActiveQuests();
+        return quests.map(p => ({
+          ...p,
+          quest: core.getQuestById(p.questId),
+        }));
+      },
+      startQuest(questId: string) {
+        core.questSystem.queueAction({
+          type: 'start',
+          questId,
+          profileId,
+        });
+        core.update(1 / 60, []);
+        return core.getActiveQuests();
+      },
+      completeStep() {
+        const active = core.getActiveQuests();
+        if (active.length === 0) return 'No active quest';
+        const progress = active[0]!;
+        const quest = core.getQuestById(progress.questId);
+        if (!quest) return 'Quest not found';
+        const newSteps = progress.stepsCompleted + 1;
+        core.questSystem.queueAction({
+          type: 'progress',
+          questId: progress.questId,
+          profileId,
+          stepsCompleted: newSteps,
+        });
+        core.update(1 / 60, []);
+        return { questId: progress.questId, stepsCompleted: newSteps, total: quest.content.steps.length };
+      },
+      listAvailable(biome?: string) {
+        const b = biome ?? core.getCurrentBiome();
+        return core.selectAvailableQuests(b);
+      },
+      getQuestById(questId: string) {
+        return core.getQuestById(questId);
+      },
+
+      // --- NPC debug bridge ---
+      spawnNPC(biome: string, type: string) {
+        const npcs = npcsInBiome(biome);
+        const matching = type ? npcs.filter(n => n.type === type) : npcs;
+        return matching.map(n => ({ id: n.id, name: n.name, type: n.type, biome: n.biome, position: n.position }));
+      },
+      get npcsInCurrentBiome() {
+        const biomeId = worldManager.activeBiomeId ?? core.getCurrentBiome();
+        return npcsInBiome(biomeId).map(n => ({ id: n.id, name: n.name, type: n.type }));
+      },
+      openNpcDialogue(npcId: string) {
+        const npc = BIOME_NPCS.find((n: NpcEntity) => n.id === npcId);
+        if (npc) {
+          npcDialogue.show(npc, (n, opt) => handleNpcOption(n, opt));
+          return `Opened dialogue with ${npc.name}`;
+        }
+        return 'NPC not found';
+      },
+
+      // --- Calibration debug bridge ---
+      startCalibration() {
+        if (profile) {
+          const started = calibrationFlow.start(
+            core,
+            profile,
+            (speaker, text) => { core.worldSystem.queueDialogue(speaker, text); },
+            (results) => { console.log('[Calibration] Complete:', results); },
+          );
+          return started ? 'Calibration started' : 'Profile already has mastery data';
+        }
+        return 'No profile loaded';
+      },
+      getCalibrationState() {
+        return calibrationFlow.getState();
+      },
+      simulateCalibration(correct: boolean, responseTimeMs?: number) {
+        calibrationFlow.simulateInteraction(core, correct, responseTimeMs);
+        return calibrationFlow.getState();
+      },
     };
   }
 
@@ -242,6 +383,24 @@ async function boot(): Promise<void> {
   audioManager.startAtmosphere(startingBiome);
   debug('audio', `Atmosphere started for biome: ${startingBiome}`);
 
+  // --- Initial quest offering for the starting biome (after a short delay) ---
+  setTimeout(() => {
+    const biome = core.getCurrentBiome();
+    const available = core.selectAvailableQuests(biome);
+    if (available.length > 0) {
+      pendingQuestOffer = available;
+      const first = available[0]!;
+      const intro = first.content.companionIntro
+        ?? 'I noticed something interesting over by the workbench…';
+      core.worldSystem.queueDialogue(
+        core.getCompanionState()?.name ?? 'Companion',
+        intro,
+      );
+      core.worldSystem.queueSfx('discovery-sparkle', 0.4);
+      debug('quest', `Initial quest offer in ${biome}: ${available.map(q => q.title).join(', ')}`);
+    }
+  }, 5000);
+
   canvas.addEventListener('click', () => {
     if (!isMobile && !fpCam.isPointerLocked && loop.isRunning) fpCam.requestPointerLock(canvas);
     // Resume AudioContext on any click/tap (browser policy may suspend it)
@@ -254,6 +413,46 @@ async function boot(): Promise<void> {
 
   // Track last spoken dialogue to avoid re-speaking the same line each frame
   let lastDialogueText = '';
+
+  // --- Quest state ---
+  let activeQuestId: string | null = null;
+  let pendingQuestOffer: Quest[] = [];
+
+  // Quest offer callback — companion announces available quests
+  loop.onQuestOffer((quests) => {
+    if (activeQuestId) return; // Already in a quest
+    pendingQuestOffer = quests;
+    const first = quests[0];
+    if (first?.content.companionIntro) {
+      core.companionSystem.queueInteraction({
+        type: 'hint',
+        profileId,
+        context: `quest_offer_${first.id}`,
+      });
+      // Queue dialogue directly since hint context may not generate the right text
+      core.worldSystem.queueDialogue(
+        core.getCompanionState()?.name ?? 'Companion',
+        first.content.companionIntro,
+      );
+      core.worldSystem.queueSfx('discovery-sparkle', 0.4);
+    }
+    debug('quest', `Quest offer: ${quests.map(q => q.title).join(', ')}`);
+  });
+
+  // Quest completion callback — companion celebrates
+  loop.onQuestComplete((quest) => {
+    activeQuestId = null;
+    if (quest.content.companionOutro) {
+      core.worldSystem.queueDialogue(
+        core.getCompanionState()?.name ?? 'Companion',
+        quest.content.companionOutro,
+      );
+    }
+    core.worldSystem.queueSfx('quest-complete', 0.8);
+
+    // Record learning events already handled by QuestSystem.completeQuest
+    debug('quest', `Quest completed: ${quest.title} — skills: ${quest.skillsTaught.join(', ')}`);
+  });
 
   input.onAction((action) => {
     if (action.type === 'pause' && fpCam.isPointerLocked) fpCam.exitPointerLock();
@@ -277,6 +476,23 @@ async function boot(): Promise<void> {
               core.worldSystem.changeBiome(biomeId);
               core.update(1 / 60, []);
               debug('world', `Entered biome: ${biomeId}`);
+
+              // Check for available quests in this biome
+              const available = core.selectAvailableQuests(biomeId);
+              if (available.length > 0 && core.getActiveQuests().length === 0) {
+                pendingQuestOffer = available;
+                const first = available[0]!;
+                const intro = first.content.companionIntro
+                  ?? `I noticed something interesting here…`;
+                setTimeout(() => {
+                  core.worldSystem.queueDialogue(
+                    core.getCompanionState()?.name ?? 'Companion',
+                    intro,
+                  );
+                  core.worldSystem.queueSfx('discovery-sparkle', 0.4);
+                }, 2000);
+                debug('quest', `Biome entry quest offer in ${biomeId}: ${available.map(q => q.title).join(', ')}`);
+              }
             }
           });
           return;
@@ -293,22 +509,261 @@ async function boot(): Promise<void> {
         return;
       }
 
+      // --- NPC Interaction ---
+      // Check if there's a nearby NPC when inside a biome
+      if (worldManager.isInside() && !npcDialogue.isOpen && !tradePanel.isOpen) {
+        const biomeId = worldManager.activeBiomeId ?? core.getCurrentBiome();
+        const eye = fpCam.getEyePosition();
+        const nearbyNpc = findNearestNpc(biomeId, eye.x, eye.z);
+        if (nearbyNpc) {
+          // Handle calibration challenge interaction
+          if (calibrationFlow.isActive && calibrationFlow.activeChallenge) {
+            const challengeOverlay = document.getElementById('calibration-challenge');
+            if (challengeOverlay) {
+              const btns = challengeOverlay.querySelectorAll('button');
+              btns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                  const correct = btn.dataset.action === 'correct';
+                  calibrationFlow.submitResponse(core, correct);
+                }, { once: true });
+              });
+            }
+            return;
+          }
+
+          npcDialogue.show(nearbyNpc, (npc, optionId) => {
+            handleNpcOption(npc, optionId);
+          });
+          debug('npc', `Opened dialogue with ${nearbyNpc.name} (${nearbyNpc.type})`);
+          return;
+        }
+      }
+
+      // --- Calibration challenge interaction ---
+      if (calibrationFlow.isActive) {
+        const challengeOverlay = document.getElementById('calibration-challenge');
+        if (challengeOverlay) {
+          const btns = challengeOverlay.querySelectorAll('button');
+          btns.forEach(btn => {
+            btn.addEventListener('click', () => {
+              const correct = btn.dataset.action === 'correct';
+              calibrationFlow.submitResponse(core, correct);
+            }, { once: true });
+          });
+          return;
+        }
+      }
+
       const sg = core.getSceneGraph();
       const highlighted = sg.objects.find(o => o.highlight && o.interactable);
       if (highlighted?.interactable) {
         const name = highlighted.interactable.prompt.replace(/^Interact with /, '');
 
+        // --- Crafting station interaction → open craft panel ---
+        if (highlighted.interactable.interactionType === 'craft') {
+          const stationType = (highlighted.renderable.modelId ?? 'workbench').toLowerCase();
+          hud.craftPanel?.open(stationType);
+          debug('craft', `Opened crafting panel for station: ${stationType}`);
+          return;
+        }
+
         // Play interaction chime SFX
         core.worldSystem.queueSfx('discovery-sparkle', 0.6);
 
-        core.companionSystem.queueInteraction({
-          type: 'react',
-          profileId,
-          context: `examine_${name.toLowerCase().replace(/\s+/g, '_')}`,
-        });
+        // --- Quest interaction logic ---
+        const activeQuests = core.getActiveQuests();
+        const currentQuest = activeQuests.length > 0
+          ? core.getQuestById(activeQuests[0]!.questId)
+          : null;
+        const currentProgress = activeQuests[0] ?? null;
+
+        if (currentQuest && currentProgress && currentProgress.status === 'active') {
+          // Active quest — check if this object matches current step target
+          const step = currentQuest.content.steps[currentProgress.stepsCompleted];
+          if (step) {
+            // Progress the quest: advance by one step
+            const newSteps = currentProgress.stepsCompleted + 1;
+            core.questSystem.queueAction({
+              type: 'progress',
+              questId: currentQuest.id,
+              profileId,
+              stepsCompleted: newSteps,
+            });
+
+            // Show step success response via companion
+            core.worldSystem.queueDialogue(
+              core.getCompanionState()?.name ?? 'Companion',
+              step.successResponse,
+            );
+            debug('quest', `Quest step ${newSteps}/${currentQuest.content.steps.length}: ${step.instruction}`);
+          }
+        } else if (!currentQuest && pendingQuestOffer.length > 0) {
+          // No active quest but we have a pending offer — start the first offered quest
+          const quest = pendingQuestOffer[0]!;
+          core.questSystem.queueAction({
+            type: 'start',
+            questId: quest.id,
+            profileId,
+          });
+          activeQuestId = quest.id;
+          pendingQuestOffer = [];
+          loop.clearQuestOffer();
+
+          // Companion introduces the quest
+          const intro = quest.content.companionIntro ?? `Let's try: ${quest.title}`;
+          core.worldSystem.queueDialogue(
+            core.getCompanionState()?.name ?? 'Companion',
+            intro,
+          );
+          debug('quest', `Quest started: ${quest.title} (${quest.id})`);
+        } else {
+          // Regular interaction — companion reacts
+          core.companionSystem.queueInteraction({
+            type: 'react',
+            profileId,
+            context: `examine_${name.toLowerCase().replace(/\s+/g, '_')}`,
+          });
+        }
       }
     }
   });
+
+  // --- Keyboard shortcuts for panels (C = craft, M = map) ---
+  document.addEventListener('keydown', (e) => {
+    // Don't capture keys when typing in an input/textarea
+    if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+    if (e.key === 'c' || e.key === 'C') {
+      // C key: toggle crafting panel (only when inside a biome with a crafting station nearby)
+      if (hud.mapPanel?.isOpen) return; // don't open craft while map is open
+      if (hud.craftPanel?.isOpen) {
+        hud.craftPanel.close();
+      } else if (worldManager.isInside()) {
+        // Check if there's a crafting station in the current biome
+        const sg = core.getSceneGraph();
+        const craftStation = sg.objects.find(
+          o => o.interactable?.interactionType === 'craft',
+        );
+        if (craftStation) {
+          const stationType = (craftStation.renderable.modelId ?? 'workbench').toLowerCase();
+          hud.craftPanel?.open(stationType);
+          debug('craft', `C key → opened crafting panel for: ${stationType}`);
+        } else {
+          companionSpeak("There's no crafting station nearby.");
+        }
+      }
+    }
+
+    if (e.key === 'm' || e.key === 'M') {
+      // M key: toggle map panel
+      if (hud.craftPanel?.isOpen) return; // don't open map while crafting
+      hud.mapPanel?.toggle();
+      debug('ui', `M key → map panel ${hud.mapPanel?.isOpen ? 'opened' : 'closed'}`);
+    }
+  });
+
+  // --- NPC option handler ---
+  function handleNpcOption(npc: NpcEntity, optionId: string): void {
+    const biomeId = worldManager.activeBiomeId ?? core.getCurrentBiome();
+
+    switch (optionId) {
+      case 'browse':
+      case 'sell': {
+        if (!npc.merchant) return;
+        npcDialogue.hide();
+
+        // Initialize market if needed and get prices
+        core.economySystem.initializeMarket(biomeId);
+        const prices = core.economySystem.getMarketPrices(biomeId);
+        const playerEcon = core.economySystem.getPlayerEconomy(profileId);
+        const playerTier = profile?.masteryTier ?? 'foundation';
+
+        // Get player inventory items that could be sold
+        const playerInvItems: { itemId: string; quantity: number }[] = [];
+        const inv = core.inventorySystem.getItems(core.getWorld());
+        for (const entry of inv) {
+          playerInvItems.push({ itemId: entry.itemType, quantity: entry.quantity });
+        }
+
+        tradePanel.show(
+          npc.merchant,
+          prices,
+          playerEcon,
+          playerInvItems,
+          playerTier,
+          (offer) => core.economySystem.executeTrade(profileId, biomeId, offer, playerTier),
+          () => { debug('trade', 'Trade panel closed'); },
+        );
+        debug('trade', `Opened trade panel with ${npc.name}`);
+        break;
+      }
+
+      case 'quest': {
+        npcDialogue.hide();
+        // Offer quests from this NPC
+        if (npc.questIds && npc.questIds.length > 0) {
+          const quest = core.getQuestById(npc.questIds[0]!);
+          if (quest) {
+            core.questSystem.queueAction({ type: 'start', questId: quest.id, profileId });
+            activeQuestId = quest.id;
+            const intro = quest.content.companionIntro ?? `${npc.name} has a task for us!`;
+            core.worldSystem.queueDialogue(npc.name, intro);
+            debug('quest', `NPC quest started: ${quest.title}`);
+          }
+        } else {
+          core.worldSystem.queueDialogue(npc.name,
+            "I don't have anything right now, but check back later!",
+          );
+        }
+        break;
+      }
+
+      case 'learn': {
+        // Sage explains a concept
+        const topic = npc.expertise?.[0] ?? 'the world';
+        npcDialogue.updateText(
+          `Let me tell you what I know about ${topic}... Every question leads to a discovery!`,
+        );
+        debug('npc', `Sage ${npc.name} teaching about ${topic}`);
+        break;
+      }
+
+      case 'chat': {
+        // Villager/NPC ambient chat
+        const chatLines = [
+          "It's always wonderful to meet someone curious about the world!",
+          "I've been thinking about how everything in this place is connected...",
+          "Did you notice the way the light changes here? Isn't it beautiful?",
+        ];
+        npcDialogue.updateText(chatLines[Math.floor(Math.random() * chatLines.length)]!);
+        debug('npc', `Chatting with ${npc.name}`);
+        break;
+      }
+
+      default:
+        break;
+    }
+  }
+
+  // --- Start calibration if new profile ---
+  if (profile) {
+    const calibrationStarted = calibrationFlow.start(
+      core,
+      profile,
+      (speaker, text) => {
+        core.worldSystem.queueDialogue(speaker, text);
+        void companionVoice.speak(text, 'excited');
+      },
+      (results) => {
+        debug('calibration', 'Calibration complete:', results.detectedTier);
+        debug('calibration', 'Skill levels:', Object.fromEntries(results.skillLevels));
+        debug('calibration', 'Interests:', results.interests);
+      },
+    );
+    if (calibrationStarted) {
+      debug('calibration', 'Calibration flow started for new profile');
+    }
+  }
 
   // Poll for dialogue each frame and speak it via companion voice
   const dialoguePoll = setInterval(() => {
