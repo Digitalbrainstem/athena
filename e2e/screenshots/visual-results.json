@@ -8,17 +8,17 @@
     {
       "name": "Profile creation",
       "pass": true,
-      "timestamp": "2026-04-03T06:46:30.566Z"
+      "timestamp": "2026-04-03T07:17:55.420Z"
     },
     {
       "name": "Game loop running",
       "pass": true,
-      "timestamp": "2026-04-03T06:46:30.709Z"
+      "timestamp": "2026-04-03T07:17:55.478Z"
     },
     {
       "name": "Canvas renders with non-zero size",
       "pass": true,
-      "timestamp": "2026-04-03T06:46:35.317Z",
+      "timestamp": "2026-04-03T07:17:57.806Z",
       "exists": true,
       "width": 1280,
       "height": 720,
@@ -27,15 +27,15 @@
     {
       "name": "Workshop visual regression",
       "pass": false,
-      "timestamp": "2026-04-03T06:46:37.887Z",
-      "diffPercent": "98.9",
+      "timestamp": "2026-04-03T07:17:58.416Z",
+      "diffPercent": "99.6",
       "refSize": 33619,
-      "newSize": 33762
+      "newSize": 48095
     },
     {
       "name": "Scene graph has objects and is running",
       "pass": true,
-      "timestamp": "2026-04-03T06:46:38.217Z",
+      "timestamp": "2026-04-03T07:17:58.438Z",
       "objectCount": 5,
       "groundColor": "#8B6914",
       "skyColor": "#D4A574",
@@ -45,37 +45,37 @@
         "y": 1.6,
         "z": 0
       },
-      "fps": 4,
+      "fps": 15,
       "isRunning": true
     },
     {
       "name": "Visual: north view",
       "pass": false,
-      "timestamp": "2026-04-03T06:46:43.351Z",
-      "diffPercent": "99.1"
+      "timestamp": "2026-04-03T07:18:00.999Z",
+      "diffPercent": "99.4"
     },
     {
       "name": "Visual: east view",
       "pass": false,
-      "timestamp": "2026-04-03T06:46:47.732Z",
-      "diffPercent": "99.2"
+      "timestamp": "2026-04-03T07:18:03.106Z",
+      "diffPercent": "99.4"
     },
     {
       "name": "Visual: south view",
       "pass": false,
-      "timestamp": "2026-04-03T06:46:52.080Z",
-      "diffPercent": "99.1"
+      "timestamp": "2026-04-03T07:18:05.064Z",
+      "diffPercent": "99.4"
     },
     {
       "name": "Visual: west view",
       "pass": false,
-      "timestamp": "2026-04-03T06:46:56.325Z",
-      "diffPercent": "99.0"
+      "timestamp": "2026-04-03T07:18:07.151Z",
+      "diffPercent": "99.4"
     },
     {
       "name": "Profile screen rendered successfully",
       "pass": true,
-      "timestamp": "2026-04-03T06:46:56.325Z"
+      "timestamp": "2026-04-03T07:18:07.151Z"
     }
   ],
   "consoleErrors": []

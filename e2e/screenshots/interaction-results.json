@@ -1,47 +1,60 @@
 {
   "test": "interaction",
-  "passed": 5,
-  "failed": 2,
+  "passed": 7,
+  "failed": 0,
   "skipped": 0,
   "total": 7,
   "results": [
     {
       "name": "Profile creation",
       "pass": true,
-      "timestamp": "2026-04-03T06:45:09.535Z",
-      "profileId": "7ap9hy4nin319ufn"
+      "timestamp": "2026-04-03T07:15:33.108Z",
+      "profileId": "25di2pgw9g0eqokt"
     },
     {
       "name": "Game loop running",
       "pass": true,
-      "timestamp": "2026-04-03T06:45:09.683Z"
+      "timestamp": "2026-04-03T07:15:33.176Z"
     },
     {
       "name": "Interaction prompt appears near objects",
-      "pass": false,
-      "timestamp": "2026-04-03T06:45:19.219Z",
-      "promptText": "Press E to examine the Anvil"
+      "pass": true,
+      "timestamp": "2026-04-03T07:15:37.189Z",
+      "promptText": "Press E to examine the Anvil",
+      "highlightInfo": {
+        "total": 5,
+        "highlighted": 1,
+        "interactable": 5,
+        "highlightedNames": [
+          "Interact with Anvil"
+        ],
+        "cameraPos": {
+          "x": -1,
+          "y": 1.6,
+          "z": 0
+        }
+      }
     },
     {
       "name": "E key opens companion dialogue",
-      "pass": false,
-      "timestamp": "2026-04-03T06:45:27.430Z",
-      "dialogueText": ""
+      "pass": true,
+      "timestamp": "2026-04-03T07:15:41.343Z",
+      "dialogueText": "Buddy: I bet anvil has a story to tell. Let's find out!"
     },
     {
       "name": "Companion system initialized",
       "pass": true,
-      "timestamp": "2026-04-03T06:45:30.816Z",
+      "timestamp": "2026-04-03T07:15:42.428Z",
       "uiState": {
-        "dialogueActive": false,
-        "dialogueText": null,
-        "dialogueSpeaker": null
+        "dialogueActive": true,
+        "dialogueText": "I bet anvil has a story to tell. Let's find out!",
+        "dialogueSpeaker": "Buddy"
       }
     },
     {
       "name": "HUD elements exist (crosshair, prompt, dialogue)",
       "pass": true,
-      "timestamp": "2026-04-03T06:45:31.131Z",
+      "timestamp": "2026-04-03T07:15:42.530Z",
       "hudElements": {
         "crosshair": true,
         "prompt": true,
@@ -53,7 +66,7 @@
     {
       "name": "Interactable objects reachable from spawn",
       "pass": true,
-      "timestamp": "2026-04-03T06:45:45.361Z",
+      "timestamp": "2026-04-03T07:15:53.470Z",
       "interactablesFound": 1
     }
   ],

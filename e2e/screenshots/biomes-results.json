@@ -1,25 +1,25 @@
 {
   "test": "all-biomes",
-  "passed": 3,
-  "failed": 27,
-  "skipped": 26,
+  "passed": 30,
+  "failed": 0,
+  "skipped": 0,
   "total": 30,
   "results": [
     {
       "name": "Profile creation",
       "pass": true,
-      "timestamp": "2026-04-03T06:45:57.778Z",
-      "profileId": "ibihss14m5rrtliw"
+      "timestamp": "2026-04-03T07:16:03.971Z",
+      "profileId": "flqa18k0afszn6zp"
     },
     {
       "name": "Game loop running",
       "pass": true,
-      "timestamp": "2026-04-03T06:45:57.854Z"
+      "timestamp": "2026-04-03T07:16:04.037Z"
     },
     {
       "name": "Biome: workshop",
       "pass": true,
-      "timestamp": "2026-04-03T06:46:01.158Z",
+      "timestamp": "2026-04-03T07:16:06.696Z",
       "screenshot": "/root/e2e-tests/screenshots/workshop.png",
       "objects": 5,
       "groundColor": "#8B6914",
@@ -28,216 +28,268 @@
     },
     {
       "name": "Workshop: WASD movement",
-      "pass": false,
-      "timestamp": "2026-04-03T06:46:03.401Z"
+      "pass": true,
+      "timestamp": "2026-04-03T07:16:09.200Z"
     },
     {
       "name": "Biome: alchemist-lab",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:04.174Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/alchemist-lab.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:16:13.166Z",
+      "screenshot": "/root/e2e-tests/screenshots/alchemist-lab.png",
+      "objects": 3,
+      "groundColor": "#3D3D3D",
+      "skyColor": "#2E0854",
+      "errors": []
     },
     {
       "name": "Biome: crystal-caverns",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:04.775Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/crystal-caverns.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:16:16.549Z",
+      "screenshot": "/root/e2e-tests/screenshots/crystal-caverns.png",
+      "objects": 3,
+      "groundColor": "#2F4F4F",
+      "skyColor": "#0D0D2B",
+      "errors": []
     },
     {
       "name": "Biome: living-forest",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:05.438Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/living-forest.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:16:19.911Z",
+      "screenshot": "/root/e2e-tests/screenshots/living-forest.png",
+      "objects": 3,
+      "groundColor": "#228B22",
+      "skyColor": "#87CEEB",
+      "errors": []
     },
     {
       "name": "Biome: library-echoes",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:06.023Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/library-echoes.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:16:23.502Z",
+      "screenshot": "/root/e2e-tests/screenshots/library-echoes.png",
+      "objects": 3,
+      "groundColor": "#F5F5DC",
+      "skyColor": "#2C1810",
+      "errors": []
     },
     {
       "name": "Biome: ancient-ruins",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:06.881Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/ancient-ruins.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:16:27.303Z",
+      "screenshot": "/root/e2e-tests/screenshots/ancient-ruins.png",
+      "objects": 7,
+      "groundColor": "#C4A46C",
+      "skyColor": "#87CEEB",
+      "errors": []
     },
     {
       "name": "Biome: time-rift",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:07.396Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/time-rift.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:16:31.313Z",
+      "screenshot": "/root/e2e-tests/screenshots/time-rift.png",
+      "objects": 7,
+      "groundColor": "#2F1F4F",
+      "skyColor": "#0D0D2B",
+      "errors": []
     },
     {
       "name": "Biome: explorers-map",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:07.810Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/explorers-map.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:16:35.152Z",
+      "screenshot": "/root/e2e-tests/screenshots/explorers-map.png",
+      "objects": 7,
+      "groundColor": "#A0522D",
+      "skyColor": "#87CEEB",
+      "errors": []
     },
     {
       "name": "Biome: gallery",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:08.455Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/gallery.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:16:38.593Z",
+      "screenshot": "/root/e2e-tests/screenshots/gallery.png",
+      "objects": 7,
+      "groundColor": "#F5F5F5",
+      "skyColor": "#FAF0E6",
+      "errors": []
     },
     {
       "name": "Biome: newsroom",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:08.984Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/newsroom.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:16:42.134Z",
+      "screenshot": "/root/e2e-tests/screenshots/newsroom.png",
+      "objects": 7,
+      "groundColor": "#696969",
+      "skyColor": "#708090",
+      "errors": []
     },
     {
       "name": "Biome: theater",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:09.753Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/theater.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:16:45.634Z",
+      "screenshot": "/root/e2e-tests/screenshots/theater.png",
+      "objects": 7,
+      "groundColor": "#3D1C02",
+      "skyColor": "#1A1A2E",
+      "errors": []
     },
     {
       "name": "Biome: marketplace",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:10.234Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/marketplace.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:16:49.499Z",
+      "screenshot": "/root/e2e-tests/screenshots/marketplace.png",
+      "objects": 7,
+      "groundColor": "#A9A9A9",
+      "skyColor": "#87CEEB",
+      "errors": []
     },
     {
       "name": "Biome: observatory",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:10.956Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/observatory.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:16:52.894Z",
+      "screenshot": "/root/e2e-tests/screenshots/observatory.png",
+      "objects": 10,
+      "groundColor": "#2F2F3F",
+      "skyColor": "#050510",
+      "errors": []
     },
     {
       "name": "Biome: storm-tower",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:11.526Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/storm-tower.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:16:56.680Z",
+      "screenshot": "/root/e2e-tests/screenshots/storm-tower.png",
+      "objects": 11,
+      "groundColor": "#4A4A4A",
+      "skyColor": "#2C3E50",
+      "errors": []
     },
     {
       "name": "Biome: healers-sanctuary",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:12.250Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/healers-sanctuary.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:17:00.303Z",
+      "screenshot": "/root/e2e-tests/screenshots/healers-sanctuary.png",
+      "objects": 9,
+      "groundColor": "#E8E8E0",
+      "skyColor": "#87CEEB",
+      "errors": []
     },
     {
       "name": "Biome: hospital",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:12.796Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/hospital.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:17:03.860Z",
+      "screenshot": "/root/e2e-tests/screenshots/hospital.png",
+      "objects": 9,
+      "groundColor": "#E8E8E8",
+      "skyColor": "#D6EAF8",
+      "errors": []
     },
     {
       "name": "Biome: farm",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:13.406Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/farm.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:17:07.816Z",
+      "screenshot": "/root/e2e-tests/screenshots/farm.png",
+      "objects": 11,
+      "groundColor": "#6B4226",
+      "skyColor": "#87CEEB",
+      "errors": []
     },
     {
       "name": "Biome: laboratory",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:13.984Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/laboratory.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:17:11.590Z",
+      "screenshot": "/root/e2e-tests/screenshots/laboratory.png",
+      "objects": 11,
+      "groundColor": "#D0D0D0",
+      "skyColor": "#C8D6E5",
+      "errors": []
     },
     {
       "name": "Biome: architects-domain",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:14.885Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/architects-domain.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:17:15.508Z",
+      "screenshot": "/root/e2e-tests/screenshots/architects-domain.png",
+      "objects": 7,
+      "groundColor": "#B0A89A",
+      "skyColor": "#87CEEB",
+      "errors": []
     },
     {
       "name": "Biome: shipyard",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:15.491Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/shipyard.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:17:19.236Z",
+      "screenshot": "/root/e2e-tests/screenshots/shipyard.png",
+      "objects": 7,
+      "groundColor": "#6B4226",
+      "skyColor": "#4682B4",
+      "errors": []
     },
     {
       "name": "Biome: code-forge",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:16.100Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/code-forge.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:17:22.890Z",
+      "screenshot": "/root/e2e-tests/screenshots/code-forge.png",
+      "objects": 7,
+      "groundColor": "#1C1C1C",
+      "skyColor": "#0A0A1A",
+      "errors": []
     },
     {
       "name": "Biome: digital-world",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:16.686Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/digital-world.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:17:26.436Z",
+      "screenshot": "/root/e2e-tests/screenshots/digital-world.png",
+      "objects": 7,
+      "groundColor": "#0A0A1F",
+      "skyColor": "#050510",
+      "errors": []
     },
     {
       "name": "Biome: space-station",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:17.385Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/space-station.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:17:30.008Z",
+      "screenshot": "/root/e2e-tests/screenshots/space-station.png",
+      "objects": 7,
+      "groundColor": "#2A2A3A",
+      "skyColor": "#000010",
+      "errors": []
     },
     {
       "name": "Biome: debate-hall",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:17.909Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/debate-hall.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:17:33.351Z",
+      "screenshot": "/root/e2e-tests/screenshots/debate-hall.png",
+      "objects": 7,
+      "groundColor": "#E8DCC8",
+      "skyColor": "#87CEEB",
+      "errors": []
     },
     {
       "name": "Biome: trading-post",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:18.615Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/trading-post.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:17:37.093Z",
+      "screenshot": "/root/e2e-tests/screenshots/trading-post.png",
+      "objects": 7,
+      "groundColor": "#9E8E7E",
+      "skyColor": "#87CEEB",
+      "errors": []
     },
     {
       "name": "Biome: arena",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:19.169Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/arena.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:17:40.974Z",
+      "screenshot": "/root/e2e-tests/screenshots/arena.png",
+      "objects": 7,
+      "groundColor": "#4A4A5A",
+      "skyColor": "#1A1A3E",
+      "errors": []
     },
     {
       "name": "Biome: music-hall",
-      "pass": null,
-      "timestamp": "2026-04-03T06:46:19.939Z",
-      "skipped": true,
-      "reason": "Travel system not available via debug bridge — needs game progression",
-      "screenshot": "/root/e2e-tests/screenshots/music-hall.png"
+      "pass": true,
+      "timestamp": "2026-04-03T07:17:44.731Z",
+      "screenshot": "/root/e2e-tests/screenshots/music-hall.png",
+      "objects": 7,
+      "groundColor": "#5C3317",
+      "skyColor": "#1A0A2E",
+      "errors": []
     }
   ],
   "consoleErrors": []

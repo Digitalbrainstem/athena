@@ -3159,6 +3159,9 @@ export class WorldSystem implements System {
   private cachedWorldState: WorldState | null = null;
   private previousBiomeId: string | null = null;
   private pendingDialogue: { speaker: string; text: string } | null = null;
+  private activeDialogue: { speaker: string; text: string } | null = null;
+  private dialogueTimer = 0;
+  private static readonly DIALOGUE_DURATION = 6; // seconds to show dialogue
   private pendingSfx: AudioCue[] = [];
   setRepository(repo: WorldStateRepository): void {
     this.worldStateRepo = repo;
@@ -3171,6 +3174,15 @@ export class WorldSystem implements System {
 
   update(_world: World, _dt: number): void {
     if (!this.activeProfileId || !this.worldStateRepo) return;
+
+    // Tick down the dialogue display timer
+    if (this.activeDialogue && this.dialogueTimer > 0) {
+      this.dialogueTimer -= _dt;
+      if (this.dialogueTimer <= 0) {
+        this.activeDialogue = null;
+        this.dialogueTimer = 0;
+      }
+    }
 
     // Movement is handled client-side (FirstPersonCamera owns velocity &
     // friction). The client writes the authoritative position back into the
@@ -3421,11 +3433,18 @@ export class WorldSystem implements System {
     let dialogueActive = false;
     let dialogueText: string | undefined;
     let dialogueSpeaker: string | undefined;
+
+    // New dialogue replaces any current active dialogue and resets the timer
     if (this.pendingDialogue) {
-      dialogueActive = true;
-      dialogueText = this.pendingDialogue.text;
-      dialogueSpeaker = this.pendingDialogue.speaker;
+      this.activeDialogue = this.pendingDialogue;
+      this.dialogueTimer = WorldSystem.DIALOGUE_DURATION;
       this.pendingDialogue = null;
+    }
+
+    if (this.activeDialogue && this.dialogueTimer > 0) {
+      dialogueActive = true;
+      dialogueText = this.activeDialogue.text;
+      dialogueSpeaker = this.activeDialogue.speaker;
     }
 
     // Player position for highlight proximity checks

@@ -106,9 +106,7 @@ async function run() {
     }
 
     // ─── Attempt to visit each biome via travel system ────────────────────
-    // The travel system uses core.travelSystem.travelTo(biomeId).
-    // We try to trigger travel via evaluate, but this depends on the game state
-    // allowing travel. If it fails, we just screenshot the current biome.
+    // Use the debug bridge changeBiome command to switch biomes directly.
     console.log('\n─── Attempting biome travel for all 27 biomes ───');
 
     for (const biomeId of BIOME_IDS) {
@@ -116,34 +114,36 @@ async function run() {
 
       console.log(`\n  → Biome: ${biomeId}`);
 
-      // Try to travel to the biome
-      const travelResult = await page.evaluate(async (id) => {
+      // Change biome via debug bridge (discovers + changes + ticks)
+      const travelResult = await page.evaluate((id) => {
         try {
           const dbg = window.__nexus_debug;
           if (!dbg) return { success: false, error: 'no debug bridge' };
-
-          const sg = dbg.sceneGraph;
-          // Try travel via the core if available
-          // The travel system requires the world system which is on the core
-          return { success: false, error: 'travel not implemented in debug bridge' };
+          if (typeof dbg.changeBiome !== 'function') return { success: false, error: 'changeBiome not available' };
+          dbg.changeBiome(id);
+          return { success: true };
         } catch (e) {
           return { success: false, error: e.message };
         }
       }, biomeId);
 
       if (!travelResult.success) {
-        console.log(`    Travel not available (${travelResult.error}) — testing current biome view`);
-        // Just take a screenshot with the current state
+        console.log(`    Travel failed (${travelResult.error})`);
         await takeScreenshot(page, `${SCREENSHOT_DIR}/${biomeId}.png`);
-        results.push(makeResult(`Biome: ${biomeId}`, null, {
-          skipped: true,
-          reason: 'Travel system not available via debug bridge — needs game progression',
+        results.push(makeResult(`Biome: ${biomeId}`, false, {
+          error: travelResult.error,
           screenshot: `${SCREENSHOT_DIR}/${biomeId}.png`,
         }));
         continue;
       }
 
+      // Wait for scene to update and re-render
       await page.waitForTimeout(2000);
+
+      // Reset player position to origin so objects are visible from a standard spot
+      await page.evaluate(() => window.__nexus_debug?.setPlayerPosition?.(0, 0));
+      await page.waitForTimeout(500);
+
       const biomeResult = await verifyBiome(page, biomeId, SCREENSHOT_DIR);
       console.log(`    Objects: ${biomeResult.objects}, Ground: ${biomeResult.groundColor}, Sky: ${biomeResult.skyColor}`);
       results.push(makeResult(`Biome: ${biomeId}`, biomeResult.pass, biomeResult));

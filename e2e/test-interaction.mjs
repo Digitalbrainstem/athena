@@ -53,15 +53,15 @@ async function run() {
     // ─── Test 1: Interaction prompt detection ─────────────────────────────
     console.log('\n─── Test 1: Interaction prompt visibility ───');
 
-    // The workshop has objects near origin (workbench at z=-3, anvil at x=3,z=-2, etc.)
-    // Move the player to a known object location
+    // The workshop has objects near origin (workbench at z=-3, anvil at x=-2,z=0, etc.)
+    // Teleport the player next to the anvil to guarantee proximity
     const canvas = await page.$('#game-canvas');
     if (canvas) await canvas.click();
     await page.waitForTimeout(500);
 
-    // Walk toward objects in the workshop
-    await pressKeyFor(page, 'w', 2000);
-    await page.waitForTimeout(500);
+    // Position the player right next to the anvil at (-2, 0)
+    await page.evaluate(() => window.__nexus_debug?.setPlayerPosition?.(-1, 0));
+    await page.waitForTimeout(1000);
 
     const promptEl = await page.$('#interaction-prompt');
     const promptText = promptEl ? await promptEl.textContent() : '';
@@ -71,7 +71,31 @@ async function run() {
     });
 
     console.log(`  Prompt visible: ${promptVisible}, text: "${promptText}"`);
-    results.push(makeResult('Interaction prompt appears near objects', promptVisible, { promptText }));
+
+    // Also dump highlight state from scene graph for diagnostics
+    const highlightInfo = await page.evaluate(() => {
+      const dbg = window.__nexus_debug;
+      if (!dbg) return null;
+      const sg = dbg.sceneGraph;
+      const objs = sg?.objects ?? [];
+      return {
+        total: objs.length,
+        highlighted: objs.filter(o => o.highlight).length,
+        interactable: objs.filter(o => o.interactable).length,
+        highlightedNames: objs.filter(o => o.highlight && o.interactable)
+          .map(o => o.interactable.prompt),
+        cameraPos: dbg.cameraPosition,
+      };
+    });
+    if (highlightInfo) {
+      console.log(`  Scene: ${highlightInfo.total} objects, ${highlightInfo.interactable} interactable, ${highlightInfo.highlighted} highlighted`);
+      console.log(`  Camera: x=${highlightInfo.cameraPos?.x?.toFixed(2)}, z=${highlightInfo.cameraPos?.z?.toFixed(2)}`);
+      if (highlightInfo.highlightedNames.length > 0) {
+        console.log(`  Highlighted: ${highlightInfo.highlightedNames.join(', ')}`);
+      }
+    }
+
+    results.push(makeResult('Interaction prompt appears near objects', promptVisible, { promptText, highlightInfo }));
 
     await takeScreenshot(page, `${SCREENSHOT_DIR}/interaction-prompt.png`);
 

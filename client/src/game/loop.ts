@@ -1,4 +1,5 @@
 import type { NexusCore, SceneGraph, GameAction, MovePayload } from '@nexus-academy/core';
+import { updateHighlights } from '@nexus-academy/core';
 import type { Disposable } from '../types.js';
 import type { InputManager } from '../input/manager.js';
 import type { SceneRenderer } from '../renderer/scene-renderer.js';
@@ -145,24 +146,30 @@ export class GameLoop implements Disposable {
       rotation: { x: rot.pitch, y: rot.yaw, z: 0 },
     };
 
+    // Recompute highlights using the client-authoritative camera position.
+    // The scene graph was built with the ECS player position which should
+    // match, but re-running ensures the prompt always tracks the real camera.
+    const playerGroundPos = { x: eye.x, y: 0, z: eye.z };
+    const highlighted = updateHighlights(sceneGraph, playerGroundPos);
+
     // Debug: log scene graph once on first frame only
     if (!this.firstFrameLogged) {
       this.firstFrameLogged = true;
       debug('scene', 'First frame scene graph:');
-      debugSceneGraph(sceneGraph);
-      debug('render', 'Ground:', sceneGraph.ground);
-      debug('render', 'Sky:', sceneGraph.sky);
-      debug('camera', 'Camera:', sceneGraph.camera);
+      debugSceneGraph(highlighted);
+      debug('render', 'Ground:', highlighted.ground);
+      debug('render', 'Sky:', highlighted.sky);
+      debug('camera', 'Camera:', highlighted.camera);
     }
 
     // Show / hide interaction prompts based on highlight state
-    this.updateInteractionPrompt(sceneGraph);
+    this.updateInteractionPrompt(highlighted);
 
-    this.sceneRenderer.render(sceneGraph);
-    this.audioManager.process(sceneGraph.audio);
-    this.hud.update(sceneGraph.ui);
-    this.hud.processAnnouncements(sceneGraph.announcements);
-    this.hud.processCaptions(sceneGraph.captions);
+    this.sceneRenderer.render(highlighted);
+    this.audioManager.process(highlighted.audio);
+    this.hud.update(highlighted.ui);
+    this.hud.processAnnouncements(highlighted.announcements);
+    this.hud.processCaptions(highlighted.captions);
     this.hud.updateFPS(this._fps);
   };
 

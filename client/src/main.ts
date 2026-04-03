@@ -100,6 +100,11 @@ async function boot(): Promise<void> {
   sceneRenderer.setAssetManager(assetManager);
   disposables.push(sceneRenderer);
 
+  // Wire the companion character model into the scene (replaces default orb)
+  if (profile?.avatarData) {
+    sceneRenderer.setCompanionModel(profile.avatarData, profile.masteryTier);
+  }
+
   const input = new InputManager();
   input.register(new KeyboardInput());
   if ('ontouchstart' in window) input.register(new TouchInput());
@@ -160,6 +165,11 @@ async function boot(): Promise<void> {
       get profileId() { return profileId; },
       get currentBiome() { return core.getSceneGraph().ground; },
       setPlayerPosition(x: number, z: number) { fpCam.seedPosition(x, z); core.setPlayerPosition(x, z); },
+      changeBiome(biomeId: string) {
+        core.worldSystem.discoverBiome(biomeId);
+        core.worldSystem.changeBiome(biomeId);
+        core.update(1 / 60, []);
+      },
     };
   }
 

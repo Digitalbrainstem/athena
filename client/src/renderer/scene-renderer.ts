@@ -1,11 +1,13 @@
 import * as THREE from 'three';
 import type { SceneGraph, SceneObject, CameraDescriptor } from '../types.js';
+import type { MasteryTier } from '@nexus-academy/core';
 import type { Disposable } from '../types.js';
 import { ObjectFactory } from './object-factory.js';
 import { LightManager } from './light-manager.js';
 import { SkyRenderer } from './sky-renderer.js';
 import { GroundRenderer } from './ground-renderer.js';
 import type { AssetManager } from '../assets/asset-manager.js';
+import type { CompanionModel } from '../assets/companion-models.js';
 
 const LOD_PROFILES = {
   low:    { pixelRatioCap: 1,   antialias: false },
@@ -37,9 +39,11 @@ export class SceneRenderer implements Disposable {
   private predictivePitch = 0;
   private hasPredictiveLook = false;
 
-  // Companion orb
+  // Companion orb / model
   private companionGroup: THREE.Group | null = null;
+  private companionModel: CompanionModel | null = null;
   private companionTime = 0;
+  private assetManager: AssetManager | null = null;
 
   constructor(canvas: HTMLCanvasElement, initialTier: LODTier = 'medium') {
     this.lodTier = initialTier;
@@ -76,7 +80,25 @@ export class SceneRenderer implements Disposable {
 
   /** Connect the AssetManager so procedural models are used for 'model' mesh types. */
   setAssetManager(manager: AssetManager): void {
+    this.assetManager = manager;
     this.objectFactory.setAssetManager(manager);
+  }
+
+  /** Replace the default companion orb with a proper companion character model. */
+  setCompanionModel(companionType: string, tier: MasteryTier): void {
+    if (!this.assetManager || !companionType) return;
+    const model = this.assetManager.getCompanionModel(companionType, tier);
+    // Remove the existing orb / model
+    if (this.companionGroup) {
+      this.scene.remove(this.companionGroup);
+    }
+    if (this.companionModel) {
+      this.companionModel.dispose();
+    }
+    this.companionGroup = model.group;
+    this.companionModel = model;
+    this.companionTime = 0;
+    this.scene.add(this.companionGroup);
   }
 
   render(sceneGraph: SceneGraph): void {
@@ -127,6 +149,10 @@ export class SceneRenderer implements Disposable {
     if (this.companionGroup) {
       this.scene.remove(this.companionGroup);
       this.companionGroup = null;
+    }
+    if (this.companionModel) {
+      this.companionModel.dispose();
+      this.companionModel = null;
     }
 
     this.lightManager.dispose();
@@ -192,8 +218,15 @@ export class SceneRenderer implements Disposable {
     const bob = Math.sin(this.companionTime * 2) * 0.08;
     this.companionGroup.position.set(rx, baseY + bob, rz);
 
-    // Slow rotation
-    this.companionGroup.rotation.y += 0.01;
+    // Face the same direction as the player
+    this.companionGroup.rotation.y = yaw + Math.PI;
+
+    // Run character-specific idle animation if available, otherwise rotate orb
+    if (this.companionModel) {
+      this.companionModel.idle(this.companionTime);
+    } else {
+      this.companionGroup.rotation.y += 0.01;
+    }
   }
 
   // -- Camera / objects ----------------------------------------------------
