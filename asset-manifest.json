@@ -1,5 +1,5 @@
 {
-  "total": 2237,
+  "total": 2543,
   "assets": [
     {
       "id": "companions/fox/fox_foundation",
@@ -15659,6 +15659,2148 @@
       "subcategory": "alien",
       "name": "symbiotic_brain_coral v2",
       "prompt": "Alien plant: symbiotic brain coral, exotic, beautiful, game, variation 2"
+    },
+    {
+      "id": "civilizations/mesopotamia/ziggurat_v1",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "ziggurat v1",
+      "prompt": "Stylized 3D: Mesopotamian ziggurat, stepped pyramid, mud brick, Babylon, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesopotamia/ziggurat_v2",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "ziggurat v2",
+      "prompt": "Stylized 3D: Mesopotamian ziggurat, stepped pyramid, mud brick, Babylon, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/mesopotamia/cuneiform_tablet_v1",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "cuneiform_tablet v1",
+      "prompt": "Stylized 3D: Cuneiform clay tablet, wedge writing, ancient, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesopotamia/cuneiform_tablet_v2",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "cuneiform_tablet v2",
+      "prompt": "Stylized 3D: Cuneiform clay tablet, wedge writing, ancient, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/mesopotamia/ishtar_gate_v1",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "ishtar_gate v1",
+      "prompt": "Stylized 3D: Ishtar Gate, blue glazed brick, dragons and bulls, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesopotamia/ishtar_gate_v2",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "ishtar_gate v2",
+      "prompt": "Stylized 3D: Ishtar Gate, blue glazed brick, dragons and bulls, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/mesopotamia/hanging_gardens_v1",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "hanging_gardens v1",
+      "prompt": "Stylized 3D: Hanging Gardens of Babylon, terraces, lush plants, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesopotamia/hanging_gardens_v2",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "hanging_gardens v2",
+      "prompt": "Stylized 3D: Hanging Gardens of Babylon, terraces, lush plants, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/mesopotamia/chariot_mesopotamian_v1",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "chariot_mesopotamian v1",
+      "prompt": "Stylized 3D: Mesopotamian war chariot, horse-drawn, bronze, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesopotamia/chariot_mesopotamian_v2",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "chariot_mesopotamian v2",
+      "prompt": "Stylized 3D: Mesopotamian war chariot, horse-drawn, bronze, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/mesopotamia/sumerian_harp_v1",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "sumerian_harp v1",
+      "prompt": "Stylized 3D: Sumerian golden harp, bull head, ornate, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesopotamia/sumerian_harp_v2",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "sumerian_harp v2",
+      "prompt": "Stylized 3D: Sumerian golden harp, bull head, ornate, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/mesopotamia/irrigation_canal_v1",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "irrigation_canal v1",
+      "prompt": "Stylized 3D: Ancient irrigation canal system, farmland, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesopotamia/irrigation_canal_v2",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "irrigation_canal v2",
+      "prompt": "Stylized 3D: Ancient irrigation canal system, farmland, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/mesopotamia/cylinder_seal_v1",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "cylinder_seal v1",
+      "prompt": "Stylized 3D: Mesopotamian cylinder seal, carved stone, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesopotamia/cylinder_seal_v2",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "cylinder_seal v2",
+      "prompt": "Stylized 3D: Mesopotamian cylinder seal, carved stone, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/mesopotamia/merchant_ship_ancient_v1",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "merchant_ship_ancient v1",
+      "prompt": "Stylized 3D: Ancient Mesopotamian trading ship, reed, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesopotamia/merchant_ship_ancient_v2",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "merchant_ship_ancient v2",
+      "prompt": "Stylized 3D: Ancient Mesopotamian trading ship, reed, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/mesopotamia/palace_assyrian_v1",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "palace_assyrian v1",
+      "prompt": "Stylized 3D: Assyrian palace, lamassu guardians, grand, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesopotamia/palace_assyrian_v2",
+      "category": "civilizations",
+      "subcategory": "mesopotamia",
+      "name": "palace_assyrian v2",
+      "prompt": "Stylized 3D: Assyrian palace, lamassu guardians, grand, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/egypt/temple_karnak_v1",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "temple_karnak v1",
+      "prompt": "Stylized 3D: Karnak temple, massive columns, hieroglyphs, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/egypt/temple_karnak_v2",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "temple_karnak v2",
+      "prompt": "Stylized 3D: Karnak temple, massive columns, hieroglyphs, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/egypt/nile_barge_v1",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "nile_barge v1",
+      "prompt": "Stylized 3D: Egyptian Nile barge, golden, pharaoh transport, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/egypt/nile_barge_v2",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "nile_barge v2",
+      "prompt": "Stylized 3D: Egyptian Nile barge, golden, pharaoh transport, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/egypt/obelisk_egyptian_v1",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "obelisk_egyptian v1",
+      "prompt": "Stylized 3D: Egyptian obelisk, tall, hieroglyph covered, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/egypt/obelisk_egyptian_v2",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "obelisk_egyptian v2",
+      "prompt": "Stylized 3D: Egyptian obelisk, tall, hieroglyph covered, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/egypt/canopic_jar_v1",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "canopic_jar v1",
+      "prompt": "Stylized 3D: Egyptian canopic jar, animal head lid, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/egypt/canopic_jar_v2",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "canopic_jar v2",
+      "prompt": "Stylized 3D: Egyptian canopic jar, animal head lid, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/egypt/papyrus_scroll_v1",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "papyrus_scroll v1",
+      "prompt": "Stylized 3D: Papyrus scroll with hieroglyphic writing, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/egypt/papyrus_scroll_v2",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "papyrus_scroll v2",
+      "prompt": "Stylized 3D: Papyrus scroll with hieroglyphic writing, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/egypt/ankh_symbol_v1",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "ankh_symbol v1",
+      "prompt": "Stylized 3D: Golden ankh symbol, key of life, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/egypt/ankh_symbol_v2",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "ankh_symbol v2",
+      "prompt": "Stylized 3D: Golden ankh symbol, key of life, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/egypt/pharaoh_throne_v1",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "pharaoh_throne v1",
+      "prompt": "Stylized 3D: Pharaoh's golden throne, ornate, cobra, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/egypt/pharaoh_throne_v2",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "pharaoh_throne v2",
+      "prompt": "Stylized 3D: Pharaoh's golden throne, ornate, cobra, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/egypt/embalming_table_v1",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "embalming_table v1",
+      "prompt": "Stylized 3D: Egyptian embalming preparation table, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/egypt/embalming_table_v2",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "embalming_table v2",
+      "prompt": "Stylized 3D: Egyptian embalming preparation table, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/egypt/shaduf_irrigation_v1",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "shaduf_irrigation v1",
+      "prompt": "Stylized 3D: Shaduf water lifting device, Nile farming, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/egypt/shaduf_irrigation_v2",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "shaduf_irrigation v2",
+      "prompt": "Stylized 3D: Shaduf water lifting device, Nile farming, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/egypt/boat_reed_egyptian_v1",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "boat_reed_egyptian v1",
+      "prompt": "Stylized 3D: Egyptian reed boat, simple, Nile, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/egypt/boat_reed_egyptian_v2",
+      "category": "civilizations",
+      "subcategory": "egypt",
+      "name": "boat_reed_egyptian v2",
+      "prompt": "Stylized 3D: Egyptian reed boat, simple, Nile, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/greece/acropolis_v1",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "acropolis v1",
+      "prompt": "Stylized 3D: Greek Acropolis, Parthenon atop, marble, Athens, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/greece/acropolis_v2",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "acropolis v2",
+      "prompt": "Stylized 3D: Greek Acropolis, Parthenon atop, marble, Athens, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/greece/amphitheater_greek_v1",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "amphitheater_greek v1",
+      "prompt": "Stylized 3D: Greek amphitheater, semicircle, stone seats, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/greece/amphitheater_greek_v2",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "amphitheater_greek v2",
+      "prompt": "Stylized 3D: Greek amphitheater, semicircle, stone seats, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/greece/trireme_v1",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "trireme v1",
+      "prompt": "Stylized 3D: Greek trireme warship, three rows of oars, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/greece/trireme_v2",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "trireme v2",
+      "prompt": "Stylized 3D: Greek trireme warship, three rows of oars, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/greece/olympic_stadium_v1",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "olympic_stadium v1",
+      "prompt": "Stylized 3D: Ancient Olympic stadium, track, columns, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/greece/olympic_stadium_v2",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "olympic_stadium v2",
+      "prompt": "Stylized 3D: Ancient Olympic stadium, track, columns, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/greece/agora_marketplace_v1",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "agora_marketplace v1",
+      "prompt": "Stylized 3D: Greek agora marketplace, columns, open air, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/greece/agora_marketplace_v2",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "agora_marketplace v2",
+      "prompt": "Stylized 3D: Greek agora marketplace, columns, open air, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/greece/greek_vase_v1",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "greek_vase v1",
+      "prompt": "Stylized 3D: Greek black-figure pottery vase, scenes painted, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/greece/greek_vase_v2",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "greek_vase v2",
+      "prompt": "Stylized 3D: Greek black-figure pottery vase, scenes painted, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/greece/hoplite_shield_v1",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "hoplite_shield v1",
+      "prompt": "Stylized 3D: Greek hoplite shield and spear, bronze, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/greece/hoplite_shield_v2",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "hoplite_shield v2",
+      "prompt": "Stylized 3D: Greek hoplite shield and spear, bronze, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/greece/philosopher_school_v1",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "philosopher_school v1",
+      "prompt": "Stylized 3D: Greek philosophy school, garden, columns, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/greece/philosopher_school_v2",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "philosopher_school v2",
+      "prompt": "Stylized 3D: Greek philosophy school, garden, columns, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/greece/greek_lighthouse_v1",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "greek_lighthouse v1",
+      "prompt": "Stylized 3D: Pharos lighthouse, Alexandria, ancient wonder, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/greece/greek_lighthouse_v2",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "greek_lighthouse v2",
+      "prompt": "Stylized 3D: Pharos lighthouse, Alexandria, ancient wonder, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/greece/lyre_greek_v1",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "lyre_greek v1",
+      "prompt": "Stylized 3D: Greek lyre musical instrument, tortoiseshell, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/greece/lyre_greek_v2",
+      "category": "civilizations",
+      "subcategory": "greece",
+      "name": "lyre_greek v2",
+      "prompt": "Stylized 3D: Greek lyre musical instrument, tortoiseshell, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/rome/roman_forum_v1",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "roman_forum v1",
+      "prompt": "Stylized 3D: Roman Forum, temples, columns, civic center, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/rome/roman_forum_v2",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "roman_forum v2",
+      "prompt": "Stylized 3D: Roman Forum, temples, columns, civic center, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/rome/aqueduct_v1",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "aqueduct v1",
+      "prompt": "Stylized 3D: Roman aqueduct, arched, stone, water flowing, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/rome/aqueduct_v2",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "aqueduct v2",
+      "prompt": "Stylized 3D: Roman aqueduct, arched, stone, water flowing, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/rome/roman_bath_v1",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "roman_bath v1",
+      "prompt": "Stylized 3D: Roman bathhouse, heated pools, marble, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/rome/roman_bath_v2",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "roman_bath v2",
+      "prompt": "Stylized 3D: Roman bathhouse, heated pools, marble, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/rome/gladiator_arena_v1",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "gladiator_arena v1",
+      "prompt": "Stylized 3D: Gladiator arena interior, sand floor, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/rome/gladiator_arena_v2",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "gladiator_arena v2",
+      "prompt": "Stylized 3D: Gladiator arena interior, sand floor, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/rome/roman_road_v1",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "roman_road v1",
+      "prompt": "Stylized 3D: Roman road, paved stones, straight, milestone, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/rome/roman_road_v2",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "roman_road v2",
+      "prompt": "Stylized 3D: Roman road, paved stones, straight, milestone, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/rome/villa_roman_v1",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "villa_roman v1",
+      "prompt": "Stylized 3D: Roman villa, courtyard, mosaics, garden, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/rome/villa_roman_v2",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "villa_roman v2",
+      "prompt": "Stylized 3D: Roman villa, courtyard, mosaics, garden, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/rome/roman_legion_standard_v1",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "roman_legion_standard v1",
+      "prompt": "Stylized 3D: Roman legion eagle standard, golden, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/rome/roman_legion_standard_v2",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "roman_legion_standard v2",
+      "prompt": "Stylized 3D: Roman legion eagle standard, golden, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/rome/roman_bridge_v1",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "roman_bridge v1",
+      "prompt": "Stylized 3D: Roman stone bridge, arches, river crossing, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/rome/roman_bridge_v2",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "roman_bridge v2",
+      "prompt": "Stylized 3D: Roman stone bridge, arches, river crossing, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/rome/roman_chariot_v1",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "roman_chariot v1",
+      "prompt": "Stylized 3D: Roman chariot, racing, circus maximus, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/rome/roman_chariot_v2",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "roman_chariot v2",
+      "prompt": "Stylized 3D: Roman chariot, racing, circus maximus, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/rome/roman_temple_v1",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "roman_temple v1",
+      "prompt": "Stylized 3D: Roman temple, Corinthian columns, triangular pediment, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/rome/roman_temple_v2",
+      "category": "civilizations",
+      "subcategory": "rome",
+      "name": "roman_temple v2",
+      "prompt": "Stylized 3D: Roman temple, Corinthian columns, triangular pediment, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/china/great_wall_v1",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "great_wall v1",
+      "prompt": "Stylized 3D: Great Wall of China, watchtower, mountain, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/china/great_wall_v2",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "great_wall v2",
+      "prompt": "Stylized 3D: Great Wall of China, watchtower, mountain, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/china/forbidden_city_hall_v1",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "forbidden_city_hall v1",
+      "prompt": "Stylized 3D: Forbidden City throne hall, red and gold, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/china/forbidden_city_hall_v2",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "forbidden_city_hall v2",
+      "prompt": "Stylized 3D: Forbidden City throne hall, red and gold, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/china/dragon_boat_v1",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "dragon_boat v1",
+      "prompt": "Stylized 3D: Chinese dragon boat, festival, ornate, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/china/dragon_boat_v2",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "dragon_boat v2",
+      "prompt": "Stylized 3D: Chinese dragon boat, festival, ornate, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/china/silk_loom_v1",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "silk_loom v1",
+      "prompt": "Stylized 3D: Chinese silk weaving loom, intricate, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/china/silk_loom_v2",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "silk_loom v2",
+      "prompt": "Stylized 3D: Chinese silk weaving loom, intricate, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/china/porcelain_vase_v1",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "porcelain_vase v1",
+      "prompt": "Stylized 3D: Chinese blue and white porcelain vase, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/china/porcelain_vase_v2",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "porcelain_vase v2",
+      "prompt": "Stylized 3D: Chinese blue and white porcelain vase, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/china/pagoda_v1",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "pagoda v1",
+      "prompt": "Stylized 3D: Chinese pagoda tower, multi-tiered, curved roofs, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/china/pagoda_v2",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "pagoda v2",
+      "prompt": "Stylized 3D: Chinese pagoda tower, multi-tiered, curved roofs, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/china/junk_ship_v1",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "junk_ship v1",
+      "prompt": "Stylized 3D: Chinese junk sailing ship, bat-wing sails, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/china/junk_ship_v2",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "junk_ship v2",
+      "prompt": "Stylized 3D: Chinese junk sailing ship, bat-wing sails, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/china/compass_chinese_v1",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "compass_chinese v1",
+      "prompt": "Stylized 3D: Chinese compass, south-pointing spoon, invention, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/china/compass_chinese_v2",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "compass_chinese v2",
+      "prompt": "Stylized 3D: Chinese compass, south-pointing spoon, invention, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/china/paper_making_v1",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "paper_making v1",
+      "prompt": "Stylized 3D: Chinese paper making workshop, mulberry, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/china/paper_making_v2",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "paper_making v2",
+      "prompt": "Stylized 3D: Chinese paper making workshop, mulberry, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/china/terracotta_army_group_v1",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "terracotta_army_group v1",
+      "prompt": "Stylized 3D: Group of terracotta warriors, rows, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/china/terracotta_army_group_v2",
+      "category": "civilizations",
+      "subcategory": "china",
+      "name": "terracotta_army_group v2",
+      "prompt": "Stylized 3D: Group of terracotta warriors, rows, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/india/taj_mahal_v1",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "taj_mahal v1",
+      "prompt": "Stylized 3D: Taj Mahal, white marble, domes, reflecting pool, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/india/taj_mahal_v2",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "taj_mahal v2",
+      "prompt": "Stylized 3D: Taj Mahal, white marble, domes, reflecting pool, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/india/hindu_temple_v1",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "hindu_temple v1",
+      "prompt": "Stylized 3D: Hindu temple, gopuram tower, ornate carvings, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/india/hindu_temple_v2",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "hindu_temple v2",
+      "prompt": "Stylized 3D: Hindu temple, gopuram tower, ornate carvings, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/india/mohenjo_daro_v1",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "mohenjo_daro v1",
+      "prompt": "Stylized 3D: Mohenjo-daro ruins, ancient Indus Valley, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/india/mohenjo_daro_v2",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "mohenjo_daro v2",
+      "prompt": "Stylized 3D: Mohenjo-daro ruins, ancient Indus Valley, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/india/elephant_decorated_v1",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "elephant_decorated v1",
+      "prompt": "Stylized 3D: Decorated Indian elephant, festival, ornate, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/india/elephant_decorated_v2",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "elephant_decorated v2",
+      "prompt": "Stylized 3D: Decorated Indian elephant, festival, ornate, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/india/sitar_instrument_v1",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "sitar_instrument v1",
+      "prompt": "Stylized 3D: Sitar musical instrument, Indian classical, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/india/sitar_instrument_v2",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "sitar_instrument v2",
+      "prompt": "Stylized 3D: Sitar musical instrument, Indian classical, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/india/yoga_pose_statue_v1",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "yoga_pose_statue v1",
+      "prompt": "Stylized 3D: Statue in yoga pose, meditation, peaceful, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/india/yoga_pose_statue_v2",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "yoga_pose_statue v2",
+      "prompt": "Stylized 3D: Statue in yoga pose, meditation, peaceful, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/india/spice_market_indian_v1",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "spice_market_indian v1",
+      "prompt": "Stylized 3D: Indian spice market, colorful piles, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/india/spice_market_indian_v2",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "spice_market_indian v2",
+      "prompt": "Stylized 3D: Indian spice market, colorful piles, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/india/peacock_throne_v1",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "peacock_throne v1",
+      "prompt": "Stylized 3D: Mughal Peacock Throne, jeweled, golden, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/india/peacock_throne_v2",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "peacock_throne v2",
+      "prompt": "Stylized 3D: Mughal Peacock Throne, jeweled, golden, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/india/astronomy_observatory_v1",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "astronomy_observatory v1",
+      "prompt": "Stylized 3D: Jantar Mantar observatory, geometric, giant sundials, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/india/astronomy_observatory_v2",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "astronomy_observatory v2",
+      "prompt": "Stylized 3D: Jantar Mantar observatory, geometric, giant sundials, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/india/ayurvedic_medicine_v1",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "ayurvedic_medicine v1",
+      "prompt": "Stylized 3D: Ayurvedic medicine preparation, herbs, mortars, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/india/ayurvedic_medicine_v2",
+      "category": "civilizations",
+      "subcategory": "india",
+      "name": "ayurvedic_medicine v2",
+      "prompt": "Stylized 3D: Ayurvedic medicine preparation, herbs, mortars, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/mesoamerican/mayan_temple_v1",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "mayan_temple v1",
+      "prompt": "Stylized 3D: Mayan temple pyramid, jungle, stone steps, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesoamerican/mayan_temple_v2",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "mayan_temple v2",
+      "prompt": "Stylized 3D: Mayan temple pyramid, jungle, stone steps, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/mesoamerican/mayan_calendar_v1",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "mayan_calendar v1",
+      "prompt": "Stylized 3D: Mayan calendar stone, circular, carved, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesoamerican/mayan_calendar_v2",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "mayan_calendar v2",
+      "prompt": "Stylized 3D: Mayan calendar stone, circular, carved, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/mesoamerican/aztec_sun_stone_v1",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "aztec_sun_stone v1",
+      "prompt": "Stylized 3D: Aztec sun stone, intricate, circular, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesoamerican/aztec_sun_stone_v2",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "aztec_sun_stone v2",
+      "prompt": "Stylized 3D: Aztec sun stone, intricate, circular, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/mesoamerican/ball_court_v1",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "ball_court v1",
+      "prompt": "Stylized 3D: Mesoamerican ball court, stone rings, ritual, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesoamerican/ball_court_v2",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "ball_court v2",
+      "prompt": "Stylized 3D: Mesoamerican ball court, stone rings, ritual, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/mesoamerican/quetzalcoatl_statue_v1",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "quetzalcoatl_statue v1",
+      "prompt": "Stylized 3D: Feathered serpent Quetzalcoatl statue, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesoamerican/quetzalcoatl_statue_v2",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "quetzalcoatl_statue v2",
+      "prompt": "Stylized 3D: Feathered serpent Quetzalcoatl statue, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/mesoamerican/chinampas_v1",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "chinampas v1",
+      "prompt": "Stylized 3D: Aztec floating gardens, chinampas, lake farming, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesoamerican/chinampas_v2",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "chinampas v2",
+      "prompt": "Stylized 3D: Aztec floating gardens, chinampas, lake farming, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/mesoamerican/jaguar_warrior_v1",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "jaguar_warrior v1",
+      "prompt": "Stylized 3D: Aztec jaguar warrior costume and weapons, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesoamerican/jaguar_warrior_v2",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "jaguar_warrior v2",
+      "prompt": "Stylized 3D: Aztec jaguar warrior costume and weapons, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/mesoamerican/inca_machu_picchu_v1",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "inca_machu_picchu v1",
+      "prompt": "Stylized 3D: Machu Picchu ruins, mountain, terraces, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesoamerican/inca_machu_picchu_v2",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "inca_machu_picchu v2",
+      "prompt": "Stylized 3D: Machu Picchu ruins, mountain, terraces, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/mesoamerican/quipu_v1",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "quipu v1",
+      "prompt": "Stylized 3D: Inca quipu, knotted string recording device, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesoamerican/quipu_v2",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "quipu v2",
+      "prompt": "Stylized 3D: Inca quipu, knotted string recording device, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/mesoamerican/obsidian_blade_v1",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "obsidian_blade v1",
+      "prompt": "Stylized 3D: Obsidian blade, volcanic glass, sharp, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/mesoamerican/obsidian_blade_v2",
+      "category": "civilizations",
+      "subcategory": "mesoamerican",
+      "name": "obsidian_blade v2",
+      "prompt": "Stylized 3D: Obsidian blade, volcanic glass, sharp, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/african/great_zimbabwe_v1",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "great_zimbabwe v1",
+      "prompt": "Stylized 3D: Great Zimbabwe stone ruins, tower, walls, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/african/great_zimbabwe_v2",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "great_zimbabwe v2",
+      "prompt": "Stylized 3D: Great Zimbabwe stone ruins, tower, walls, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/african/timbuktu_mosque_v1",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "timbuktu_mosque v1",
+      "prompt": "Stylized 3D: Djinguereber Mosque Timbuktu, mud brick, spires, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/african/timbuktu_mosque_v2",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "timbuktu_mosque v2",
+      "prompt": "Stylized 3D: Djinguereber Mosque Timbuktu, mud brick, spires, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/african/benin_bronze_v1",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "benin_bronze v1",
+      "prompt": "Stylized 3D: Benin bronze head sculpture, detailed, royal, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/african/benin_bronze_v2",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "benin_bronze v2",
+      "prompt": "Stylized 3D: Benin bronze head sculpture, detailed, royal, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/african/african_drum_djembe_v1",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "african_drum_djembe v1",
+      "prompt": "Stylized 3D: Djembe drum, carved wood, goatskin, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/african/african_drum_djembe_v2",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "african_drum_djembe v2",
+      "prompt": "Stylized 3D: Djembe drum, carved wood, goatskin, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/african/egyptian_pyramid_step_v1",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "egyptian_pyramid_step v1",
+      "prompt": "Stylized 3D: Step pyramid of Djoser, earliest pyramid, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/african/egyptian_pyramid_step_v2",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "egyptian_pyramid_step v2",
+      "prompt": "Stylized 3D: Step pyramid of Djoser, earliest pyramid, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/african/african_mask_v1",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "african_mask v1",
+      "prompt": "Stylized 3D: Ceremonial African mask, carved wood, symbolic, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/african/african_mask_v2",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "african_mask v2",
+      "prompt": "Stylized 3D: Ceremonial African mask, carved wood, symbolic, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/african/dhow_sailing_v1",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "dhow_sailing v1",
+      "prompt": "Stylized 3D: Dhow sailing ship, triangular sail, East African, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/african/dhow_sailing_v2",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "dhow_sailing v2",
+      "prompt": "Stylized 3D: Dhow sailing ship, triangular sail, East African, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/african/rock_hewn_church_v1",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "rock_hewn_church v1",
+      "prompt": "Stylized 3D: Lalibela rock-hewn church, Ethiopia, carved from stone, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/african/rock_hewn_church_v2",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "rock_hewn_church v2",
+      "prompt": "Stylized 3D: Lalibela rock-hewn church, Ethiopia, carved from stone, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/african/african_village_v1",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "african_village v1",
+      "prompt": "Stylized 3D: Traditional African village, round huts, community, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/african/african_village_v2",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "african_village v2",
+      "prompt": "Stylized 3D: Traditional African village, round huts, community, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/african/gold_weight_akan_v1",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "gold_weight_akan v1",
+      "prompt": "Stylized 3D: Akan gold weight, brass, geometric, trading, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/african/gold_weight_akan_v2",
+      "category": "civilizations",
+      "subcategory": "african",
+      "name": "gold_weight_akan v2",
+      "prompt": "Stylized 3D: Akan gold weight, brass, geometric, trading, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/medieval/castle_motte_bailey_v1",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "castle_motte_bailey v1",
+      "prompt": "Stylized 3D: Motte and bailey castle, wooden, early, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/medieval/castle_motte_bailey_v2",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "castle_motte_bailey v2",
+      "prompt": "Stylized 3D: Motte and bailey castle, wooden, early, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/medieval/castle_stone_keep_v1",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "castle_stone_keep v1",
+      "prompt": "Stylized 3D: Stone keep castle, towers, battlements, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/medieval/castle_stone_keep_v2",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "castle_stone_keep v2",
+      "prompt": "Stylized 3D: Stone keep castle, towers, battlements, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/medieval/cathedral_gothic_v1",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "cathedral_gothic v1",
+      "prompt": "Stylized 3D: Gothic cathedral, flying buttresses, rose window, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/medieval/cathedral_gothic_v2",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "cathedral_gothic v2",
+      "prompt": "Stylized 3D: Gothic cathedral, flying buttresses, rose window, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/medieval/monastery_v1",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "monastery v1",
+      "prompt": "Stylized 3D: Medieval monastery, cloister, garden, scriptorium, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/medieval/monastery_v2",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "monastery v2",
+      "prompt": "Stylized 3D: Medieval monastery, cloister, garden, scriptorium, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/medieval/village_medieval_v1",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "village_medieval v1",
+      "prompt": "Stylized 3D: Medieval village, half-timber houses, market, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/medieval/village_medieval_v2",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "village_medieval v2",
+      "prompt": "Stylized 3D: Medieval village, half-timber houses, market, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/medieval/siege_tower_v1",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "siege_tower v1",
+      "prompt": "Stylized 3D: Medieval siege tower, approaching castle wall, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/medieval/siege_tower_v2",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "siege_tower v2",
+      "prompt": "Stylized 3D: Medieval siege tower, approaching castle wall, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/medieval/trebuchet_v1",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "trebuchet v1",
+      "prompt": "Stylized 3D: Trebuchet siege weapon, counterweight, launching, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/medieval/trebuchet_v2",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "trebuchet v2",
+      "prompt": "Stylized 3D: Trebuchet siege weapon, counterweight, launching, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/medieval/knight_on_horse_v1",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "knight_on_horse v1",
+      "prompt": "Stylized 3D: Knight in armor on horseback, jousting, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/medieval/knight_on_horse_v2",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "knight_on_horse v2",
+      "prompt": "Stylized 3D: Knight in armor on horseback, jousting, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/medieval/guild_hall_v1",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "guild_hall v1",
+      "prompt": "Stylized 3D: Medieval guild hall, trade banners, craftwork, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/medieval/guild_hall_v2",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "guild_hall v2",
+      "prompt": "Stylized 3D: Medieval guild hall, trade banners, craftwork, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/medieval/viking_village_v1",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "viking_village v1",
+      "prompt": "Stylized 3D: Viking village, longhouses, fjord, boats, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/medieval/viking_village_v2",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "viking_village v2",
+      "prompt": "Stylized 3D: Viking village, longhouses, fjord, boats, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/medieval/ship_caravel_v1",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "ship_caravel v1",
+      "prompt": "Stylized 3D: Caravel exploration ship, sails, Age of Discovery, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/medieval/ship_caravel_v2",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "ship_caravel v2",
+      "prompt": "Stylized 3D: Caravel exploration ship, sails, Age of Discovery, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/medieval/compass_navigation_v1",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "compass_navigation v1",
+      "prompt": "Stylized 3D: Navigator's compass and charts, Age of Exploration, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/medieval/compass_navigation_v2",
+      "category": "civilizations",
+      "subcategory": "medieval",
+      "name": "compass_navigation v2",
+      "prompt": "Stylized 3D: Navigator's compass and charts, Age of Exploration, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/renaissance/florence_dome_v1",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "florence_dome v1",
+      "prompt": "Stylized 3D: Florence cathedral dome, Brunelleschi, Renaissance, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/renaissance/florence_dome_v2",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "florence_dome v2",
+      "prompt": "Stylized 3D: Florence cathedral dome, Brunelleschi, Renaissance, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/renaissance/printing_press_movable_v1",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "printing_press_movable v1",
+      "prompt": "Stylized 3D: Gutenberg movable type printing press, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/renaissance/printing_press_movable_v2",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "printing_press_movable v2",
+      "prompt": "Stylized 3D: Gutenberg movable type printing press, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/renaissance/da_vinci_workshop_v1",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "da_vinci_workshop v1",
+      "prompt": "Stylized 3D: Leonardo da Vinci's workshop, inventions, sketches, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/renaissance/da_vinci_workshop_v2",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "da_vinci_workshop v2",
+      "prompt": "Stylized 3D: Leonardo da Vinci's workshop, inventions, sketches, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/renaissance/globe_navigator_v1",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "globe_navigator v1",
+      "prompt": "Stylized 3D: Navigator's globe, Age of Exploration, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/renaissance/globe_navigator_v2",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "globe_navigator v2",
+      "prompt": "Stylized 3D: Navigator's globe, Age of Exploration, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/renaissance/galleon_ship_v1",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "galleon_ship v1",
+      "prompt": "Stylized 3D: Spanish galleon, treasure ship, sails, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/renaissance/galleon_ship_v2",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "galleon_ship v2",
+      "prompt": "Stylized 3D: Spanish galleon, treasure ship, sails, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/renaissance/microscope_early_v1",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "microscope_early v1",
+      "prompt": "Stylized 3D: Early microscope, van Leeuwenhoek, brass, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/renaissance/microscope_early_v2",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "microscope_early v2",
+      "prompt": "Stylized 3D: Early microscope, van Leeuwenhoek, brass, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/renaissance/telescope_refractor_v1",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "telescope_refractor v1",
+      "prompt": "Stylized 3D: Early refracting telescope, Galilean, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/renaissance/telescope_refractor_v2",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "telescope_refractor v2",
+      "prompt": "Stylized 3D: Early refracting telescope, Galilean, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/renaissance/harpsichord_v1",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "harpsichord v1",
+      "prompt": "Stylized 3D: Harpsichord, baroque instrument, ornate, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/renaissance/harpsichord_v2",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "harpsichord v2",
+      "prompt": "Stylized 3D: Harpsichord, baroque instrument, ornate, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/renaissance/palace_versailles_v1",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "palace_versailles v1",
+      "prompt": "Stylized 3D: Palace of Versailles hall of mirrors, grand, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/renaissance/palace_versailles_v2",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "palace_versailles v2",
+      "prompt": "Stylized 3D: Palace of Versailles hall of mirrors, grand, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/renaissance/guillotine_v1",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "guillotine v1",
+      "prompt": "Stylized 3D: French Revolution guillotine, historical, educational context, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/renaissance/guillotine_v2",
+      "category": "civilizations",
+      "subcategory": "renaissance",
+      "name": "guillotine v2",
+      "prompt": "Stylized 3D: French Revolution guillotine, historical, educational context, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/industrial/spinning_jenny_v1",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "spinning_jenny v1",
+      "prompt": "Stylized 3D: Spinning jenny, textile revolution, mechanical, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/industrial/spinning_jenny_v2",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "spinning_jenny v2",
+      "prompt": "Stylized 3D: Spinning jenny, textile revolution, mechanical, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/industrial/steam_engine_watt_v1",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "steam_engine_watt v1",
+      "prompt": "Stylized 3D: Watt steam engine, industrial revolution, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/industrial/steam_engine_watt_v2",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "steam_engine_watt v2",
+      "prompt": "Stylized 3D: Watt steam engine, industrial revolution, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/industrial/cotton_gin_v1",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "cotton_gin v1",
+      "prompt": "Stylized 3D: Cotton gin, Eli Whitney, mechanical, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/industrial/cotton_gin_v2",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "cotton_gin v2",
+      "prompt": "Stylized 3D: Cotton gin, Eli Whitney, mechanical, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/industrial/factory_textile_v1",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "factory_textile v1",
+      "prompt": "Stylized 3D: Early textile factory interior, looms, workers, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/industrial/factory_textile_v2",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "factory_textile v2",
+      "prompt": "Stylized 3D: Early textile factory interior, looms, workers, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/industrial/ironbridge_v1",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "ironbridge v1",
+      "prompt": "Stylized 3D: Iron Bridge, first iron bridge, industrial, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/industrial/ironbridge_v2",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "ironbridge v2",
+      "prompt": "Stylized 3D: Iron Bridge, first iron bridge, industrial, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/industrial/locomotive_rocket_v1",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "locomotive_rocket v1",
+      "prompt": "Stylized 3D: Stephenson's Rocket, early steam train, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/industrial/locomotive_rocket_v2",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "locomotive_rocket v2",
+      "prompt": "Stylized 3D: Stephenson's Rocket, early steam train, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/industrial/crystal_palace_v1",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "crystal_palace v1",
+      "prompt": "Stylized 3D: Crystal Palace, glass and iron, exhibition, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/industrial/crystal_palace_v2",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "crystal_palace v2",
+      "prompt": "Stylized 3D: Crystal Palace, glass and iron, exhibition, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/industrial/transatlantic_cable_v1",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "transatlantic_cable v1",
+      "prompt": "Stylized 3D: Transatlantic telegraph cable, laying ship, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/industrial/transatlantic_cable_v2",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "transatlantic_cable v2",
+      "prompt": "Stylized 3D: Transatlantic telegraph cable, laying ship, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/industrial/dynamite_stick_v1",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "dynamite_stick v1",
+      "prompt": "Stylized 3D: Stick of dynamite, Nobel, industrial explosive, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/industrial/dynamite_stick_v2",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "dynamite_stick v2",
+      "prompt": "Stylized 3D: Stick of dynamite, Nobel, industrial explosive, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/industrial/assembly_line_v1",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "assembly_line v1",
+      "prompt": "Stylized 3D: Early assembly line, Ford Model T, mass production, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/industrial/assembly_line_v2",
+      "category": "civilizations",
+      "subcategory": "industrial",
+      "name": "assembly_line v2",
+      "prompt": "Stylized 3D: Early assembly line, Ford Model T, mass production, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/wright_brothers_plane_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "wright_brothers_plane v1",
+      "prompt": "Stylized 3D: Wright Flyer, Kitty Hawk, first flight, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/wright_brothers_plane_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "wright_brothers_plane v2",
+      "prompt": "Stylized 3D: Wright Flyer, Kitty Hawk, first flight, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/model_t_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "model_t v1",
+      "prompt": "Stylized 3D: Ford Model T automobile, first mass-produced car, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/model_t_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "model_t v2",
+      "prompt": "Stylized 3D: Ford Model T automobile, first mass-produced car, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/titanic_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "titanic v1",
+      "prompt": "Stylized 3D: RMS Titanic, ocean liner, four funnels, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/titanic_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "titanic v2",
+      "prompt": "Stylized 3D: RMS Titanic, ocean liner, four funnels, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/biplane_wwi_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "biplane_wwi v1",
+      "prompt": "Stylized 3D: WWI biplane, Red Baron style, propeller, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/biplane_wwi_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "biplane_wwi v2",
+      "prompt": "Stylized 3D: WWI biplane, Red Baron style, propeller, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/tank_wwi_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "tank_wwi v1",
+      "prompt": "Stylized 3D: WWI tank, early, lumbering, trenches, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/tank_wwi_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "tank_wwi v2",
+      "prompt": "Stylized 3D: WWI tank, early, lumbering, trenches, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/radio_console_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "radio_console v1",
+      "prompt": "Stylized 3D: 1930s radio console, art deco, mahogany, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/radio_console_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "radio_console v2",
+      "prompt": "Stylized 3D: 1930s radio console, art deco, mahogany, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/television_early_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "television_early v1",
+      "prompt": "Stylized 3D: Early television set, small screen, rabbit ears, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/television_early_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "television_early v2",
+      "prompt": "Stylized 3D: Early television set, small screen, rabbit ears, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/dday_landing_craft_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "dday_landing_craft v1",
+      "prompt": "Stylized 3D: D-Day landing craft, WWII, beach, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/dday_landing_craft_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "dday_landing_craft v2",
+      "prompt": "Stylized 3D: D-Day landing craft, WWII, beach, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/atomic_model_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "atomic_model v1",
+      "prompt": "Stylized 3D: Atomic model, nucleus and electron orbits, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/atomic_model_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "atomic_model v2",
+      "prompt": "Stylized 3D: Atomic model, nucleus and electron orbits, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/sputnik_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "sputnik v1",
+      "prompt": "Stylized 3D: Sputnik satellite, first in space, sphere, antennas, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/sputnik_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "sputnik v2",
+      "prompt": "Stylized 3D: Sputnik satellite, first in space, sphere, antennas, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/apollo_lunar_module_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "apollo_lunar_module v1",
+      "prompt": "Stylized 3D: Apollo lunar module, moon landing, NASA, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/apollo_lunar_module_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "apollo_lunar_module v2",
+      "prompt": "Stylized 3D: Apollo lunar module, moon landing, NASA, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/berlin_wall_section_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "berlin_wall_section v1",
+      "prompt": "Stylized 3D: Berlin Wall section, graffiti, cold war, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/berlin_wall_section_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "berlin_wall_section v2",
+      "prompt": "Stylized 3D: Berlin Wall section, graffiti, cold war, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/personal_computer_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "personal_computer v1",
+      "prompt": "Stylized 3D: Early personal computer, monitor, keyboard, 1980s, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/personal_computer_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "personal_computer v2",
+      "prompt": "Stylized 3D: Early personal computer, monitor, keyboard, 1980s, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/internet_server_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "internet_server v1",
+      "prompt": "Stylized 3D: Early internet server rack, cables, 1990s, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/internet_server_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "internet_server v2",
+      "prompt": "Stylized 3D: Early internet server rack, cables, 1990s, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/mobile_phone_early_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "mobile_phone_early v1",
+      "prompt": "Stylized 3D: Early mobile phone, brick style, 1990s, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/mobile_phone_early_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "mobile_phone_early v2",
+      "prompt": "Stylized 3D: Early mobile phone, brick style, 1990s, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/hubble_telescope_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "hubble_telescope v1",
+      "prompt": "Stylized 3D: Hubble Space Telescope, orbit, solar panels, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/hubble_telescope_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "hubble_telescope v2",
+      "prompt": "Stylized 3D: Hubble Space Telescope, orbit, solar panels, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/mars_rover_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "mars_rover v1",
+      "prompt": "Stylized 3D: Mars rover, wheels, cameras, red planet surface, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/mars_rover_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "mars_rover v2",
+      "prompt": "Stylized 3D: Mars rover, wheels, cameras, red planet surface, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/iss_module_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "iss_module v1",
+      "prompt": "Stylized 3D: International Space Station module, solar arrays, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/iss_module_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "iss_module v2",
+      "prompt": "Stylized 3D: International Space Station module, solar arrays, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/electric_car_modern_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "electric_car_modern v1",
+      "prompt": "Stylized 3D: Modern electric car, sleek, futuristic, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/electric_car_modern_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "electric_car_modern v2",
+      "prompt": "Stylized 3D: Modern electric car, sleek, futuristic, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/modern/wind_farm_v1",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "wind_farm v1",
+      "prompt": "Stylized 3D: Wind turbine farm, renewable energy, landscape, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/modern/wind_farm_v2",
+      "category": "civilizations",
+      "subcategory": "modern",
+      "name": "wind_farm v2",
+      "prompt": "Stylized 3D: Wind turbine farm, renewable energy, landscape, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/japan/torii_gate_v1",
+      "category": "civilizations",
+      "subcategory": "japan",
+      "name": "torii_gate v1",
+      "prompt": "Stylized 3D: Japanese torii gate, red, shrine entrance, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/japan/torii_gate_v2",
+      "category": "civilizations",
+      "subcategory": "japan",
+      "name": "torii_gate v2",
+      "prompt": "Stylized 3D: Japanese torii gate, red, shrine entrance, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/japan/pagoda_japanese_v1",
+      "category": "civilizations",
+      "subcategory": "japan",
+      "name": "pagoda_japanese v1",
+      "prompt": "Stylized 3D: Japanese pagoda, five stories, temple, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/japan/pagoda_japanese_v2",
+      "category": "civilizations",
+      "subcategory": "japan",
+      "name": "pagoda_japanese v2",
+      "prompt": "Stylized 3D: Japanese pagoda, five stories, temple, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/japan/samurai_armor_v1",
+      "category": "civilizations",
+      "subcategory": "japan",
+      "name": "samurai_armor v1",
+      "prompt": "Stylized 3D: Samurai armor set, kabuto helmet, ornate, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/japan/samurai_armor_v2",
+      "category": "civilizations",
+      "subcategory": "japan",
+      "name": "samurai_armor v2",
+      "prompt": "Stylized 3D: Samurai armor set, kabuto helmet, ornate, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/japan/katana_v1",
+      "category": "civilizations",
+      "subcategory": "japan",
+      "name": "katana v1",
+      "prompt": "Stylized 3D: Japanese katana sword, curved, elegant, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/japan/katana_v2",
+      "category": "civilizations",
+      "subcategory": "japan",
+      "name": "katana v2",
+      "prompt": "Stylized 3D: Japanese katana sword, curved, elegant, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/japan/zen_garden_v1",
+      "category": "civilizations",
+      "subcategory": "japan",
+      "name": "zen_garden v1",
+      "prompt": "Stylized 3D: Japanese zen rock garden, raked sand, stones, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/japan/zen_garden_v2",
+      "category": "civilizations",
+      "subcategory": "japan",
+      "name": "zen_garden v2",
+      "prompt": "Stylized 3D: Japanese zen rock garden, raked sand, stones, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/japan/tea_ceremony_set_v1",
+      "category": "civilizations",
+      "subcategory": "japan",
+      "name": "tea_ceremony_set v1",
+      "prompt": "Stylized 3D: Japanese tea ceremony set, matcha, bowls, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/japan/tea_ceremony_set_v2",
+      "category": "civilizations",
+      "subcategory": "japan",
+      "name": "tea_ceremony_set v2",
+      "prompt": "Stylized 3D: Japanese tea ceremony set, matcha, bowls, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/japan/shinkansen_v1",
+      "category": "civilizations",
+      "subcategory": "japan",
+      "name": "shinkansen v1",
+      "prompt": "Stylized 3D: Shinkansen bullet train, sleek, fast, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/japan/shinkansen_v2",
+      "category": "civilizations",
+      "subcategory": "japan",
+      "name": "shinkansen v2",
+      "prompt": "Stylized 3D: Shinkansen bullet train, sleek, fast, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/japan/origami_crane_v1",
+      "category": "civilizations",
+      "subcategory": "japan",
+      "name": "origami_crane v1",
+      "prompt": "Stylized 3D: Origami paper crane, folded, traditional, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/japan/origami_crane_v2",
+      "category": "civilizations",
+      "subcategory": "japan",
+      "name": "origami_crane v2",
+      "prompt": "Stylized 3D: Origami paper crane, folded, traditional, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/islamic/alhambra_court_v1",
+      "category": "civilizations",
+      "subcategory": "islamic",
+      "name": "alhambra_court v1",
+      "prompt": "Stylized 3D: Alhambra palace courtyard, Islamic geometric, fountains, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/islamic/alhambra_court_v2",
+      "category": "civilizations",
+      "subcategory": "islamic",
+      "name": "alhambra_court v2",
+      "prompt": "Stylized 3D: Alhambra palace courtyard, Islamic geometric, fountains, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/islamic/astrolabe_islamic_v1",
+      "category": "civilizations",
+      "subcategory": "islamic",
+      "name": "astrolabe_islamic v1",
+      "prompt": "Stylized 3D: Islamic astrolabe, brass, astronomical, intricate, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/islamic/astrolabe_islamic_v2",
+      "category": "civilizations",
+      "subcategory": "islamic",
+      "name": "astrolabe_islamic v2",
+      "prompt": "Stylized 3D: Islamic astrolabe, brass, astronomical, intricate, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/islamic/mosque_dome_v1",
+      "category": "civilizations",
+      "subcategory": "islamic",
+      "name": "mosque_dome v1",
+      "prompt": "Stylized 3D: Mosque with grand dome and minarets, Islamic architecture, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/islamic/mosque_dome_v2",
+      "category": "civilizations",
+      "subcategory": "islamic",
+      "name": "mosque_dome v2",
+      "prompt": "Stylized 3D: Mosque with grand dome and minarets, Islamic architecture, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/islamic/arabic_calligraphy_v1",
+      "category": "civilizations",
+      "subcategory": "islamic",
+      "name": "arabic_calligraphy v1",
+      "prompt": "Stylized 3D: Arabic calligraphy art piece, gold on blue, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/islamic/arabic_calligraphy_v2",
+      "category": "civilizations",
+      "subcategory": "islamic",
+      "name": "arabic_calligraphy v2",
+      "prompt": "Stylized 3D: Arabic calligraphy art piece, gold on blue, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/islamic/house_of_wisdom_v1",
+      "category": "civilizations",
+      "subcategory": "islamic",
+      "name": "house_of_wisdom v1",
+      "prompt": "Stylized 3D: House of Wisdom library, Baghdad, scrolls, scholars, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/islamic/house_of_wisdom_v2",
+      "category": "civilizations",
+      "subcategory": "islamic",
+      "name": "house_of_wisdom v2",
+      "prompt": "Stylized 3D: House of Wisdom library, Baghdad, scrolls, scholars, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/islamic/dhow_arabic_v1",
+      "category": "civilizations",
+      "subcategory": "islamic",
+      "name": "dhow_arabic v1",
+      "prompt": "Stylized 3D: Arabic dhow trading ship, Indian Ocean, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/islamic/dhow_arabic_v2",
+      "category": "civilizations",
+      "subcategory": "islamic",
+      "name": "dhow_arabic v2",
+      "prompt": "Stylized 3D: Arabic dhow trading ship, Indian Ocean, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/islamic/algebra_manuscript_v1",
+      "category": "civilizations",
+      "subcategory": "islamic",
+      "name": "algebra_manuscript v1",
+      "prompt": "Stylized 3D: Al-Khwarizmi algebra manuscript, mathematical, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/islamic/algebra_manuscript_v2",
+      "category": "civilizations",
+      "subcategory": "islamic",
+      "name": "algebra_manuscript v2",
+      "prompt": "Stylized 3D: Al-Khwarizmi algebra manuscript, mathematical, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/islamic/damascus_steel_sword_v1",
+      "category": "civilizations",
+      "subcategory": "islamic",
+      "name": "damascus_steel_sword v1",
+      "prompt": "Stylized 3D: Damascus steel sword, watered pattern, legendary, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/islamic/damascus_steel_sword_v2",
+      "category": "civilizations",
+      "subcategory": "islamic",
+      "name": "damascus_steel_sword v2",
+      "prompt": "Stylized 3D: Damascus steel sword, watered pattern, legendary, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/polynesian/moai_statue_v1",
+      "category": "civilizations",
+      "subcategory": "polynesian",
+      "name": "moai_statue v1",
+      "prompt": "Stylized 3D: Easter Island moai statue, stone head, mysterious, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/polynesian/moai_statue_v2",
+      "category": "civilizations",
+      "subcategory": "polynesian",
+      "name": "moai_statue v2",
+      "prompt": "Stylized 3D: Easter Island moai statue, stone head, mysterious, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/polynesian/outrigger_canoe_v1",
+      "category": "civilizations",
+      "subcategory": "polynesian",
+      "name": "outrigger_canoe v1",
+      "prompt": "Stylized 3D: Polynesian outrigger canoe, ocean voyaging, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/polynesian/outrigger_canoe_v2",
+      "category": "civilizations",
+      "subcategory": "polynesian",
+      "name": "outrigger_canoe v2",
+      "prompt": "Stylized 3D: Polynesian outrigger canoe, ocean voyaging, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/polynesian/tiki_carving_v1",
+      "category": "civilizations",
+      "subcategory": "polynesian",
+      "name": "tiki_carving v1",
+      "prompt": "Stylized 3D: Tiki carving, Polynesian, wooden, cultural, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/polynesian/tiki_carving_v2",
+      "category": "civilizations",
+      "subcategory": "polynesian",
+      "name": "tiki_carving v2",
+      "prompt": "Stylized 3D: Tiki carving, Polynesian, wooden, cultural, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/polynesian/maori_meeting_house_v1",
+      "category": "civilizations",
+      "subcategory": "polynesian",
+      "name": "maori_meeting_house v1",
+      "prompt": "Stylized 3D: Maori meeting house, carved wood, cultural, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/polynesian/maori_meeting_house_v2",
+      "category": "civilizations",
+      "subcategory": "polynesian",
+      "name": "maori_meeting_house v2",
+      "prompt": "Stylized 3D: Maori meeting house, carved wood, cultural, historical educational, variation 2"
+    },
+    {
+      "id": "civilizations/polynesian/hawaiian_surfboard_v1",
+      "category": "civilizations",
+      "subcategory": "polynesian",
+      "name": "hawaiian_surfboard v1",
+      "prompt": "Stylized 3D: Traditional Hawaiian surfboard, wooden, long, historical educational, variation 1"
+    },
+    {
+      "id": "civilizations/polynesian/hawaiian_surfboard_v2",
+      "category": "civilizations",
+      "subcategory": "polynesian",
+      "name": "hawaiian_surfboard v2",
+      "prompt": "Stylized 3D: Traditional Hawaiian surfboard, wooden, long, historical educational, variation 2"
     }
   ]
 }
