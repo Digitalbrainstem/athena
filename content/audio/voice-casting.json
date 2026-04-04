@@ -1,0 +1,78 @@
+{
+  "version": "1.0",
+  "tts_engine": "chatterbox",
+  "model": "ChatterboxTTS",
+  "cfg_weight": 0.5,
+  "sample_rate": 24000,
+  "voices": {
+    "nexus_voice": {
+      "reference": "emily_cripps.wav",
+      "base_exaggeration": 0.7,
+      "description": "The academy itself — warm, futuristic, authoritative but kind",
+      "engine": "fish-audio-v1.5"
+    },
+    "teacher": {
+      "reference": "deanna_bovee.wav",
+      "base_exaggeration": 0.5,
+      "description": "Teacher/guide role — nurturing, patient",
+      "engine": "fish-audio-v1.5"
+    },
+    "game_voice_male": {
+      "reference": "alexander_hatton.wav",
+      "base_exaggeration": 0.5,
+      "description": "Game announcements, male — deep, authoritative",
+      "engine": "fish-audio-v1.5"
+    },
+    "game_voice_young": {
+      "reference": "caden_vaughn_clegg.wav",
+      "base_exaggeration": 0.6,
+      "description": "Game announcements, young — energetic",
+      "engine": "fish-audio-v1.5"
+    },
+    "companion_fox": {
+      "reference": "philippa.wav",
+      "base_exaggeration": 0.8,
+      "description": "Playful, adventurous, bright",
+      "personality": "The explorer — always wanting to see what's next"
+    },
+    "companion_owl": {
+      "reference": "bill_boerst.wav",
+      "base_exaggeration": 0.4,
+      "description": "Wise, thoughtful, calm",
+      "personality": "The thinker — considers before acting, loves knowledge"
+    },
+    "companion_rabbit": {
+      "reference": "julie_vw.wav",
+      "base_exaggeration": 1.0,
+      "description": "Energetic, encouraging, fast-paced",
+      "personality": "The cheerleader — boundless energy, never gives up"
+    },
+    "companion_bear": {
+      "reference": "nancy_roberts.wav",
+      "base_exaggeration": 0.45,
+      "description": "Gentle, protective, encouraging",
+      "personality": "The protector — warm, safe, always has your back"
+    },
+    "companion_cat": {
+      "reference": "lizzie_driver.wav",
+      "base_exaggeration": 0.9,
+      "description": "Curious, clever, playful",
+      "personality": "The investigator — wants to understand everything"
+    },
+    "companion_dragon": {
+      "reference": "padraig_ohiceadha-lyrical.wav",
+      "base_exaggeration": 0.8,
+      "description": "Brave, expressive, wise beyond years, Irish accent",
+      "personality": "The ancient soul — loyal, fierce, surprisingly deep"
+    }
+  },
+  "emotion_profiles": {
+    "excited": { "exaggeration_offset": 0.2, "description": "Discoveries, completing quests, praise" },
+    "adventurous": { "exaggeration_offset": 0.0, "description": "Exploring, suggesting, curious" },
+    "calm": { "exaggeration_offset": -0.3, "description": "Telling stories, teaching, reflecting" },
+    "gentle": { "exaggeration_offset": -0.4, "description": "Encouragement after failure, rest, night" },
+    "urgent": { "exaggeration_offset": 0.2, "description": "Danger, challenges, time pressure" },
+    "whispered": { "exaggeration_offset": -0.5, "description": "Hints, secrets, mysteries" }
+  },
+  "cc0_voice_source": "github.com/OwenTyme/voice-zero (LibriVox public domain)"
+}
