@@ -1,5 +1,5 @@
 {
-  "total": 1813,
+  "total": 2237,
   "assets": [
     {
       "id": "companions/fox/fox_foundation",
@@ -12691,6 +12691,2974 @@
       "subcategory": "hand_tools",
       "name": "paintbrush_art v2",
       "prompt": "Stylized 3D: Artist paintbrush, fine tip, creative, game item, variation 2"
+    },
+    {
+      "id": "buildings/types/house_cottage_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_cottage v1",
+      "prompt": "Stylized 3D: Small cottage house, thatched roof, cozy, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/house_cottage_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_cottage v2",
+      "prompt": "Stylized 3D: Small cottage house, thatched roof, cozy, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/house_cottage_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_cottage v3",
+      "prompt": "Stylized 3D: Small cottage house, thatched roof, cozy, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/house_townhouse_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_townhouse v1",
+      "prompt": "Stylized 3D: Townhouse, multi-story, urban, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/house_townhouse_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_townhouse v2",
+      "prompt": "Stylized 3D: Townhouse, multi-story, urban, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/house_townhouse_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_townhouse v3",
+      "prompt": "Stylized 3D: Townhouse, multi-story, urban, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/house_mansion_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_mansion v1",
+      "prompt": "Stylized 3D: Grand mansion, columns, gardens, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/house_mansion_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_mansion v2",
+      "prompt": "Stylized 3D: Grand mansion, columns, gardens, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/house_mansion_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_mansion v3",
+      "prompt": "Stylized 3D: Grand mansion, columns, gardens, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/house_treehouse_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_treehouse v1",
+      "prompt": "Stylized 3D: Treehouse in large tree, rope bridge, magical, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/house_treehouse_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_treehouse v2",
+      "prompt": "Stylized 3D: Treehouse in large tree, rope bridge, magical, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/house_treehouse_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_treehouse v3",
+      "prompt": "Stylized 3D: Treehouse in large tree, rope bridge, magical, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/house_igloo_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_igloo v1",
+      "prompt": "Stylized 3D: Ice igloo, dome, arctic, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/house_igloo_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_igloo v2",
+      "prompt": "Stylized 3D: Ice igloo, dome, arctic, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/house_igloo_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_igloo v3",
+      "prompt": "Stylized 3D: Ice igloo, dome, arctic, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/house_yurt_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_yurt v1",
+      "prompt": "Stylized 3D: Mongolian yurt, round tent, nomadic, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/house_yurt_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_yurt v2",
+      "prompt": "Stylized 3D: Mongolian yurt, round tent, nomadic, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/house_yurt_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_yurt v3",
+      "prompt": "Stylized 3D: Mongolian yurt, round tent, nomadic, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/house_adobe_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_adobe v1",
+      "prompt": "Stylized 3D: Adobe house, southwestern, earth walls, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/house_adobe_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_adobe v2",
+      "prompt": "Stylized 3D: Adobe house, southwestern, earth walls, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/house_adobe_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_adobe v3",
+      "prompt": "Stylized 3D: Adobe house, southwestern, earth walls, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/house_stilt_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_stilt v1",
+      "prompt": "Stylized 3D: House on stilts, waterfront, tropical, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/house_stilt_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_stilt v2",
+      "prompt": "Stylized 3D: House on stilts, waterfront, tropical, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/house_stilt_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "house_stilt v3",
+      "prompt": "Stylized 3D: House on stilts, waterfront, tropical, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/apartment_building_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "apartment_building v1",
+      "prompt": "Stylized 3D: Apartment building, multi-unit, urban, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/apartment_building_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "apartment_building v2",
+      "prompt": "Stylized 3D: Apartment building, multi-unit, urban, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/apartment_building_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "apartment_building v3",
+      "prompt": "Stylized 3D: Apartment building, multi-unit, urban, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/hut_thatched_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "hut_thatched v1",
+      "prompt": "Stylized 3D: Simple thatched hut, village, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/hut_thatched_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "hut_thatched v2",
+      "prompt": "Stylized 3D: Simple thatched hut, village, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/hut_thatched_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "hut_thatched v3",
+      "prompt": "Stylized 3D: Simple thatched hut, village, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/inn_tavern_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "inn_tavern v1",
+      "prompt": "Stylized 3D: Medieval inn and tavern, warm light, sign, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/inn_tavern_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "inn_tavern v2",
+      "prompt": "Stylized 3D: Medieval inn and tavern, warm light, sign, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/inn_tavern_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "inn_tavern v3",
+      "prompt": "Stylized 3D: Medieval inn and tavern, warm light, sign, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/bakery_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "bakery v1",
+      "prompt": "Stylized 3D: Bakery shop, bread in window, steam, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/bakery_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "bakery v2",
+      "prompt": "Stylized 3D: Bakery shop, bread in window, steam, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/bakery_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "bakery v3",
+      "prompt": "Stylized 3D: Bakery shop, bread in window, steam, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/blacksmith_shop_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "blacksmith_shop v1",
+      "prompt": "Stylized 3D: Blacksmith shop, sparks, anvil visible, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/blacksmith_shop_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "blacksmith_shop v2",
+      "prompt": "Stylized 3D: Blacksmith shop, sparks, anvil visible, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/blacksmith_shop_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "blacksmith_shop v3",
+      "prompt": "Stylized 3D: Blacksmith shop, sparks, anvil visible, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/general_store_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "general_store v1",
+      "prompt": "Stylized 3D: General store, goods displayed, frontier, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/general_store_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "general_store v2",
+      "prompt": "Stylized 3D: General store, goods displayed, frontier, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/general_store_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "general_store v3",
+      "prompt": "Stylized 3D: General store, goods displayed, frontier, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/bank_building_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "bank_building v1",
+      "prompt": "Stylized 3D: Bank building, vault, columns, secure, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/bank_building_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "bank_building v2",
+      "prompt": "Stylized 3D: Bank building, vault, columns, secure, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/bank_building_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "bank_building v3",
+      "prompt": "Stylized 3D: Bank building, vault, columns, secure, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/post_office_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "post_office v1",
+      "prompt": "Stylized 3D: Post office, mail slots, town, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/post_office_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "post_office v2",
+      "prompt": "Stylized 3D: Post office, mail slots, town, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/post_office_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "post_office v3",
+      "prompt": "Stylized 3D: Post office, mail slots, town, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/school_building_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "school_building v1",
+      "prompt": "Stylized 3D: One-room schoolhouse, bell tower, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/school_building_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "school_building v2",
+      "prompt": "Stylized 3D: One-room schoolhouse, bell tower, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/school_building_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "school_building v3",
+      "prompt": "Stylized 3D: One-room schoolhouse, bell tower, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/church_chapel_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "church_chapel v1",
+      "prompt": "Stylized 3D: Small chapel, steeple, stained glass, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/church_chapel_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "church_chapel v2",
+      "prompt": "Stylized 3D: Small chapel, steeple, stained glass, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/church_chapel_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "church_chapel v3",
+      "prompt": "Stylized 3D: Small chapel, steeple, stained glass, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/town_hall_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "town_hall v1",
+      "prompt": "Stylized 3D: Town hall, clock tower, civic, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/town_hall_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "town_hall v2",
+      "prompt": "Stylized 3D: Town hall, clock tower, civic, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/town_hall_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "town_hall v3",
+      "prompt": "Stylized 3D: Town hall, clock tower, civic, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/fire_station_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "fire_station v1",
+      "prompt": "Stylized 3D: Fire station, red doors, tower, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/fire_station_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "fire_station v2",
+      "prompt": "Stylized 3D: Fire station, red doors, tower, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/fire_station_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "fire_station v3",
+      "prompt": "Stylized 3D: Fire station, red doors, tower, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/warehouse_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "warehouse v1",
+      "prompt": "Stylized 3D: Storage warehouse, large doors, industrial, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/warehouse_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "warehouse v2",
+      "prompt": "Stylized 3D: Storage warehouse, large doors, industrial, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/warehouse_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "warehouse v3",
+      "prompt": "Stylized 3D: Storage warehouse, large doors, industrial, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/factory_steam_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "factory_steam v1",
+      "prompt": "Stylized 3D: Steam-powered factory, smokestacks, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/factory_steam_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "factory_steam v2",
+      "prompt": "Stylized 3D: Steam-powered factory, smokestacks, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/factory_steam_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "factory_steam v3",
+      "prompt": "Stylized 3D: Steam-powered factory, smokestacks, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/mill_water_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "mill_water v1",
+      "prompt": "Stylized 3D: Water mill, wheel turning, grain, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/mill_water_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "mill_water v2",
+      "prompt": "Stylized 3D: Water mill, wheel turning, grain, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/mill_water_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "mill_water v3",
+      "prompt": "Stylized 3D: Water mill, wheel turning, grain, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/mill_wind_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "mill_wind v1",
+      "prompt": "Stylized 3D: Windmill, sails turning, grain, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/mill_wind_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "mill_wind v2",
+      "prompt": "Stylized 3D: Windmill, sails turning, grain, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/mill_wind_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "mill_wind v3",
+      "prompt": "Stylized 3D: Windmill, sails turning, grain, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/sawmill_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "sawmill v1",
+      "prompt": "Stylized 3D: Sawmill, logs, circular saw, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/sawmill_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "sawmill v2",
+      "prompt": "Stylized 3D: Sawmill, logs, circular saw, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/sawmill_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "sawmill v3",
+      "prompt": "Stylized 3D: Sawmill, logs, circular saw, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/mine_entrance_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "mine_entrance v1",
+      "prompt": "Stylized 3D: Mine entrance, rail tracks, timber frame, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/mine_entrance_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "mine_entrance v2",
+      "prompt": "Stylized 3D: Mine entrance, rail tracks, timber frame, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/mine_entrance_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "mine_entrance v3",
+      "prompt": "Stylized 3D: Mine entrance, rail tracks, timber frame, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/quarry_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "quarry v1",
+      "prompt": "Stylized 3D: Stone quarry, terraced, heavy machinery, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/quarry_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "quarry v2",
+      "prompt": "Stylized 3D: Stone quarry, terraced, heavy machinery, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/quarry_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "quarry v3",
+      "prompt": "Stylized 3D: Stone quarry, terraced, heavy machinery, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/power_plant_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "power_plant v1",
+      "prompt": "Stylized 3D: Power plant, cooling towers, energy, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/power_plant_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "power_plant v2",
+      "prompt": "Stylized 3D: Power plant, cooling towers, energy, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/power_plant_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "power_plant v3",
+      "prompt": "Stylized 3D: Power plant, cooling towers, energy, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/hab_dome_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "hab_dome v1",
+      "prompt": "Stylized 3D: Habitat dome, transparent, life inside, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/hab_dome_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "hab_dome v2",
+      "prompt": "Stylized 3D: Habitat dome, transparent, life inside, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/hab_dome_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "hab_dome v3",
+      "prompt": "Stylized 3D: Habitat dome, transparent, life inside, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/launch_pad_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "launch_pad v1",
+      "prompt": "Stylized 3D: Rocket launch pad, gantry, futuristic, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/launch_pad_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "launch_pad v2",
+      "prompt": "Stylized 3D: Rocket launch pad, gantry, futuristic, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/launch_pad_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "launch_pad v3",
+      "prompt": "Stylized 3D: Rocket launch pad, gantry, futuristic, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/spaceport_terminal_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "spaceport_terminal v1",
+      "prompt": "Stylized 3D: Spaceport terminal, passengers, ships, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/spaceport_terminal_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "spaceport_terminal v2",
+      "prompt": "Stylized 3D: Spaceport terminal, passengers, ships, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/spaceport_terminal_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "spaceport_terminal v3",
+      "prompt": "Stylized 3D: Spaceport terminal, passengers, ships, game asset, variation 3"
+    },
+    {
+      "id": "buildings/types/hydroponics_farm_v1",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "hydroponics_farm v1",
+      "prompt": "Stylized 3D: Hydroponic vertical farm, glass, green, game asset, variation 1"
+    },
+    {
+      "id": "buildings/types/hydroponics_farm_v2",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "hydroponics_farm v2",
+      "prompt": "Stylized 3D: Hydroponic vertical farm, glass, green, game asset, variation 2"
+    },
+    {
+      "id": "buildings/types/hydroponics_farm_v3",
+      "category": "buildings",
+      "subcategory": "types",
+      "name": "hydroponics_farm v3",
+      "prompt": "Stylized 3D: Hydroponic vertical farm, glass, green, game asset, variation 3"
+    },
+    {
+      "id": "structures/bridges/bridge_log_v1",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_log v1",
+      "prompt": "Stylized 3D: Simple log bridge over stream, game environment, variation 1"
+    },
+    {
+      "id": "structures/bridges/bridge_log_v2",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_log v2",
+      "prompt": "Stylized 3D: Simple log bridge over stream, game environment, variation 2"
+    },
+    {
+      "id": "structures/bridges/bridge_stone_arch_v1",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_stone_arch v1",
+      "prompt": "Stylized 3D: Stone arch bridge, roman style, mossy, game environment, variation 1"
+    },
+    {
+      "id": "structures/bridges/bridge_stone_arch_v2",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_stone_arch v2",
+      "prompt": "Stylized 3D: Stone arch bridge, roman style, mossy, game environment, variation 2"
+    },
+    {
+      "id": "structures/bridges/bridge_suspension_v1",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_suspension v1",
+      "prompt": "Stylized 3D: Suspension bridge, cables, dramatic, game environment, variation 1"
+    },
+    {
+      "id": "structures/bridges/bridge_suspension_v2",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_suspension v2",
+      "prompt": "Stylized 3D: Suspension bridge, cables, dramatic, game environment, variation 2"
+    },
+    {
+      "id": "structures/bridges/bridge_drawbridge_v1",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_drawbridge v1",
+      "prompt": "Stylized 3D: Castle drawbridge, chains, medieval, game environment, variation 1"
+    },
+    {
+      "id": "structures/bridges/bridge_drawbridge_v2",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_drawbridge v2",
+      "prompt": "Stylized 3D: Castle drawbridge, chains, medieval, game environment, variation 2"
+    },
+    {
+      "id": "structures/bridges/bridge_covered_v1",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_covered v1",
+      "prompt": "Stylized 3D: Covered wooden bridge, New England style, game environment, variation 1"
+    },
+    {
+      "id": "structures/bridges/bridge_covered_v2",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_covered v2",
+      "prompt": "Stylized 3D: Covered wooden bridge, New England style, game environment, variation 2"
+    },
+    {
+      "id": "structures/bridges/bridge_rope_jungle_v1",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_rope_jungle v1",
+      "prompt": "Stylized 3D: Rope bridge through jungle canopy, game environment, variation 1"
+    },
+    {
+      "id": "structures/bridges/bridge_rope_jungle_v2",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_rope_jungle v2",
+      "prompt": "Stylized 3D: Rope bridge through jungle canopy, game environment, variation 2"
+    },
+    {
+      "id": "structures/bridges/bridge_ice_v1",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_ice v1",
+      "prompt": "Stylized 3D: Ice bridge, frozen, fragile looking, game environment, variation 1"
+    },
+    {
+      "id": "structures/bridges/bridge_ice_v2",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_ice v2",
+      "prompt": "Stylized 3D: Ice bridge, frozen, fragile looking, game environment, variation 2"
+    },
+    {
+      "id": "structures/bridges/bridge_crystal_v1",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_crystal v1",
+      "prompt": "Stylized 3D: Crystal bridge, translucent, magical, game environment, variation 1"
+    },
+    {
+      "id": "structures/bridges/bridge_crystal_v2",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_crystal v2",
+      "prompt": "Stylized 3D: Crystal bridge, translucent, magical, game environment, variation 2"
+    },
+    {
+      "id": "structures/bridges/bridge_energy_v1",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_energy v1",
+      "prompt": "Stylized 3D: Energy beam bridge, sci-fi, force field, game environment, variation 1"
+    },
+    {
+      "id": "structures/bridges/bridge_energy_v2",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_energy v2",
+      "prompt": "Stylized 3D: Energy beam bridge, sci-fi, force field, game environment, variation 2"
+    },
+    {
+      "id": "structures/bridges/bridge_living_v1",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_living v1",
+      "prompt": "Stylized 3D: Living bridge made of tree roots, natural, game environment, variation 1"
+    },
+    {
+      "id": "structures/bridges/bridge_living_v2",
+      "category": "structures",
+      "subcategory": "bridges",
+      "name": "bridge_living v2",
+      "prompt": "Stylized 3D: Living bridge made of tree roots, natural, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/mountain_snow_peak_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "mountain_snow_peak v1",
+      "prompt": "Stylized 3D: Snow-capped mountain peak, majestic, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/mountain_snow_peak_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "mountain_snow_peak v2",
+      "prompt": "Stylized 3D: Snow-capped mountain peak, majestic, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/mountain_volcanic_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "mountain_volcanic v1",
+      "prompt": "Stylized 3D: Volcanic mountain, lava, smoke, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/mountain_volcanic_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "mountain_volcanic v2",
+      "prompt": "Stylized 3D: Volcanic mountain, lava, smoke, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/mountain_mesa_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "mountain_mesa v1",
+      "prompt": "Stylized 3D: Flat-topped mesa, desert, layered rock, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/mountain_mesa_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "mountain_mesa v2",
+      "prompt": "Stylized 3D: Flat-topped mesa, desert, layered rock, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/mountain_cliff_face_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "mountain_cliff_face v1",
+      "prompt": "Stylized 3D: Dramatic cliff face, sheer, birds, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/mountain_cliff_face_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "mountain_cliff_face v2",
+      "prompt": "Stylized 3D: Dramatic cliff face, sheer, birds, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/mountain_range_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "mountain_range v1",
+      "prompt": "Stylized 3D: Mountain range panorama, epic distance, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/mountain_range_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "mountain_range v2",
+      "prompt": "Stylized 3D: Mountain range panorama, epic distance, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/valley_green_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "valley_green v1",
+      "prompt": "Stylized 3D: Lush green valley, river running through, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/valley_green_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "valley_green v2",
+      "prompt": "Stylized 3D: Lush green valley, river running through, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/valley_canyon_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "valley_canyon v1",
+      "prompt": "Stylized 3D: Deep canyon, red rock, river below, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/valley_canyon_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "valley_canyon v2",
+      "prompt": "Stylized 3D: Deep canyon, red rock, river below, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/valley_glacial_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "valley_glacial v1",
+      "prompt": "Stylized 3D: Glacial valley, U-shaped, ice remnants, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/valley_glacial_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "valley_glacial v2",
+      "prompt": "Stylized 3D: Glacial valley, U-shaped, ice remnants, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/valley_volcanic_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "valley_volcanic v1",
+      "prompt": "Stylized 3D: Volcanic valley, hot springs, steam, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/valley_volcanic_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "valley_volcanic v2",
+      "prompt": "Stylized 3D: Volcanic valley, hot springs, steam, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/ocean_surface_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "ocean_surface v1",
+      "prompt": "Stylized 3D: Ocean surface, waves, endless blue, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/ocean_surface_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "ocean_surface v2",
+      "prompt": "Stylized 3D: Ocean surface, waves, endless blue, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/ocean_floor_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "ocean_floor v1",
+      "prompt": "Stylized 3D: Ocean floor, sand, scattered shells, coral, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/ocean_floor_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "ocean_floor v2",
+      "prompt": "Stylized 3D: Ocean floor, sand, scattered shells, coral, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/coral_reef_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "coral_reef v1",
+      "prompt": "Stylized 3D: Colorful coral reef, fish, underwater, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/coral_reef_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "coral_reef v2",
+      "prompt": "Stylized 3D: Colorful coral reef, fish, underwater, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/kelp_forest_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "kelp_forest v1",
+      "prompt": "Stylized 3D: Underwater kelp forest, tall swaying, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/kelp_forest_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "kelp_forest v2",
+      "prompt": "Stylized 3D: Underwater kelp forest, tall swaying, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/deep_trench_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "deep_trench v1",
+      "prompt": "Stylized 3D: Deep ocean trench, dark, bioluminescent, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/deep_trench_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "deep_trench v2",
+      "prompt": "Stylized 3D: Deep ocean trench, dark, bioluminescent, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/tidal_pool_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "tidal_pool v1",
+      "prompt": "Stylized 3D: Tidal pool, small ecosystem, rocks, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/tidal_pool_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "tidal_pool v2",
+      "prompt": "Stylized 3D: Tidal pool, small ecosystem, rocks, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/lake_mountain_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "lake_mountain v1",
+      "prompt": "Stylized 3D: Mountain lake, crystal clear, reflections, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/lake_mountain_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "lake_mountain v2",
+      "prompt": "Stylized 3D: Mountain lake, crystal clear, reflections, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/river_rapids_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "river_rapids v1",
+      "prompt": "Stylized 3D: River rapids, white water, rocks, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/river_rapids_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "river_rapids v2",
+      "prompt": "Stylized 3D: River rapids, white water, rocks, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/waterfall_tall_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "waterfall_tall v1",
+      "prompt": "Stylized 3D: Tall waterfall, mist, rainbow, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/waterfall_tall_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "waterfall_tall v2",
+      "prompt": "Stylized 3D: Tall waterfall, mist, rainbow, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/swamp_bayou_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "swamp_bayou v1",
+      "prompt": "Stylized 3D: Swamp bayou, cypress trees, moss, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/swamp_bayou_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "swamp_bayou v2",
+      "prompt": "Stylized 3D: Swamp bayou, cypress trees, moss, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/hot_spring_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "hot_spring v1",
+      "prompt": "Stylized 3D: Natural hot spring, steam, mineral colors, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/hot_spring_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "hot_spring v2",
+      "prompt": "Stylized 3D: Natural hot spring, steam, mineral colors, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/forest_temperate_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "forest_temperate v1",
+      "prompt": "Stylized 3D: Temperate forest, mixed trees, sunlight, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/forest_temperate_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "forest_temperate v2",
+      "prompt": "Stylized 3D: Temperate forest, mixed trees, sunlight, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/forest_tropical_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "forest_tropical v1",
+      "prompt": "Stylized 3D: Tropical rainforest, dense, canopy layers, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/forest_tropical_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "forest_tropical v2",
+      "prompt": "Stylized 3D: Tropical rainforest, dense, canopy layers, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/forest_boreal_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "forest_boreal v1",
+      "prompt": "Stylized 3D: Boreal forest, pine, snow, cold, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/forest_boreal_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "forest_boreal v2",
+      "prompt": "Stylized 3D: Boreal forest, pine, snow, cold, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/forest_bamboo_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "forest_bamboo v1",
+      "prompt": "Stylized 3D: Bamboo forest, tall green stalks, serene, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/forest_bamboo_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "forest_bamboo v2",
+      "prompt": "Stylized 3D: Bamboo forest, tall green stalks, serene, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/forest_mangrove_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "forest_mangrove v1",
+      "prompt": "Stylized 3D: Mangrove forest, roots in water, coastal, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/forest_mangrove_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "forest_mangrove v2",
+      "prompt": "Stylized 3D: Mangrove forest, roots in water, coastal, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/forest_petrified_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "forest_petrified v1",
+      "prompt": "Stylized 3D: Petrified forest, stone trees, ancient, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/forest_petrified_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "forest_petrified v2",
+      "prompt": "Stylized 3D: Petrified forest, stone trees, ancient, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/desert_sand_dunes_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "desert_sand_dunes v1",
+      "prompt": "Stylized 3D: Sand dunes, rolling, golden, Sahara, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/desert_sand_dunes_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "desert_sand_dunes v2",
+      "prompt": "Stylized 3D: Sand dunes, rolling, golden, Sahara, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/desert_rocky_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "desert_rocky v1",
+      "prompt": "Stylized 3D: Rocky desert, cacti, red earth, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/desert_rocky_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "desert_rocky v2",
+      "prompt": "Stylized 3D: Rocky desert, cacti, red earth, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/desert_salt_flat_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "desert_salt_flat v1",
+      "prompt": "Stylized 3D: Salt flat, perfectly flat, reflective, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/desert_salt_flat_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "desert_salt_flat v2",
+      "prompt": "Stylized 3D: Salt flat, perfectly flat, reflective, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/desert_oasis_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "desert_oasis v1",
+      "prompt": "Stylized 3D: Desert oasis, palm trees, water, life, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/desert_oasis_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "desert_oasis v2",
+      "prompt": "Stylized 3D: Desert oasis, palm trees, water, life, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/tundra_flat_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "tundra_flat v1",
+      "prompt": "Stylized 3D: Arctic tundra, flat, sparse vegetation, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/tundra_flat_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "tundra_flat v2",
+      "prompt": "Stylized 3D: Arctic tundra, flat, sparse vegetation, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/iceberg_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "iceberg v1",
+      "prompt": "Stylized 3D: Floating iceberg, massive, blue-white, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/iceberg_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "iceberg v2",
+      "prompt": "Stylized 3D: Floating iceberg, massive, blue-white, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/glacier_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "glacier v1",
+      "prompt": "Stylized 3D: Glacier, crevasses, blue ice, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/glacier_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "glacier v2",
+      "prompt": "Stylized 3D: Glacier, crevasses, blue ice, game environment, variation 2"
+    },
+    {
+      "id": "terrain/landscapes/frozen_lake_v1",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "frozen_lake v1",
+      "prompt": "Stylized 3D: Frozen lake, ice fishing hole, snow, game environment, variation 1"
+    },
+    {
+      "id": "terrain/landscapes/frozen_lake_v2",
+      "category": "terrain",
+      "subcategory": "landscapes",
+      "name": "frozen_lake v2",
+      "prompt": "Stylized 3D: Frozen lake, ice fishing hole, snow, game environment, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/ant_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "ant v1",
+      "prompt": "Stylized cute ant, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/ant_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "ant v2",
+      "prompt": "Stylized cute ant, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/beetle_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "beetle v1",
+      "prompt": "Stylized cute beetle, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/beetle_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "beetle v2",
+      "prompt": "Stylized cute beetle, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/butterfly_monarch_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "butterfly_monarch v1",
+      "prompt": "Stylized cute butterfly monarch, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/butterfly_monarch_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "butterfly_monarch v2",
+      "prompt": "Stylized cute butterfly monarch, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/moth_luna_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "moth_luna v1",
+      "prompt": "Stylized cute moth luna, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/moth_luna_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "moth_luna v2",
+      "prompt": "Stylized cute moth luna, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/dragonfly_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "dragonfly v1",
+      "prompt": "Stylized cute dragonfly, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/dragonfly_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "dragonfly v2",
+      "prompt": "Stylized cute dragonfly, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/grasshopper_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "grasshopper v1",
+      "prompt": "Stylized cute grasshopper, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/grasshopper_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "grasshopper v2",
+      "prompt": "Stylized cute grasshopper, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/cricket_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "cricket v1",
+      "prompt": "Stylized cute cricket, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/cricket_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "cricket v2",
+      "prompt": "Stylized cute cricket, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/praying_mantis_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "praying_mantis v1",
+      "prompt": "Stylized cute praying mantis, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/praying_mantis_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "praying_mantis v2",
+      "prompt": "Stylized cute praying mantis, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/ladybug_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "ladybug v1",
+      "prompt": "Stylized cute ladybug, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/ladybug_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "ladybug v2",
+      "prompt": "Stylized cute ladybug, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/caterpillar_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "caterpillar v1",
+      "prompt": "Stylized cute caterpillar, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/caterpillar_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "caterpillar v2",
+      "prompt": "Stylized cute caterpillar, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/spider_garden_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "spider_garden v1",
+      "prompt": "Stylized cute spider garden, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/spider_garden_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "spider_garden v2",
+      "prompt": "Stylized cute spider garden, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/scorpion_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "scorpion v1",
+      "prompt": "Stylized cute scorpion, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/scorpion_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "scorpion v2",
+      "prompt": "Stylized cute scorpion, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/centipede_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "centipede v1",
+      "prompt": "Stylized cute centipede, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/centipede_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "centipede v2",
+      "prompt": "Stylized cute centipede, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/millipede_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "millipede v1",
+      "prompt": "Stylized cute millipede, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/millipede_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "millipede v2",
+      "prompt": "Stylized cute millipede, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/earthworm_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "earthworm v1",
+      "prompt": "Stylized cute earthworm, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/earthworm_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "earthworm v2",
+      "prompt": "Stylized cute earthworm, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/firefly_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "firefly v1",
+      "prompt": "Stylized cute firefly, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/firefly_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "firefly v2",
+      "prompt": "Stylized cute firefly, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/cicada_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "cicada v1",
+      "prompt": "Stylized cute cicada, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/cicada_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "cicada v2",
+      "prompt": "Stylized cute cicada, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/bee_honey_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "bee_honey v1",
+      "prompt": "Stylized cute bee honey, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/bee_honey_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "bee_honey v2",
+      "prompt": "Stylized cute bee honey, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/wasp_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "wasp v1",
+      "prompt": "Stylized cute wasp, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/wasp_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "wasp v2",
+      "prompt": "Stylized cute wasp, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/mosquito_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "mosquito v1",
+      "prompt": "Stylized cute mosquito, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/mosquito_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "mosquito v2",
+      "prompt": "Stylized cute mosquito, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/stick_insect_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "stick_insect v1",
+      "prompt": "Stylized cute stick insect, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/stick_insect_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "stick_insect v2",
+      "prompt": "Stylized cute stick insect, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/water_strider_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "water_strider v1",
+      "prompt": "Stylized cute water strider, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/water_strider_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "water_strider v2",
+      "prompt": "Stylized cute water strider, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/dung_beetle_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "dung_beetle v1",
+      "prompt": "Stylized cute dung beetle, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/dung_beetle_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "dung_beetle v2",
+      "prompt": "Stylized cute dung beetle, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/stag_beetle_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "stag_beetle v1",
+      "prompt": "Stylized cute stag beetle, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/stag_beetle_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "stag_beetle v2",
+      "prompt": "Stylized cute stag beetle, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/pill_bug_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "pill_bug v1",
+      "prompt": "Stylized cute pill bug, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/pill_bug_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "pill_bug v2",
+      "prompt": "Stylized cute pill bug, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/flea_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "flea v1",
+      "prompt": "Stylized cute flea, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/flea_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "flea v2",
+      "prompt": "Stylized cute flea, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/tick_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "tick v1",
+      "prompt": "Stylized cute tick, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/tick_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "tick v2",
+      "prompt": "Stylized cute tick, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/aphid_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "aphid v1",
+      "prompt": "Stylized cute aphid, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/aphid_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "aphid v2",
+      "prompt": "Stylized cute aphid, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/termite_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "termite v1",
+      "prompt": "Stylized cute termite, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/termite_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "termite v2",
+      "prompt": "Stylized cute termite, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/earth/cockroach_v1",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "cockroach v1",
+      "prompt": "Stylized cute cockroach, educational, game character, variation 1"
+    },
+    {
+      "id": "creatures/insects/earth/cockroach_v2",
+      "category": "creatures/insects",
+      "subcategory": "earth",
+      "name": "cockroach v2",
+      "prompt": "Stylized cute cockroach, educational, game character, variation 2"
+    },
+    {
+      "id": "creatures/insects/alien/crystal_moth_v1",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "crystal_moth v1",
+      "prompt": "Alien insect: crystal moth, sci-fi, unique biology, game, variation 1"
+    },
+    {
+      "id": "creatures/insects/alien/crystal_moth_v2",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "crystal_moth v2",
+      "prompt": "Alien insect: crystal moth, sci-fi, unique biology, game, variation 2"
+    },
+    {
+      "id": "creatures/insects/alien/plasma_beetle_v1",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "plasma_beetle v1",
+      "prompt": "Alien insect: plasma beetle, sci-fi, unique biology, game, variation 1"
+    },
+    {
+      "id": "creatures/insects/alien/plasma_beetle_v2",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "plasma_beetle v2",
+      "prompt": "Alien insect: plasma beetle, sci-fi, unique biology, game, variation 2"
+    },
+    {
+      "id": "creatures/insects/alien/gravity_weaver_spider_v1",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "gravity_weaver_spider v1",
+      "prompt": "Alien insect: gravity weaver spider, sci-fi, unique biology, game, variation 1"
+    },
+    {
+      "id": "creatures/insects/alien/gravity_weaver_spider_v2",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "gravity_weaver_spider v2",
+      "prompt": "Alien insect: gravity weaver spider, sci-fi, unique biology, game, variation 2"
+    },
+    {
+      "id": "creatures/insects/alien/sonic_cricket_v1",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "sonic_cricket v1",
+      "prompt": "Alien insect: sonic cricket, sci-fi, unique biology, game, variation 1"
+    },
+    {
+      "id": "creatures/insects/alien/sonic_cricket_v2",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "sonic_cricket v2",
+      "prompt": "Alien insect: sonic cricket, sci-fi, unique biology, game, variation 2"
+    },
+    {
+      "id": "creatures/insects/alien/nebula_firefly_v1",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "nebula_firefly v1",
+      "prompt": "Alien insect: nebula firefly, sci-fi, unique biology, game, variation 1"
+    },
+    {
+      "id": "creatures/insects/alien/nebula_firefly_v2",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "nebula_firefly v2",
+      "prompt": "Alien insect: nebula firefly, sci-fi, unique biology, game, variation 2"
+    },
+    {
+      "id": "creatures/insects/alien/phase_shifting_ant_v1",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "phase_shifting_ant v1",
+      "prompt": "Alien insect: phase shifting ant, sci-fi, unique biology, game, variation 1"
+    },
+    {
+      "id": "creatures/insects/alien/phase_shifting_ant_v2",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "phase_shifting_ant v2",
+      "prompt": "Alien insect: phase shifting ant, sci-fi, unique biology, game, variation 2"
+    },
+    {
+      "id": "creatures/insects/alien/magnetic_dragonfly_v1",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "magnetic_dragonfly v1",
+      "prompt": "Alien insect: magnetic dragonfly, sci-fi, unique biology, game, variation 1"
+    },
+    {
+      "id": "creatures/insects/alien/magnetic_dragonfly_v2",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "magnetic_dragonfly v2",
+      "prompt": "Alien insect: magnetic dragonfly, sci-fi, unique biology, game, variation 2"
+    },
+    {
+      "id": "creatures/insects/alien/thermal_centipede_v1",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "thermal_centipede v1",
+      "prompt": "Alien insect: thermal centipede, sci-fi, unique biology, game, variation 1"
+    },
+    {
+      "id": "creatures/insects/alien/thermal_centipede_v2",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "thermal_centipede v2",
+      "prompt": "Alien insect: thermal centipede, sci-fi, unique biology, game, variation 2"
+    },
+    {
+      "id": "creatures/insects/alien/bioluminescent_mantis_v1",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "bioluminescent_mantis v1",
+      "prompt": "Alien insect: bioluminescent mantis, sci-fi, unique biology, game, variation 1"
+    },
+    {
+      "id": "creatures/insects/alien/bioluminescent_mantis_v2",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "bioluminescent_mantis v2",
+      "prompt": "Alien insect: bioluminescent mantis, sci-fi, unique biology, game, variation 2"
+    },
+    {
+      "id": "creatures/insects/alien/quantum_butterfly_v1",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "quantum_butterfly v1",
+      "prompt": "Alien insect: quantum butterfly, sci-fi, unique biology, game, variation 1"
+    },
+    {
+      "id": "creatures/insects/alien/quantum_butterfly_v2",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "quantum_butterfly v2",
+      "prompt": "Alien insect: quantum butterfly, sci-fi, unique biology, game, variation 2"
+    },
+    {
+      "id": "creatures/insects/alien/silicon_beetle_v1",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "silicon_beetle v1",
+      "prompt": "Alien insect: silicon beetle, sci-fi, unique biology, game, variation 1"
+    },
+    {
+      "id": "creatures/insects/alien/silicon_beetle_v2",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "silicon_beetle v2",
+      "prompt": "Alien insect: silicon beetle, sci-fi, unique biology, game, variation 2"
+    },
+    {
+      "id": "creatures/insects/alien/ice_crystal_spider_v1",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "ice_crystal_spider v1",
+      "prompt": "Alien insect: ice crystal spider, sci-fi, unique biology, game, variation 1"
+    },
+    {
+      "id": "creatures/insects/alien/ice_crystal_spider_v2",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "ice_crystal_spider v2",
+      "prompt": "Alien insect: ice crystal spider, sci-fi, unique biology, game, variation 2"
+    },
+    {
+      "id": "creatures/insects/alien/sand_swimming_scorpion_v1",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "sand_swimming_scorpion v1",
+      "prompt": "Alien insect: sand swimming scorpion, sci-fi, unique biology, game, variation 1"
+    },
+    {
+      "id": "creatures/insects/alien/sand_swimming_scorpion_v2",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "sand_swimming_scorpion v2",
+      "prompt": "Alien insect: sand swimming scorpion, sci-fi, unique biology, game, variation 2"
+    },
+    {
+      "id": "creatures/insects/alien/canopy_glider_moth_v1",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "canopy_glider_moth v1",
+      "prompt": "Alien insect: canopy glider moth, sci-fi, unique biology, game, variation 1"
+    },
+    {
+      "id": "creatures/insects/alien/canopy_glider_moth_v2",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "canopy_glider_moth v2",
+      "prompt": "Alien insect: canopy glider moth, sci-fi, unique biology, game, variation 2"
+    },
+    {
+      "id": "creatures/insects/alien/deep_ocean_water_strider_v1",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "deep_ocean_water_strider v1",
+      "prompt": "Alien insect: deep ocean water strider, sci-fi, unique biology, game, variation 1"
+    },
+    {
+      "id": "creatures/insects/alien/deep_ocean_water_strider_v2",
+      "category": "creatures/insects",
+      "subcategory": "alien",
+      "name": "deep_ocean_water_strider v2",
+      "prompt": "Alien insect: deep ocean water strider, sci-fi, unique biology, game, variation 2"
+    },
+    {
+      "id": "microscopic/earth/amoeba_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "amoeba v1",
+      "prompt": "Stylized 3D: Amoeba single cell organism, pseudopods, educational, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/amoeba_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "amoeba v2",
+      "prompt": "Stylized 3D: Amoeba single cell organism, pseudopods, educational, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/earth/paramecium_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "paramecium v1",
+      "prompt": "Stylized 3D: Paramecium, cilia, single cell, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/paramecium_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "paramecium v2",
+      "prompt": "Stylized 3D: Paramecium, cilia, single cell, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/earth/euglena_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "euglena v1",
+      "prompt": "Stylized 3D: Euglena, flagellum, green, photosynthetic, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/euglena_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "euglena v2",
+      "prompt": "Stylized 3D: Euglena, flagellum, green, photosynthetic, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/earth/red_blood_cell_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "red_blood_cell v1",
+      "prompt": "Stylized 3D: Red blood cell, biconcave disc, medical, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/red_blood_cell_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "red_blood_cell v2",
+      "prompt": "Stylized 3D: Red blood cell, biconcave disc, medical, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/earth/white_blood_cell_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "white_blood_cell v1",
+      "prompt": "Stylized 3D: White blood cell, immune system, medical, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/white_blood_cell_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "white_blood_cell v2",
+      "prompt": "Stylized 3D: White blood cell, immune system, medical, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/earth/neuron_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "neuron v1",
+      "prompt": "Stylized 3D: Neuron nerve cell, axon, dendrites, brain, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/neuron_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "neuron v2",
+      "prompt": "Stylized 3D: Neuron nerve cell, axon, dendrites, brain, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/earth/bacteria_rod_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "bacteria_rod v1",
+      "prompt": "Stylized 3D: Rod-shaped bacteria, flagella, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/bacteria_rod_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "bacteria_rod v2",
+      "prompt": "Stylized 3D: Rod-shaped bacteria, flagella, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/earth/bacteria_sphere_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "bacteria_sphere v1",
+      "prompt": "Stylized 3D: Spherical bacteria, coccus, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/bacteria_sphere_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "bacteria_sphere v2",
+      "prompt": "Stylized 3D: Spherical bacteria, coccus, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/earth/virus_model_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "virus_model v1",
+      "prompt": "Stylized 3D: Virus model, protein coat, educational, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/virus_model_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "virus_model v2",
+      "prompt": "Stylized 3D: Virus model, protein coat, educational, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/earth/plant_cell_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "plant_cell v1",
+      "prompt": "Stylized 3D: Plant cell cross-section, chloroplasts, wall, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/plant_cell_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "plant_cell v2",
+      "prompt": "Stylized 3D: Plant cell cross-section, chloroplasts, wall, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/earth/animal_cell_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "animal_cell v1",
+      "prompt": "Stylized 3D: Animal cell cross-section, organelles visible, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/animal_cell_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "animal_cell v2",
+      "prompt": "Stylized 3D: Animal cell cross-section, organelles visible, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/earth/dna_double_helix_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "dna_double_helix v1",
+      "prompt": "Stylized 3D: DNA double helix model, base pairs, rotating, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/dna_double_helix_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "dna_double_helix v2",
+      "prompt": "Stylized 3D: DNA double helix model, base pairs, rotating, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/earth/mitochondria_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "mitochondria v1",
+      "prompt": "Stylized 3D: Mitochondrion, cristae, powerhouse, educational, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/mitochondria_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "mitochondria v2",
+      "prompt": "Stylized 3D: Mitochondrion, cristae, powerhouse, educational, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/earth/chloroplast_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "chloroplast v1",
+      "prompt": "Stylized 3D: Chloroplast, thylakoids, photosynthesis, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/chloroplast_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "chloroplast v2",
+      "prompt": "Stylized 3D: Chloroplast, thylakoids, photosynthesis, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/earth/spore_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "spore v1",
+      "prompt": "Stylized 3D: Fungal spore, microscopic, dispersing, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/spore_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "spore v2",
+      "prompt": "Stylized 3D: Fungal spore, microscopic, dispersing, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/earth/diatom_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "diatom v1",
+      "prompt": "Stylized 3D: Diatom, glass shell, geometric, beautiful, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/diatom_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "diatom v2",
+      "prompt": "Stylized 3D: Diatom, glass shell, geometric, beautiful, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/earth/tardigrade_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "tardigrade v1",
+      "prompt": "Stylized 3D: Tardigrade water bear, microscopic, cute, tough, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/tardigrade_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "tardigrade v2",
+      "prompt": "Stylized 3D: Tardigrade water bear, microscopic, cute, tough, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/earth/plankton_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "plankton v1",
+      "prompt": "Stylized 3D: Plankton organism, tiny, ocean, diverse, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/plankton_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "plankton v2",
+      "prompt": "Stylized 3D: Plankton organism, tiny, ocean, diverse, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/earth/yeast_cell_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "yeast_cell v1",
+      "prompt": "Stylized 3D: Yeast cell, budding, fermentation, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/yeast_cell_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "yeast_cell v2",
+      "prompt": "Stylized 3D: Yeast cell, budding, fermentation, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/earth/stem_cell_v1",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "stem_cell v1",
+      "prompt": "Stylized 3D: Stem cell, undifferentiated, glowing potential, educational game asset, variation 1"
+    },
+    {
+      "id": "microscopic/earth/stem_cell_v2",
+      "category": "microscopic",
+      "subcategory": "earth",
+      "name": "stem_cell v2",
+      "prompt": "Stylized 3D: Stem cell, undifferentiated, glowing potential, educational game asset, variation 2"
+    },
+    {
+      "id": "microscopic/alien/silicon_cell_v1",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "silicon_cell v1",
+      "prompt": "Alien microscopic: Alien silicon-based cell, crystalline organelles, sci-fi educational, variation 1"
+    },
+    {
+      "id": "microscopic/alien/silicon_cell_v2",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "silicon_cell v2",
+      "prompt": "Alien microscopic: Alien silicon-based cell, crystalline organelles, sci-fi educational, variation 2"
+    },
+    {
+      "id": "microscopic/alien/plasma_organism_v1",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "plasma_organism v1",
+      "prompt": "Alien microscopic: Alien plasma single cell, energy-based life, sci-fi educational, variation 1"
+    },
+    {
+      "id": "microscopic/alien/plasma_organism_v2",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "plasma_organism v2",
+      "prompt": "Alien microscopic: Alien plasma single cell, energy-based life, sci-fi educational, variation 2"
+    },
+    {
+      "id": "microscopic/alien/magnetic_bacterium_v1",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "magnetic_bacterium v1",
+      "prompt": "Alien microscopic: Alien magnetic bacterium, iron-based, sci-fi educational, variation 1"
+    },
+    {
+      "id": "microscopic/alien/magnetic_bacterium_v2",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "magnetic_bacterium v2",
+      "prompt": "Alien microscopic: Alien magnetic bacterium, iron-based, sci-fi educational, variation 2"
+    },
+    {
+      "id": "microscopic/alien/quantum_cell_v1",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "quantum_cell v1",
+      "prompt": "Alien microscopic: Alien quantum-coherent cell, superposition, sci-fi educational, variation 1"
+    },
+    {
+      "id": "microscopic/alien/quantum_cell_v2",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "quantum_cell v2",
+      "prompt": "Alien microscopic: Alien quantum-coherent cell, superposition, sci-fi educational, variation 2"
+    },
+    {
+      "id": "microscopic/alien/thermal_extremophile_v1",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "thermal_extremophile v1",
+      "prompt": "Alien microscopic: Alien thermal cell, thrives in lava, sci-fi educational, variation 1"
+    },
+    {
+      "id": "microscopic/alien/thermal_extremophile_v2",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "thermal_extremophile v2",
+      "prompt": "Alien microscopic: Alien thermal cell, thrives in lava, sci-fi educational, variation 2"
+    },
+    {
+      "id": "microscopic/alien/cryo_organism_v1",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "cryo_organism v1",
+      "prompt": "Alien microscopic: Alien cryogenic organism, ice crystal structure, sci-fi educational, variation 1"
+    },
+    {
+      "id": "microscopic/alien/cryo_organism_v2",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "cryo_organism v2",
+      "prompt": "Alien microscopic: Alien cryogenic organism, ice crystal structure, sci-fi educational, variation 2"
+    },
+    {
+      "id": "microscopic/alien/photonic_cell_v1",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "photonic_cell v1",
+      "prompt": "Alien microscopic: Alien light-based cell, bioluminescent core, sci-fi educational, variation 1"
+    },
+    {
+      "id": "microscopic/alien/photonic_cell_v2",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "photonic_cell v2",
+      "prompt": "Alien microscopic: Alien light-based cell, bioluminescent core, sci-fi educational, variation 2"
+    },
+    {
+      "id": "microscopic/alien/gravity_sensitive_cell_v1",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "gravity_sensitive_cell v1",
+      "prompt": "Alien microscopic: Alien gravity-sensing cell, tidal organism, sci-fi educational, variation 1"
+    },
+    {
+      "id": "microscopic/alien/gravity_sensitive_cell_v2",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "gravity_sensitive_cell v2",
+      "prompt": "Alien microscopic: Alien gravity-sensing cell, tidal organism, sci-fi educational, variation 2"
+    },
+    {
+      "id": "microscopic/alien/nebula_spore_v1",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "nebula_spore v1",
+      "prompt": "Alien microscopic: Alien nebula spore, survives in vacuum, sci-fi educational, variation 1"
+    },
+    {
+      "id": "microscopic/alien/nebula_spore_v2",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "nebula_spore v2",
+      "prompt": "Alien microscopic: Alien nebula spore, survives in vacuum, sci-fi educational, variation 2"
+    },
+    {
+      "id": "microscopic/alien/dark_matter_microbe_v1",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "dark_matter_microbe v1",
+      "prompt": "Alien microscopic: Alien dark matter microorganism, mysterious, sci-fi educational, variation 1"
+    },
+    {
+      "id": "microscopic/alien/dark_matter_microbe_v2",
+      "category": "microscopic",
+      "subcategory": "alien",
+      "name": "dark_matter_microbe v2",
+      "prompt": "Alien microscopic: Alien dark matter microorganism, mysterious, sci-fi educational, variation 2"
+    },
+    {
+      "id": "plants/earth/venus_flytrap_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "venus_flytrap v1",
+      "prompt": "Stylized venus flytrap, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/venus_flytrap_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "venus_flytrap v2",
+      "prompt": "Stylized venus flytrap, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/sequoia_giant_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "sequoia_giant v1",
+      "prompt": "Stylized sequoia giant, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/sequoia_giant_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "sequoia_giant v2",
+      "prompt": "Stylized sequoia giant, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/water_lily_giant_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "water_lily_giant v1",
+      "prompt": "Stylized water lily giant, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/water_lily_giant_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "water_lily_giant v2",
+      "prompt": "Stylized water lily giant, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/mangrove_roots_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "mangrove_roots v1",
+      "prompt": "Stylized mangrove roots, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/mangrove_roots_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "mangrove_roots v2",
+      "prompt": "Stylized mangrove roots, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/kelp_giant_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "kelp_giant v1",
+      "prompt": "Stylized kelp giant, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/kelp_giant_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "kelp_giant v2",
+      "prompt": "Stylized kelp giant, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/moss_carpet_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "moss_carpet v1",
+      "prompt": "Stylized moss carpet, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/moss_carpet_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "moss_carpet v2",
+      "prompt": "Stylized moss carpet, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/lichen_rock_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "lichen_rock v1",
+      "prompt": "Stylized lichen rock, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/lichen_rock_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "lichen_rock v2",
+      "prompt": "Stylized lichen rock, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/ivy_climbing_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "ivy_climbing v1",
+      "prompt": "Stylized ivy climbing, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/ivy_climbing_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "ivy_climbing v2",
+      "prompt": "Stylized ivy climbing, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/rose_bush_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "rose_bush v1",
+      "prompt": "Stylized rose bush, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/rose_bush_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "rose_bush v2",
+      "prompt": "Stylized rose bush, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/sunflower_field_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "sunflower_field v1",
+      "prompt": "Stylized sunflower field, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/sunflower_field_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "sunflower_field v2",
+      "prompt": "Stylized sunflower field, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/lavender_field_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "lavender_field v1",
+      "prompt": "Stylized lavender field, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/lavender_field_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "lavender_field v2",
+      "prompt": "Stylized lavender field, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/cherry_tree_blossom_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "cherry_tree_blossom v1",
+      "prompt": "Stylized cherry tree blossom, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/cherry_tree_blossom_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "cherry_tree_blossom v2",
+      "prompt": "Stylized cherry tree blossom, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/wheat_field_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "wheat_field v1",
+      "prompt": "Stylized wheat field, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/wheat_field_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "wheat_field v2",
+      "prompt": "Stylized wheat field, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/rice_paddy_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "rice_paddy v1",
+      "prompt": "Stylized rice paddy, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/rice_paddy_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "rice_paddy v2",
+      "prompt": "Stylized rice paddy, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/corn_field_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "corn_field v1",
+      "prompt": "Stylized corn field, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/corn_field_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "corn_field v2",
+      "prompt": "Stylized corn field, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/potato_plant_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "potato_plant v1",
+      "prompt": "Stylized potato plant, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/potato_plant_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "potato_plant v2",
+      "prompt": "Stylized potato plant, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/carrot_plant_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "carrot_plant v1",
+      "prompt": "Stylized carrot plant, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/carrot_plant_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "carrot_plant v2",
+      "prompt": "Stylized carrot plant, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/tomato_vine_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "tomato_vine v1",
+      "prompt": "Stylized tomato vine, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/tomato_vine_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "tomato_vine v2",
+      "prompt": "Stylized tomato vine, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/grape_vine_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "grape_vine v1",
+      "prompt": "Stylized grape vine, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/grape_vine_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "grape_vine v2",
+      "prompt": "Stylized grape vine, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/apple_orchard_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "apple_orchard v1",
+      "prompt": "Stylized apple orchard, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/apple_orchard_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "apple_orchard v2",
+      "prompt": "Stylized apple orchard, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/orange_tree_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "orange_tree v1",
+      "prompt": "Stylized orange tree, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/orange_tree_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "orange_tree v2",
+      "prompt": "Stylized orange tree, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/banana_plant_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "banana_plant v1",
+      "prompt": "Stylized banana plant, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/banana_plant_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "banana_plant v2",
+      "prompt": "Stylized banana plant, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/coconut_palm_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "coconut_palm v1",
+      "prompt": "Stylized coconut palm, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/coconut_palm_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "coconut_palm v2",
+      "prompt": "Stylized coconut palm, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/coffee_plant_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "coffee_plant v1",
+      "prompt": "Stylized coffee plant, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/coffee_plant_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "coffee_plant v2",
+      "prompt": "Stylized coffee plant, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/tea_bush_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "tea_bush v1",
+      "prompt": "Stylized tea bush, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/tea_bush_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "tea_bush v2",
+      "prompt": "Stylized tea bush, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/herb_garden_mixed_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "herb_garden_mixed v1",
+      "prompt": "Stylized herb garden mixed, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/herb_garden_mixed_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "herb_garden_mixed v2",
+      "prompt": "Stylized herb garden mixed, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/succulent_collection_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "succulent_collection v1",
+      "prompt": "Stylized succulent collection, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/succulent_collection_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "succulent_collection v2",
+      "prompt": "Stylized succulent collection, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/bonsai_tree_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "bonsai_tree v1",
+      "prompt": "Stylized bonsai tree, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/bonsai_tree_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "bonsai_tree v2",
+      "prompt": "Stylized bonsai tree, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/seaweed_bed_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "seaweed_bed v1",
+      "prompt": "Stylized seaweed bed, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/seaweed_bed_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "seaweed_bed v2",
+      "prompt": "Stylized seaweed bed, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/earth/algae_bloom_v1",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "algae_bloom v1",
+      "prompt": "Stylized algae bloom, botanical, game asset, variation 1"
+    },
+    {
+      "id": "plants/earth/algae_bloom_v2",
+      "category": "plants",
+      "subcategory": "earth",
+      "name": "algae_bloom v2",
+      "prompt": "Stylized algae bloom, botanical, game asset, variation 2"
+    },
+    {
+      "id": "plants/alien/singing_vine_v1",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "singing_vine v1",
+      "prompt": "Alien plant: singing vine, exotic, beautiful, game, variation 1"
+    },
+    {
+      "id": "plants/alien/singing_vine_v2",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "singing_vine v2",
+      "prompt": "Alien plant: singing vine, exotic, beautiful, game, variation 2"
+    },
+    {
+      "id": "plants/alien/gravity_defying_fern_v1",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "gravity_defying_fern v1",
+      "prompt": "Alien plant: gravity defying fern, exotic, beautiful, game, variation 1"
+    },
+    {
+      "id": "plants/alien/gravity_defying_fern_v2",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "gravity_defying_fern v2",
+      "prompt": "Alien plant: gravity defying fern, exotic, beautiful, game, variation 2"
+    },
+    {
+      "id": "plants/alien/color_shifting_flower_v1",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "color_shifting_flower v1",
+      "prompt": "Alien plant: color shifting flower, exotic, beautiful, game, variation 1"
+    },
+    {
+      "id": "plants/alien/color_shifting_flower_v2",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "color_shifting_flower v2",
+      "prompt": "Alien plant: color shifting flower, exotic, beautiful, game, variation 2"
+    },
+    {
+      "id": "plants/alien/explosive_seed_pod_v1",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "explosive_seed_pod v1",
+      "prompt": "Alien plant: explosive seed pod, exotic, beautiful, game, variation 1"
+    },
+    {
+      "id": "plants/alien/explosive_seed_pod_v2",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "explosive_seed_pod v2",
+      "prompt": "Alien plant: explosive seed pod, exotic, beautiful, game, variation 2"
+    },
+    {
+      "id": "plants/alien/telepathic_mushroom_v1",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "telepathic_mushroom v1",
+      "prompt": "Alien plant: telepathic mushroom, exotic, beautiful, game, variation 1"
+    },
+    {
+      "id": "plants/alien/telepathic_mushroom_v2",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "telepathic_mushroom v2",
+      "prompt": "Alien plant: telepathic mushroom, exotic, beautiful, game, variation 2"
+    },
+    {
+      "id": "plants/alien/crystal_fruit_tree_v1",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "crystal_fruit_tree v1",
+      "prompt": "Alien plant: crystal fruit tree, exotic, beautiful, game, variation 1"
+    },
+    {
+      "id": "plants/alien/crystal_fruit_tree_v2",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "crystal_fruit_tree v2",
+      "prompt": "Alien plant: crystal fruit tree, exotic, beautiful, game, variation 2"
+    },
+    {
+      "id": "plants/alien/magnetic_moss_v1",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "magnetic_moss v1",
+      "prompt": "Alien plant: magnetic moss, exotic, beautiful, game, variation 1"
+    },
+    {
+      "id": "plants/alien/magnetic_moss_v2",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "magnetic_moss v2",
+      "prompt": "Alien plant: magnetic moss, exotic, beautiful, game, variation 2"
+    },
+    {
+      "id": "plants/alien/thermal_bloom_v1",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "thermal_bloom v1",
+      "prompt": "Alien plant: thermal bloom, exotic, beautiful, game, variation 1"
+    },
+    {
+      "id": "plants/alien/thermal_bloom_v2",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "thermal_bloom v2",
+      "prompt": "Alien plant: thermal bloom, exotic, beautiful, game, variation 2"
+    },
+    {
+      "id": "plants/alien/bioluminescent_canopy_v1",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "bioluminescent_canopy v1",
+      "prompt": "Alien plant: bioluminescent canopy, exotic, beautiful, game, variation 1"
+    },
+    {
+      "id": "plants/alien/bioluminescent_canopy_v2",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "bioluminescent_canopy v2",
+      "prompt": "Alien plant: bioluminescent canopy, exotic, beautiful, game, variation 2"
+    },
+    {
+      "id": "plants/alien/carnivorous_mega_flower_v1",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "carnivorous_mega_flower v1",
+      "prompt": "Alien plant: carnivorous mega flower, exotic, beautiful, game, variation 1"
+    },
+    {
+      "id": "plants/alien/carnivorous_mega_flower_v2",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "carnivorous_mega_flower v2",
+      "prompt": "Alien plant: carnivorous mega flower, exotic, beautiful, game, variation 2"
+    },
+    {
+      "id": "plants/alien/floating_lily_pad_giant_v1",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "floating_lily_pad_giant v1",
+      "prompt": "Alien plant: floating lily pad giant, exotic, beautiful, game, variation 1"
+    },
+    {
+      "id": "plants/alien/floating_lily_pad_giant_v2",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "floating_lily_pad_giant v2",
+      "prompt": "Alien plant: floating lily pad giant, exotic, beautiful, game, variation 2"
+    },
+    {
+      "id": "plants/alien/ice_crystal_fern_v1",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "ice_crystal_fern v1",
+      "prompt": "Alien plant: ice crystal fern, exotic, beautiful, game, variation 1"
+    },
+    {
+      "id": "plants/alien/ice_crystal_fern_v2",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "ice_crystal_fern v2",
+      "prompt": "Alien plant: ice crystal fern, exotic, beautiful, game, variation 2"
+    },
+    {
+      "id": "plants/alien/sand_root_network_v1",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "sand_root_network v1",
+      "prompt": "Alien plant: sand root network, exotic, beautiful, game, variation 1"
+    },
+    {
+      "id": "plants/alien/sand_root_network_v2",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "sand_root_network v2",
+      "prompt": "Alien plant: sand root network, exotic, beautiful, game, variation 2"
+    },
+    {
+      "id": "plants/alien/nebula_pollen_cloud_v1",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "nebula_pollen_cloud v1",
+      "prompt": "Alien plant: nebula pollen cloud, exotic, beautiful, game, variation 1"
+    },
+    {
+      "id": "plants/alien/nebula_pollen_cloud_v2",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "nebula_pollen_cloud v2",
+      "prompt": "Alien plant: nebula pollen cloud, exotic, beautiful, game, variation 2"
+    },
+    {
+      "id": "plants/alien/symbiotic_brain_coral_v1",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "symbiotic_brain_coral v1",
+      "prompt": "Alien plant: symbiotic brain coral, exotic, beautiful, game, variation 1"
+    },
+    {
+      "id": "plants/alien/symbiotic_brain_coral_v2",
+      "category": "plants",
+      "subcategory": "alien",
+      "name": "symbiotic_brain_coral v2",
+      "prompt": "Alien plant: symbiotic brain coral, exotic, beautiful, game, variation 2"
     }
   ]
 }
