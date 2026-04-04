@@ -187,3 +187,95 @@ revelation and the D.T. easter egg.
 ---
 
 *Previous: [21-MARKETING_PITCH.md](21-MARKETING_PITCH.md)*
+
+---
+
+## Historical Civilizations (Time Rift Biome Content)
+
+The Time Rift biome allows players to visit and interact with historical
+civilizations. Each civilization has accurate architecture, artifacts,
+vehicles, instruments, and cultural items.
+
+### Civilizations Modeled
+
+| Era | Civilization | Period | Key Assets |
+|-----|-------------|--------|------------|
+| Ancient | Mesopotamia/Sumeria | 3000-500 BCE | Ziggurats, cuneiform, Ishtar Gate, irrigation |
+| Ancient | Egypt | 3000-30 BCE | Pyramids, temples, Nile barges, papyrus |
+| Ancient | Greece | 800-146 BCE | Parthenon, amphitheaters, triremes, philosophy |
+| Ancient | Rome | 753 BCE-476 CE | Forum, aqueducts, roads, Colosseum |
+| Ancient | China | 2000 BCE-1900 CE | Great Wall, Forbidden City, silk, porcelain |
+| Ancient | India | 2500 BCE-1500 CE | Taj Mahal, temples, Mohenjo-daro, astronomy |
+| Ancient | Mesoamerican | 1500 BCE-1500 CE | Mayan pyramids, Aztec sun stone, Machu Picchu |
+| Ancient | African Kingdoms | 3000 BCE-1900 CE | Great Zimbabwe, Timbuktu, Benin bronzes |
+| Medieval | Europe | 500-1500 CE | Castles, cathedrals, Viking longships, guilds |
+| Classical | Japan | 500 BCE-1900 CE | Pagodas, samurai, zen gardens, tea ceremony |
+| Classical | Islamic Golden Age | 700-1500 CE | Alhambra, astrolabes, House of Wisdom, algebra |
+| Classical | Polynesian | 1000 BCE-1800 CE | Moai, outrigger canoes, navigation, tiki |
+| Early Modern | Renaissance | 1400-1800 | Printing press, da Vinci, telescopes, exploration |
+| Modern | Industrial Revolution | 1760-1900 | Steam engines, factories, railways, telegraphs |
+| Modern | 20th-21st Century | 1900-present | Aviation, computers, space exploration, internet |
+
+### Educational Integration
+
+Each civilization teaches through DOING, not reading:
+- **Mesopotamia:** Build an irrigation system (engineering + agriculture)
+- **Egypt:** Calculate pyramid angles (geometry + construction)
+- **Greece:** Debate in the agora (rhetoric + philosophy)
+- **Rome:** Design an aqueduct (fluid dynamics + engineering)
+- **China:** Navigate by compass (magnetism + geography)
+- **Mesoamerican:** Track astronomical cycles (astronomy + math)
+- **Industrial:** Build a steam engine (thermodynamics + engineering)
+- **Modern:** Program a computer (CS + logic)
+
+### Model Count: 306 civilization-specific assets
+Including architecture, vehicles, instruments, artifacts, cultural items,
+clothing, tools, and agricultural systems per civilization.
+
+---
+
+## Complete Asset Manifest
+
+Total 3D assets to generate: **2,543+**
+
+| Category | Count | Description |
+|----------|-------|-------------|
+| Civilizations (15 eras) | 306 | Architecture, artifacts, vehicles per civilization |
+| Buildings (all types) | 156 | Residential, commercial, industrial, futuristic |
+| Nature (trees, rocks, plants) | 105 | 15 tree types, 10 rock types, 15 plant types |
+| Alien NPCs (12 species) | 96 | Modular body/head/accessories per species |
+| Insects (earth + alien) | 90 | 30 earth + 15 alien species with variants |
+| Plants (earth + alien) | 90 | 30 earth + 15 alien botanical specimens |
+| Animals (earth) | 80 | 40 species with variants, cartoon style |
+| Machines/Robots | 75 | 15 robot types + 15 machine types with variants |
+| Historical items | 72 | Dinosaurs, prehistoric, inventions, milestones |
+| Terrain/Landscapes | 68 | Mountains, valleys, oceans, forests, deserts |
+| Spacecraft (3 tiers) | 63 | Builder→Innovator→Creator progression |
+| Microscopic life | 60 | 20 earth cells + 10 alien organisms |
+| Companions (6 types) | 54 | 5 tier variants + 4 emotions each |
+| Alien flora | 50 | 10 types × 5 variants, exotic biology |
+| Alien fauna | 50 | 10 types × 5 variants, unique creatures |
+| NPC parts (modular) | 115 | Bodies, hair, outfits, accessories |
+| Biome objects (27 biomes) | ~500 | 8-24 unique objects per biome |
+| Quest/collectible items | 45 | Codex fragments, puzzle pieces, keys |
+| Furniture/interior | 45 | Chairs, tables, shelves, fireplaces |
+| Vehicles (ground/sea/air) | 20 | Carts, ships, airships, gliders |
+| Space infrastructure | 62 | Stations, components, asteroids, planets |
+| Crafting materials | 40 | Wood, stone, metal, advanced composites |
+| Tools | 40 | Hand tools, science instruments |
+| Underground/caves | 30 | Cavern types, crystal formations |
+| Food items | 30 | Earth + alien cuisine |
+| Science models | 30 | Atoms, molecules, DNA, periodic elements |
+| Structures (bridges etc) | 20 | 10 bridge types with variants |
+| UI elements | 15 | Icons, frames, markers |
+| Weather effects | 10 | Clouds, rain, lightning, aurora |
+| Easter egg items | 5 | D.T. workbench, Warm Book, Origin Crystal |
+
+### Generation Pipeline
+- **TRELLIS 2** on rented RTX 5090 (32GB VRAM)
+- ~8 seconds per model average
+- ~5.7 hours total generation time
+- Output: GLB format, directly loadable in Three.js
+- Backup to Overwatch every 5-10 minutes
+- Asset viewer at http://192.168.2.10:3333
+
