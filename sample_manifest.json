@@ -1,0 +1,22 @@
+{
+  "assets": [
+    {
+      "name": "oak-tree",
+      "category": "vegetation",
+      "prompt": "a large oak tree with green leaves, stylized 3D game asset",
+      "type": "static"
+    },
+    {
+      "name": "fox-companion",
+      "category": "characters",
+      "prompt": "a cute cartoon fox sitting, stylized colorful 3D character",
+      "type": "animated"
+    },
+    {
+      "name": "wooden-bridge",
+      "category": "structures",
+      "prompt": "a simple wooden bridge with rope railings, fantasy game style",
+      "type": "static"
+    }
+  ]
+}
