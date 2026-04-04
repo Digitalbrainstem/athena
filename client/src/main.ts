@@ -46,9 +46,7 @@ async function boot(): Promise<void> {
   disposables.push({ dispose: () => { void core.destroy(); } });
 
   // --- Portal Gateway (title screen) ---
-  // Hide the default click-to-play overlay — portal replaces it
-  const clickOverlay = document.getElementById('click-to-play');
-  clickOverlay?.classList.add('hidden');
+  // Portal shader handles the intro — no legacy click-to-play overlay
 
   const portalScreen = new PortalScreen();
   disposables.push(portalScreen);
@@ -784,8 +782,6 @@ async function boot(): Promise<void> {
 function init(): void {
   boot().catch((err) => {
     console.error('[Nexus] Failed to initialize:', err);
-    const p = document.querySelector('#click-to-play p');
-    if (p) p.textContent = 'Failed to start — check console for details.';
   });
 }
 
