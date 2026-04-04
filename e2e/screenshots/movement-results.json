@@ -8,57 +8,63 @@
     {
       "name": "Profile creation",
       "pass": true,
-      "timestamp": "2026-04-03T22:36:12.705Z",
-      "profileId": "fh0ze9b4t38wh10f"
+      "timestamp": "2026-04-04T00:19:22.866Z",
+      "profileId": "e0tzqpz23kzlwxqs"
     },
     {
       "name": "Game loop running",
       "pass": true,
-      "timestamp": "2026-04-03T22:36:12.864Z"
+      "timestamp": "2026-04-04T00:19:23.119Z"
     },
     {
       "name": "W key moves forward (Z decreases)",
       "pass": true,
-      "timestamp": "2026-04-03T22:36:18.904Z",
+      "timestamp": "2026-04-04T00:19:30.659Z",
       "startZ": 0,
       "endZ": -0.003703703703703704
     },
     {
       "name": "Friction stops movement within ~1s",
       "pass": true,
-      "timestamp": "2026-04-03T22:36:21.014Z"
+      "timestamp": "2026-04-04T00:19:33.079Z"
     },
     {
       "name": "S key moves backward (Z increases)",
       "pass": true,
-      "timestamp": "2026-04-03T22:36:22.959Z",
+      "timestamp": "2026-04-04T00:19:35.428Z",
       "startZ": -0.003703703703703704,
-      "endZ": 0.003703703703703704
+      "endZ": 0
     },
     {
       "name": "A key strafes left (X changes)",
       "pass": true,
-      "timestamp": "2026-04-03T22:36:25.268Z",
+      "timestamp": "2026-04-04T00:19:38.765Z",
       "startX": 0,
       "endX": -0.003703703703703704
     },
     {
       "name": "D key strafes right (X changes)",
       "pass": true,
-      "timestamp": "2026-04-03T22:36:27.966Z",
+      "timestamp": "2026-04-04T00:19:41.959Z",
       "startX": -0.003703703703703704,
       "endX": 0
     },
     {
       "name": "Speed does not exceed maximum",
       "pass": true,
-      "timestamp": "2026-04-03T22:36:31.907Z"
+      "timestamp": "2026-04-04T00:19:46.830Z"
     },
     {
       "name": "Collision bounds movement",
       "pass": true,
-      "timestamp": "2026-04-03T22:36:38.082Z"
+      "timestamp": "2026-04-04T00:19:54.377Z"
     }
   ],
-  "consoleErrors": []
+  "consoleErrors": [
+    "core.getCurrentBiome is not a function",
+    "this.core.getCurrentBiome is not a function",
+    "this.core.getCurrentBiome is not a function",
+    "this.core.getCurrentBiome is not a function",
+    "this.core.getCurrentBiome is not a function"
+  ]
 }

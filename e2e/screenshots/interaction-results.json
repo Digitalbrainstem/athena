@@ -1,74 +1,35 @@
 {
   "test": "interaction",
-  "passed": 7,
-  "failed": 0,
+  "passed": 0,
+  "failed": 1,
   "skipped": 0,
-  "total": 7,
+  "total": 1,
   "results": [
     {
       "name": "Profile creation",
-      "pass": true,
-      "timestamp": "2026-04-03T22:36:56.020Z",
-      "profileId": "56ccjrbpkm729qku"
-    },
-    {
-      "name": "Game loop running",
-      "pass": true,
-      "timestamp": "2026-04-03T22:36:56.188Z"
-    },
-    {
-      "name": "Interaction prompt appears near objects",
-      "pass": true,
-      "timestamp": "2026-04-03T22:37:02.339Z",
-      "promptText": "Press E to examine the Anvil",
-      "highlightInfo": {
-        "total": 5,
-        "highlighted": 1,
-        "interactable": 5,
-        "highlightedNames": [
-          "Interact with Anvil"
-        ],
-        "cameraPos": {
-          "x": -1,
-          "y": 1.6,
-          "z": 0
-        }
-      }
-    },
-    {
-      "name": "E key opens companion dialogue",
-      "pass": true,
-      "timestamp": "2026-04-03T22:37:10.613Z",
-      "dialogueText": "Buddy: I bet anvil has a story to tell. Let's find out!"
-    },
-    {
-      "name": "Companion system initialized",
-      "pass": true,
-      "timestamp": "2026-04-03T22:37:13.126Z",
-      "uiState": {
-        "dialogueActive": true,
-        "dialogueText": "I bet anvil has a story to tell. Let's find out!",
-        "dialogueSpeaker": "Buddy"
-      }
-    },
-    {
-      "name": "HUD elements exist (crosshair, prompt, dialogue)",
-      "pass": true,
-      "timestamp": "2026-04-03T22:37:13.365Z",
-      "hudElements": {
-        "crosshair": true,
-        "prompt": true,
-        "dialogue": true,
-        "fpsCounter": true,
-        "captionContainer": true
-      }
-    },
-    {
-      "name": "Interactable objects reachable from spawn",
-      "pass": true,
-      "timestamp": "2026-04-03T22:37:27.898Z",
-      "interactablesFound": 1
+      "pass": false,
+      "timestamp": "2026-04-04T00:20:29.752Z",
+      "profileId": null
     }
   ],
-  "consoleErrors": []
+  "consoleErrors": [
+    "Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "Failed to load resource: net::ERR_NETWORK_CHANGED"
+  ]
 }

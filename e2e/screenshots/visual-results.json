@@ -8,17 +8,17 @@
     {
       "name": "Profile creation",
       "pass": true,
-      "timestamp": "2026-04-03T22:39:48.070Z"
+      "timestamp": "2026-04-04T00:23:49.705Z"
     },
     {
       "name": "Game loop running",
       "pass": true,
-      "timestamp": "2026-04-03T22:39:48.249Z"
+      "timestamp": "2026-04-04T00:23:49.940Z"
     },
     {
       "name": "Canvas renders with non-zero size",
       "pass": true,
-      "timestamp": "2026-04-03T22:39:53.522Z",
+      "timestamp": "2026-04-04T00:23:57.108Z",
       "exists": true,
       "width": 1280,
       "height": 720,
@@ -27,15 +27,15 @@
     {
       "name": "Workshop visual regression",
       "pass": false,
-      "timestamp": "2026-04-03T22:39:56.135Z",
-      "diffPercent": "99.5",
+      "timestamp": "2026-04-04T00:24:04.842Z",
+      "diffPercent": "99.6",
       "refSize": 82773,
-      "newSize": 100021
+      "newSize": 120701
     },
     {
       "name": "Scene graph has objects and is running",
       "pass": true,
-      "timestamp": "2026-04-03T22:39:56.389Z",
+      "timestamp": "2026-04-04T00:24:05.299Z",
       "objectCount": 5,
       "groundColor": "#8B6914",
       "skyColor": "#87CEEB",
@@ -51,32 +51,38 @@
     {
       "name": "Visual: north view",
       "pass": false,
-      "timestamp": "2026-04-03T22:40:01.365Z",
-      "diffPercent": "99.5"
+      "timestamp": "2026-04-04T00:24:15.909Z",
+      "diffPercent": "99.6"
     },
     {
       "name": "Visual: east view",
       "pass": false,
-      "timestamp": "2026-04-03T22:40:05.388Z",
-      "diffPercent": "99.5"
+      "timestamp": "2026-04-04T00:24:24.493Z",
+      "diffPercent": "99.6"
     },
     {
       "name": "Visual: south view",
       "pass": false,
-      "timestamp": "2026-04-03T22:40:09.671Z",
-      "diffPercent": "99.5"
+      "timestamp": "2026-04-04T00:24:33.154Z",
+      "diffPercent": "99.6"
     },
     {
       "name": "Visual: west view",
       "pass": false,
-      "timestamp": "2026-04-03T22:40:14.481Z",
+      "timestamp": "2026-04-04T00:24:40.863Z",
       "diffPercent": "99.5"
     },
     {
       "name": "Profile screen rendered successfully",
       "pass": true,
-      "timestamp": "2026-04-03T22:40:14.481Z"
+      "timestamp": "2026-04-04T00:24:40.865Z"
     }
   ],
-  "consoleErrors": []
+  "consoleErrors": [
+    "core.getCurrentBiome is not a function",
+    "this.core.getCurrentBiome is not a function",
+    "this.core.getCurrentBiome is not a function",
+    "this.core.getCurrentBiome is not a function",
+    "this.core.getCurrentBiome is not a function"
+  ]
 }

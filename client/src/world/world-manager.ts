@@ -222,6 +222,11 @@ export class WorldManager implements Disposable {
     // Animate sky
     this.skyDome.update(dt);
 
+    // Animate interior dust particles
+    if (this._activeInterior) {
+      this._activeInterior.updateDust(dt);
+    }
+
     // Update nearby biome info
     this._nearbyBiome = this.findNearestBiome(playerX, playerZ);
     this._nearDoor = this.checkNearDoor(playerX, playerZ);

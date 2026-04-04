@@ -1,6 +1,7 @@
 // Profile screen — accessible HTML overlay for creating/selecting profiles.
-// Shown after the portal gateway dissolves. Companion picker shows 3D model
-// previews instead of plain emoji, with personality descriptions.
+// Shown after the portal gateway dissolves.  Immersive dark background with
+// warm ambient Three.js particles floating behind the form.  Companion picker
+// shows 3D model previews with personality descriptions.
 
 import * as THREE from 'three';
 import type { NexusCore, Profile, MasteryTier } from '@nexus-academy/core';
@@ -37,6 +38,8 @@ const AGE_RANGES: { value: string; label: string; tier: MasteryTier }[] = [
   { value: 'none', label: "I'd rather not say", tier: 'foundation' },
 ];
 
+const AMBIENT_PARTICLE_COUNT = 120;
+
 export type ProfileScreenResult = { profileId: string };
 
 export class ProfileScreen implements Disposable {
@@ -52,6 +55,15 @@ export class ProfileScreen implements Disposable {
   private previewAnimId = 0;
   private previewStartTime = 0;
 
+  // Ambient background particles
+  private bgCanvas: HTMLCanvasElement | null = null;
+  private bgRenderer: THREE.WebGLRenderer | null = null;
+  private bgScene: THREE.Scene | null = null;
+  private bgCamera: THREE.PerspectiveCamera | null = null;
+  private bgParticles: THREE.Points | null = null;
+  private bgAnimId = 0;
+  private bgStartTime = 0;
+
   /**
    * Show the profile screen overlay and wait for the user to select or create a profile.
    * Returns the selected profile id.
@@ -66,6 +78,9 @@ export class ProfileScreen implements Disposable {
       this.overlay = this.buildOverlay(profiles, core);
       document.body.appendChild(this.overlay);
 
+      // Ambient background particles
+      this.initBackgroundParticles();
+
       // Focus the first interactive element for keyboard users
       const firstFocusable = this.overlay.querySelector<HTMLElement>(
         'button, input, [tabindex="0"]',
@@ -78,6 +93,7 @@ export class ProfileScreen implements Disposable {
     if (this.disposed) return;
     this.disposed = true;
     this.stopPreviews();
+    this.stopBackground();
     this.overlay?.remove();
     this.overlay = null;
     this.resolveSelection = null;
@@ -101,6 +117,20 @@ export class ProfileScreen implements Disposable {
     this.previewMeshes = [];
   }
 
+  private stopBackground(): void {
+    cancelAnimationFrame(this.bgAnimId);
+    if (this.bgParticles) {
+      this.bgParticles.geometry.dispose();
+      (this.bgParticles.material as THREE.Material).dispose();
+    }
+    this.bgRenderer?.dispose();
+    this.bgCanvas = null;
+    this.bgRenderer = null;
+    this.bgScene = null;
+    this.bgCamera = null;
+    this.bgParticles = null;
+  }
+
   // ---------------------------------------------------------------------------
   // DOM builders
   // ---------------------------------------------------------------------------
@@ -110,6 +140,13 @@ export class ProfileScreen implements Disposable {
     overlay.id = 'profile-screen';
     overlay.setAttribute('role', 'main');
     overlay.setAttribute('aria-label', 'Profile selection');
+
+    // Background canvas for ambient particles
+    const bgCanvas = document.createElement('canvas');
+    bgCanvas.className = 'profile-bg-canvas';
+    bgCanvas.setAttribute('aria-hidden', 'true');
+    overlay.appendChild(bgCanvas);
+    this.bgCanvas = bgCanvas;
 
     // Screen-reader welcome
     const srAnnounce = document.createElement('div');
@@ -383,6 +420,7 @@ export class ProfileScreen implements Disposable {
 
   private selectProfile(profileId: string): void {
     this.stopPreviews();
+    this.stopBackground();
     this.overlay?.remove();
     this.overlay = null;
     this.resolveSelection?.({ profileId });
@@ -654,5 +692,109 @@ export class ProfileScreen implements Disposable {
 
       renderer.render(scene, camera);
     }
+  };
+
+  // ---------------------------------------------------------------------------
+  // Ambient background particles — warm motes drifting behind the form
+  // ---------------------------------------------------------------------------
+
+  private initBackgroundParticles(): void {
+    if (!this.bgCanvas) return;
+
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+
+    try {
+      this.bgRenderer = new THREE.WebGLRenderer({
+        canvas: this.bgCanvas,
+        antialias: false,
+        alpha: true,
+      });
+    } catch {
+      return; // no WebGL
+    }
+
+    this.bgRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.bgRenderer.setSize(w, h);
+    this.bgRenderer.setClearColor(0x000000, 0);
+
+    this.bgScene = new THREE.Scene();
+    this.bgCamera = new THREE.PerspectiveCamera(60, w / h, 0.1, 100);
+    this.bgCamera.position.set(0, 0, 5);
+
+    // Warm ambient particles
+    const positions = new Float32Array(AMBIENT_PARTICLE_COUNT * 3);
+    const colors = new Float32Array(AMBIENT_PARTICLE_COUNT * 3);
+    const velocities = new Float32Array(AMBIENT_PARTICLE_COUNT * 3);
+
+    const warmColors = [
+      new THREE.Color(0xffd700), // Gold
+      new THREE.Color(0xa78bfa), // Aurora
+      new THREE.Color(0x22d3ee), // Frost
+      new THREE.Color(0xffdab9), // Sunrise
+    ];
+
+    for (let i = 0; i < AMBIENT_PARTICLE_COUNT; i++) {
+      positions[i * 3]     = (Math.random() - 0.5) * 12;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 8;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 6 - 2;
+
+      velocities[i * 3]     = (Math.random() - 0.5) * 0.003;
+      velocities[i * 3 + 1] = 0.002 + Math.random() * 0.005;
+      velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.002;
+
+      const c = warmColors[Math.floor(Math.random() * warmColors.length)]!;
+      colors[i * 3]     = c.r;
+      colors[i * 3 + 1] = c.g;
+      colors[i * 3 + 2] = c.b;
+    }
+
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    geo.userData = { velocities };
+
+    const mat = new THREE.PointsMaterial({
+      size: 0.06,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.5,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      sizeAttenuation: true,
+    });
+
+    this.bgParticles = new THREE.Points(geo, mat);
+    this.bgScene.add(this.bgParticles);
+
+    this.bgStartTime = performance.now();
+    this.animateBackground();
+  }
+
+  private animateBackground = (): void => {
+    if (this.disposed || !this.bgRenderer || !this.bgScene || !this.bgCamera || !this.bgParticles) return;
+    this.bgAnimId = requestAnimationFrame(this.animateBackground);
+
+    const posAttr = this.bgParticles.geometry.getAttribute('position') as THREE.BufferAttribute;
+    const vels = this.bgParticles.geometry.userData.velocities as Float32Array;
+
+    for (let i = 0; i < AMBIENT_PARTICLE_COUNT; i++) {
+      let x = posAttr.getX(i) + vels[i * 3]!;
+      let y = posAttr.getY(i) + vels[i * 3 + 1]!;
+      let z = posAttr.getZ(i) + vels[i * 3 + 2]!;
+
+      // Wrap around when out of bounds
+      if (y > 4) { y = -4; x = (Math.random() - 0.5) * 12; }
+      if (x > 6) x = -6;
+      if (x < -6) x = 6;
+
+      posAttr.setXYZ(i, x, y, z);
+    }
+    posAttr.needsUpdate = true;
+
+    const elapsed = (performance.now() - this.bgStartTime) / 1000;
+    (this.bgParticles.material as THREE.PointsMaterial).opacity = 0.35 + 0.15 * Math.sin(elapsed * 0.4);
+
+    this.bgRenderer.render(this.bgScene, this.bgCamera);
   };
 }

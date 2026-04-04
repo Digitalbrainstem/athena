@@ -67,16 +67,16 @@ describe('PortalScreen', () => {
     expect(prompt).not.toBeNull();
 
     // Initially not visible (no .visible class yet)
-    // After 2s it should appear
-    await tick(2100);
+    // After 3s it should appear
+    await tick(3100);
     expect(prompt.classList.contains('visible')).toBe(true);
 
     prompt.click();
-    await tick(1500);
+    await tick(1600);
     await promise;
   });
 
-  it('dissolving class is added on click', async () => {
+  it('fly-through begins on click', async () => {
     const promise = screen.show();
     await tick(10);
 
@@ -86,9 +86,11 @@ describe('PortalScreen', () => {
     prompt.click();
     await tick(50);
 
-    expect(overlay.classList.contains('dissolving')).toBe(true);
+    // Flash overlay should exist (camera fly-through creates it)
+    const flash = overlay.querySelector('.portal-flash');
+    expect(flash).not.toBeNull();
 
-    await tick(1500);
+    await tick(1600);
     await promise;
   });
 
@@ -103,12 +105,12 @@ describe('PortalScreen', () => {
 
   it('keyboard Enter triggers Step Inside', async () => {
     const promise = screen.show();
-    await tick(2200);
+    await tick(3200);
 
     const prompt = document.querySelector('.portal-prompt') as HTMLButtonElement;
     prompt.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
 
-    await tick(1500);
+    await tick(1600);
     await promise;
     // If we get here, the promise resolved = keyboard worked
     expect(true).toBe(true);
