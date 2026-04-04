@@ -175,7 +175,12 @@ export class FirstPersonCamera implements Disposable {
       this.pendingMoveActions.push({ type: 'move', source: 'keyboard', payload });
     }
 
-    // Clear input target each frame (keyboard will re-set if keys held)
+    // targetDx/targetDz are NOT cleared here — the game loop clears them
+    // once after all physics steps so that input persists across sub-steps.
+  }
+
+  /** Clear movement input. Called by the game loop after the physics steps. */
+  clearMoveInput(): void {
     this.targetDx = 0;
     this.targetDz = 0;
   }

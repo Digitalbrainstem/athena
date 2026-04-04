@@ -139,26 +139,39 @@ export class GameLoop implements Disposable {
 
     this.accumulator += frameDt;
 
+    // Flush input ONCE per frame — touch/keyboard move & look actions persist
+    // across all physics sub-steps so mobile joystick input isn't lost.
+    const rawActions: GameAction[] = [
+      ...this.inputManager.flush(),
+      ...this.fpCam.flushLookActions(),
+    ];
+
+    // Feed movement & look input into the FP camera (applied to every sub-step)
+    for (const a of rawActions) {
+      if (a.type === 'move' && a.payload && 'direction' in a.payload) {
+        const mp = a.payload as MovePayload;
+        this.fpCam.setMoveInput(mp.direction.x, mp.direction.z, mp.running);
+      }
+      // Apply touch/gamepad look actions to the camera (mouse look handled internally)
+      if (a.type === 'look' && a.source !== 'mouse' && a.payload && 'deltaX' in a.payload) {
+        const lp = a.payload as LookPayload;
+        this.fpCam.applyLook(lp.deltaX, lp.deltaY);
+      }
+    }
+
+    const nonMoveActions = rawActions.filter(a => a.type !== 'move');
+
+    // Update collision boxes BEFORE physics so walls block movement this frame
+    const preSceneGraph: SceneGraph = this.core.getSceneGraph();
+    if (this.worldManager && !this.worldManager.isOverworld()) {
+      this.fpCam.updateCollisionBoxes(preSceneGraph.objects);
+      this.fpCam.addExtraCollisionBoxes(this.worldManager.getExtraCollisionBoxes());
+    } else {
+      this.fpCam.updateCollisionBoxes([]);
+    }
+
     let steps = 0;
     while (this.accumulator >= this.fixedDt && steps < MAX_STEPS_PER_FRAME) {
-      const rawActions: GameAction[] = [
-        ...this.inputManager.flush(),
-        ...this.fpCam.flushLookActions(),
-      ];
-
-      // Feed raw movement input into the FP camera's velocity system
-      for (const a of rawActions) {
-        if (a.type === 'move' && a.payload && 'direction' in a.payload) {
-          const mp = a.payload as MovePayload;
-          this.fpCam.setMoveInput(mp.direction.x, mp.direction.z, mp.running);
-        }
-        // Apply touch/gamepad look actions to the camera (mouse look handled internally)
-        if (a.type === 'look' && a.source !== 'mouse' && a.payload && 'deltaX' in a.payload) {
-          const lp = a.payload as LookPayload;
-          this.fpCam.applyLook(lp.deltaX, lp.deltaY);
-        }
-      }
-
       // Update velocity physics (acceleration / friction / clamping / collision)
       this.fpCam.updateMovement(this.fixedDt);
 
@@ -166,26 +179,23 @@ export class GameLoop implements Disposable {
       this.core.setPlayerPosition(this.fpCam.posX, this.fpCam.posZ);
 
       // Replace raw move actions with smoothed ones from the velocity system
-      const nonMoveActions = rawActions.filter(a => a.type !== 'move');
       const smoothedMoves = this.fpCam.flushMoveActions();
-      const actions = [...nonMoveActions, ...smoothedMoves];
+      // Non-move actions (interact, back, etc.) only on the first step
+      const actions = steps === 0
+        ? [...nonMoveActions, ...smoothedMoves]
+        : smoothedMoves;
 
       this.core.update(this.fixedDt, actions);
       this.accumulator -= this.fixedDt;
       steps++;
     }
 
+    // Clear move input after all sub-steps (will be re-set next frame if held)
+    this.fpCam.clearMoveInput();
+
     if (steps >= MAX_STEPS_PER_FRAME) this.accumulator = 0;
 
     const sceneGraph: SceneGraph = this.core.getSceneGraph();
-
-    // Update collision boxes — only inside buildings (overworld has no invisible walls)
-    if (this.worldManager && !this.worldManager.isOverworld()) {
-      this.fpCam.updateCollisionBoxes(sceneGraph.objects);
-      this.fpCam.addExtraCollisionBoxes(this.worldManager.getExtraCollisionBoxes());
-    } else {
-      this.fpCam.updateCollisionBoxes([]);
-    }
 
     // Override scene graph camera with client-authoritative position & rotation
     const rot = this.fpCam.getPredictiveRotation();
