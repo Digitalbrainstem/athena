@@ -1,0 +1,8 @@
+# Voice DNA v2 — WAV sources are too large for git
+# Keep the scripts and manifest; regenerate WAVs from Chatterbox
+sources/**/*.wav
+assembled/*.wav
+# Keep these:
+!sources/manifest_v2.json
+!generate_v2_sentences.py
+!voice_dna_assembler_v2.py
