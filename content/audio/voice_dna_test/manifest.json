@@ -1,0 +1,308 @@
+{
+  "ba": {
+    "text": "The baby played in the bath.",
+    "exag": 0.7,
+    "samples": 45120,
+    "duration": 1.88
+  },
+  "be": {
+    "text": "The bear was sleeping beside the bed.",
+    "exag": 0.7,
+    "samples": 54720,
+    "duration": 2.28
+  },
+  "bi": {
+    "text": "The big bird bit the biscuit.",
+    "exag": 0.7,
+    "samples": 54720,
+    "duration": 2.28
+  },
+  "bo": {
+    "text": "The boat bobbed on the water.",
+    "exag": 0.7,
+    "samples": 42240,
+    "duration": 1.76
+  },
+  "bu": {
+    "text": "The bus bumped along the bumpy road.",
+    "exag": 0.7,
+    "samples": 54720,
+    "duration": 2.28
+  },
+  "da": {
+    "text": "The dancer danced all day.",
+    "exag": 0.7,
+    "samples": 48960,
+    "duration": 2.04
+  },
+  "de": {
+    "text": "The deer rested in the den.",
+    "exag": 0.7,
+    "samples": 39360,
+    "duration": 1.64
+  },
+  "di": {
+    "text": "She did it differently this time.",
+    "exag": 0.7,
+    "samples": 47040,
+    "duration": 1.96
+  },
+  "do": {
+    "text": "The dog dug a hole by the door.",
+    "exag": 0.7,
+    "samples": 57600,
+    "duration": 2.4
+  },
+  "du": {
+    "text": "The duck dunked under the water.",
+    "exag": 0.7,
+    "samples": 49920,
+    "duration": 2.08
+  },
+  "fa": {
+    "text": "The farmer found a fantastic farm.",
+    "exag": 0.7,
+    "samples": 62400,
+    "duration": 2.6
+  },
+  "fe": {
+    "text": "She felt the feather was very fine.",
+    "exag": 0.7,
+    "samples": 54720,
+    "duration": 2.28
+  },
+  "fi": {
+    "text": "The fish finished first in the race.",
+    "exag": 0.7,
+    "samples": 46080,
+    "duration": 1.92
+  },
+  "fo": {
+    "text": "The forest was foggy this morning.",
+    "exag": 0.7,
+    "samples": 38400,
+    "duration": 1.6
+  },
+  "fu": {
+    "text": "The funny fox was full of fun.",
+    "exag": 0.7,
+    "samples": 50880,
+    "duration": 2.12
+  },
+  "ga": {
+    "text": "The garden gate was painted green.",
+    "exag": 0.7,
+    "samples": 52800,
+    "duration": 2.2
+  },
+  "ge": {
+    "text": "She gently gathered the gems.",
+    "exag": 0.7,
+    "samples": 43200,
+    "duration": 1.8
+  },
+  "gi": {
+    "text": "The gift was given with a giggle.",
+    "exag": 0.7,
+    "samples": 46080,
+    "duration": 1.92
+  },
+  "go": {
+    "text": "The goat went over the golden bridge.",
+    "exag": 0.7,
+    "samples": 52800,
+    "duration": 2.2
+  },
+  "gu": {
+    "text": "The gust of wind was good and strong.",
+    "exag": 0.7,
+    "samples": 60480,
+    "duration": 2.52
+  },
+  "ha": {
+    "text": "The happy hat was hanging on the hook.",
+    "exag": 0.7,
+    "samples": 45120,
+    "duration": 1.88
+  },
+  "he": {
+    "text": "He helped her hear the hidden sound.",
+    "exag": 0.7,
+    "samples": 60480,
+    "duration": 2.52
+  },
+  "hi": {
+    "text": "The hill was high and hard to climb.",
+    "exag": 0.7,
+    "samples": 56640,
+    "duration": 2.36
+  },
+  "ho": {
+    "text": "The horse ran home through the hollow.",
+    "exag": 0.7,
+    "samples": 44160,
+    "duration": 1.84
+  },
+  "hu": {
+    "text": "The huge hug made her very happy.",
+    "exag": 0.7,
+    "samples": 64320,
+    "duration": 2.68
+  },
+  "ai": {
+    "text": "The rain came again and again.",
+    "exag": 0.7,
+    "samples": 45120,
+    "duration": 1.88
+  },
+  "ei": {
+    "text": "The weight was eight pounds exactly.",
+    "exag": 0.7,
+    "samples": 58560,
+    "duration": 2.44
+  },
+  "ou": {
+    "text": "The house was round and out of town.",
+    "exag": 0.7,
+    "samples": 59520,
+    "duration": 2.48
+  },
+  "oi": {
+    "text": "The boy enjoyed the noisy toy.",
+    "exag": 0.7,
+    "samples": 55680,
+    "duration": 2.32
+  },
+  "ee": {
+    "text": "The tree was green and free.",
+    "exag": 0.7,
+    "samples": 55680,
+    "duration": 2.32
+  },
+  "oo": {
+    "text": "The moon shone on the cool blue pool.",
+    "exag": 0.7,
+    "samples": 55680,
+    "duration": 2.32
+  },
+  "ing": {
+    "text": "She was singing and dancing all morning.",
+    "exag": 0.7,
+    "samples": 57600,
+    "duration": 2.4
+  },
+  "tion": {
+    "text": "The question about creation was fascinating.",
+    "exag": 0.7,
+    "samples": 66240,
+    "duration": 2.76
+  },
+  "ly": {
+    "text": "She quickly and happily ran freely.",
+    "exag": 0.7,
+    "samples": 55680,
+    "duration": 2.32
+  },
+  "ed": {
+    "text": "He walked and talked and laughed.",
+    "exag": 0.7,
+    "samples": 61440,
+    "duration": 2.56
+  },
+  "er": {
+    "text": "The teacher was better and stronger.",
+    "exag": 0.7,
+    "samples": 58560,
+    "duration": 2.44
+  },
+  "est": {
+    "text": "The tallest and fastest runner won.",
+    "exag": 0.7,
+    "samples": 60480,
+    "duration": 2.52
+  },
+  "ex_wow": {
+    "text": "Wow! That is amazing! I love it!",
+    "exag": 0.9,
+    "samples": 77760,
+    "duration": 3.24
+  },
+  "ex_yay": {
+    "text": "Yay! We did it! Fantastic!",
+    "exag": 0.9,
+    "samples": 54720,
+    "duration": 2.28
+  },
+  "ex_look": {
+    "text": "Look at that! How incredible!",
+    "exag": 0.9,
+    "samples": 48000,
+    "duration": 2.0
+  },
+  "gn_ok": {
+    "text": "It is okay. Take your time.",
+    "exag": 0.3,
+    "samples": 50880,
+    "duration": 2.12
+  },
+  "gn_dont": {
+    "text": "Do not worry. We will figure it out.",
+    "exag": 0.3,
+    "samples": 56640,
+    "duration": 2.36
+  },
+  "gn_rest": {
+    "text": "Let us rest here for a moment.",
+    "exag": 0.3,
+    "samples": 48000,
+    "duration": 2.0
+  },
+  "cu_wonder": {
+    "text": "I wonder what that could be.",
+    "exag": 0.6,
+    "samples": 33600,
+    "duration": 1.4
+  },
+  "cu_think": {
+    "text": "Hmm, let me think about this.",
+    "exag": 0.6,
+    "samples": 57600,
+    "duration": 2.4
+  },
+  "cu_what": {
+    "text": "What happens if we try this?",
+    "exag": 0.6,
+    "samples": 45120,
+    "duration": 1.88
+  },
+  "full_hello": {
+    "text": "Hi there! I am so happy to see you!",
+    "exag": 0.8,
+    "samples": 69120,
+    "duration": 2.88
+  },
+  "full_explore": {
+    "text": "Come on, let us go explore together!",
+    "exag": 0.8,
+    "samples": 50880,
+    "duration": 2.12
+  },
+  "full_build": {
+    "text": "Let us build something amazing today.",
+    "exag": 0.8,
+    "samples": 63360,
+    "duration": 2.64
+  },
+  "full_night": {
+    "text": "The stars are beautiful tonight.",
+    "exag": 0.8,
+    "samples": 51840,
+    "duration": 2.16
+  },
+  "full_brave": {
+    "text": "Do not be scared. I am right here with you.",
+    "exag": 0.8,
+    "samples": 70080,
+    "duration": 2.92
+  }
+}

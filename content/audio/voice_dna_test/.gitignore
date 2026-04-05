@@ -1,0 +1,7 @@
+# Voice DNA test audio files (generated, large)
+*.wav
+assembled/
+
+# Keep the assembler script and manifest
+!voice_dna_assembler.py
+!manifest.json
