@@ -402,6 +402,129 @@ Runs on: Phone, Tablet, PC, Console, Handheld
 Requires: CPU only, no GPU, no internet
 ```
 
+## Part 4: Alien Languages
+
+### Concept
+
+12 alien civilizations each have unique languages built from invented
+phoneme sets + DSP effects. Same Voice DNA engine, different sound palette.
+No AI needed at runtime — pure DSP math.
+
+### Per-Civilization Sound Design
+
+| Civilization | Sound Character | DSP Chain |
+|---|---|---|
+| Crystal World | Crystalline, harmonic overtones | reverb + harmonic doubling + shimmer |
+| Ocean World | Bubbly, flowing, liquid | underwater filter + gurgle layer + flow |
+| Nebula Beings | Electromagnetic, ethereal | ring modulation + chorus + multi-tone |
+| Ring World | Mechanical, precise, metallic | formant crush + metallic resonance |
+| Ice World | Breathy, whispery, crackling | heavy breath + ice crackle + whisper |
+| Jungle World | Rhythmic, tonal, percussive | pitch bends + click consonants + drums |
+| Desert World | Guttural, resonant, deep | throat singing harmonics + sand rasp |
+| Volcanic World | Rumbling, explosive, hot | distortion + sub-bass + hiss |
+| Dying Galaxy | Slow, decaying, entropic | time stretch + bit crush + fade |
+| Ancient Civ | Melodic, mathematical, precise | pure tones + frequency ratios |
+| Hive Mind | Overlapping, collective, buzzing | multi-voice chorus + bee harmonics |
+| Nomad Fleet | Radio-like, compressed, urgent | band-pass filter + static + compression |
+
+### Generation (GPU, one-time)
+
+Per civilization:
+- Generate ~40 unique alien phonemes using Chatterbox with extreme settings
+- ~120 segments (40 phonemes × 3 emotion levels)
+- ~15 minutes per civilization on a 4090
+
+12 civilizations × 15 min = **~3 hours total**
+
+### Runtime (CPU, any device)
+
+```c
+// alien_voice.h — extends voice_dna.h
+
+typedef struct {
+    VoiceDNA*    base_dna;        // alien phoneme segments
+    DSPChain*    civilization_fx;  // reverb + filters per civ
+    Grammar*     language_rules;   // how phonemes combine
+    float        speak_rate;       // base speaking speed
+} AlienVoice;
+
+// Generate alien speech from meaning (not text)
+int alien_voice_speak(AlienVoice* voice, const char* meaning_tag,
+                      int16_t* out_buffer, uint32_t* out_length);
+
+// DSP effects are simple math — all run on CPU:
+// - Ring modulation: sample * sin(freq * t)
+// - Formant shift: frequency-domain scaling
+// - Reverb: convolution with impulse response
+// - Chorus: delayed copies with slight detuning
+```
+
+### Storage: ~15 MB per alien language, ~180 MB total for 12 civilizations
+
 ---
 
-*Previous: [24-FISH-AUDIO-API.md](24-FISH-AUDIO-API.md)*
+## Part 5: NPC Voice Multiplication
+
+### From 6 base voices → 4,500+ unique NPCs
+
+DSP modifications on the base Voice DNA create perceptually distinct voices:
+
+| Parameter | Range | Steps | Effect |
+|---|---|---|---|
+| Pitch shift | -30% to +30% | 10 | Age/gender perception |
+| Formant shift | -20% to +20% | 5 | Body size/throat shape |
+| Speaking rate | 0.85× to 1.15× | 5 | Personality (rushed vs deliberate) |
+| Resonance type | normal/nasal/breathy | 3 | Voice character |
+
+6 bases × 10 × 5 × 5 × 3 = **4,500 unique NPC voices**
+
+Each NPC stores just a parameter set (6 bytes):
+```c
+typedef struct {
+    uint8_t base_voice;    // 0-5
+    int8_t  pitch_shift;   // -30 to +30
+    int8_t  formant_shift; // -20 to +20
+    uint8_t speak_rate;    // 85-115 (×0.01)
+    uint8_t resonance;     // 0=normal, 1=nasal, 2=breathy
+    uint8_t reserved;
+} NPCVoiceParams;  // 6 bytes per NPC
+```
+
+13,600 NPCs × 6 bytes = **81.6 KB** for all NPC voice assignments.
+
+---
+
+## Updated Storage Summary (per device)
+
+| Component | Size | Notes |
+|---|---|---|
+| Game client (WASM) | 10 MB | C compiled to WASM |
+| Voice DNA (1 companion) | 40 MB | Player's chosen companion |
+| Voice DNA (Nexus Voice) | 40 MB | Always needed |
+| Voice DNA (6 NPC bases) | 240 MB | → 4,500+ unique via DSP |
+| Alien languages (12 civs) | 180 MB | Phonemes + DSP params |
+| NPC voice assignments | 82 KB | Parameter table |
+| Model DNA (all parts) | 500 MB | Bodies, heads, outfits, etc |
+| Animation DNA | 100 MB | Walk cycles, gestures, blends |
+| Music (current biomes) | 500 MB | Streamed/swapped per biome |
+| SFX + ambient | 200 MB | All sound effects |
+| Content scripts (text) | 5 MB | Templates + facts + quests |
+| Pre-gen key moments | 200 MB | ~2,000 full Chatterbox lines |
+| **Total** | **~2.0 GB** | Fits on any phone |
+
+---
+
+## Updated Generation Timeline (4× RTX 4090, 16 hours, $20)
+
+| GPU | Hours 0-8 | Hours 8-16 | Output |
+|---|---|---|---|
+| GPU 0 | Companion Voice DNA (3 voices) | Alien phonemes (6 civs) | 135K + 6 langs |
+| GPU 1 | Companion Voice DNA (3 voices) | Alien phonemes (6 civs) | 135K + 6 langs |
+| GPU 2 | NPC Voice DNA (6 bases + Nexus) | Hero models (70 full) | 315K + 70 GLBs |
+| GPU 3 | Model DNA parts (505) | Music (DiffRhythm ~5K tracks) | 505 parts + 5K tracks |
+
+Home GPUs continue free after rental:
+- 4060: remaining ~5,458 music tracks (~4 days)
+- 7900 XT: additional model variants, texture refinement
+
+**Total output: ~18.5 GB of DNA libraries → infinite content on any device**
