@@ -1,0 +1,812 @@
+{
+  "let_stressed": {
+    "text": "let",
+    "type": "word",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "let_stressed.wav",
+    "samples": 20160,
+    "duration": 0.84
+  },
+  "let_normal": {
+    "text": "let",
+    "type": "word",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "let_normal.wav",
+    "samples": 17280,
+    "duration": 0.72
+  },
+  "let_unstressed": {
+    "text": "let",
+    "type": "word",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "let_unstressed.wav",
+    "samples": 38400,
+    "duration": 1.6
+  },
+  "us_stressed": {
+    "text": "us",
+    "type": "word",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "us_stressed.wav",
+    "samples": 21120,
+    "duration": 0.88
+  },
+  "us_normal": {
+    "text": "us",
+    "type": "word",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "us_normal.wav",
+    "samples": 20160,
+    "duration": 0.84
+  },
+  "us_unstressed": {
+    "text": "us",
+    "type": "word",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "us_unstressed.wav",
+    "samples": 17280,
+    "duration": 0.72
+  },
+  "build_stressed": {
+    "text": "build",
+    "type": "word",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "build_stressed.wav",
+    "samples": 21120,
+    "duration": 0.88
+  },
+  "build_normal": {
+    "text": "build",
+    "type": "word",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "build_normal.wav",
+    "samples": 18240,
+    "duration": 0.76
+  },
+  "build_unstressed": {
+    "text": "build",
+    "type": "word",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "build_unstressed.wav",
+    "samples": 14400,
+    "duration": 0.6
+  },
+  "a_stressed": {
+    "text": "a",
+    "type": "word",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "a_stressed.wav",
+    "samples": 27840,
+    "duration": 1.16
+  },
+  "a_normal": {
+    "text": "a",
+    "type": "word",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "a_normal.wav",
+    "samples": 25920,
+    "duration": 1.08
+  },
+  "a_unstressed": {
+    "text": "a",
+    "type": "word",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "a_unstressed.wav",
+    "samples": 20160,
+    "duration": 0.84
+  },
+  "big_stressed": {
+    "text": "big",
+    "type": "word",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "big_stressed.wav",
+    "samples": 26880,
+    "duration": 1.12
+  },
+  "big_normal": {
+    "text": "big",
+    "type": "word",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "big_normal.wav",
+    "samples": 14400,
+    "duration": 0.6
+  },
+  "big_unstressed": {
+    "text": "big",
+    "type": "word",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "big_unstressed.wav",
+    "samples": 16320,
+    "duration": 0.68
+  },
+  "boat_stressed": {
+    "text": "boat",
+    "type": "word",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "boat_stressed.wav",
+    "samples": 26880,
+    "duration": 1.12
+  },
+  "boat_normal": {
+    "text": "boat",
+    "type": "word",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "boat_normal.wav",
+    "samples": 22080,
+    "duration": 0.92
+  },
+  "boat_unstressed": {
+    "text": "boat",
+    "type": "word",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "boat_unstressed.wav",
+    "samples": 12480,
+    "duration": 0.52
+  },
+  "the_stressed": {
+    "text": "the",
+    "type": "word",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "the_stressed.wav",
+    "samples": 56640,
+    "duration": 2.36
+  },
+  "the_normal": {
+    "text": "the",
+    "type": "word",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "the_normal.wav",
+    "samples": 19200,
+    "duration": 0.8
+  },
+  "the_unstressed": {
+    "text": "the",
+    "type": "word",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "the_unstressed.wav",
+    "samples": 22080,
+    "duration": 0.92
+  },
+  "forest_stressed": {
+    "text": "forest",
+    "type": "word",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "forest_stressed.wav",
+    "samples": 52800,
+    "duration": 2.2
+  },
+  "forest_normal": {
+    "text": "forest",
+    "type": "word",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "forest_normal.wav",
+    "samples": 23040,
+    "duration": 0.96
+  },
+  "forest_unstressed": {
+    "text": "forest",
+    "type": "word",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "forest_unstressed.wav",
+    "samples": 20160,
+    "duration": 0.84
+  },
+  "is_stressed": {
+    "text": "is",
+    "type": "word",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "is_stressed.wav",
+    "samples": 18240,
+    "duration": 0.76
+  },
+  "is_normal": {
+    "text": "is",
+    "type": "word",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "is_normal.wav",
+    "samples": 25920,
+    "duration": 1.08
+  },
+  "is_unstressed": {
+    "text": "is",
+    "type": "word",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "is_unstressed.wav",
+    "samples": 31680,
+    "duration": 1.32
+  },
+  "beautiful_stressed": {
+    "text": "beautiful",
+    "type": "word",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "beautiful_stressed.wav",
+    "samples": 20160,
+    "duration": 0.84
+  },
+  "beautiful_normal": {
+    "text": "beautiful",
+    "type": "word",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "beautiful_normal.wav",
+    "samples": 20160,
+    "duration": 0.84
+  },
+  "beautiful_unstressed": {
+    "text": "beautiful",
+    "type": "word",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "beautiful_unstressed.wav",
+    "samples": 24960,
+    "duration": 1.04
+  },
+  "today_stressed": {
+    "text": "today",
+    "type": "word",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "today_stressed.wav",
+    "samples": 16320,
+    "duration": 0.68
+  },
+  "today_normal": {
+    "text": "today",
+    "type": "word",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "today_normal.wav",
+    "samples": 12480,
+    "duration": 0.52
+  },
+  "today_unstressed": {
+    "text": "today",
+    "type": "word",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "today_unstressed.wav",
+    "samples": 21120,
+    "duration": 0.88
+  },
+  "come_stressed": {
+    "text": "come",
+    "type": "word",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "come_stressed.wav",
+    "samples": 18240,
+    "duration": 0.76
+  },
+  "come_normal": {
+    "text": "come",
+    "type": "word",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "come_normal.wav",
+    "samples": 16320,
+    "duration": 0.68
+  },
+  "come_unstressed": {
+    "text": "come",
+    "type": "word",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "come_unstressed.wav",
+    "samples": 15360,
+    "duration": 0.64
+  },
+  "explore_stressed": {
+    "text": "explore",
+    "type": "word",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "explore_stressed.wav",
+    "samples": 17280,
+    "duration": 0.72
+  },
+  "explore_normal": {
+    "text": "explore",
+    "type": "word",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "explore_normal.wav",
+    "samples": 22080,
+    "duration": 0.92
+  },
+  "explore_unstressed": {
+    "text": "explore",
+    "type": "word",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "explore_unstressed.wav",
+    "samples": 19200,
+    "duration": 0.8
+  },
+  "garden_stressed": {
+    "text": "garden",
+    "type": "word",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "garden_stressed.wav",
+    "samples": 25920,
+    "duration": 1.08
+  },
+  "garden_normal": {
+    "text": "garden",
+    "type": "word",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "garden_normal.wav",
+    "samples": 21120,
+    "duration": 0.88
+  },
+  "garden_unstressed": {
+    "text": "garden",
+    "type": "word",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "garden_unstressed.wav",
+    "samples": 20160,
+    "duration": 0.84
+  },
+  "with_stressed": {
+    "text": "with",
+    "type": "word",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "with_stressed.wav",
+    "samples": 20160,
+    "duration": 0.84
+  },
+  "with_normal": {
+    "text": "with",
+    "type": "word",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "with_normal.wav",
+    "samples": 21120,
+    "duration": 0.88
+  },
+  "with_unstressed": {
+    "text": "with",
+    "type": "word",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "with_unstressed.wav",
+    "samples": 19200,
+    "duration": 0.8
+  },
+  "me_stressed": {
+    "text": "me",
+    "type": "word",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "me_stressed.wav",
+    "samples": 28800,
+    "duration": 1.2
+  },
+  "me_normal": {
+    "text": "me",
+    "type": "word",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "me_normal.wav",
+    "samples": 21120,
+    "duration": 0.88
+  },
+  "me_unstressed": {
+    "text": "me",
+    "type": "word",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "me_unstressed.wav",
+    "samples": 17280,
+    "duration": 0.72
+  },
+  "let_us_stressed": {
+    "text": "let us",
+    "type": "bigram",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "let_us_stressed.wav",
+    "samples": 19200,
+    "duration": 0.8
+  },
+  "let_us_normal": {
+    "text": "let us",
+    "type": "bigram",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "let_us_normal.wav",
+    "samples": 32640,
+    "duration": 1.36
+  },
+  "let_us_unstressed": {
+    "text": "let us",
+    "type": "bigram",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "let_us_unstressed.wav",
+    "samples": 24000,
+    "duration": 1.0
+  },
+  "us_build_stressed": {
+    "text": "us build",
+    "type": "bigram",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "us_build_stressed.wav",
+    "samples": 24960,
+    "duration": 1.04
+  },
+  "us_build_normal": {
+    "text": "us build",
+    "type": "bigram",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "us_build_normal.wav",
+    "samples": 27840,
+    "duration": 1.16
+  },
+  "us_build_unstressed": {
+    "text": "us build",
+    "type": "bigram",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "us_build_unstressed.wav",
+    "samples": 43200,
+    "duration": 1.8
+  },
+  "build_a_stressed": {
+    "text": "build a",
+    "type": "bigram",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "build_a_stressed.wav",
+    "samples": 28800,
+    "duration": 1.2
+  },
+  "build_a_normal": {
+    "text": "build a",
+    "type": "bigram",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "build_a_normal.wav",
+    "samples": 39360,
+    "duration": 1.64
+  },
+  "build_a_unstressed": {
+    "text": "build a",
+    "type": "bigram",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "build_a_unstressed.wav",
+    "samples": 44160,
+    "duration": 1.84
+  },
+  "a_big_stressed": {
+    "text": "a big",
+    "type": "bigram",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "a_big_stressed.wav",
+    "samples": 20160,
+    "duration": 0.84
+  },
+  "a_big_normal": {
+    "text": "a big",
+    "type": "bigram",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "a_big_normal.wav",
+    "samples": 6720,
+    "duration": 0.28
+  },
+  "a_big_unstressed": {
+    "text": "a big",
+    "type": "bigram",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "a_big_unstressed.wav",
+    "samples": 33600,
+    "duration": 1.4
+  },
+  "big_boat_stressed": {
+    "text": "big boat",
+    "type": "bigram",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "big_boat_stressed.wav",
+    "samples": 30720,
+    "duration": 1.28
+  },
+  "big_boat_normal": {
+    "text": "big boat",
+    "type": "bigram",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "big_boat_normal.wav",
+    "samples": 26880,
+    "duration": 1.12
+  },
+  "big_boat_unstressed": {
+    "text": "big boat",
+    "type": "bigram",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "big_boat_unstressed.wav",
+    "samples": 24960,
+    "duration": 1.04
+  },
+  "the_forest_stressed": {
+    "text": "the forest",
+    "type": "bigram",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "the_forest_stressed.wav",
+    "samples": 10560,
+    "duration": 0.44
+  },
+  "the_forest_normal": {
+    "text": "the forest",
+    "type": "bigram",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "the_forest_normal.wav",
+    "samples": 18240,
+    "duration": 0.76
+  },
+  "the_forest_unstressed": {
+    "text": "the forest",
+    "type": "bigram",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "the_forest_unstressed.wav",
+    "samples": 16320,
+    "duration": 0.68
+  },
+  "forest_is_stressed": {
+    "text": "forest is",
+    "type": "bigram",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "forest_is_stressed.wav",
+    "samples": 39360,
+    "duration": 1.64
+  },
+  "forest_is_normal": {
+    "text": "forest is",
+    "type": "bigram",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "forest_is_normal.wav",
+    "samples": 19200,
+    "duration": 0.8
+  },
+  "forest_is_unstressed": {
+    "text": "forest is",
+    "type": "bigram",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "forest_is_unstressed.wav",
+    "samples": 24960,
+    "duration": 1.04
+  },
+  "is_beautiful_stressed": {
+    "text": "is beautiful",
+    "type": "bigram",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "is_beautiful_stressed.wav",
+    "samples": 33600,
+    "duration": 1.4
+  },
+  "is_beautiful_normal": {
+    "text": "is beautiful",
+    "type": "bigram",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "is_beautiful_normal.wav",
+    "samples": 25920,
+    "duration": 1.08
+  },
+  "is_beautiful_unstressed": {
+    "text": "is beautiful",
+    "type": "bigram",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "is_beautiful_unstressed.wav",
+    "samples": 33600,
+    "duration": 1.4
+  },
+  "beautiful_today_stressed": {
+    "text": "beautiful today",
+    "type": "bigram",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "beautiful_today_stressed.wav",
+    "samples": 24000,
+    "duration": 1.0
+  },
+  "beautiful_today_normal": {
+    "text": "beautiful today",
+    "type": "bigram",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "beautiful_today_normal.wav",
+    "samples": 23040,
+    "duration": 0.96
+  },
+  "beautiful_today_unstressed": {
+    "text": "beautiful today",
+    "type": "bigram",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "beautiful_today_unstressed.wav",
+    "samples": 22080,
+    "duration": 0.92
+  },
+  "come_explore_stressed": {
+    "text": "come explore",
+    "type": "bigram",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "come_explore_stressed.wav",
+    "samples": 45120,
+    "duration": 1.88
+  },
+  "come_explore_normal": {
+    "text": "come explore",
+    "type": "bigram",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "come_explore_normal.wav",
+    "samples": 30720,
+    "duration": 1.28
+  },
+  "come_explore_unstressed": {
+    "text": "come explore",
+    "type": "bigram",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "come_explore_unstressed.wav",
+    "samples": 22080,
+    "duration": 0.92
+  },
+  "explore_the_stressed": {
+    "text": "explore the",
+    "type": "bigram",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "explore_the_stressed.wav",
+    "samples": 24000,
+    "duration": 1.0
+  },
+  "explore_the_normal": {
+    "text": "explore the",
+    "type": "bigram",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "explore_the_normal.wav",
+    "samples": 24000,
+    "duration": 1.0
+  },
+  "explore_the_unstressed": {
+    "text": "explore the",
+    "type": "bigram",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "explore_the_unstressed.wav",
+    "samples": 45120,
+    "duration": 1.88
+  },
+  "the_garden_stressed": {
+    "text": "the garden",
+    "type": "bigram",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "the_garden_stressed.wav",
+    "samples": 17280,
+    "duration": 0.72
+  },
+  "the_garden_normal": {
+    "text": "the garden",
+    "type": "bigram",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "the_garden_normal.wav",
+    "samples": 16320,
+    "duration": 0.68
+  },
+  "the_garden_unstressed": {
+    "text": "the garden",
+    "type": "bigram",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "the_garden_unstressed.wav",
+    "samples": 22080,
+    "duration": 0.92
+  },
+  "garden_with_stressed": {
+    "text": "garden with",
+    "type": "bigram",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "garden_with_stressed.wav",
+    "samples": 23040,
+    "duration": 0.96
+  },
+  "garden_with_normal": {
+    "text": "garden with",
+    "type": "bigram",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "garden_with_normal.wav",
+    "samples": 21120,
+    "duration": 0.88
+  },
+  "garden_with_unstressed": {
+    "text": "garden with",
+    "type": "bigram",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "garden_with_unstressed.wav",
+    "samples": 58560,
+    "duration": 2.44
+  },
+  "with_me_stressed": {
+    "text": "with me",
+    "type": "bigram",
+    "stress": "stressed",
+    "exag": 0.8,
+    "file": "with_me_stressed.wav",
+    "samples": 16320,
+    "duration": 0.68
+  },
+  "with_me_normal": {
+    "text": "with me",
+    "type": "bigram",
+    "stress": "normal",
+    "exag": 0.5,
+    "file": "with_me_normal.wav",
+    "samples": 15360,
+    "duration": 0.64
+  },
+  "with_me_unstressed": {
+    "text": "with me",
+    "type": "bigram",
+    "stress": "unstressed",
+    "exag": 0.3,
+    "file": "with_me_unstressed.wav",
+    "samples": 21120,
+    "duration": 0.88
+  }
+}
