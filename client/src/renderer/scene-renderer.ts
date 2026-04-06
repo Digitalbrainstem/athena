@@ -47,6 +47,13 @@ export class SceneRenderer implements Disposable {
   private assetManager: AssetManager | null = null;
   private worldManager: WorldManager | null = null;
 
+  // Smooth companion follow state
+  private companionPosX = 0;
+  private companionPosY = 0;
+  private companionPosZ = 0;
+  private companionInitialized = false;
+  private companionSpeaking = false;
+
   constructor(canvas: HTMLCanvasElement, initialTier: LODTier = 'medium') {
     this.lodTier = initialTier;
     const profile = LOD_PROFILES[initialTier];
@@ -239,31 +246,80 @@ export class SceneRenderer implements Disposable {
     this.scene.add(group);
   }
 
+  /** Tell the companion whether it should face the player (speaking). */
+  setCompanionSpeaking(speaking: boolean): void {
+    this.companionSpeaking = speaking;
+  }
+
   private updateCompanion(cam: CameraDescriptor): void {
     if (!this.companionGroup) return;
     this.companionTime += 0.016;
 
-    // Float beside the player (offset to the right and forward)
-    const yaw = cam.rotation.y;
-    const offsetRight = 0.8;
-    const offsetForward = -1.2;
-    const baseY = cam.position.y - 0.3;
+    const FOLLOW_DISTANCE = 2.0;
+    const FOLLOW_LERP = 3.0;    // speed of position smoothing (units/sec factor)
+    const HEIGHT_OFFSET = -0.3;  // companion floats slightly below eye level
 
-    const rx = cam.position.x + Math.sin(yaw + Math.PI / 2) * offsetRight + Math.sin(yaw) * offsetForward;
-    const rz = cam.position.z + Math.cos(yaw + Math.PI / 2) * offsetRight + Math.cos(yaw) * offsetForward;
+    // Target position: ~2 units to the right and slightly behind the player
+    const yaw = cam.rotation.y;
+    const offsetRight = 1.2;
+    const offsetForward = -1.5;
+
+    const targetX = cam.position.x
+      + Math.sin(yaw + Math.PI / 2) * offsetRight
+      + Math.sin(yaw) * offsetForward;
+    const targetZ = cam.position.z
+      + Math.cos(yaw + Math.PI / 2) * offsetRight
+      + Math.cos(yaw) * offsetForward;
+    const targetY = cam.position.y + HEIGHT_OFFSET;
+
+    // Initialize on first frame to avoid lerping from origin
+    if (!this.companionInitialized) {
+      this.companionPosX = targetX;
+      this.companionPosY = targetY;
+      this.companionPosZ = targetZ;
+      this.companionInitialized = true;
+    }
+
+    // Smooth lerp toward target position (dt ≈ 0.016)
+    const dt = 0.016;
+    const t = 1 - Math.exp(-FOLLOW_LERP * dt);
+    this.companionPosX += (targetX - this.companionPosX) * t;
+    this.companionPosY += (targetY - this.companionPosY) * t;
+    this.companionPosZ += (targetZ - this.companionPosZ) * t;
+
+    // If companion drifts too far (e.g. teleport), snap closer
+    const dx = this.companionPosX - cam.position.x;
+    const dz = this.companionPosZ - cam.position.z;
+    const dist = Math.sqrt(dx * dx + dz * dz);
+    if (dist > FOLLOW_DISTANCE * 3) {
+      this.companionPosX = targetX;
+      this.companionPosY = targetY;
+      this.companionPosZ = targetZ;
+    }
 
     // Gentle bobbing
     const bob = Math.sin(this.companionTime * 2) * 0.08;
-    this.companionGroup.position.set(rx, baseY + bob, rz);
+    this.companionGroup.position.set(
+      this.companionPosX,
+      this.companionPosY + bob,
+      this.companionPosZ,
+    );
 
-    // Face the same direction as the player
-    this.companionGroup.rotation.y = yaw + Math.PI;
+    // Facing: look at player when speaking, otherwise face player's direction
+    if (this.companionSpeaking) {
+      const toPlayerX = cam.position.x - this.companionPosX;
+      const toPlayerZ = cam.position.z - this.companionPosZ;
+      this.companionGroup.rotation.y = Math.atan2(toPlayerX, toPlayerZ);
+    } else {
+      this.companionGroup.rotation.y = yaw + Math.PI;
+    }
 
     // Run character-specific idle animation if available, otherwise rotate orb
     if (this.companionModel) {
       this.companionModel.idle(this.companionTime);
     } else {
-      this.companionGroup.rotation.y += 0.01;
+      // Slow orb spin on top of facing direction
+      this.companionGroup.rotation.y += 0.005;
     }
   }
 

@@ -14,6 +14,7 @@ import { NexusVoice } from './audio/nexus-voice.js';
 import { HUD } from './ui/hud.js';
 import { PortalScreen } from './ui/portal-screen.js';
 import { ProfileScreen } from './ui/profile-screen.js';
+import { CompanionPicker } from './ui/companion-picker.js';
 import { NpcDialoguePanel, findNearestNpc, npcsInBiome, BIOME_NPCS } from './ui/npc-dialogue.js';
 import type { NpcEntity } from './ui/npc-dialogue.js';
 import { TradePanel } from './ui/trade-panel.js';
@@ -32,6 +33,11 @@ const disposables: Disposable[] = [];
 async function boot(): Promise<void> {
   // Start debug bridge — pipes browser console to terminal via WebSocket
   initDebugBridge();
+
+  // Lock to landscape on mobile devices (best-effort, non-blocking)
+  try {
+    await (screen.orientation as any).lock('landscape');
+  } catch { /* not supported or not fullscreen — CSS overlay handles it */ }
   
   const canvas = document.getElementById('game-canvas') as HTMLCanvasElement | null;
   if (!canvas) { console.error('[Nexus] Could not find #game-canvas element'); return; }
@@ -65,7 +71,13 @@ async function boot(): Promise<void> {
   await portalPromise;
   debug('ui', 'Portal gateway complete — entering profile screen');
 
-  // --- Profile selection / creation ---
+  // --- Name Entry + Companion Picker ---
+  const companionPicker = new CompanionPicker();
+  disposables.push(companionPicker);
+  const companionResult = await companionPicker.show();
+  debug('ui', `Companion chosen: ${companionResult.companionId} for "${companionResult.name}"`);
+
+  // --- Profile selection / creation (uses companion picker result) ---
   const profileScreen = new ProfileScreen();
   disposables.push(profileScreen);
 
@@ -73,9 +85,12 @@ async function boot(): Promise<void> {
 
   let profileId: string;
   if (profiles.length === 0) {
-    // No profiles — show creation screen
-    const result = await profileScreen.show(core);
-    profileId = result.profileId;
+    // No profiles — create one using the companion picker result
+    const newProfile = await core.createProfile({
+      name: companionResult.name,
+      avatarData: companionResult.companionId,
+    });
+    profileId = newProfile.id;
   } else {
     // Profiles exist — let the player pick (or auto-select single profile)
     if (profiles.length === 1) {
@@ -381,6 +396,16 @@ async function boot(): Promise<void> {
   audioManager.startAtmosphere(startingBiome);
   debug('audio', `Atmosphere started for biome: ${startingBiome}`);
 
+  // Load the workshop ambient music WAV file if starting in the workshop
+  if (startingBiome === 'workshop') {
+    void audioManager.playMusicFile(
+      '/content/audio/music/priority1/music-workshop-ambient.wav',
+      'workshop-ambient-music',
+      0.15,
+      true,
+    );
+  }
+
   // --- Initial quest offering for the starting biome (after a short delay) ---
   setTimeout(() => {
     const biome = core.getCurrentBiome();
@@ -407,6 +432,13 @@ async function boot(): Promise<void> {
         debug('audio', 'AudioContext resumed on click');
       });
     }
+  });
+
+  // Mouse click while pointer-locked → fire interact action (desktop)
+  canvas.addEventListener('mousedown', (e) => {
+    if (e.button !== 0) return; // left click only
+    if (!fpCam.isPointerLocked) return;
+    input.inject({ type: 'interact', source: 'mouse' });
   });
 
   // Track last spoken dialogue to avoid re-speaking the same line each frame
@@ -768,12 +800,14 @@ async function boot(): Promise<void> {
     const sg = core.getSceneGraph();
     if (sg.ui.dialogueActive && sg.ui.dialogueText && sg.ui.dialogueText !== lastDialogueText) {
       lastDialogueText = sg.ui.dialogueText;
+      sceneRenderer.setCompanionSpeaking(true);
       const emotion = sg.ui.dialogueText.includes('!')
         ? 'excited' as const
         : 'neutral' as const;
       void companionVoice.speak(sg.ui.dialogueText, emotion);
     } else if (!sg.ui.dialogueActive) {
       lastDialogueText = '';
+      sceneRenderer.setCompanionSpeaking(false);
     }
   }, 200);
   disposables.push({ dispose: () => clearInterval(dialoguePoll) });

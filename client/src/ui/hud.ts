@@ -46,6 +46,15 @@ export class HUD implements Disposable {
     this.questHintEl = this.questPanelEl?.querySelector('.quest-hint') ?? null;
     this.questIndicatorEl = document.getElementById('quest-indicator');
     if (this.fpsEl) this.fpsEl.classList.toggle('hud-hidden', !debug);
+
+    // Click/tap on dialogue box dismisses it
+    if (this.dialogueEl) {
+      this.dialogueEl.style.cursor = 'pointer';
+      this.dialogueEl.style.pointerEvents = 'auto';
+      this.dialogueEl.addEventListener('click', () => {
+        this.dialogueEl?.classList.add('hud-hidden');
+      });
+    }
   }
 
   /** Initialize the crafting panel. */

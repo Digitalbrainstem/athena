@@ -148,18 +148,20 @@ export class FirstPersonCamera implements Disposable {
       let newX = this.posX + this.vx * dt;
       let newZ = this.posZ + this.vz * dt;
 
-      // AABB collision — slide along surfaces
-      for (const box of this.collisionBoxes) {
-        const overlapX = (PLAYER_RADIUS + box.hx) - Math.abs(newX - box.cx);
-        const overlapZ = (PLAYER_RADIUS + box.hz) - Math.abs(newZ - box.cz);
-        if (overlapX > 0 && overlapZ > 0) {
-          // Push out on the axis with smallest overlap (slide)
-          if (overlapX < overlapZ) {
-            newX += newX < box.cx ? -overlapX : overlapX;
-            this.vx = 0;
-          } else {
-            newZ += newZ < box.cz ? -overlapZ : overlapZ;
-            this.vz = 0;
+      // AABB collision — slide along surfaces (two passes for corner cases)
+      for (let pass = 0; pass < 2; pass++) {
+        for (const box of this.collisionBoxes) {
+          const overlapX = (PLAYER_RADIUS + box.hx) - Math.abs(newX - box.cx);
+          const overlapZ = (PLAYER_RADIUS + box.hz) - Math.abs(newZ - box.cz);
+          if (overlapX > 0 && overlapZ > 0) {
+            // Push out on the axis with smallest overlap (slide)
+            if (overlapX < overlapZ) {
+              newX += newX < box.cx ? -overlapX : overlapX;
+              this.vx = 0;
+            } else {
+              newZ += newZ < box.cz ? -overlapZ : overlapZ;
+              this.vz = 0;
+            }
           }
         }
       }

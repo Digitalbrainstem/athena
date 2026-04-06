@@ -40,6 +40,11 @@ export class InputManager implements Disposable {
     return actions;
   }
 
+  /** Inject an action programmatically (e.g. mouse click → interact). */
+  inject(action: GameAction): void {
+    this.emit(action);
+  }
+
   emit = (action: GameAction): void => {
     this.pendingActions.push(action);
     const snapshot = this.listeners.slice();
