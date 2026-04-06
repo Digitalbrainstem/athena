@@ -19,6 +19,7 @@ precision highp float;
 uniform float uTime;
 uniform float uFlythrough;
 uniform float uWarp;
+uniform float uReveal;
 uniform vec2  uResolution;
 uniform sampler2D uText;
 
@@ -50,36 +51,31 @@ float starLayer(vec2 uv, float scale, float time, float threshold) {
   return (smoothstep(size, size * 0.1, d) + smoothstep(size * 3.0, 0.0, d) * 0.15) * twinkle;
 }
 
-// ── Photon ring — trapped light with orbiting bright specs ──
+// ── Photon ring — black hole photon sphere with trapped, glowing light ──
 vec3 photonRing(vec2 pos, float dist, float angle, float time, float ringR) {
   float delta = dist - ringR;
 
-  float sharp = exp(-delta * delta / 0.0005) * 1.2;
-  float mid   = exp(-delta * delta / 0.003)  * 0.4;
-  float wide  = exp(-delta * delta / 0.02)   * 0.12;
+  // Multi-layer glow — bright trapped light like a photon sphere
+  float sharp = exp(-delta * delta / 0.0003) * 1.6;
+  float mid   = exp(-delta * delta / 0.004)  * 0.7;
+  float wide  = exp(-delta * delta / 0.025)  * 0.25;
+  float outer = exp(-delta * delta / 0.08)   * 0.08;
 
-  // Swirling light bands
+  // Swirling light bands trapped in orbit
   float swirl = angle + time * 0.5 + 1.0 / (abs(delta) + 0.02) * 0.02;
   float band1 = pow(0.5 + 0.5 * sin(swirl * 6.0 + time * 1.8), 2.0);
   float band2 = pow(0.5 + 0.5 * sin(swirl * 11.0 - time * 1.2 + delta * 30.0), 3.0);
 
-  // Trapped bright specs orbiting in the ring
-  float trapped = 0.0;
-  for (int i = 0; i < 24; i++) {
-    float fi = float(i);
-    float speed = 0.25 + hash1(fi * 3.1) * 0.45;
-    float sAngle = fi * 0.2618 + time * speed;
-    float sR = ringR + sin(time * 0.5 + fi * 1.7) * 0.01;
-    vec2 sPos = vec2(cos(sAngle), sin(sAngle)) * sR;
-    float d = length(pos - sPos);
-    float b = hash1(fi * 7.13) * 0.5 + 0.5;
-    trapped += smoothstep(0.005, 0.0, d) * b;
-    trapped += smoothstep(0.018, 0.0, d) * b * 0.12;
-  }
+  // Asymmetric Doppler brightness — one side brighter (relativistic beaming)
+  float doppler = 0.8 + 0.4 * sin(angle - time * 0.3);
 
-  float intensity = sharp * (0.5 + band1 * 0.5) + mid * (0.6 + band2 * 0.4) + wide;
-  vec3 col = mix(COOL_BLUE, HOT_WHITE, sharp * 0.5) * intensity;
-  col += HOT_WHITE * trapped * 0.6;
+  float intensity = (sharp * (0.5 + band1 * 0.5) + mid * (0.6 + band2 * 0.4) + wide + outer) * doppler;
+  vec3 col = mix(COOL_BLUE, HOT_WHITE, sharp * 0.6) * intensity;
+
+  // Inner edge glow — light that almost escapes
+  float innerGlow = smoothstep(ringR, ringR - 0.04, dist) * exp(-pow(dist - ringR + 0.02, 2.0) / 0.002);
+  col += CYAN * innerGlow * 0.3;
+
   return col;
 }
 
@@ -142,29 +138,39 @@ float swirlParticles(vec2 pos, float time) {
   return result;
 }
 
-// ── Wormhole tunnel during fly-through ──
+// ── Wormhole tunnel during fly-through — stargate streaks of light ──
 vec3 wormholeTunnel(vec2 pos, float dist, float angle, float time, float fly) {
   if (fly < 0.01) return vec3(0.0);
 
-  // Tunnel walls — concentric rings rushing toward us
-  float tunnelDepth = dist / (0.01 + fly * 0.5);
-  float rings = sin(tunnelDepth * 30.0 - time * 12.0) * 0.5 + 0.5;
-  rings *= sin(tunnelDepth * 15.0 - time * 8.0 + angle * 2.0) * 0.5 + 0.5;
-  float ringBright = pow(rings, 2.0) * smoothstep(0.0, 0.08, dist);
+  // Light streaks rushing past — radial lines of energy
+  float streakAngle = angle + time * 0.5;
+  float streaks = 0.0;
+  for (int i = 0; i < 16; i++) {
+    float fi = float(i);
+    float sa = fi * PI / 8.0 + hash1(fi * 5.7) * 0.3;
+    float angDiff = abs(mod(streakAngle - sa + PI, PI * 2.0) - PI);
+    float width = 0.02 + hash1(fi * 3.1) * 0.03;
+    float streak = exp(-angDiff * angDiff / (width * width)) * fly;
+    // Streaks get longer and brighter as fly progresses
+    float depthPulse = pow(0.5 + 0.5 * sin(dist * 40.0 - time * 15.0 + fi * 2.0), 2.0);
+    streaks += streak * depthPulse * (0.5 + hash1(fi * 9.3) * 0.5);
+  }
 
-  // Tunnel wall glow — ring edge as it expands past us
+  // Tunnel wall energy — expanding ring of light we pass through
   float expandR = 0.30 + fly * fly * 1.2;
   float wallDist = abs(dist - expandR);
   float wallGlow = exp(-wallDist * wallDist / (0.003 + fly * 0.01)) * fly;
 
-  // Noise streaks on tunnel walls
-  float n = snoise(vec3(angle * 2.0 + time * 3.0, tunnelDepth * 3.0, time * 0.5));
-  float streaks = pow(0.5 + 0.5 * n, 4.0) * fly * smoothstep(0.0, 0.1, dist);
+  // Turbulent energy on tunnel walls — noise-driven, not geometric rings
+  float tunnelN1 = snoise(vec3(angle * 3.0 + time * 4.0, dist * 8.0 - time * 10.0, time * 0.3));
+  float tunnelN2 = snoise(vec3(angle * 5.0 - time * 3.0, dist * 12.0 - time * 14.0, time * 0.5 + 7.0));
+  float energy = pow(0.5 + 0.5 * tunnelN1, 3.0) * 0.6 + pow(0.5 + 0.5 * tunnelN2, 4.0) * 0.4;
+  energy *= fly * smoothstep(0.0, 0.08, dist);
 
   vec3 col = vec3(0.0);
-  col += CYAN * ringBright * fly * 0.3;
+  col += mix(CYAN, HOT_WHITE, fly * 0.5) * streaks * 0.4;
   col += mix(COOL_BLUE, HOT_WHITE, fly) * wallGlow * 0.6;
-  col += PALE_BLUE * streaks * 0.15;
+  col += PALE_BLUE * energy * 0.2;
 
   // Center brightens — light at the end of the tunnel
   float endLight = exp(-dist * dist / (0.005 + fly * fly * 0.15)) * fly;
@@ -189,34 +195,40 @@ void main() {
   // ── Deep space ──
   vec3 color = VOID;
 
+  // Reveal progression — cinematic fade-in of effects
+  float starsReveal   = smoothstep(0.0,  0.35, uReveal);
+  float particleReveal = smoothstep(0.2, 0.55, uReveal);
+  float ringReveal    = smoothstep(0.4,  0.75, uReveal);
+  float shimmerReveal = smoothstep(0.6,  1.0,  uReveal);
+
   // Nebula haze
   float neb = snoise(vec3(pos * 1.2, time * 0.015)) * 0.5 + 0.5;
   neb *= snoise(vec3(pos * 2.0 + 7.0, time * 0.02)) * 0.5 + 0.5;
-  color += COOL_BLUE * neb * 0.02;
+  color += COOL_BLUE * neb * 0.02 * starsReveal;
 
   // Star fields — multiple layers
   float stars = starLayer(uv, 30.0, time, 0.90);
   stars += starLayer(uv + 0.5, 55.0, time, 0.92) * 0.7;
   stars += starLayer(uv + 0.3, 90.0, time * 0.8, 0.94) * 0.5;
   stars += starLayer(uv + 0.7, 150.0, time * 0.6, 0.96) * 0.3;
-  color += HOT_WHITE * stars * 0.4;
+  color += HOT_WHITE * stars * 0.4 * starsReveal;
 
   // Gravitational lensing
   float lensZone = smoothstep(0.55, 0.32, dist) * smoothstep(0.22, 0.30, dist);
   float lensAngle = angle + lensZone * 0.6;
   vec2 lensUV = vec2(cos(lensAngle), sin(lensAngle)) * dist * 0.6 + 0.5;
   float lensStars = starLayer(lensUV, 45.0, time, 0.87);
-  color += PALE_BLUE * lensStars * lensZone * 0.5;
+  color += PALE_BLUE * lensStars * lensZone * 0.5 * starsReveal;
 
   // ── Swirling particles everywhere ──
   float particles = swirlParticles(pos, time);
-  color += mix(COOL_BLUE, CYAN, clamp(particles, 0.0, 1.0)) * particles * 0.45;
+  color += mix(COOL_BLUE, CYAN, clamp(particles, 0.0, 1.0)) * particles * 0.45 * particleReveal;
 
   // ── Photon ring ──
-  color += photonRing(pos, dist, angle, time, ringR);
+  color += photonRing(pos, dist, angle, time, ringR) * ringReveal;
 
   // ── Wormhole shimmer ──
-  color += wormholeShimmer(pos, dist, time, ringR);
+  color += wormholeShimmer(pos, dist, time, ringR) * shimmerReveal;
 
   // ── Fly-through: wormhole tunnel ──
   color += wormholeTunnel(pos, dist, angle, time, fly);
@@ -282,6 +294,7 @@ export interface GalaxyPortalUniforms {
   uTime: { value: number };
   uFlythrough: { value: number };
   uWarp: { value: number };
+  uReveal: { value: number };
   uResolution: { value: THREE.Vector2 };
   uText: { value: THREE.Texture | null };
 }
@@ -293,6 +306,7 @@ export function createGalaxyPortalMaterial(
     uTime: { value: 0 },
     uFlythrough: { value: 0 },
     uWarp: { value: 0 },
+    uReveal: { value: 1.0 },
     uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
     uText: { value: textTexture },
   };

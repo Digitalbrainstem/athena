@@ -1,11 +1,14 @@
 // Portal gateway — cinematic intro rendered entirely with GLSL shaders.
 //
-// Sequence:
-//   0-3s   Stars emerge from darkness, galaxy begins forming
-//   3-6s   Full galaxy visible — spinning spiral with nebula clouds
-//   6-8s   "NEXUS ACADEMY" title renders (canvas-textured plane, NOT CSS)
-//   8s+    Subtle prompt pulses — entire screen clickable (no web button)
-//   click  3s fly-through: galaxy spins faster, zoom into core, golden flash
+// First-time players see a cinematic sequence:
+//   0s     Black screen, portal ambient music fades in
+//   2s     Nexus Voice: "A new mind enters the Nexus..." — stars fade in
+//   ~6s    Founder voice — portal ring materializes
+//   ~10s   Nexus Voice: "Step through..." — portal fully revealed
+//   ready  Entire screen clickable
+//   click  3s stargate wormhole tunnel fly-through
+//
+// Returning players skip the cinematic — portal appears immediately.
 //
 // Everything is GPU-rendered. No CSS animations. No HTML buttons.
 
@@ -15,7 +18,16 @@ import type { GalaxyPortalUniforms } from '../shaders/galaxy-portal.js';
 import type { Disposable } from '../types.js';
 
 const FLY_DURATION = 3.0;
-const T_PROMPT_IN  = 1.5;   // clickable after 1.5s
+const T_PROMPT_IN  = 1.5;   // clickable after 1.5s (returning players)
+
+const AUDIO_MUSIC   = '/content/audio/music/priority1/music-portal-ambient.wav';
+const AUDIO_WELCOME = '/content/audio/voice/nexus/nv-welcome-02.wav';
+const AUDIO_FOUNDER = '/content/audio/voice/casting/voice-07-alexander_hatton.wav';
+const AUDIO_PORTAL  = '/content/audio/voice/nexus/nv-portal-01.wav';
+
+export interface PortalShowOptions {
+  firstTime?: boolean;
+}
 
 export class PortalScreen implements Disposable {
   private disposed = false;
@@ -34,12 +46,29 @@ export class PortalScreen implements Disposable {
   private enterStartTime = 0;
   private resolveStep: (() => void) | null = null;
 
-  async show(): Promise<void> {
+  // Cinematic intro state
+  private firstTime = false;
+  private reveal = 1.0;
+  private targetReveal = 1.0;
+  private revealSpeed = 0.0;
+  private audioCtx: AudioContext | null = null;
+  private musicElement: HTMLAudioElement | null = null;
+  private currentSource: AudioBufferSourceNode | null = null;
+  private lastFrameTime = 0;
+
+  async show(options?: PortalShowOptions): Promise<void> {
     if (this.disposed) return;
+    this.firstTime = options?.firstTime ?? false;
+
     return new Promise<void>((resolve) => {
       this.resolveStep = resolve;
       this.startTime = performance.now();
       this.buildDOM();
+
+      if (this.firstTime) {
+        this.reveal = 0.0;
+        this.targetReveal = 0.0;
+      }
 
       // Load text overlay (transparent PNG) — background is procedural shader
       const loader = new THREE.TextureLoader();
@@ -47,6 +76,10 @@ export class PortalScreen implements Disposable {
         textTex.minFilter = THREE.LinearFilter;
         this.initScene(textTex);
         this.animate();
+
+        if (this.firstTime) {
+          void this.runCinematic();
+        }
       });
     });
   }
@@ -56,7 +89,143 @@ export class PortalScreen implements Disposable {
     this.disposed = true;
     cancelAnimationFrame(this.animationId);
     window.removeEventListener('resize', this.onResize);
+    this.stopAudio();
     this.cleanup();
+  }
+
+  // ── Cinematic intro — first-time players only ─────────────────────────────
+
+  private async runCinematic(): Promise<void> {
+    this.audioCtx = new AudioContext();
+    if (this.audioCtx.state === 'suspended') {
+      try { await this.audioCtx.resume(); } catch { /* ignore */ }
+      if (this.audioCtx.state === 'suspended') {
+        await this.waitForGesture();
+        try { await this.audioCtx.resume(); } catch { /* ignore */ }
+      }
+    }
+
+    // Start ambient music with fade-in
+    this.startMusic();
+
+    // Phase 1: black screen with music (2s)
+    await this.wait(2000);
+    if (this.disposed) return;
+
+    // Phase 2: Nexus Voice welcome — stars fade in
+    this.driveReveal(0.4, 4.0);
+    await this.playVoice(AUDIO_WELCOME);
+    if (this.disposed) return;
+
+    await this.wait(800);
+    if (this.disposed) return;
+
+    // Phase 3: Founder voice — portal ring materializes
+    this.driveReveal(0.8, 4.0);
+    await this.playVoice(AUDIO_FOUNDER);
+    if (this.disposed) return;
+
+    await this.wait(600);
+    if (this.disposed) return;
+
+    // Phase 4: Nexus Voice "step through" — full reveal
+    this.driveReveal(1.0, 3.0);
+    await this.playVoice(AUDIO_PORTAL);
+    if (this.disposed) return;
+
+    // Mark intro as seen
+    try { localStorage.setItem('nexus_intro_seen', '1'); } catch { /* ignore */ }
+
+    // Portal is now clickable
+    this.ready = true;
+    if (this.overlay) this.overlay.style.cursor = 'pointer';
+  }
+
+  private startMusic(): void {
+    try {
+      this.musicElement = new Audio(AUDIO_MUSIC);
+      this.musicElement.loop = true;
+      this.musicElement.volume = 0;
+      void this.musicElement.play().catch(() => { /* autoplay blocked */ });
+      this.fadeMusic(0.3, 3000);
+    } catch { /* music not critical */ }
+  }
+
+  private fadeMusic(target: number, durationMs: number): void {
+    if (!this.musicElement) return;
+    const start = this.musicElement.volume;
+    const startTime = performance.now();
+    const tick = () => {
+      if (!this.musicElement || this.disposed) return;
+      const t = Math.min(1, (performance.now() - startTime) / durationMs);
+      this.musicElement.volume = start + (target - start) * t;
+      if (t < 1) requestAnimationFrame(tick);
+    };
+    tick();
+  }
+
+  private async playVoice(url: string): Promise<void> {
+    if (!this.audioCtx || this.disposed) return;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const arrayBuffer = await response.arrayBuffer();
+      const audioBuffer = await this.audioCtx.decodeAudioData(arrayBuffer);
+
+      await new Promise<void>((resolve) => {
+        if (this.disposed || !this.audioCtx) { resolve(); return; }
+        const source = this.audioCtx.createBufferSource();
+        source.buffer = audioBuffer;
+        source.connect(this.audioCtx.destination);
+        this.currentSource = source;
+        source.onended = () => {
+          this.currentSource = null;
+          resolve();
+        };
+        source.start();
+      });
+    } catch (e) {
+      console.warn('[Portal] Voice playback failed:', url, e);
+      await this.wait(3000);
+    }
+  }
+
+  private driveReveal(target: number, durationSec: number): void {
+    const delta = target - this.reveal;
+    this.targetReveal = target;
+    this.revealSpeed = delta / Math.max(durationSec, 0.01);
+  }
+
+  private wait(ms: number): Promise<void> {
+    return new Promise((r) => setTimeout(r, ms));
+  }
+
+  private waitForGesture(): Promise<void> {
+    return new Promise((resolve) => {
+      const handler = () => {
+        document.removeEventListener('click', handler);
+        document.removeEventListener('touchstart', handler);
+        document.removeEventListener('keydown', handler);
+        resolve();
+      };
+      document.addEventListener('click', handler);
+      document.addEventListener('touchstart', handler);
+      document.addEventListener('keydown', handler);
+    });
+  }
+
+  private stopAudio(): void {
+    try { this.currentSource?.stop(); } catch { /* ignore */ }
+    this.currentSource = null;
+    if (this.musicElement) {
+      this.musicElement.pause();
+      this.musicElement.src = '';
+      this.musicElement = null;
+    }
+    if (this.audioCtx) {
+      void this.audioCtx.close();
+      this.audioCtx = null;
+    }
   }
 
   // ── DOM — minimal, just the canvas and a11y ──────────────────────────────
@@ -105,10 +274,15 @@ export class PortalScreen implements Disposable {
     this.entering = true;
     this.enterStartTime = performance.now();
     if (this.overlay) this.overlay.style.cursor = 'none';
+
+    // Fade music out during flythrough
+    this.fadeMusic(0, FLY_DURATION * 1000);
+
     if (!this.renderer) setTimeout(() => this.finishTransition(), 100);
   }
 
   private finishTransition(): void {
+    this.stopAudio();
     this.cleanup();
     this.resolveStep?.();
     this.resolveStep = null;
@@ -151,10 +325,12 @@ export class PortalScreen implements Disposable {
     // Fullscreen quad — procedural background + text overlay
     this.portalMaterial = createGalaxyPortalMaterial(textTex);
     this.portalMaterial.uniforms.uResolution.value.set(w, h);
+    this.portalMaterial.uniforms.uReveal.value = this.reveal;
     const quad = new THREE.PlaneGeometry(2, 2);
     this.portalMesh = new THREE.Mesh(quad, this.portalMaterial);
     this.scene.add(this.portalMesh);
 
+    this.lastFrameTime = performance.now();
     window.addEventListener('resize', this.onResize);
   }
 
@@ -166,17 +342,29 @@ export class PortalScreen implements Disposable {
     if (!this.renderer || !this.scene || !this.camera || !this.portalMaterial) return;
 
     const now = performance.now();
+    const dt = (now - this.lastFrameTime) / 1000;
+    this.lastFrameTime = now;
     const t = (now - this.startTime) / 1000;
 
     // Update shader
     this.portalMaterial.uniforms.uTime.value = t;
 
-    // Spaghettification — starts at 2.5s, builds gradually
-    const warpT = Math.max(0, (t - 2.5) / 4);
-    this.portalMaterial.uniforms.uWarp.value = Math.min(warpT, 1.0);
+    // Reveal animation (cinematic fade-in)
+    if (this.revealSpeed > 0 && this.reveal < this.targetReveal) {
+      this.reveal = Math.min(this.targetReveal, this.reveal + this.revealSpeed * dt);
+    } else if (this.revealSpeed < 0 && this.reveal > this.targetReveal) {
+      this.reveal = Math.max(this.targetReveal, this.reveal + this.revealSpeed * dt);
+    }
+    this.portalMaterial.uniforms.uReveal.value = this.reveal;
 
-    // Screen becomes clickable quickly
-    if (!this.ready && t >= T_PROMPT_IN) {
+    // Spaghettification — starts at 2.5s, builds gradually (only when fully revealed)
+    if (this.reveal >= 1.0) {
+      const warpT = Math.max(0, (t - 2.5) / 4);
+      this.portalMaterial.uniforms.uWarp.value = Math.min(warpT, 1.0);
+    }
+
+    // Screen becomes clickable (returning players: time-based)
+    if (!this.firstTime && !this.ready && t >= T_PROMPT_IN) {
       this.ready = true;
       if (this.overlay) this.overlay.style.cursor = 'pointer';
     }

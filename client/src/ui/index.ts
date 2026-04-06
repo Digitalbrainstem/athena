@@ -5,6 +5,8 @@ export { DialogueDisplay } from './dialogue.js';
 export { ProfileScreen } from './profile-screen.js';
 export type { ProfileScreenResult } from './profile-screen.js';
 export { PortalScreen } from './portal-screen.js';
+export { CompanionPicker } from './companion-picker.js';
+export type { CompanionPickerResult } from './companion-picker.js';
 export { NpcDialoguePanel, BIOME_NPCS, npcsInBiome, getNpc, findNearestNpc } from './npc-dialogue.js';
 export type { NpcEntity, NpcType, NpcPersonality, NpcDialogueOption, NpcDialogueCallback } from './npc-dialogue.js';
 export { TradePanel } from './trade-panel.js';

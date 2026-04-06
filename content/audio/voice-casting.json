@@ -8,71 +8,122 @@
     "nexus_voice": {
       "reference": "emily_cripps.wav",
       "base_exaggeration": 0.7,
-      "description": "The academy itself — warm, futuristic, authoritative but kind",
-      "engine": "fish-audio-v1.5"
+      "description": "The academy itself \u2014 warm, futuristic, authoritative but kind",
+      "engine": "chatterbox",
+      "note": "Nexus Voice #1 pick"
     },
     "teacher": {
       "reference": "deanna_bovee.wav",
       "base_exaggeration": 0.5,
-      "description": "Teacher/guide role — nurturing, patient",
+      "description": "Teacher/guide role \u2014 nurturing, patient",
       "engine": "fish-audio-v1.5"
     },
     "game_voice_male": {
       "reference": "alexander_hatton.wav",
       "base_exaggeration": 0.5,
-      "description": "Game announcements, male — deep, authoritative",
+      "description": "Game announcements, male \u2014 deep, authoritative",
       "engine": "fish-audio-v1.5"
     },
     "game_voice_young": {
       "reference": "caden_vaughn_clegg.wav",
       "base_exaggeration": 0.6,
-      "description": "Game announcements, young — energetic",
+      "description": "Game announcements, young \u2014 energetic",
       "engine": "fish-audio-v1.5"
     },
     "companion_fox": {
       "reference": "philippa.wav",
       "base_exaggeration": 0.8,
       "description": "Playful, adventurous, bright",
-      "personality": "The explorer — always wanting to see what's next"
+      "personality": "The explorer \u2014 always wanting to see what's next"
     },
     "companion_owl": {
-      "reference": "bill_boerst.wav",
+      "reference": "peter_yearsley.wav",
       "base_exaggeration": 0.4,
       "description": "Wise, thoughtful, calm",
-      "personality": "The thinker — considers before acting, loves knowledge"
+      "personality": "The thinker \u2014 considers before acting, loves knowledge"
     },
     "companion_rabbit": {
       "reference": "julie_vw.wav",
       "base_exaggeration": 1.0,
       "description": "Energetic, encouraging, fast-paced",
-      "personality": "The cheerleader — boundless energy, never gives up"
+      "personality": "The cheerleader \u2014 boundless energy, never gives up"
     },
     "companion_bear": {
-      "reference": "nancy_roberts.wav",
-      "base_exaggeration": 0.45,
+      "reference": "jodi_krangle-expressive.wav",
+      "base_exaggeration": 0.35,
       "description": "Gentle, protective, encouraging",
-      "personality": "The protector — warm, safe, always has your back"
+      "personality": "The protector \u2014 warm, safe, always has your back"
     },
     "companion_cat": {
       "reference": "lizzie_driver.wav",
       "base_exaggeration": 0.9,
       "description": "Curious, clever, playful",
-      "personality": "The investigator — wants to understand everything"
+      "personality": "The investigator \u2014 wants to understand everything"
     },
     "companion_dragon": {
       "reference": "padraig_ohiceadha-lyrical.wav",
       "base_exaggeration": 0.8,
       "description": "Brave, expressive, wise beyond years, Irish accent",
-      "personality": "The ancient soul — loyal, fierce, surprisingly deep"
+      "personality": "The ancient soul \u2014 loyal, fierce, surprisingly deep"
+    },
+    "founder": {
+      "reference": "alexander_hatton.wav",
+      "base_exaggeration": 0.5,
+      "description": "Ancient builders of the Nexus \u2014 deep, reverent, mysterious",
+      "engine": "chatterbox",
+      "note": "Founder #1 pick"
+    },
+    "narrator": {
+      "reference": "nancy_roberts.wav",
+      "base_exaggeration": 0.5,
+      "description": "Tutorial/quest narration \u2014 clear, warm, guiding",
+      "engine": "chatterbox",
+      "note": "Narrator #2 pick"
+    },
+    "npc_merchant_1": {
+      "reference": "phil_chenevert.wav",
+      "base_exaggeration": 0.6,
+      "description": "Friendly shopkeeper",
+      "engine": "chatterbox"
+    },
+    "npc_merchant_2": {
+      "reference": "caden_vaughn_clegg.wav",
+      "base_exaggeration": 0.6,
+      "description": "Second merchant voice",
+      "engine": "chatterbox"
+    },
+    "npc_child": {
+      "reference": "TBD",
+      "description": "Child NPC \u2014 young, curious, energetic. NEEDS RESEARCH.",
+      "engine": "TBD",
+      "note": "No suitable child voice found yet"
     }
   },
   "emotion_profiles": {
-    "excited": { "exaggeration_offset": 0.2, "description": "Discoveries, completing quests, praise" },
-    "adventurous": { "exaggeration_offset": 0.0, "description": "Exploring, suggesting, curious" },
-    "calm": { "exaggeration_offset": -0.3, "description": "Telling stories, teaching, reflecting" },
-    "gentle": { "exaggeration_offset": -0.4, "description": "Encouragement after failure, rest, night" },
-    "urgent": { "exaggeration_offset": 0.2, "description": "Danger, challenges, time pressure" },
-    "whispered": { "exaggeration_offset": -0.5, "description": "Hints, secrets, mysteries" }
+    "excited": {
+      "exaggeration_offset": 0.2,
+      "description": "Discoveries, completing quests, praise"
+    },
+    "adventurous": {
+      "exaggeration_offset": 0.0,
+      "description": "Exploring, suggesting, curious"
+    },
+    "calm": {
+      "exaggeration_offset": -0.3,
+      "description": "Telling stories, teaching, reflecting"
+    },
+    "gentle": {
+      "exaggeration_offset": -0.4,
+      "description": "Encouragement after failure, rest, night"
+    },
+    "urgent": {
+      "exaggeration_offset": 0.2,
+      "description": "Danger, challenges, time pressure"
+    },
+    "whispered": {
+      "exaggeration_offset": -0.5,
+      "description": "Hints, secrets, mysteries"
+    }
   },
   "cc0_voice_source": "github.com/OwenTyme/voice-zero (LibriVox public domain)"
 }
