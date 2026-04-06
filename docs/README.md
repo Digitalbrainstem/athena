@@ -29,6 +29,13 @@
 | 19 | [ACCESSIBILITY.md](19-ACCESSIBILITY.md) | Visual, motor, cognitive, and auditory accessibility — full spec |
 | 20 | [SCREEN_TIME_SAFETY.md](20-SCREEN_TIME_SAFETY.md) | Parental controls, screen time philosophy, COPPA compliance, child protection |
 | 21 | [MARKETING_PITCH.md](21-MARKETING_PITCH.md) | The pitch: problem, positioning, trailer concept, competitive landscape, why free |
+| 22 | [UNIVERSE_DESIGN.md](22-UNIVERSE_DESIGN.md) | Universe structure, galaxy travel, space biomes |
+| 23 | [AUDIO_GENERATION_MANIFEST.md](23-AUDIO_GENERATION_MANIFEST.md) | Audio generation pipeline manifest |
+| 24 | [FISH-AUDIO-API.md](24-FISH-AUDIO-API.md) | Fish Audio TTS API integration |
+| 25 | [PROCEDURAL-ASSEMBLY-ENGINE.md](25-PROCEDURAL-ASSEMBLY-ENGINE.md) | Procedural assembly engine for 3D content |
+| 26 | [ATLAS-EVOLUTIONARY-ENGINE.md](26-ATLAS-EVOLUTIONARY-ENGINE.md) | Atlas evolutionary engine design |
+| 27 | [ANIMATED-MODEL-SOURCES.md](27-ANIMATED-MODEL-SOURCES.md) | Research: free animated 3D model sources (Quaternius, KayKit, Mixamo, etc.) |
+| 28 | [MUSIC-SFX-SOURCES.md](28-MUSIC-SFX-SOURCES.md) | Research: free music & SFX libraries (Incompetech, Freesound, Sonniss, etc.) |
 | — | [CURRICULUM_SKILL_COUNTS.md](CURRICULUM_SKILL_COUNTS.md) | Complete 14-subject, 11,400-skill curriculum breakdown with source validation |
 | — | [STYLE_GUIDE.md](STYLE_GUIDE.md) | Visual identity: colors, typography, components, animation, per-tier adaptation |
 
