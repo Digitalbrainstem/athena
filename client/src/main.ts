@@ -52,21 +52,27 @@ async function boot(): Promise<void> {
   disposables.push({ dispose: () => { void core.destroy(); } });
 
   // --- Portal Gateway (title screen) ---
-  // Portal shader handles the intro — no legacy click-to-play overlay
+  // First-time players get full cinematic intro with voice-over.
+  // Returning players see the portal immediately.
+
+  const firstTime = !localStorage.getItem('nexus_intro_seen');
 
   const portalScreen = new PortalScreen();
   disposables.push(portalScreen);
 
-  // Nexus Voice — speaks as the portal opens
+  // Nexus Voice — speaks as the portal opens (returning players only)
   const nexusVoice = new NexusVoice();
   disposables.push(nexusVoice);
 
-  // Show portal and start Nexus Voice in parallel
-  const portalPromise = portalScreen.show();
-  // Slight delay so the portal light appears first, then the voice
-  setTimeout(() => {
-    void nexusVoice.speak('welcome');
-  }, 800);
+  // Show portal (cinematic for first-time, immediate for returning)
+  const portalPromise = portalScreen.show({ firstTime });
+
+  if (!firstTime) {
+    // Slight delay so the portal light appears first, then the voice
+    setTimeout(() => {
+      void nexusVoice.speak('welcome');
+    }, 800);
+  }
 
   await portalPromise;
   debug('ui', 'Portal gateway complete — entering profile screen');

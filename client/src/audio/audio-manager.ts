@@ -349,6 +349,49 @@ export class AudioManager implements Disposable {
     return buffer;
   }
 
+  /**
+   * Load and play a WAV/audio file from a URL.
+   * Ideal for pre-composed music tracks.
+   */
+  async playMusicFile(url: string, id: string, volume = 0.25, loop = true): Promise<void> {
+    if (this.disposed) return;
+    this.stop(id);
+
+    const ctx = this.ensureContext();
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        console.warn(`[Audio] Failed to fetch ${url}: ${response.status}`);
+        return;
+      }
+      const arrayBuffer = await response.arrayBuffer();
+      const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
+
+      if (this.disposed) return;
+
+      const source = ctx.createBufferSource();
+      source.buffer = audioBuffer;
+      source.loop = loop;
+
+      const gain = ctx.createGain();
+      gain.gain.value = 0;
+      // Fade in over 2 seconds
+      gain.gain.linearRampToValueAtTime(volume, ctx.currentTime + 2);
+
+      source.connect(gain);
+      const dest = this.musicBus ?? ctx.destination;
+      gain.connect(dest);
+      source.start(0);
+
+      this.activeSources.set(id, { source, gain });
+      source.onended = () => { this.activeSources.delete(id); };
+
+      console.log(`[Audio] Playing music file: ${url}`);
+    } catch (err) {
+      console.warn(`[Audio] Error playing music file ${url}:`, err);
+    }
+  }
+
   dispose(): void {
     if (this.disposed) return;
     this.disposed = true;

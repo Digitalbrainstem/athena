@@ -12,6 +12,7 @@ import { BuildingInterior, hasBuildingInterior } from './building-interior.js';
 import { PathNetwork } from './paths.js';
 import { OverworldSkyDome } from './sky-dome.js';
 import { TransitionOverlay } from './transition.js';
+import { WorkshopBiome } from './workshop-biome.js';
 
 // ---------------------------------------------------------------------------
 // WorldManager — orchestrates the connected overworld
@@ -110,6 +111,7 @@ export class WorldManager implements Disposable {
   private readonly skyDome: OverworldSkyDome;
   private readonly transition: TransitionOverlay;
   private readonly townSquare: THREE.Group;
+  private workshopBiome: WorkshopBiome | null = null;
 
   // Scene groups
   private readonly overworldGroup: THREE.Group;
@@ -163,6 +165,30 @@ export class WorldManager implements Disposable {
 
     // Start in overworld
     scene.add(this.overworldGroup);
+
+    // Load the Workshop biome with real 3D models (async)
+    this.loadWorkshopBiome();
+  }
+
+  /** Asynchronously load the Workshop biome GLB models into the overworld. */
+  private loadWorkshopBiome(): void {
+    const workshopLoc = getBiomeLocation('workshop');
+    if (!workshopLoc) return;
+
+    this.workshopBiome = new WorkshopBiome();
+    void this.workshopBiome.init().then(() => {
+      if (!this.workshopBiome) return;
+      // Position the biome at its world location
+      this.workshopBiome.group.position.set(
+        workshopLoc.worldPosition.x,
+        workshopLoc.baseHeight,
+        workshopLoc.worldPosition.z,
+      );
+      this.overworldGroup.add(this.workshopBiome.group);
+      console.log('[World] Workshop biome loaded with GLB models');
+    }).catch((err) => {
+      console.warn('[World] Failed to load Workshop biome:', err);
+    });
   }
 
   // -- Public API -----------------------------------------------------------
@@ -348,6 +374,11 @@ export class WorldManager implements Disposable {
     this.skyDome.dispose();
     this.transition.dispose();
     this.cleanupInterior();
+
+    if (this.workshopBiome) {
+      this.workshopBiome.dispose();
+      this.workshopBiome = null;
+    }
 
     this.scene.remove(this.overworldGroup);
     this.scene.remove(this.interiorGroup);

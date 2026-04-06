@@ -343,6 +343,7 @@ export class CalibrationFlow implements Disposable {
   private challengeStartTime = 0;
   private interactionCount = 0;
   private disposed = false;
+  private coreRef: NexusCore | null = null;
 
   // UI overlay for calibration challenges
   private overlay: HTMLElement | null = null;
@@ -369,6 +370,7 @@ export class CalibrationFlow implements Disposable {
 
     this.onDialogue = onDialogue;
     this.onComplete = onComplete;
+    this.coreRef = core;
 
     // Estimate age from profile tier
     const estimatedAge = this.tierToAge(profile.masteryTier);
@@ -589,6 +591,14 @@ export class CalibrationFlow implements Disposable {
     // Store reference to core via closure — submitResponse needs it
     successBtn.dataset.action = 'correct';
     tryAgainBtn.dataset.action = 'incorrect';
+
+    // Attach click handlers directly so buttons are always responsive
+    successBtn.addEventListener('click', () => {
+      if (this.coreRef) this.submitResponse(this.coreRef, true);
+    }, { once: true });
+    tryAgainBtn.addEventListener('click', () => {
+      if (this.coreRef) this.submitResponse(this.coreRef, false);
+    }, { once: true });
 
     btnRow.appendChild(successBtn);
     btnRow.appendChild(tryAgainBtn);
