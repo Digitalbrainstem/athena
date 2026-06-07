@@ -48,6 +48,10 @@ content/generated/
 *.sqlite3
 *.db
 
+# Oversized generated/experimental assets kept out of normal git (>50 MiB)
+content/models/companions_v2/*/reference.png.glb
+content/audio/voice_dna_experiments/piper_models/*.onnx
+
 # Environment
 .env
 .env.local

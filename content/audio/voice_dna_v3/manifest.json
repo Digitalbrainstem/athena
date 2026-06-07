@@ -1,0 +1,2186 @@
+{
+  "AA_neutral": {
+    "phoneme": "AA",
+    "inflection": "neutral",
+    "sound": "aah",
+    "exag": 0.5,
+    "duration": 0.88,
+    "samples": 21120
+  },
+  "AA_rising": {
+    "phoneme": "AA",
+    "inflection": "rising",
+    "sound": "aah",
+    "exag": 0.6,
+    "duration": 0.96,
+    "samples": 23040
+  },
+  "AA_falling": {
+    "phoneme": "AA",
+    "inflection": "falling",
+    "sound": "aah",
+    "exag": 0.4,
+    "duration": 1.64,
+    "samples": 39360
+  },
+  "AA_stressed": {
+    "phoneme": "AA",
+    "inflection": "stressed",
+    "sound": "aah",
+    "exag": 0.9,
+    "duration": 1.0,
+    "samples": 24000
+  },
+  "AA_unstressed": {
+    "phoneme": "AA",
+    "inflection": "unstressed",
+    "sound": "aah",
+    "exag": 0.2,
+    "duration": 1.12,
+    "samples": 26880
+  },
+  "AA_excited": {
+    "phoneme": "AA",
+    "inflection": "excited",
+    "sound": "aah",
+    "exag": 1.0,
+    "duration": 0.88,
+    "samples": 21120
+  },
+  "AA_whispered": {
+    "phoneme": "AA",
+    "inflection": "whispered",
+    "sound": "aah",
+    "exag": 0.15,
+    "duration": 1.4,
+    "samples": 33600
+  },
+  "AE_neutral": {
+    "phoneme": "AE",
+    "inflection": "neutral",
+    "sound": "aah",
+    "exag": 0.5,
+    "duration": 1.24,
+    "samples": 29760
+  },
+  "AE_rising": {
+    "phoneme": "AE",
+    "inflection": "rising",
+    "sound": "aah",
+    "exag": 0.6,
+    "duration": 0.68,
+    "samples": 16320
+  },
+  "AE_falling": {
+    "phoneme": "AE",
+    "inflection": "falling",
+    "sound": "aah",
+    "exag": 0.4,
+    "duration": 0.88,
+    "samples": 21120
+  },
+  "AE_stressed": {
+    "phoneme": "AE",
+    "inflection": "stressed",
+    "sound": "aah",
+    "exag": 0.9,
+    "duration": 1.4,
+    "samples": 33600
+  },
+  "AE_unstressed": {
+    "phoneme": "AE",
+    "inflection": "unstressed",
+    "sound": "aah",
+    "exag": 0.2,
+    "duration": 0.76,
+    "samples": 18240
+  },
+  "AE_excited": {
+    "phoneme": "AE",
+    "inflection": "excited",
+    "sound": "aah",
+    "exag": 1.0,
+    "duration": 1.16,
+    "samples": 27840
+  },
+  "AE_whispered": {
+    "phoneme": "AE",
+    "inflection": "whispered",
+    "sound": "aah",
+    "exag": 0.15,
+    "duration": 0.16,
+    "samples": 3840
+  },
+  "AH_neutral": {
+    "phoneme": "AH",
+    "inflection": "neutral",
+    "sound": "uh",
+    "exag": 0.5,
+    "duration": 0.6,
+    "samples": 14400
+  },
+  "AH_rising": {
+    "phoneme": "AH",
+    "inflection": "rising",
+    "sound": "uh",
+    "exag": 0.6,
+    "duration": 0.76,
+    "samples": 18240
+  },
+  "AH_falling": {
+    "phoneme": "AH",
+    "inflection": "falling",
+    "sound": "uh",
+    "exag": 0.4,
+    "duration": 1.92,
+    "samples": 46080
+  },
+  "AH_stressed": {
+    "phoneme": "AH",
+    "inflection": "stressed",
+    "sound": "uh",
+    "exag": 0.9,
+    "duration": 0.84,
+    "samples": 20160
+  },
+  "AH_unstressed": {
+    "phoneme": "AH",
+    "inflection": "unstressed",
+    "sound": "uh",
+    "exag": 0.2,
+    "duration": 1.2,
+    "samples": 28800
+  },
+  "AH_excited": {
+    "phoneme": "AH",
+    "inflection": "excited",
+    "sound": "uh",
+    "exag": 1.0,
+    "duration": 0.68,
+    "samples": 16320
+  },
+  "AH_whispered": {
+    "phoneme": "AH",
+    "inflection": "whispered",
+    "sound": "uh",
+    "exag": 0.15,
+    "duration": 2.16,
+    "samples": 51840
+  },
+  "AO_neutral": {
+    "phoneme": "AO",
+    "inflection": "neutral",
+    "sound": "aw",
+    "exag": 0.5,
+    "duration": 0.76,
+    "samples": 18240
+  },
+  "AO_rising": {
+    "phoneme": "AO",
+    "inflection": "rising",
+    "sound": "aw",
+    "exag": 0.6,
+    "duration": 1.64,
+    "samples": 39360
+  },
+  "AO_falling": {
+    "phoneme": "AO",
+    "inflection": "falling",
+    "sound": "aw",
+    "exag": 0.4,
+    "duration": 0.8,
+    "samples": 19200
+  },
+  "AO_stressed": {
+    "phoneme": "AO",
+    "inflection": "stressed",
+    "sound": "aw",
+    "exag": 0.9,
+    "duration": 1.0,
+    "samples": 24000
+  },
+  "AO_unstressed": {
+    "phoneme": "AO",
+    "inflection": "unstressed",
+    "sound": "aw",
+    "exag": 0.2,
+    "duration": 1.68,
+    "samples": 40320
+  },
+  "AO_excited": {
+    "phoneme": "AO",
+    "inflection": "excited",
+    "sound": "aw",
+    "exag": 1.0,
+    "duration": 0.84,
+    "samples": 20160
+  },
+  "AO_whispered": {
+    "phoneme": "AO",
+    "inflection": "whispered",
+    "sound": "aw",
+    "exag": 0.15,
+    "duration": 0.2,
+    "samples": 4800
+  },
+  "EH_neutral": {
+    "phoneme": "EH",
+    "inflection": "neutral",
+    "sound": "eh",
+    "exag": 0.5,
+    "duration": 1.68,
+    "samples": 40320
+  },
+  "EH_rising": {
+    "phoneme": "EH",
+    "inflection": "rising",
+    "sound": "eh",
+    "exag": 0.6,
+    "duration": 1.28,
+    "samples": 30720
+  },
+  "EH_falling": {
+    "phoneme": "EH",
+    "inflection": "falling",
+    "sound": "eh",
+    "exag": 0.4,
+    "duration": 0.72,
+    "samples": 17280
+  },
+  "EH_stressed": {
+    "phoneme": "EH",
+    "inflection": "stressed",
+    "sound": "eh",
+    "exag": 0.9,
+    "duration": 0.92,
+    "samples": 22080
+  },
+  "EH_unstressed": {
+    "phoneme": "EH",
+    "inflection": "unstressed",
+    "sound": "eh",
+    "exag": 0.2,
+    "duration": 0.92,
+    "samples": 22080
+  },
+  "EH_excited": {
+    "phoneme": "EH",
+    "inflection": "excited",
+    "sound": "eh",
+    "exag": 1.0,
+    "duration": 0.68,
+    "samples": 16320
+  },
+  "EH_whispered": {
+    "phoneme": "EH",
+    "inflection": "whispered",
+    "sound": "eh",
+    "exag": 0.15,
+    "duration": 1.72,
+    "samples": 41280
+  },
+  "ER_neutral": {
+    "phoneme": "ER",
+    "inflection": "neutral",
+    "sound": "er",
+    "exag": 0.5,
+    "duration": 0.64,
+    "samples": 15360
+  },
+  "ER_rising": {
+    "phoneme": "ER",
+    "inflection": "rising",
+    "sound": "er",
+    "exag": 0.6,
+    "duration": 0.76,
+    "samples": 18240
+  },
+  "ER_falling": {
+    "phoneme": "ER",
+    "inflection": "falling",
+    "sound": "er",
+    "exag": 0.4,
+    "duration": 1.16,
+    "samples": 27840
+  },
+  "ER_stressed": {
+    "phoneme": "ER",
+    "inflection": "stressed",
+    "sound": "er",
+    "exag": 0.9,
+    "duration": 1.76,
+    "samples": 42240
+  },
+  "ER_unstressed": {
+    "phoneme": "ER",
+    "inflection": "unstressed",
+    "sound": "er",
+    "exag": 0.2,
+    "duration": 0.56,
+    "samples": 13440
+  },
+  "ER_excited": {
+    "phoneme": "ER",
+    "inflection": "excited",
+    "sound": "er",
+    "exag": 1.0,
+    "duration": 0.92,
+    "samples": 22080
+  },
+  "ER_whispered": {
+    "phoneme": "ER",
+    "inflection": "whispered",
+    "sound": "er",
+    "exag": 0.15,
+    "duration": 1.52,
+    "samples": 36480
+  },
+  "IH_neutral": {
+    "phoneme": "IH",
+    "inflection": "neutral",
+    "sound": "ih",
+    "exag": 0.5,
+    "duration": 0.12,
+    "samples": 2880
+  },
+  "IH_rising": {
+    "phoneme": "IH",
+    "inflection": "rising",
+    "sound": "ih",
+    "exag": 0.6,
+    "duration": 0.76,
+    "samples": 18240
+  },
+  "IH_falling": {
+    "phoneme": "IH",
+    "inflection": "falling",
+    "sound": "ih",
+    "exag": 0.4,
+    "duration": 1.52,
+    "samples": 36480
+  },
+  "IH_stressed": {
+    "phoneme": "IH",
+    "inflection": "stressed",
+    "sound": "ih",
+    "exag": 0.9,
+    "duration": 0.92,
+    "samples": 22080
+  },
+  "IH_unstressed": {
+    "phoneme": "IH",
+    "inflection": "unstressed",
+    "sound": "ih",
+    "exag": 0.2,
+    "duration": 0.12,
+    "samples": 2880
+  },
+  "IH_excited": {
+    "phoneme": "IH",
+    "inflection": "excited",
+    "sound": "ih",
+    "exag": 1.0,
+    "duration": 1.6,
+    "samples": 38400
+  },
+  "IH_whispered": {
+    "phoneme": "IH",
+    "inflection": "whispered",
+    "sound": "ih",
+    "exag": 0.15,
+    "duration": 1.56,
+    "samples": 37440
+  },
+  "IY_neutral": {
+    "phoneme": "IY",
+    "inflection": "neutral",
+    "sound": "ee",
+    "exag": 0.5,
+    "duration": 2.2,
+    "samples": 52800
+  },
+  "IY_rising": {
+    "phoneme": "IY",
+    "inflection": "rising",
+    "sound": "ee",
+    "exag": 0.6,
+    "duration": 0.76,
+    "samples": 18240
+  },
+  "IY_falling": {
+    "phoneme": "IY",
+    "inflection": "falling",
+    "sound": "ee",
+    "exag": 0.4,
+    "duration": 1.76,
+    "samples": 42240
+  },
+  "IY_stressed": {
+    "phoneme": "IY",
+    "inflection": "stressed",
+    "sound": "ee",
+    "exag": 0.9,
+    "duration": 1.24,
+    "samples": 29760
+  },
+  "IY_unstressed": {
+    "phoneme": "IY",
+    "inflection": "unstressed",
+    "sound": "ee",
+    "exag": 0.2,
+    "duration": 1.72,
+    "samples": 41280
+  },
+  "IY_excited": {
+    "phoneme": "IY",
+    "inflection": "excited",
+    "sound": "ee",
+    "exag": 1.0,
+    "duration": 0.92,
+    "samples": 22080
+  },
+  "IY_whispered": {
+    "phoneme": "IY",
+    "inflection": "whispered",
+    "sound": "ee",
+    "exag": 0.15,
+    "duration": 1.2,
+    "samples": 28800
+  },
+  "UH_neutral": {
+    "phoneme": "UH",
+    "inflection": "neutral",
+    "sound": "uh",
+    "exag": 0.5,
+    "duration": 2.16,
+    "samples": 51840
+  },
+  "UH_rising": {
+    "phoneme": "UH",
+    "inflection": "rising",
+    "sound": "uh",
+    "exag": 0.6,
+    "duration": 0.84,
+    "samples": 20160
+  },
+  "UH_falling": {
+    "phoneme": "UH",
+    "inflection": "falling",
+    "sound": "uh",
+    "exag": 0.4,
+    "duration": 0.68,
+    "samples": 16320
+  },
+  "UH_stressed": {
+    "phoneme": "UH",
+    "inflection": "stressed",
+    "sound": "uh",
+    "exag": 0.9,
+    "duration": 0.84,
+    "samples": 20160
+  },
+  "UH_unstressed": {
+    "phoneme": "UH",
+    "inflection": "unstressed",
+    "sound": "uh",
+    "exag": 0.2,
+    "duration": 1.44,
+    "samples": 34560
+  },
+  "UH_excited": {
+    "phoneme": "UH",
+    "inflection": "excited",
+    "sound": "uh",
+    "exag": 1.0,
+    "duration": 0.48,
+    "samples": 11520
+  },
+  "UH_whispered": {
+    "phoneme": "UH",
+    "inflection": "whispered",
+    "sound": "uh",
+    "exag": 0.15,
+    "duration": 2.16,
+    "samples": 51840
+  },
+  "UW_neutral": {
+    "phoneme": "UW",
+    "inflection": "neutral",
+    "sound": "oo",
+    "exag": 0.5,
+    "duration": 1.76,
+    "samples": 42240
+  },
+  "UW_rising": {
+    "phoneme": "UW",
+    "inflection": "rising",
+    "sound": "oo",
+    "exag": 0.6,
+    "duration": 1.2,
+    "samples": 28800
+  },
+  "UW_falling": {
+    "phoneme": "UW",
+    "inflection": "falling",
+    "sound": "oo",
+    "exag": 0.4,
+    "duration": 0.92,
+    "samples": 22080
+  },
+  "UW_stressed": {
+    "phoneme": "UW",
+    "inflection": "stressed",
+    "sound": "oo",
+    "exag": 0.9,
+    "duration": 1.12,
+    "samples": 26880
+  },
+  "UW_unstressed": {
+    "phoneme": "UW",
+    "inflection": "unstressed",
+    "sound": "oo",
+    "exag": 0.2,
+    "duration": 1.4,
+    "samples": 33600
+  },
+  "UW_excited": {
+    "phoneme": "UW",
+    "inflection": "excited",
+    "sound": "oo",
+    "exag": 1.0,
+    "duration": 0.8,
+    "samples": 19200
+  },
+  "UW_whispered": {
+    "phoneme": "UW",
+    "inflection": "whispered",
+    "sound": "oo",
+    "exag": 0.15,
+    "duration": 1.84,
+    "samples": 44160
+  },
+  "AY_neutral": {
+    "phoneme": "AY",
+    "inflection": "neutral",
+    "sound": "eye",
+    "exag": 0.5,
+    "duration": 1.32,
+    "samples": 31680
+  },
+  "AY_rising": {
+    "phoneme": "AY",
+    "inflection": "rising",
+    "sound": "eye",
+    "exag": 0.6,
+    "duration": 1.72,
+    "samples": 41280
+  },
+  "AY_falling": {
+    "phoneme": "AY",
+    "inflection": "falling",
+    "sound": "eye",
+    "exag": 0.4,
+    "duration": 2.2,
+    "samples": 52800
+  },
+  "AY_stressed": {
+    "phoneme": "AY",
+    "inflection": "stressed",
+    "sound": "eye",
+    "exag": 0.9,
+    "duration": 1.12,
+    "samples": 26880
+  },
+  "AY_unstressed": {
+    "phoneme": "AY",
+    "inflection": "unstressed",
+    "sound": "eye",
+    "exag": 0.2,
+    "duration": 1.56,
+    "samples": 37440
+  },
+  "AY_excited": {
+    "phoneme": "AY",
+    "inflection": "excited",
+    "sound": "eye",
+    "exag": 1.0,
+    "duration": 0.64,
+    "samples": 15360
+  },
+  "AY_whispered": {
+    "phoneme": "AY",
+    "inflection": "whispered",
+    "sound": "eye",
+    "exag": 0.15,
+    "duration": 2.4,
+    "samples": 57600
+  },
+  "EY_neutral": {
+    "phoneme": "EY",
+    "inflection": "neutral",
+    "sound": "ay",
+    "exag": 0.5,
+    "duration": 1.52,
+    "samples": 36480
+  },
+  "EY_rising": {
+    "phoneme": "EY",
+    "inflection": "rising",
+    "sound": "ay",
+    "exag": 0.6,
+    "duration": 1.52,
+    "samples": 36480
+  },
+  "EY_falling": {
+    "phoneme": "EY",
+    "inflection": "falling",
+    "sound": "ay",
+    "exag": 0.4,
+    "duration": 0.76,
+    "samples": 18240
+  },
+  "EY_stressed": {
+    "phoneme": "EY",
+    "inflection": "stressed",
+    "sound": "ay",
+    "exag": 0.9,
+    "duration": 0.68,
+    "samples": 16320
+  },
+  "EY_unstressed": {
+    "phoneme": "EY",
+    "inflection": "unstressed",
+    "sound": "ay",
+    "exag": 0.2,
+    "duration": 0.64,
+    "samples": 15360
+  },
+  "EY_excited": {
+    "phoneme": "EY",
+    "inflection": "excited",
+    "sound": "ay",
+    "exag": 1.0,
+    "duration": 2.36,
+    "samples": 56640
+  },
+  "EY_whispered": {
+    "phoneme": "EY",
+    "inflection": "whispered",
+    "sound": "ay",
+    "exag": 0.15,
+    "duration": 1.04,
+    "samples": 24960
+  },
+  "OW_neutral": {
+    "phoneme": "OW",
+    "inflection": "neutral",
+    "sound": "oh",
+    "exag": 0.5,
+    "duration": 1.68,
+    "samples": 40320
+  },
+  "OW_rising": {
+    "phoneme": "OW",
+    "inflection": "rising",
+    "sound": "oh",
+    "exag": 0.6,
+    "duration": 0.6,
+    "samples": 14400
+  },
+  "OW_falling": {
+    "phoneme": "OW",
+    "inflection": "falling",
+    "sound": "oh",
+    "exag": 0.4,
+    "duration": 0.72,
+    "samples": 17280
+  },
+  "OW_stressed": {
+    "phoneme": "OW",
+    "inflection": "stressed",
+    "sound": "oh",
+    "exag": 0.9,
+    "duration": 1.2,
+    "samples": 28800
+  },
+  "OW_unstressed": {
+    "phoneme": "OW",
+    "inflection": "unstressed",
+    "sound": "oh",
+    "exag": 0.2,
+    "duration": 2.0,
+    "samples": 48000
+  },
+  "OW_excited": {
+    "phoneme": "OW",
+    "inflection": "excited",
+    "sound": "oh",
+    "exag": 1.0,
+    "duration": 1.64,
+    "samples": 39360
+  },
+  "OW_whispered": {
+    "phoneme": "OW",
+    "inflection": "whispered",
+    "sound": "oh",
+    "exag": 0.15,
+    "duration": 1.8,
+    "samples": 43200
+  },
+  "OY_neutral": {
+    "phoneme": "OY",
+    "inflection": "neutral",
+    "sound": "oy",
+    "exag": 0.5,
+    "duration": 0.72,
+    "samples": 17280
+  },
+  "OY_rising": {
+    "phoneme": "OY",
+    "inflection": "rising",
+    "sound": "oy",
+    "exag": 0.6,
+    "duration": 1.6,
+    "samples": 38400
+  },
+  "OY_falling": {
+    "phoneme": "OY",
+    "inflection": "falling",
+    "sound": "oy",
+    "exag": 0.4,
+    "duration": 0.72,
+    "samples": 17280
+  },
+  "OY_stressed": {
+    "phoneme": "OY",
+    "inflection": "stressed",
+    "sound": "oy",
+    "exag": 0.9,
+    "duration": 1.08,
+    "samples": 25920
+  },
+  "OY_unstressed": {
+    "phoneme": "OY",
+    "inflection": "unstressed",
+    "sound": "oy",
+    "exag": 0.2,
+    "duration": 1.2,
+    "samples": 28800
+  },
+  "OY_excited": {
+    "phoneme": "OY",
+    "inflection": "excited",
+    "sound": "oy",
+    "exag": 1.0,
+    "duration": 0.8,
+    "samples": 19200
+  },
+  "OY_whispered": {
+    "phoneme": "OY",
+    "inflection": "whispered",
+    "sound": "oy",
+    "exag": 0.15,
+    "duration": 2.48,
+    "samples": 59520
+  },
+  "AW_neutral": {
+    "phoneme": "AW",
+    "inflection": "neutral",
+    "sound": "ow",
+    "exag": 0.5,
+    "duration": 0.8,
+    "samples": 19200
+  },
+  "AW_rising": {
+    "phoneme": "AW",
+    "inflection": "rising",
+    "sound": "ow",
+    "exag": 0.6,
+    "duration": 0.4,
+    "samples": 9600
+  },
+  "AW_falling": {
+    "phoneme": "AW",
+    "inflection": "falling",
+    "sound": "ow",
+    "exag": 0.4,
+    "duration": 1.96,
+    "samples": 47040
+  },
+  "AW_stressed": {
+    "phoneme": "AW",
+    "inflection": "stressed",
+    "sound": "ow",
+    "exag": 0.9,
+    "duration": 0.52,
+    "samples": 12480
+  },
+  "AW_unstressed": {
+    "phoneme": "AW",
+    "inflection": "unstressed",
+    "sound": "ow",
+    "exag": 0.2,
+    "duration": 1.64,
+    "samples": 39360
+  },
+  "AW_excited": {
+    "phoneme": "AW",
+    "inflection": "excited",
+    "sound": "ow",
+    "exag": 1.0,
+    "duration": 1.24,
+    "samples": 29760
+  },
+  "AW_whispered": {
+    "phoneme": "AW",
+    "inflection": "whispered",
+    "sound": "ow",
+    "exag": 0.15,
+    "duration": 0.68,
+    "samples": 16320
+  },
+  "B_neutral": {
+    "phoneme": "B",
+    "inflection": "neutral",
+    "sound": "buh",
+    "exag": 0.5,
+    "duration": 1.52,
+    "samples": 36480
+  },
+  "B_rising": {
+    "phoneme": "B",
+    "inflection": "rising",
+    "sound": "buh",
+    "exag": 0.6,
+    "duration": 2.0,
+    "samples": 48000
+  },
+  "B_falling": {
+    "phoneme": "B",
+    "inflection": "falling",
+    "sound": "buh",
+    "exag": 0.4,
+    "duration": 1.92,
+    "samples": 46080
+  },
+  "B_stressed": {
+    "phoneme": "B",
+    "inflection": "stressed",
+    "sound": "buh",
+    "exag": 0.9,
+    "duration": 1.08,
+    "samples": 25920
+  },
+  "B_unstressed": {
+    "phoneme": "B",
+    "inflection": "unstressed",
+    "sound": "buh",
+    "exag": 0.2,
+    "duration": 2.64,
+    "samples": 63360
+  },
+  "B_excited": {
+    "phoneme": "B",
+    "inflection": "excited",
+    "sound": "buh",
+    "exag": 1.0,
+    "duration": 1.64,
+    "samples": 39360
+  },
+  "B_whispered": {
+    "phoneme": "B",
+    "inflection": "whispered",
+    "sound": "buh",
+    "exag": 0.15,
+    "duration": 1.04,
+    "samples": 24960
+  },
+  "D_neutral": {
+    "phoneme": "D",
+    "inflection": "neutral",
+    "sound": "duh",
+    "exag": 0.5,
+    "duration": 1.68,
+    "samples": 40320
+  },
+  "D_rising": {
+    "phoneme": "D",
+    "inflection": "rising",
+    "sound": "duh",
+    "exag": 0.6,
+    "duration": 0.56,
+    "samples": 13440
+  },
+  "D_falling": {
+    "phoneme": "D",
+    "inflection": "falling",
+    "sound": "duh",
+    "exag": 0.4,
+    "duration": 1.0,
+    "samples": 24000
+  },
+  "D_stressed": {
+    "phoneme": "D",
+    "inflection": "stressed",
+    "sound": "duh",
+    "exag": 0.9,
+    "duration": 1.8,
+    "samples": 43200
+  },
+  "D_unstressed": {
+    "phoneme": "D",
+    "inflection": "unstressed",
+    "sound": "duh",
+    "exag": 0.2,
+    "duration": 1.6,
+    "samples": 38400
+  },
+  "D_excited": {
+    "phoneme": "D",
+    "inflection": "excited",
+    "sound": "duh",
+    "exag": 1.0,
+    "duration": 0.96,
+    "samples": 23040
+  },
+  "D_whispered": {
+    "phoneme": "D",
+    "inflection": "whispered",
+    "sound": "duh",
+    "exag": 0.15,
+    "duration": 0.92,
+    "samples": 22080
+  },
+  "G_neutral": {
+    "phoneme": "G",
+    "inflection": "neutral",
+    "sound": "guh",
+    "exag": 0.5,
+    "duration": 0.68,
+    "samples": 16320
+  },
+  "G_rising": {
+    "phoneme": "G",
+    "inflection": "rising",
+    "sound": "guh",
+    "exag": 0.6,
+    "duration": 0.68,
+    "samples": 16320
+  },
+  "G_falling": {
+    "phoneme": "G",
+    "inflection": "falling",
+    "sound": "guh",
+    "exag": 0.4,
+    "duration": 1.48,
+    "samples": 35520
+  },
+  "G_stressed": {
+    "phoneme": "G",
+    "inflection": "stressed",
+    "sound": "guh",
+    "exag": 0.9,
+    "duration": 1.72,
+    "samples": 41280
+  },
+  "G_unstressed": {
+    "phoneme": "G",
+    "inflection": "unstressed",
+    "sound": "guh",
+    "exag": 0.2,
+    "duration": 0.76,
+    "samples": 18240
+  },
+  "G_excited": {
+    "phoneme": "G",
+    "inflection": "excited",
+    "sound": "guh",
+    "exag": 1.0,
+    "duration": 0.88,
+    "samples": 21120
+  },
+  "G_whispered": {
+    "phoneme": "G",
+    "inflection": "whispered",
+    "sound": "guh",
+    "exag": 0.15,
+    "duration": 0.6,
+    "samples": 14400
+  },
+  "K_neutral": {
+    "phoneme": "K",
+    "inflection": "neutral",
+    "sound": "kuh",
+    "exag": 0.5,
+    "duration": 0.56,
+    "samples": 13440
+  },
+  "K_rising": {
+    "phoneme": "K",
+    "inflection": "rising",
+    "sound": "kuh",
+    "exag": 0.6,
+    "duration": 1.4,
+    "samples": 33600
+  },
+  "K_falling": {
+    "phoneme": "K",
+    "inflection": "falling",
+    "sound": "kuh",
+    "exag": 0.4,
+    "duration": 1.32,
+    "samples": 31680
+  },
+  "K_stressed": {
+    "phoneme": "K",
+    "inflection": "stressed",
+    "sound": "kuh",
+    "exag": 0.9,
+    "duration": 0.84,
+    "samples": 20160
+  },
+  "K_unstressed": {
+    "phoneme": "K",
+    "inflection": "unstressed",
+    "sound": "kuh",
+    "exag": 0.2,
+    "duration": 0.68,
+    "samples": 16320
+  },
+  "K_excited": {
+    "phoneme": "K",
+    "inflection": "excited",
+    "sound": "kuh",
+    "exag": 1.0,
+    "duration": 0.96,
+    "samples": 23040
+  },
+  "K_whispered": {
+    "phoneme": "K",
+    "inflection": "whispered",
+    "sound": "kuh",
+    "exag": 0.15,
+    "duration": 1.12,
+    "samples": 26880
+  },
+  "P_neutral": {
+    "phoneme": "P",
+    "inflection": "neutral",
+    "sound": "puh",
+    "exag": 0.5,
+    "duration": 0.64,
+    "samples": 15360
+  },
+  "P_rising": {
+    "phoneme": "P",
+    "inflection": "rising",
+    "sound": "puh",
+    "exag": 0.6,
+    "duration": 0.96,
+    "samples": 23040
+  },
+  "P_falling": {
+    "phoneme": "P",
+    "inflection": "falling",
+    "sound": "puh",
+    "exag": 0.4,
+    "duration": 1.6,
+    "samples": 38400
+  },
+  "P_stressed": {
+    "phoneme": "P",
+    "inflection": "stressed",
+    "sound": "puh",
+    "exag": 0.9,
+    "duration": 0.64,
+    "samples": 15360
+  },
+  "P_unstressed": {
+    "phoneme": "P",
+    "inflection": "unstressed",
+    "sound": "puh",
+    "exag": 0.2,
+    "duration": 18.96,
+    "samples": 455040
+  },
+  "P_excited": {
+    "phoneme": "P",
+    "inflection": "excited",
+    "sound": "puh",
+    "exag": 1.0,
+    "duration": 0.8,
+    "samples": 19200
+  },
+  "P_whispered": {
+    "phoneme": "P",
+    "inflection": "whispered",
+    "sound": "puh",
+    "exag": 0.15,
+    "duration": 1.8,
+    "samples": 43200
+  },
+  "T_neutral": {
+    "phoneme": "T",
+    "inflection": "neutral",
+    "sound": "tuh",
+    "exag": 0.5,
+    "duration": 1.4,
+    "samples": 33600
+  },
+  "T_rising": {
+    "phoneme": "T",
+    "inflection": "rising",
+    "sound": "tuh",
+    "exag": 0.6,
+    "duration": 0.84,
+    "samples": 20160
+  },
+  "T_falling": {
+    "phoneme": "T",
+    "inflection": "falling",
+    "sound": "tuh",
+    "exag": 0.4,
+    "duration": 4.48,
+    "samples": 107520
+  },
+  "T_stressed": {
+    "phoneme": "T",
+    "inflection": "stressed",
+    "sound": "tuh",
+    "exag": 0.9,
+    "duration": 1.16,
+    "samples": 27840
+  },
+  "T_unstressed": {
+    "phoneme": "T",
+    "inflection": "unstressed",
+    "sound": "tuh",
+    "exag": 0.2,
+    "duration": 1.84,
+    "samples": 44160
+  },
+  "T_excited": {
+    "phoneme": "T",
+    "inflection": "excited",
+    "sound": "tuh",
+    "exag": 1.0,
+    "duration": 0.8,
+    "samples": 19200
+  },
+  "T_whispered": {
+    "phoneme": "T",
+    "inflection": "whispered",
+    "sound": "tuh",
+    "exag": 0.15,
+    "duration": 1.28,
+    "samples": 30720
+  },
+  "CH_neutral": {
+    "phoneme": "CH",
+    "inflection": "neutral",
+    "sound": "chuh",
+    "exag": 0.5,
+    "duration": 0.56,
+    "samples": 13440
+  },
+  "CH_rising": {
+    "phoneme": "CH",
+    "inflection": "rising",
+    "sound": "chuh",
+    "exag": 0.6,
+    "duration": 1.32,
+    "samples": 31680
+  },
+  "CH_falling": {
+    "phoneme": "CH",
+    "inflection": "falling",
+    "sound": "chuh",
+    "exag": 0.4,
+    "duration": 0.88,
+    "samples": 21120
+  },
+  "CH_stressed": {
+    "phoneme": "CH",
+    "inflection": "stressed",
+    "sound": "chuh",
+    "exag": 0.9,
+    "duration": 1.64,
+    "samples": 39360
+  },
+  "CH_unstressed": {
+    "phoneme": "CH",
+    "inflection": "unstressed",
+    "sound": "chuh",
+    "exag": 0.2,
+    "duration": 0.56,
+    "samples": 13440
+  },
+  "CH_excited": {
+    "phoneme": "CH",
+    "inflection": "excited",
+    "sound": "chuh",
+    "exag": 1.0,
+    "duration": 0.68,
+    "samples": 16320
+  },
+  "CH_whispered": {
+    "phoneme": "CH",
+    "inflection": "whispered",
+    "sound": "chuh",
+    "exag": 0.15,
+    "duration": 1.2,
+    "samples": 28800
+  },
+  "DH_neutral": {
+    "phoneme": "DH",
+    "inflection": "neutral",
+    "sound": "thuh",
+    "exag": 0.5,
+    "duration": 0.76,
+    "samples": 18240
+  },
+  "DH_rising": {
+    "phoneme": "DH",
+    "inflection": "rising",
+    "sound": "thuh",
+    "exag": 0.6,
+    "duration": 1.64,
+    "samples": 39360
+  },
+  "DH_falling": {
+    "phoneme": "DH",
+    "inflection": "falling",
+    "sound": "thuh",
+    "exag": 0.4,
+    "duration": 1.28,
+    "samples": 30720
+  },
+  "DH_stressed": {
+    "phoneme": "DH",
+    "inflection": "stressed",
+    "sound": "thuh",
+    "exag": 0.9,
+    "duration": 0.96,
+    "samples": 23040
+  },
+  "DH_unstressed": {
+    "phoneme": "DH",
+    "inflection": "unstressed",
+    "sound": "thuh",
+    "exag": 0.2,
+    "duration": 0.72,
+    "samples": 17280
+  },
+  "DH_excited": {
+    "phoneme": "DH",
+    "inflection": "excited",
+    "sound": "thuh",
+    "exag": 1.0,
+    "duration": 1.4,
+    "samples": 33600
+  },
+  "DH_whispered": {
+    "phoneme": "DH",
+    "inflection": "whispered",
+    "sound": "thuh",
+    "exag": 0.15,
+    "duration": 1.08,
+    "samples": 25920
+  },
+  "F_neutral": {
+    "phoneme": "F",
+    "inflection": "neutral",
+    "sound": "fuh",
+    "exag": 0.5,
+    "duration": 2.28,
+    "samples": 54720
+  },
+  "F_rising": {
+    "phoneme": "F",
+    "inflection": "rising",
+    "sound": "fuh",
+    "exag": 0.6,
+    "duration": 1.12,
+    "samples": 26880
+  },
+  "F_falling": {
+    "phoneme": "F",
+    "inflection": "falling",
+    "sound": "fuh",
+    "exag": 0.4,
+    "duration": 1.8,
+    "samples": 43200
+  },
+  "F_stressed": {
+    "phoneme": "F",
+    "inflection": "stressed",
+    "sound": "fuh",
+    "exag": 0.9,
+    "duration": 1.64,
+    "samples": 39360
+  },
+  "F_unstressed": {
+    "phoneme": "F",
+    "inflection": "unstressed",
+    "sound": "fuh",
+    "exag": 0.2,
+    "duration": 0.36,
+    "samples": 8640
+  },
+  "F_excited": {
+    "phoneme": "F",
+    "inflection": "excited",
+    "sound": "fuh",
+    "exag": 1.0,
+    "duration": 0.2,
+    "samples": 4800
+  },
+  "F_whispered": {
+    "phoneme": "F",
+    "inflection": "whispered",
+    "sound": "fuh",
+    "exag": 0.15,
+    "duration": 0.84,
+    "samples": 20160
+  },
+  "HH_neutral": {
+    "phoneme": "HH",
+    "inflection": "neutral",
+    "sound": "huh",
+    "exag": 0.5,
+    "duration": 0.88,
+    "samples": 21120
+  },
+  "HH_rising": {
+    "phoneme": "HH",
+    "inflection": "rising",
+    "sound": "huh",
+    "exag": 0.6,
+    "duration": 1.92,
+    "samples": 46080
+  },
+  "HH_falling": {
+    "phoneme": "HH",
+    "inflection": "falling",
+    "sound": "huh",
+    "exag": 0.4,
+    "duration": 2.2,
+    "samples": 52800
+  },
+  "HH_stressed": {
+    "phoneme": "HH",
+    "inflection": "stressed",
+    "sound": "huh",
+    "exag": 0.9,
+    "duration": 1.6,
+    "samples": 38400
+  },
+  "HH_unstressed": {
+    "phoneme": "HH",
+    "inflection": "unstressed",
+    "sound": "huh",
+    "exag": 0.2,
+    "duration": 1.48,
+    "samples": 35520
+  },
+  "HH_excited": {
+    "phoneme": "HH",
+    "inflection": "excited",
+    "sound": "huh",
+    "exag": 1.0,
+    "duration": 1.04,
+    "samples": 24960
+  },
+  "HH_whispered": {
+    "phoneme": "HH",
+    "inflection": "whispered",
+    "sound": "huh",
+    "exag": 0.15,
+    "duration": 1.12,
+    "samples": 26880
+  },
+  "JH_neutral": {
+    "phoneme": "JH",
+    "inflection": "neutral",
+    "sound": "juh",
+    "exag": 0.5,
+    "duration": 1.44,
+    "samples": 34560
+  },
+  "JH_rising": {
+    "phoneme": "JH",
+    "inflection": "rising",
+    "sound": "juh",
+    "exag": 0.6,
+    "duration": 0.56,
+    "samples": 13440
+  },
+  "JH_falling": {
+    "phoneme": "JH",
+    "inflection": "falling",
+    "sound": "juh",
+    "exag": 0.4,
+    "duration": 1.64,
+    "samples": 39360
+  },
+  "JH_stressed": {
+    "phoneme": "JH",
+    "inflection": "stressed",
+    "sound": "juh",
+    "exag": 0.9,
+    "duration": 0.72,
+    "samples": 17280
+  },
+  "JH_unstressed": {
+    "phoneme": "JH",
+    "inflection": "unstressed",
+    "sound": "juh",
+    "exag": 0.2,
+    "duration": 0.96,
+    "samples": 23040
+  },
+  "JH_excited": {
+    "phoneme": "JH",
+    "inflection": "excited",
+    "sound": "juh",
+    "exag": 1.0,
+    "duration": 0.84,
+    "samples": 20160
+  },
+  "JH_whispered": {
+    "phoneme": "JH",
+    "inflection": "whispered",
+    "sound": "juh",
+    "exag": 0.15,
+    "duration": 1.48,
+    "samples": 35520
+  },
+  "S_neutral": {
+    "phoneme": "S",
+    "inflection": "neutral",
+    "sound": "sss",
+    "exag": 0.5,
+    "duration": 1.12,
+    "samples": 26880
+  },
+  "S_rising": {
+    "phoneme": "S",
+    "inflection": "rising",
+    "sound": "sss",
+    "exag": 0.6,
+    "duration": 0.72,
+    "samples": 17280
+  },
+  "S_falling": {
+    "phoneme": "S",
+    "inflection": "falling",
+    "sound": "sss",
+    "exag": 0.4,
+    "duration": 0.92,
+    "samples": 22080
+  },
+  "S_stressed": {
+    "phoneme": "S",
+    "inflection": "stressed",
+    "sound": "sss",
+    "exag": 0.9,
+    "duration": 0.36,
+    "samples": 8640
+  },
+  "S_unstressed": {
+    "phoneme": "S",
+    "inflection": "unstressed",
+    "sound": "sss",
+    "exag": 0.2,
+    "duration": 2.52,
+    "samples": 60480
+  },
+  "S_excited": {
+    "phoneme": "S",
+    "inflection": "excited",
+    "sound": "sss",
+    "exag": 1.0,
+    "duration": 1.96,
+    "samples": 47040
+  },
+  "S_whispered": {
+    "phoneme": "S",
+    "inflection": "whispered",
+    "sound": "sss",
+    "exag": 0.15,
+    "duration": 1.8,
+    "samples": 43200
+  },
+  "SH_neutral": {
+    "phoneme": "SH",
+    "inflection": "neutral",
+    "sound": "shh",
+    "exag": 0.5,
+    "duration": 0.72,
+    "samples": 17280
+  },
+  "SH_rising": {
+    "phoneme": "SH",
+    "inflection": "rising",
+    "sound": "shh",
+    "exag": 0.6,
+    "duration": 0.68,
+    "samples": 16320
+  },
+  "SH_falling": {
+    "phoneme": "SH",
+    "inflection": "falling",
+    "sound": "shh",
+    "exag": 0.4,
+    "duration": 1.8,
+    "samples": 43200
+  },
+  "SH_stressed": {
+    "phoneme": "SH",
+    "inflection": "stressed",
+    "sound": "shh",
+    "exag": 0.9,
+    "duration": 1.32,
+    "samples": 31680
+  },
+  "SH_unstressed": {
+    "phoneme": "SH",
+    "inflection": "unstressed",
+    "sound": "shh",
+    "exag": 0.2,
+    "duration": 2.12,
+    "samples": 50880
+  },
+  "SH_excited": {
+    "phoneme": "SH",
+    "inflection": "excited",
+    "sound": "shh",
+    "exag": 1.0,
+    "duration": 1.72,
+    "samples": 41280
+  },
+  "SH_whispered": {
+    "phoneme": "SH",
+    "inflection": "whispered",
+    "sound": "shh",
+    "exag": 0.15,
+    "duration": 0.16,
+    "samples": 3840
+  },
+  "TH_neutral": {
+    "phoneme": "TH",
+    "inflection": "neutral",
+    "sound": "thh",
+    "exag": 0.5,
+    "duration": 2.2,
+    "samples": 52800
+  },
+  "TH_rising": {
+    "phoneme": "TH",
+    "inflection": "rising",
+    "sound": "thh",
+    "exag": 0.6,
+    "duration": 1.4,
+    "samples": 33600
+  },
+  "TH_falling": {
+    "phoneme": "TH",
+    "inflection": "falling",
+    "sound": "thh",
+    "exag": 0.4,
+    "duration": 2.36,
+    "samples": 56640
+  },
+  "TH_stressed": {
+    "phoneme": "TH",
+    "inflection": "stressed",
+    "sound": "thh",
+    "exag": 0.9,
+    "duration": 1.76,
+    "samples": 42240
+  },
+  "TH_unstressed": {
+    "phoneme": "TH",
+    "inflection": "unstressed",
+    "sound": "thh",
+    "exag": 0.2,
+    "duration": 1.68,
+    "samples": 40320
+  },
+  "TH_excited": {
+    "phoneme": "TH",
+    "inflection": "excited",
+    "sound": "thh",
+    "exag": 1.0,
+    "duration": 1.04,
+    "samples": 24960
+  },
+  "TH_whispered": {
+    "phoneme": "TH",
+    "inflection": "whispered",
+    "sound": "thh",
+    "exag": 0.15,
+    "duration": 1.72,
+    "samples": 41280
+  },
+  "V_neutral": {
+    "phoneme": "V",
+    "inflection": "neutral",
+    "sound": "vvv",
+    "exag": 0.5,
+    "duration": 1.04,
+    "samples": 24960
+  },
+  "V_rising": {
+    "phoneme": "V",
+    "inflection": "rising",
+    "sound": "vvv",
+    "exag": 0.6,
+    "duration": 1.36,
+    "samples": 32640
+  },
+  "V_falling": {
+    "phoneme": "V",
+    "inflection": "falling",
+    "sound": "vvv",
+    "exag": 0.4,
+    "duration": 1.56,
+    "samples": 37440
+  },
+  "V_stressed": {
+    "phoneme": "V",
+    "inflection": "stressed",
+    "sound": "vvv",
+    "exag": 0.9,
+    "duration": 0.72,
+    "samples": 17280
+  },
+  "V_unstressed": {
+    "phoneme": "V",
+    "inflection": "unstressed",
+    "sound": "vvv",
+    "exag": 0.2,
+    "duration": 2.28,
+    "samples": 54720
+  },
+  "V_excited": {
+    "phoneme": "V",
+    "inflection": "excited",
+    "sound": "vvv",
+    "exag": 1.0,
+    "duration": 1.08,
+    "samples": 25920
+  },
+  "V_whispered": {
+    "phoneme": "V",
+    "inflection": "whispered",
+    "sound": "vvv",
+    "exag": 0.15,
+    "duration": 2.84,
+    "samples": 68160
+  },
+  "Z_neutral": {
+    "phoneme": "Z",
+    "inflection": "neutral",
+    "sound": "zzz",
+    "exag": 0.5,
+    "duration": 1.0,
+    "samples": 24000
+  },
+  "Z_rising": {
+    "phoneme": "Z",
+    "inflection": "rising",
+    "sound": "zzz",
+    "exag": 0.6,
+    "duration": 1.16,
+    "samples": 27840
+  },
+  "Z_falling": {
+    "phoneme": "Z",
+    "inflection": "falling",
+    "sound": "zzz",
+    "exag": 0.4,
+    "duration": 1.84,
+    "samples": 44160
+  },
+  "Z_stressed": {
+    "phoneme": "Z",
+    "inflection": "stressed",
+    "sound": "zzz",
+    "exag": 0.9,
+    "duration": 2.6,
+    "samples": 62400
+  },
+  "Z_unstressed": {
+    "phoneme": "Z",
+    "inflection": "unstressed",
+    "sound": "zzz",
+    "exag": 0.2,
+    "duration": 1.88,
+    "samples": 45120
+  },
+  "Z_excited": {
+    "phoneme": "Z",
+    "inflection": "excited",
+    "sound": "zzz",
+    "exag": 1.0,
+    "duration": 2.44,
+    "samples": 58560
+  },
+  "Z_whispered": {
+    "phoneme": "Z",
+    "inflection": "whispered",
+    "sound": "zzz",
+    "exag": 0.15,
+    "duration": 1.4,
+    "samples": 33600
+  },
+  "ZH_neutral": {
+    "phoneme": "ZH",
+    "inflection": "neutral",
+    "sound": "zhh",
+    "exag": 0.5,
+    "duration": 1.96,
+    "samples": 47040
+  },
+  "ZH_rising": {
+    "phoneme": "ZH",
+    "inflection": "rising",
+    "sound": "zhh",
+    "exag": 0.6,
+    "duration": 1.8,
+    "samples": 43200
+  },
+  "ZH_falling": {
+    "phoneme": "ZH",
+    "inflection": "falling",
+    "sound": "zhh",
+    "exag": 0.4,
+    "duration": 2.12,
+    "samples": 50880
+  },
+  "ZH_stressed": {
+    "phoneme": "ZH",
+    "inflection": "stressed",
+    "sound": "zhh",
+    "exag": 0.9,
+    "duration": 2.4,
+    "samples": 57600
+  },
+  "ZH_unstressed": {
+    "phoneme": "ZH",
+    "inflection": "unstressed",
+    "sound": "zhh",
+    "exag": 0.2,
+    "duration": 0.8,
+    "samples": 19200
+  },
+  "ZH_excited": {
+    "phoneme": "ZH",
+    "inflection": "excited",
+    "sound": "zhh",
+    "exag": 1.0,
+    "duration": 0.92,
+    "samples": 22080
+  },
+  "ZH_whispered": {
+    "phoneme": "ZH",
+    "inflection": "whispered",
+    "sound": "zhh",
+    "exag": 0.15,
+    "duration": 1.88,
+    "samples": 45120
+  },
+  "M_neutral": {
+    "phoneme": "M",
+    "inflection": "neutral",
+    "sound": "mmm",
+    "exag": 0.5,
+    "duration": 0.96,
+    "samples": 23040
+  },
+  "M_rising": {
+    "phoneme": "M",
+    "inflection": "rising",
+    "sound": "mmm",
+    "exag": 0.6,
+    "duration": 0.56,
+    "samples": 13440
+  },
+  "M_falling": {
+    "phoneme": "M",
+    "inflection": "falling",
+    "sound": "mmm",
+    "exag": 0.4,
+    "duration": 1.0,
+    "samples": 24000
+  },
+  "M_stressed": {
+    "phoneme": "M",
+    "inflection": "stressed",
+    "sound": "mmm",
+    "exag": 0.9,
+    "duration": 1.08,
+    "samples": 25920
+  },
+  "M_unstressed": {
+    "phoneme": "M",
+    "inflection": "unstressed",
+    "sound": "mmm",
+    "exag": 0.2,
+    "duration": 0.88,
+    "samples": 21120
+  },
+  "M_excited": {
+    "phoneme": "M",
+    "inflection": "excited",
+    "sound": "mmm",
+    "exag": 1.0,
+    "duration": 1.48,
+    "samples": 35520
+  },
+  "M_whispered": {
+    "phoneme": "M",
+    "inflection": "whispered",
+    "sound": "mmm",
+    "exag": 0.15,
+    "duration": 1.12,
+    "samples": 26880
+  },
+  "N_neutral": {
+    "phoneme": "N",
+    "inflection": "neutral",
+    "sound": "nnn",
+    "exag": 0.5,
+    "duration": 1.92,
+    "samples": 46080
+  },
+  "N_rising": {
+    "phoneme": "N",
+    "inflection": "rising",
+    "sound": "nnn",
+    "exag": 0.6,
+    "duration": 0.72,
+    "samples": 17280
+  },
+  "N_falling": {
+    "phoneme": "N",
+    "inflection": "falling",
+    "sound": "nnn",
+    "exag": 0.4,
+    "duration": 1.24,
+    "samples": 29760
+  },
+  "N_stressed": {
+    "phoneme": "N",
+    "inflection": "stressed",
+    "sound": "nnn",
+    "exag": 0.9,
+    "duration": 1.08,
+    "samples": 25920
+  },
+  "N_unstressed": {
+    "phoneme": "N",
+    "inflection": "unstressed",
+    "sound": "nnn",
+    "exag": 0.2,
+    "duration": 0.8,
+    "samples": 19200
+  },
+  "N_excited": {
+    "phoneme": "N",
+    "inflection": "excited",
+    "sound": "nnn",
+    "exag": 1.0,
+    "duration": 0.52,
+    "samples": 12480
+  },
+  "N_whispered": {
+    "phoneme": "N",
+    "inflection": "whispered",
+    "sound": "nnn",
+    "exag": 0.15,
+    "duration": 1.6,
+    "samples": 38400
+  },
+  "NG_neutral": {
+    "phoneme": "NG",
+    "inflection": "neutral",
+    "sound": "nng",
+    "exag": 0.5,
+    "duration": 1.76,
+    "samples": 42240
+  },
+  "NG_rising": {
+    "phoneme": "NG",
+    "inflection": "rising",
+    "sound": "nng",
+    "exag": 0.6,
+    "duration": 0.76,
+    "samples": 18240
+  },
+  "NG_falling": {
+    "phoneme": "NG",
+    "inflection": "falling",
+    "sound": "nng",
+    "exag": 0.4,
+    "duration": 0.56,
+    "samples": 13440
+  },
+  "NG_stressed": {
+    "phoneme": "NG",
+    "inflection": "stressed",
+    "sound": "nng",
+    "exag": 0.9,
+    "duration": 0.72,
+    "samples": 17280
+  },
+  "NG_unstressed": {
+    "phoneme": "NG",
+    "inflection": "unstressed",
+    "sound": "nng",
+    "exag": 0.2,
+    "duration": 1.84,
+    "samples": 44160
+  },
+  "NG_excited": {
+    "phoneme": "NG",
+    "inflection": "excited",
+    "sound": "nng",
+    "exag": 1.0,
+    "duration": 1.36,
+    "samples": 32640
+  },
+  "NG_whispered": {
+    "phoneme": "NG",
+    "inflection": "whispered",
+    "sound": "nng",
+    "exag": 0.15,
+    "duration": 0.84,
+    "samples": 20160
+  },
+  "L_neutral": {
+    "phoneme": "L",
+    "inflection": "neutral",
+    "sound": "lll",
+    "exag": 0.5,
+    "duration": 1.04,
+    "samples": 24960
+  },
+  "L_rising": {
+    "phoneme": "L",
+    "inflection": "rising",
+    "sound": "lll",
+    "exag": 0.6,
+    "duration": 0.68,
+    "samples": 16320
+  },
+  "L_falling": {
+    "phoneme": "L",
+    "inflection": "falling",
+    "sound": "lll",
+    "exag": 0.4,
+    "duration": 0.88,
+    "samples": 21120
+  },
+  "L_stressed": {
+    "phoneme": "L",
+    "inflection": "stressed",
+    "sound": "lll",
+    "exag": 0.9,
+    "duration": 1.08,
+    "samples": 25920
+  },
+  "L_unstressed": {
+    "phoneme": "L",
+    "inflection": "unstressed",
+    "sound": "lll",
+    "exag": 0.2,
+    "duration": 1.92,
+    "samples": 46080
+  },
+  "L_excited": {
+    "phoneme": "L",
+    "inflection": "excited",
+    "sound": "lll",
+    "exag": 1.0,
+    "duration": 0.96,
+    "samples": 23040
+  },
+  "L_whispered": {
+    "phoneme": "L",
+    "inflection": "whispered",
+    "sound": "lll",
+    "exag": 0.15,
+    "duration": 1.4,
+    "samples": 33600
+  },
+  "R_neutral": {
+    "phoneme": "R",
+    "inflection": "neutral",
+    "sound": "rrr",
+    "exag": 0.5,
+    "duration": 0.44,
+    "samples": 10560
+  },
+  "R_rising": {
+    "phoneme": "R",
+    "inflection": "rising",
+    "sound": "rrr",
+    "exag": 0.6,
+    "duration": 0.92,
+    "samples": 22080
+  },
+  "R_falling": {
+    "phoneme": "R",
+    "inflection": "falling",
+    "sound": "rrr",
+    "exag": 0.4,
+    "duration": 0.92,
+    "samples": 22080
+  },
+  "R_stressed": {
+    "phoneme": "R",
+    "inflection": "stressed",
+    "sound": "rrr",
+    "exag": 0.9,
+    "duration": 0.8,
+    "samples": 19200
+  },
+  "R_unstressed": {
+    "phoneme": "R",
+    "inflection": "unstressed",
+    "sound": "rrr",
+    "exag": 0.2,
+    "duration": 2.68,
+    "samples": 64320
+  },
+  "R_excited": {
+    "phoneme": "R",
+    "inflection": "excited",
+    "sound": "rrr",
+    "exag": 1.0,
+    "duration": 0.92,
+    "samples": 22080
+  },
+  "R_whispered": {
+    "phoneme": "R",
+    "inflection": "whispered",
+    "sound": "rrr",
+    "exag": 0.15,
+    "duration": 1.44,
+    "samples": 34560
+  },
+  "W_neutral": {
+    "phoneme": "W",
+    "inflection": "neutral",
+    "sound": "wuh",
+    "exag": 0.5,
+    "duration": 1.08,
+    "samples": 25920
+  },
+  "W_rising": {
+    "phoneme": "W",
+    "inflection": "rising",
+    "sound": "wuh",
+    "exag": 0.6,
+    "duration": 1.36,
+    "samples": 32640
+  },
+  "W_falling": {
+    "phoneme": "W",
+    "inflection": "falling",
+    "sound": "wuh",
+    "exag": 0.4,
+    "duration": 0.8,
+    "samples": 19200
+  },
+  "W_stressed": {
+    "phoneme": "W",
+    "inflection": "stressed",
+    "sound": "wuh",
+    "exag": 0.9,
+    "duration": 0.8,
+    "samples": 19200
+  },
+  "W_unstressed": {
+    "phoneme": "W",
+    "inflection": "unstressed",
+    "sound": "wuh",
+    "exag": 0.2,
+    "duration": 2.24,
+    "samples": 53760
+  },
+  "W_excited": {
+    "phoneme": "W",
+    "inflection": "excited",
+    "sound": "wuh",
+    "exag": 1.0,
+    "duration": 0.96,
+    "samples": 23040
+  },
+  "W_whispered": {
+    "phoneme": "W",
+    "inflection": "whispered",
+    "sound": "wuh",
+    "exag": 0.15,
+    "duration": 1.16,
+    "samples": 27840
+  },
+  "Y_neutral": {
+    "phoneme": "Y",
+    "inflection": "neutral",
+    "sound": "yuh",
+    "exag": 0.5,
+    "duration": 0.68,
+    "samples": 16320
+  },
+  "Y_rising": {
+    "phoneme": "Y",
+    "inflection": "rising",
+    "sound": "yuh",
+    "exag": 0.6,
+    "duration": 0.68,
+    "samples": 16320
+  },
+  "Y_falling": {
+    "phoneme": "Y",
+    "inflection": "falling",
+    "sound": "yuh",
+    "exag": 0.4,
+    "duration": 2.36,
+    "samples": 56640
+  },
+  "Y_stressed": {
+    "phoneme": "Y",
+    "inflection": "stressed",
+    "sound": "yuh",
+    "exag": 0.9,
+    "duration": 1.2,
+    "samples": 28800
+  },
+  "Y_unstressed": {
+    "phoneme": "Y",
+    "inflection": "unstressed",
+    "sound": "yuh",
+    "exag": 0.2,
+    "duration": 1.4,
+    "samples": 33600
+  },
+  "Y_excited": {
+    "phoneme": "Y",
+    "inflection": "excited",
+    "sound": "yuh",
+    "exag": 1.0,
+    "duration": 0.72,
+    "samples": 17280
+  },
+  "Y_whispered": {
+    "phoneme": "Y",
+    "inflection": "whispered",
+    "sound": "yuh",
+    "exag": 0.15,
+    "duration": 1.0,
+    "samples": 24000
+  }
+}

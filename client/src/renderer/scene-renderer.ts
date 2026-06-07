@@ -44,6 +44,7 @@ export class SceneRenderer implements Disposable {
   private companionGroup: THREE.Group | null = null;
   private companionModel: CompanionModel | null = null;
   private companionTime = 0;
+  private companionLoadVersion = 0;
   private assetManager: AssetManager | null = null;
   private worldManager: WorldManager | null = null;
 
@@ -100,9 +101,14 @@ export class SceneRenderer implements Disposable {
   }
 
   /** Replace the default companion orb with a proper companion character model. */
-  setCompanionModel(companionType: string, tier: MasteryTier): void {
+  async setCompanionModel(companionType: string, tier: MasteryTier): Promise<void> {
     if (!this.assetManager || !companionType) return;
-    const model = this.assetManager.getCompanionModel(companionType, tier);
+    const loadVersion = ++this.companionLoadVersion;
+    const model = await this.assetManager.loadCompanionModel(companionType, tier);
+    if (this.disposed || loadVersion !== this.companionLoadVersion) {
+      model.dispose();
+      return;
+    }
     // Remove the existing orb / model
     if (this.companionGroup) {
       this.scene.remove(this.companionGroup);

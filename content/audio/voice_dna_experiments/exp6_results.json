@@ -1,0 +1,122 @@
+{
+  "exp6_voiceconv_blend_come_explore_the_garden_with_me": {
+    "path": "content/audio/voice_dna_experiments/exp6_voiceconv_blend_come_explore_the_garden_with_me.wav",
+    "transcription": "Come explore the garden with me.",
+    "expected": "come explore the garden with me",
+    "wer": 0.0,
+    "confidence": 0.5708659542779433,
+    "avg_logprob": -0.5606008529663086
+  },
+  "exp6_voiceconv_blend_do_not_worry_we_will_figure_it_out": {
+    "path": "content/audio/voice_dna_experiments/exp6_voiceconv_blend_do_not_worry_we_will_figure_it_out.wav",
+    "transcription": "Do not worry, we will figure it out.",
+    "expected": "do not worry we will figure it out",
+    "wer": 0.0,
+    "confidence": 0.734061524283361,
+    "avg_logprob": -0.3091624333308293
+  },
+  "exp6_voiceconv_blend_let_us_build_a_big_boat": {
+    "path": "content/audio/voice_dna_experiments/exp6_voiceconv_blend_let_us_build_a_big_boat.wav",
+    "transcription": "Let us build a big boat.",
+    "expected": "let us build a big boat",
+    "wer": 0.0,
+    "confidence": 0.7413252543831942,
+    "avg_logprob": -0.29931581020355225
+  },
+  "exp6_voiceconv_blend_the_forest_is_beautiful_today": {
+    "path": "content/audio/voice_dna_experiments/exp6_voiceconv_blend_the_forest_is_beautiful_today.wav",
+    "transcription": "The forest is beautiful today.",
+    "expected": "the forest is beautiful today",
+    "wer": 0.0,
+    "confidence": 0.7390666416916583,
+    "avg_logprob": -0.3023671838972304
+  },
+  "exp6_voiceconv_blend_you_did_it_that_was_amazing": {
+    "path": "content/audio/voice_dna_experiments/exp6_voiceconv_blend_you_did_it_that_was_amazing.wav",
+    "transcription": "You did it that was amazing.",
+    "expected": "you did it that was amazing",
+    "wer": 0.0,
+    "confidence": 0.7131335922532858,
+    "avg_logprob": -0.33808650970458987
+  },
+  "exp6_voiceconv_ratio_come_explore_the_garden_with_me": {
+    "path": "content/audio/voice_dna_experiments/exp6_voiceconv_ratio_come_explore_the_garden_with_me.wav",
+    "transcription": "come explore the garden with me.",
+    "expected": "come explore the garden with me",
+    "wer": 0.0,
+    "confidence": 0.6792624552906191,
+    "avg_logprob": -0.3867476940155029
+  },
+  "exp6_voiceconv_ratio_do_not_worry_we_will_figure_it_out": {
+    "path": "content/audio/voice_dna_experiments/exp6_voiceconv_ratio_do_not_worry_we_will_figure_it_out.wav",
+    "transcription": "Do not worry, we will figure it out.",
+    "expected": "do not worry we will figure it out",
+    "wer": 0.0,
+    "confidence": 0.7363730510183792,
+    "avg_logprob": -0.30601842586810774
+  },
+  "exp6_voiceconv_ratio_let_us_build_a_big_boat": {
+    "path": "content/audio/voice_dna_experiments/exp6_voiceconv_ratio_let_us_build_a_big_boat.wav",
+    "transcription": "Let us build a big boat.",
+    "expected": "let us build a big boat",
+    "wer": 0.0,
+    "confidence": 0.6784611360553047,
+    "avg_logprob": -0.38792808055877687
+  },
+  "exp6_voiceconv_ratio_the_forest_is_beautiful_today": {
+    "path": "content/audio/voice_dna_experiments/exp6_voiceconv_ratio_the_forest_is_beautiful_today.wav",
+    "transcription": "The forest is beautiful today.",
+    "expected": "the forest is beautiful today",
+    "wer": 0.0,
+    "confidence": 0.7595023722319518,
+    "avg_logprob": -0.27509183353847927
+  },
+  "exp6_voiceconv_ratio_you_did_it_that_was_amazing": {
+    "path": "content/audio/voice_dna_experiments/exp6_voiceconv_ratio_you_did_it_that_was_amazing.wav",
+    "transcription": "You did it that was amazing.",
+    "expected": "you did it that was amazing",
+    "wer": 0.0,
+    "confidence": 0.6931706657473793,
+    "avg_logprob": -0.3664790391921997
+  },
+  "exp6_voiceconv_replace_come_explore_the_garden_with_me": {
+    "path": "content/audio/voice_dna_experiments/exp6_voiceconv_replace_come_explore_the_garden_with_me.wav",
+    "transcription": "Come on.",
+    "expected": "come explore the garden with me",
+    "wer": 0.8333333333333334,
+    "confidence": 0.06389114968137484,
+    "avg_logprob": -2.7505744298299155
+  },
+  "exp6_voiceconv_replace_do_not_worry_we_will_figure_it_out": {
+    "path": "content/audio/voice_dna_experiments/exp6_voiceconv_replace_do_not_worry_we_will_figure_it_out.wav",
+    "transcription": "Fucking crap.",
+    "expected": "do not worry we will figure it out",
+    "wer": 1.0,
+    "confidence": 0.03861450929956636,
+    "avg_logprob": -3.2541271845499673
+  },
+  "exp6_voiceconv_replace_let_us_build_a_big_boat": {
+    "path": "content/audio/voice_dna_experiments/exp6_voiceconv_replace_let_us_build_a_big_boat.wav",
+    "transcription": "We'll escape to back mit gameplay.",
+    "expected": "let us build a big boat",
+    "wer": 1.0,
+    "confidence": 0.020819793362374654,
+    "avg_logprob": -3.8718511408025567
+  },
+  "exp6_voiceconv_replace_the_forest_is_beautiful_today": {
+    "path": "content/audio/voice_dna_experiments/exp6_voiceconv_replace_the_forest_is_beautiful_today.wav",
+    "transcription": "The first is ready for today.",
+    "expected": "the forest is beautiful today",
+    "wer": 0.6,
+    "confidence": 0.5848670593449542,
+    "avg_logprob": -0.5363707065582275
+  },
+  "exp6_voiceconv_replace_you_did_it_that_was_amazing": {
+    "path": "content/audio/voice_dna_experiments/exp6_voiceconv_replace_you_did_it_that_was_amazing.wav",
+    "transcription": "created the series Will",
+    "expected": "you did it that was amazing",
+    "wer": 1.0,
+    "confidence": 0.00817860613275282,
+    "avg_logprob": -4.8062335423060825
+  }
+}

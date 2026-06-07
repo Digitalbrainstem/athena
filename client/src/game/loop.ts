@@ -1,4 +1,4 @@
-import type { NexusCore, SceneGraph, GameAction, MovePayload, LookPayload, Quest } from '@nexus-academy/core';
+import type { NexusCore, SceneGraph, SceneObject, GameAction, MovePayload, LookPayload, Quest } from '@nexus-academy/core';
 import { updateHighlights } from '@nexus-academy/core';
 import type { Disposable } from '../types.js';
 import type { InputManager } from '../input/manager.js';
@@ -48,6 +48,7 @@ export class GameLoop implements Disposable {
 
   // --- NPC proximity ---
   private npcProximityChecker: NpcProximityChecker | null = null;
+  private lastHighlightedScene: SceneGraph | null = null;
 
   private readonly fixedDt: number;
   private readonly core: NexusCore;
@@ -112,6 +113,11 @@ export class GameLoop implements Disposable {
   /** Enable mobile-specific behaviour (touch prompts, etc.). */
   setMobile(mobile: boolean): void { this.mobile = mobile; }
 
+  /** Return the most recent highlighted interactable, including direct world models. */
+  getHighlightedInteractable(): SceneObject | undefined {
+    return this.lastHighlightedScene?.objects.find(o => o.highlight && o.interactable);
+  }
+
   private tick = (now: number): void => {
     if (!this.running) return;
     this.rafId = requestAnimationFrame(this.tick);
@@ -163,8 +169,22 @@ export class GameLoop implements Disposable {
 
     // Update collision boxes BEFORE physics so walls block movement this frame
     const preSceneGraph: SceneGraph = this.core.getSceneGraph();
-    if (this.worldManager && !this.worldManager.isOverworld()) {
-      this.fpCam.updateCollisionBoxes(preSceneGraph.objects);
+    if (this.worldManager?.isOverworld()) {
+      this.fpCam.updateCollisionBoxes([]);
+      this.fpCam.addExtraCollisionBoxes(this.worldManager.getOverworldCollisionBoxes());
+    } else if (this.worldManager && !this.worldManager.isOverworld()) {
+      const offset = this.worldManager.getBiomeOffset();
+      const collisionObjects = offset
+        ? preSceneGraph.objects.map(obj => ({
+            ...obj,
+            position: {
+              x: obj.position.x + offset.x,
+              y: obj.position.y + offset.y,
+              z: obj.position.z + offset.z,
+            },
+          }))
+        : preSceneGraph.objects;
+      this.fpCam.updateCollisionBoxes(collisionObjects);
       this.fpCam.addExtraCollisionBoxes(this.worldManager.getExtraCollisionBoxes());
     } else {
       this.fpCam.updateCollisionBoxes([]);
@@ -195,7 +215,7 @@ export class GameLoop implements Disposable {
 
     if (steps >= MAX_STEPS_PER_FRAME) this.accumulator = 0;
 
-    const sceneGraph: SceneGraph = this.core.getSceneGraph();
+    let sceneGraph: SceneGraph = this.core.getSceneGraph();
 
     // Override scene graph camera with client-authoritative position & rotation
     const rot = this.fpCam.getPredictiveRotation();
@@ -216,6 +236,8 @@ export class GameLoop implements Disposable {
         // Reduce fog density for overworld so landmarks are visible at distance
         sceneGraph.sky.type = 'gradient';
       }
+
+      sceneGraph = this.worldManager.mergeGameplayObjects(sceneGraph);
     }
 
     // Recompute highlights using the client-authoritative camera position.
@@ -223,6 +245,7 @@ export class GameLoop implements Disposable {
     // match, but re-running ensures the prompt always tracks the real camera.
     const playerGroundPos = { x: eye.x, y: 0, z: eye.z };
     const highlighted = updateHighlights(sceneGraph, playerGroundPos);
+    this.lastHighlightedScene = highlighted;
 
     // Debug: log scene graph once on first frame only
     if (!this.firstFrameLogged) {
@@ -279,6 +302,10 @@ export class GameLoop implements Disposable {
     this.hud.processAnnouncements(highlighted.announcements);
     this.hud.processCaptions(highlighted.captions);
     this.hud.updateFPS(this._fps);
+
+    if (this.fpCam.isPointerLocked && (this.hud.hasOpenPanel || this.hud.isDialogueVisible)) {
+      this.fpCam.exitPointerLock();
+    }
 
     // --- Quest HUD sync ---
     this.updateQuestPanel(frameDt, highlighted);
@@ -378,9 +405,14 @@ export class GameLoop implements Disposable {
     const highlighted = scene.objects.find(o => o.highlight && o.interactable);
     if (highlighted?.interactable) {
       const name = highlighted.interactable.prompt.replace(/^Interact with /, '');
+      const verb = highlighted.interactable.interactionType === 'craft'
+        ? 'use'
+        : highlighted.interactable.interactionType === 'open'
+          ? 'open'
+          : 'examine';
       const text = this.mobile
-        ? `Tap to examine the ${name}`
-        : `Press E to examine the ${name}`;
+        ? `Tap to ${verb} the ${name}`
+        : `Press E to ${verb} the ${name}`;
       this.hud.showPrompt(text);
     } else {
       this.hud.hidePrompt();

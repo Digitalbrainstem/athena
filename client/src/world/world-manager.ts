@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import type { SkyDescriptor, Disposable } from '../types.js';
+import type { CollisionBox } from '../camera/first-person.js';
+import type { SceneGraph, SceneObject, SkyDescriptor, Disposable } from '../types.js';
 import {
   OverworldTerrain,
   BIOME_LOCATIONS,
@@ -13,6 +14,11 @@ import { PathNetwork } from './paths.js';
 import { OverworldSkyDome } from './sky-dome.js';
 import { TransitionOverlay } from './transition.js';
 import { WorkshopBiome } from './workshop-biome.js';
+import { getWorkshopCollisionBoxes, getWorkshopGameplayObjects } from './workshop-biome.js';
+import { MaterialLibrary } from '../assets/materials.js';
+import { ProceduralModelGenerator } from '../assets/procedural-models.js';
+import { BiomeEnvironmentGenerator } from '../assets/biome-environments.js';
+import type { MasteryTier } from '@nexus-academy/core';
 
 // ---------------------------------------------------------------------------
 // WorldManager — orchestrates the connected overworld
@@ -22,6 +28,17 @@ import { WorkshopBiome } from './workshop-biome.js';
 const ENTER_RANGE = 5;
 /** Distance to door inside building that triggers "Press E to exit" prompt */
 const EXIT_RANGE = 3;
+
+const TOWN_SQUARE_COLLISION_BOXES: CollisionBox[] = [
+  { cx: 0, cz: 0, hx: 3.6, hz: 3.6 },
+  { cx: 5, cz: 5, hx: 0.7, hz: 0.7 },
+];
+
+const BIOME_ENVIRONMENT_TIER: MasteryTier = 'foundation';
+
+function landmarkHalfSize(biome: BiomeLocation): number {
+  return Math.max(2, Math.min(biome.radius * 0.45, 6));
+}
 
 export type WorldMode = 'overworld' | 'entering' | 'inside' | 'exiting';
 
@@ -103,6 +120,7 @@ export class WorldManager implements Disposable {
   private _mode: WorldMode = 'overworld';
   private _activeBiomeId: string | null = null;
   private _activeInterior: BuildingInterior | null = null;
+  private _activeEnvironment: THREE.Group | null = null;
 
   // Sub-systems
   private readonly terrain: OverworldTerrain;
@@ -111,6 +129,9 @@ export class WorldManager implements Disposable {
   private readonly skyDome: OverworldSkyDome;
   private readonly transition: TransitionOverlay;
   private readonly townSquare: THREE.Group;
+  private readonly environmentMaterials: MaterialLibrary;
+  private readonly proceduralModels: ProceduralModelGenerator;
+  private readonly biomeEnvironments: BiomeEnvironmentGenerator;
   private workshopBiome: WorkshopBiome | null = null;
 
   // Scene groups
@@ -138,6 +159,7 @@ export class WorldManager implements Disposable {
 
     // Landmarks
     this.landmarks = new LandmarkManager(BIOME_LOCATIONS);
+    this.landmarks.getLandmark('workshop')?.removeFromParent();
     this.overworldGroup.add(this.landmarks.group);
 
     // Paths
@@ -155,6 +177,11 @@ export class WorldManager implements Disposable {
     // Town square decorations
     this.townSquare = createTownSquare();
     this.overworldGroup.add(this.townSquare);
+
+    // Procedural biome environments for natural/non-building areas.
+    this.environmentMaterials = new MaterialLibrary();
+    this.proceduralModels = new ProceduralModelGenerator(this.environmentMaterials);
+    this.biomeEnvironments = new BiomeEnvironmentGenerator(this.environmentMaterials, this.proceduralModels);
 
     // Interior group (populated when entering a building)
     this.interiorGroup = new THREE.Group();
@@ -215,6 +242,26 @@ export class WorldManager implements Disposable {
     return this.terrain.getHeightAt(x, z);
   }
 
+  /** Starting position for the first playable moment in the overworld. */
+  getStartPosition(biomeId = 'workshop'): { x: number; z: number } {
+    const loc = getBiomeLocation(biomeId);
+    if (!loc) return { x: 0, z: 0 };
+    if (biomeId === 'workshop') {
+      return { x: loc.worldPosition.x, z: loc.worldPosition.z + 2 };
+    }
+    const entranceLength = Math.hypot(loc.entranceOffset.x, loc.entranceOffset.z);
+    const clearDistance = Math.max(entranceLength * 0.7, landmarkHalfSize(loc) + 0.9);
+    if (entranceLength === 0) {
+      return { x: loc.worldPosition.x, z: loc.worldPosition.z + clearDistance };
+    }
+    const nx = loc.entranceOffset.x / entranceLength;
+    const nz = loc.entranceOffset.z / entranceLength;
+    return {
+      x: loc.worldPosition.x + nx * clearDistance,
+      z: loc.worldPosition.z + nz * clearDistance,
+    };
+  }
+
   /** Get world-space offset for biome objects when inside */
   getBiomeOffset(): { x: number; y: number; z: number } {
     if (!this._activeBiomeId) return { x: 0, y: 0, z: 0 };
@@ -228,9 +275,63 @@ export class WorldManager implements Disposable {
   }
 
   /** Get extra collision boxes (interior walls when inside a building) */
-  getExtraCollisionBoxes(): { cx: number; cz: number; hx: number; hz: number }[] {
+  getExtraCollisionBoxes(): CollisionBox[] {
     if (this._activeInterior) return this._activeInterior.wallBoxes;
     return [];
+  }
+
+  /** Get collision boxes for direct Three.js overworld content. */
+  getOverworldCollisionBoxes(): CollisionBox[] {
+    if (!this.isOverworld()) return [];
+
+    const boxes: CollisionBox[] = [...TOWN_SQUARE_COLLISION_BOXES];
+    for (const biome of BIOME_LOCATIONS) {
+      if (biome.id === 'workshop') continue;
+      const halfSize = landmarkHalfSize(biome);
+      boxes.push({
+        cx: biome.worldPosition.x,
+        cz: biome.worldPosition.z,
+        hx: halfSize,
+        hz: halfSize,
+      });
+    }
+
+    const workshop = getBiomeLocation('workshop');
+    if (workshop) {
+      boxes.push(...getWorkshopCollisionBoxes(
+        workshop.worldPosition.x,
+        workshop.worldPosition.z,
+      ));
+    }
+
+    return boxes;
+  }
+
+  /** Gameplay metadata for direct Three.js overworld content. */
+  getOverworldGameplayObjects(): SceneObject[] {
+    if (!this.isOverworld()) return [];
+
+    const objects: SceneObject[] = [];
+    const workshop = getBiomeLocation('workshop');
+    if (workshop) {
+      objects.push(...getWorkshopGameplayObjects(
+        workshop.worldPosition.x,
+        workshop.baseHeight,
+        workshop.worldPosition.z,
+      ));
+    }
+    return objects;
+  }
+
+  /** Merge direct Three.js world content into the renderer-agnostic gameplay graph. */
+  mergeGameplayObjects(graph: SceneGraph): SceneGraph {
+    if (!this.isOverworld()) return graph;
+    const overworldObjects = this.getOverworldGameplayObjects();
+    if (overworldObjects.length === 0) return graph;
+    return {
+      ...graph,
+      objects: [...graph.objects, ...overworldObjects],
+    };
   }
 
   /** Get overworld sky descriptor */
@@ -276,11 +377,7 @@ export class WorldManager implements Disposable {
       // Hide overworld
       this.scene.remove(this.overworldGroup);
 
-      // Create interior if it's a building type
-      if (hasBuildingInterior(biomeId)) {
-        this._activeInterior = new BuildingInterior(biome);
-        this.interiorGroup.add(this._activeInterior.group);
-      }
+      this.createActiveBiomeArea(biome);
 
       this.scene.add(this.interiorGroup);
       this._activeBiomeId = biomeId;
@@ -322,11 +419,7 @@ export class WorldManager implements Disposable {
     // Hide overworld
     this.scene.remove(this.overworldGroup);
 
-    // Create interior if it's a building type
-    if (hasBuildingInterior(biomeId)) {
-      this._activeInterior = new BuildingInterior(biome);
-      this.interiorGroup.add(this._activeInterior.group);
-    }
+    this.createActiveBiomeArea(biome);
 
     this.scene.add(this.interiorGroup);
     this._activeBiomeId = biomeId;
@@ -374,6 +467,8 @@ export class WorldManager implements Disposable {
     this.skyDome.dispose();
     this.transition.dispose();
     this.cleanupInterior();
+    this.proceduralModels.dispose();
+    this.environmentMaterials.dispose();
 
     if (this.workshopBiome) {
       this.workshopBiome.dispose();
@@ -400,6 +495,31 @@ export class WorldManager implements Disposable {
       this._activeInterior.dispose();
       this._activeInterior = null;
     }
+
+    if (this._activeEnvironment) {
+      this.interiorGroup.remove(this._activeEnvironment);
+      this._activeEnvironment = null;
+    }
+  }
+
+  private createActiveBiomeArea(biome: BiomeLocation): void {
+    if (hasBuildingInterior(biome.id)) {
+      this._activeInterior = new BuildingInterior(biome);
+      this.interiorGroup.add(this._activeInterior.group);
+      return;
+    }
+
+    const environment = this.biomeEnvironments.generate(biome.id, BIOME_ENVIRONMENT_TIER, {
+      reducedDetail: false,
+      reducedMotion: false,
+    });
+    environment.position.set(
+      biome.worldPosition.x,
+      biome.baseHeight + 0.02,
+      biome.worldPosition.z,
+    );
+    this._activeEnvironment = environment;
+    this.interiorGroup.add(environment);
   }
 
   private findNearestBiome(px: number, pz: number): NearbyBiome | null {
@@ -423,8 +543,15 @@ export class WorldManager implements Disposable {
   }
 
   private checkNearDoor(px: number, pz: number): boolean {
-    if (this._mode !== 'inside' || !this._activeInterior) return false;
-    const door = this._activeInterior.doorWorldPosition;
+    if (this._mode !== 'inside' || !this._activeBiomeId) return false;
+    const loc = getBiomeLocation(this._activeBiomeId);
+    if (!loc) return false;
+    const door = this._activeInterior
+      ? this._activeInterior.doorWorldPosition
+      : {
+          x: loc.worldPosition.x + loc.entranceOffset.x,
+          z: loc.worldPosition.z + loc.entranceOffset.z,
+        };
     const dx = px - door.x;
     const dz = pz - door.z;
     return Math.sqrt(dx * dx + dz * dz) < EXIT_RANGE;

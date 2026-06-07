@@ -9,6 +9,23 @@ const TAP_MAX_DISTANCE = 15; // px — more movement than this is a drag
 
 interface RightTouchRecord { x: number; y: number; time: number }
 
+const INTERACTIVE_SELECTOR = [
+  'a',
+  'button',
+  'input',
+  'label',
+  'select',
+  'textarea',
+  '[contenteditable="true"]',
+  '[role="button"]',
+  '[role="link"]',
+  '[tabindex]:not([tabindex="-1"])',
+].join(',');
+
+function isInteractiveTarget(target: EventTarget | null): boolean {
+  return target instanceof Element && target.closest(INTERACTIVE_SELECTOR) !== null;
+}
+
 export class TouchInput implements InputProvider {
   readonly name = 'touch' as const;
   private emit: ActionCallback | null = null;
@@ -57,6 +74,8 @@ export class TouchInput implements InputProvider {
   // -- Touch handlers -------------------------------------------------------
 
   private onTouchStart = (e: TouchEvent): void => {
+    if (isInteractiveTarget(e.target)) return;
+
     for (let i = 0; i < e.changedTouches.length; i++) {
       const t = e.changedTouches[i];
 

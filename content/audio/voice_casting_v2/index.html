@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Nexus Academy — Voice Casting v2</title>
+<style>
+  :root {
+    --frost: #22d3ee;
+    --aurora: #a78bfa;
+    --bg: #0f0f1a;
+    --card: #1a1a2e;
+    --card-locked: #1a2e1a;
+    --text: #e0e0e0;
+    --dim: #888;
+    --green: #4ade80;
+    --gold: #fbbf24;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 12px;
+    padding-bottom: 80px;
+  }
+  h1 {
+    text-align: center;
+    font-size: 1.4rem;
+    background: linear-gradient(135deg, var(--frost), var(--aurora));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    text-align: center;
+    color: var(--dim);
+    font-size: 0.8rem;
+    margin-bottom: 16px;
+  }
+
+  /* Section headers */
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 10px 12px;
+    margin: 20px 0 10px 0;
+    border-radius: 6px;
+  }
+  .section-title.locked {
+    background: linear-gradient(90deg, rgba(74,222,128,0.15), transparent);
+    border-left: 3px solid var(--green);
+    color: var(--green);
+  }
+  .section-title.casting {
+    background: linear-gradient(90deg, rgba(167,139,250,0.15), transparent);
+    border-left: 3px solid var(--aurora);
+    color: var(--aurora);
+  }
+
+  /* Play All button */
+  .play-all-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 12px 0;
+    background: linear-gradient(135deg, rgba(74,222,128,0.2), rgba(34,211,238,0.2));
+    border: 1px solid var(--green);
+    border-radius: 8px;
+    color: var(--green);
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+  }
+  .play-all-btn:active { opacity: 0.7; }
+
+  .role-section { margin-bottom: 20px; }
+
+  .role-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    padding: 8px 12px;
+    background: linear-gradient(90deg, rgba(34,211,238,0.1), transparent);
+    border-left: 3px solid var(--frost);
+    border-radius: 4px;
+  }
+  .role-header.locked-role {
+    background: linear-gradient(90deg, rgba(74,222,128,0.1), transparent);
+    border-left-color: var(--green);
+  }
+  .role-emoji { font-size: 1.5rem; }
+  .role-name { font-size: 1rem; font-weight: 700; }
+  .role-desc { font-size: 0.7rem; color: var(--dim); }
+  .role-line {
+    font-style: italic;
+    font-size: 0.78rem;
+    color: var(--aurora);
+    margin: 0 0 8px 12px;
+    line-height: 1.3;
+  }
+
+  .audition-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    margin-bottom: 5px;
+    background: var(--card);
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .audition-card:active { border-color: var(--frost); }
+  .audition-card.locked {
+    background: var(--card-locked);
+    border: 1px solid var(--green);
+  }
+  .badge {
+    display: inline-block;
+    font-size: 0.6rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+  .badge-locked { background: var(--green); color: #000; }
+  .badge-new { background: var(--gold); color: #000; }
+
+  .play-btn {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--frost);
+    background: transparent;
+    color: var(--frost);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .play-btn.playing {
+    background: var(--frost);
+    color: var(--bg);
+  }
+  .audition-info { flex: 1; min-width: 0; }
+  .audition-title { font-size: 0.85rem; font-weight: 600; }
+  .audition-meta { font-size: 0.68rem; color: var(--dim); margin-top: 2px; }
+  .engine-tag {
+    display: inline-block;
+    font-size: 0.58rem;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .engine-chatterbox { background: rgba(167,139,250,0.25); color: var(--aurora); }
+  .engine-dia2 { background: rgba(34,211,238,0.25); color: var(--frost); }
+  .engine-locked { background: rgba(74,222,128,0.25); color: var(--green); }
+
+  .progress-bar {
+    width: 100%;
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    margin-top: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--frost);
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+
+  .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #16162b;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    justify-content: space-around;
+    padding: 6px 2px;
+    z-index: 100;
+    flex-wrap: wrap;
+  }
+  .nav-btn {
+    font-size: 1.2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 3px;
+  }
+
+  .stop-all {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    z-index: 100;
+    display: none;
+  }
+  .stop-all.visible { display: block; }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(167,139,250,0.3), transparent);
+    margin: 24px 0;
+  }
+</style>
+</head>
+<body>
+
+<h1>🎭 Nexus Academy Voice Casting v2</h1>
+<p class="subtitle">Locked companions + new role auditions — Chatterbox &amp; Dia2</p>
+<button class="stop-all" id="stopAll" onclick="stopAll()">⏹ Stop</button>
+
+<div id="app"></div>
+
+<nav class="nav-bar" id="navBar"></nav>
+
+<script>
+// === LOCKED COMPANION CAST ===
+const LOCKED_CAST = [
+  {
+    id: 'fox', emoji: '🦊', name: 'Fox',
+    desc: 'Playful, adventurous, bright (young female)',
+    line: 'Come on, let us go explore! I bet there is something amazing over that hill!',
+    file: 'fox_current.wav',
+    note: 'Chatterbox — philippa, exag 0.8'
+  },
+  {
+    id: 'owl', emoji: '🦉', name: 'Owl',
+    desc: 'Wise, calm, thoughtful (older male)',
+    line: 'Hmm, interesting. Let me think about this for a moment.',
+    file: 'owl_new_cast.wav',
+    note: 'Chatterbox — peter_yearsley, exag 0.4 (CHANGED)'
+  },
+  {
+    id: 'rabbit', emoji: '🐰', name: 'Rabbit',
+    desc: 'Energetic, encouraging, fast-paced (young, gender-neutral)',
+    line: 'Yay! You did it! That was incredible! High five!',
+    file: 'rabbit_current.wav',
+    note: 'Chatterbox — julie_vw, exag 1.0'
+  },
+  {
+    id: 'bear', emoji: '🐻', name: 'Bear',
+    desc: 'Gentle, protective, warm (nurturing)',
+    line: 'Do not worry, we will figure this out together. No rush.',
+    file: 'bear_new_cast.wav',
+    note: 'Chatterbox — jodi_krangle-expressive, exag 0.35 (CHANGED)'
+  },
+  {
+    id: 'cat', emoji: '🐱', name: 'Cat',
+    desc: 'Curious, clever, playful (witty)',
+    line: 'I wonder what happens if we mix these two things together.',
+    file: 'cat_current.wav',
+    note: 'Chatterbox — lizzie_driver, exag 0.9'
+  },
+  {
+    id: 'dragon', emoji: '🐉', name: 'Dragon',
+    desc: 'Brave, expressive, wise beyond years (Irish/Scottish accent)',
+    line: 'Stand back! I will protect you! Nothing gets past me!',
+    file: 'dragon_current.wav',
+    note: 'Chatterbox — padraig_ohiceadha-lyrical, exag 0.8'
+  },
+];
+
+// === NEW ROLES TO CAST ===
+const NEW_ROLES = [
+  {
+    id: 'nexus', emoji: '🌟', name: 'Nexus Voice',
+    desc: 'The academy itself — female, warm, futuristic, authoritative but kind',
+    line: 'Welcome to Nexus Academy. Your journey begins now.',
+    auditions: [
+      { file: 'nexus_chatterbox_1.wav', label: 'Chatterbox #1', engine: 'chatterbox', note: 'emily_cripps, exag 0.6' },
+      { file: 'nexus_chatterbox_2.wav', label: 'Chatterbox #2', engine: 'chatterbox', note: 'deanna_bovee, exag 0.5' },
+      { file: 'nexus_chatterbox_3.wav', label: 'Chatterbox #3', engine: 'chatterbox', note: 'annie_coleman_rothenberg, exag 0.5' },
+      { file: 'nexus_chatterbox_4.wav', label: 'Chatterbox #4', engine: 'chatterbox', note: 'sonja, exag 0.55' },
+      { file: 'nexus_chatterbox_5.wav', label: 'Chatterbox #5', engine: 'chatterbox', note: 'miranda_stinson, exag 0.5' },
+      { file: 'nexus_dia2_1.wav', label: 'Dia2 #1', engine: 'dia2', note: 'Random voice' },
+      { file: 'nexus_dia2_2.wav', label: 'Dia2 #2', engine: 'dia2', note: 'Random voice' },
+      { file: 'nexus_dia2_3.wav', label: 'Dia2 #3', engine: 'dia2', note: 'Random voice' },
+    ]
+  },
+  {
+    id: 'founder', emoji: '📜', name: 'Founder Voice',
+    desc: 'Ancient builders of the Nexus — deep, reverent, mysterious, timeless',
+    line: 'We built this place so that knowledge would never be lost.',
+    auditions: [
+      { file: 'founder_chatterbox_1.wav', label: 'Chatterbox #1', engine: 'chatterbox', note: 'alexander_hatton, exag 0.4' },
+      { file: 'founder_chatterbox_2.wav', label: 'Chatterbox #2', engine: 'chatterbox', note: 'donald_malone, exag 0.35' },
+      { file: 'founder_chatterbox_3.wav', label: 'Chatterbox #3', engine: 'chatterbox', note: 'graeme_dunlop, exag 0.4' },
+      { file: 'founder_dia2_1.wav', label: 'Dia2 #1', engine: 'dia2', note: 'Random voice' },
+      { file: 'founder_dia2_2.wav', label: 'Dia2 #2', engine: 'dia2', note: 'Random voice' },
+      { file: 'founder_dia2_3.wav', label: 'Dia2 #3', engine: 'dia2', note: 'Random voice' },
+    ]
+  },
+  {
+    id: 'narrator', emoji: '📖', name: 'Narrator',
+    desc: 'Tutorial and quest narration — clear, neutral, warm, guiding',
+    line: 'The workshop awaits. Everything you need is here.',
+    auditions: [
+      { file: 'narrator_chatterbox_1.wav', label: 'Chatterbox #1', engine: 'chatterbox', note: 'bill_boerst, exag 0.35' },
+      { file: 'narrator_chatterbox_2.wav', label: 'Chatterbox #2', engine: 'chatterbox', note: 'nancy_roberts, exag 0.4' },
+      { file: 'narrator_chatterbox_3.wav', label: 'Chatterbox #3', engine: 'chatterbox', note: 'clayton_j_smith, exag 0.35' },
+      { file: 'narrator_dia2_1.wav', label: 'Dia2 #1', engine: 'dia2', note: 'Random voice' },
+      { file: 'narrator_dia2_2.wav', label: 'Dia2 #2', engine: 'dia2', note: 'Random voice' },
+      { file: 'narrator_dia2_3.wav', label: 'Dia2 #3', engine: 'dia2', note: 'Random voice' },
+    ]
+  },
+  {
+    id: 'merchant', emoji: '🏪', name: 'Merchant NPC',
+    desc: 'Friendly shopkeeper — warm, welcoming, helpful',
+    line: 'Welcome! Take a look around. I have just what you need.',
+    auditions: [
+      { file: 'merchant_chatterbox_1.wav', label: 'Chatterbox #1', engine: 'chatterbox', note: 'caden_vaughn_clegg, exag 0.7' },
+      { file: 'merchant_chatterbox_2.wav', label: 'Chatterbox #2', engine: 'chatterbox', note: 'phil_chenevert, exag 0.65' },
+      { file: 'merchant_dia2_1.wav', label: 'Dia2 #1', engine: 'dia2', note: 'Random voice' },
+      { file: 'merchant_dia2_2.wav', label: 'Dia2 #2', engine: 'dia2', note: 'Random voice' },
+      { file: 'merchant_dia2_3.wav', label: 'Dia2 #3', engine: 'dia2', note: 'Random voice' },
+    ]
+  },
+  {
+    id: 'child', emoji: '👶', name: 'Child NPC',
+    desc: 'Young, curious, energetic — in-world kid character',
+    line: 'Hey! Want to play? I found something really cool!',
+    auditions: [
+      { file: 'child_chatterbox_1.wav', label: 'Chatterbox #1', engine: 'chatterbox', note: 'elli, exag 0.95' },
+      { file: 'child_chatterbox_2.wav', label: 'Chatterbox #2', engine: 'chatterbox', note: 'philippa, exag 1.0' },
+      { file: 'child_dia2_1.wav', label: 'Dia2 #1', engine: 'dia2', note: 'Random voice' },
+      { file: 'child_dia2_2.wav', label: 'Dia2 #2', engine: 'dia2', note: 'Random voice' },
+      { file: 'child_dia2_3.wav', label: 'Dia2 #3', engine: 'dia2', note: 'Random voice' },
+    ]
+  },
+];
+
+let currentAudio = null;
+let currentBtn = null;
+let playAllQueue = [];
+let playAllIndex = -1;
+
+function stopAll() {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+    currentAudio = null;
+  }
+  if (currentBtn) {
+    currentBtn.classList.remove('playing');
+    currentBtn.textContent = '▶';
+    currentBtn = null;
+  }
+  playAllQueue = [];
+  playAllIndex = -1;
+  document.getElementById('stopAll').classList.remove('visible');
+  document.querySelectorAll('.progress-fill').forEach(el => el.style.width = '0%');
+}
+
+function play(file, btn, progressId) {
+  if (currentAudio && currentBtn === btn) {
+    stopAll();
+    return;
+  }
+  stopAll();
+  playAllQueue = [];
+  playAllIndex = -1;
+
+  const audio = new Audio('audio/' + file);
+  currentAudio = audio;
+  currentBtn = btn;
+  btn.classList.add('playing');
+  btn.textContent = '⏸';
+  document.getElementById('stopAll').classList.add('visible');
+
+  const progressEl = document.getElementById(progressId);
+  audio.addEventListener('timeupdate', () => {
+    if (audio.duration) {
+      progressEl.style.width = (audio.currentTime / audio.duration * 100) + '%';
+    }
+  });
+  audio.addEventListener('ended', () => {
+    btn.classList.remove('playing');
+    btn.textContent = '▶';
+    progressEl.style.width = '0%';
+    if (playAllQueue.length > 0 && playAllIndex < playAllQueue.length - 1) {
+      playAllIndex++;
+      const next = playAllQueue[playAllIndex];
+      const nextBtn = document.getElementById(next.btnId);
+      play(next.file, nextBtn, next.progId);
+    } else {
+      stopAll();
+    }
+  });
+  audio.addEventListener('error', () => {
+    btn.textContent = '⚠';
+    btn.classList.remove('playing');
+  });
+  audio.play();
+}
+
+function playAllLocked() {
+  stopAll();
+  playAllQueue = LOCKED_CAST.map((c, i) => ({
+    file: c.file,
+    btnId: 'btn-locked-' + i,
+    progId: 'prog-locked-' + i,
+  }));
+  playAllIndex = 0;
+  const first = playAllQueue[0];
+  const btn = document.getElementById(first.btnId);
+  play(first.file, btn, first.progId);
+}
+
+// === RENDER ===
+const app = document.getElementById('app');
+const nav = document.getElementById('navBar');
+
+// Nav: locked section
+const navLock = document.createElement('a');
+navLock.className = 'nav-btn'; navLock.href = '#locked'; navLock.textContent = '✅';
+nav.appendChild(navLock);
+
+// === LOCKED CAST SECTION ===
+const lockedSection = document.createElement('div');
+lockedSection.id = 'locked';
+lockedSection.innerHTML = '<div class="section-title locked">✅ LOCKED CAST — Companions</div>';
+lockedSection.innerHTML += '<button class="play-all-btn" onclick="playAllLocked()">▶ Play All Companions in Order</button>';
+
+LOCKED_CAST.forEach((c, i) => {
+  const card = document.createElement('div');
+  card.className = 'audition-card locked';
+  const btnId = 'btn-locked-' + i;
+  const progId = 'prog-locked-' + i;
+  card.innerHTML = `
+    <button class="play-btn" id="${btnId}" onclick="play('${c.file}', this, '${progId}')">▶</button>
+    <div class="audition-info">
+      <div class="audition-title">
+        <span class="badge badge-locked">✅ LOCKED</span>
+        ${c.emoji} ${c.name}
+        <span class="engine-tag engine-locked">chatterbox</span>
+      </div>
+      <div class="audition-meta">${c.note}</div>
+      <div class="role-line" style="margin:3px 0 0 0;font-size:0.7rem;">"${c.line}"</div>
+      <div class="progress-bar"><div class="progress-fill" id="${progId}"></div></div>
+    </div>
+  `;
+  lockedSection.appendChild(card);
+});
+
+app.appendChild(lockedSection);
+app.innerHTML += '<div class="divider"></div>';
+
+// === NEW ROLES SECTIONS ===
+NEW_ROLES.forEach(role => {
+  const navBtn = document.createElement('a');
+  navBtn.className = 'nav-btn'; navBtn.href = '#' + role.id; navBtn.textContent = role.emoji;
+  nav.appendChild(navBtn);
+
+  const section = document.createElement('div');
+  section.className = 'role-section';
+  section.id = role.id;
+
+  section.innerHTML = `
+    <div class="section-title casting">🎧 Casting: ${role.emoji} ${role.name}</div>
+    <div class="role-header">
+      <span class="role-emoji">${role.emoji}</span>
+      <div>
+        <div class="role-name">${role.name}</div>
+        <div class="role-desc">${role.desc}</div>
+      </div>
+    </div>
+    <div class="role-line">"${role.line}"</div>
+  `;
+
+  role.auditions.forEach((aud, j) => {
+    const progId = 'prog-' + role.id + '-' + j;
+    const btnId = 'btn-' + role.id + '-' + j;
+    const engineClass = aud.engine === 'chatterbox' ? 'engine-chatterbox' : 'engine-dia2';
+    const card = document.createElement('div');
+    card.className = 'audition-card';
+    card.innerHTML = `
+      <button class="play-btn" id="${btnId}" onclick="play('${aud.file}', this, '${progId}')">▶</button>
+      <div class="audition-info">
+        <div class="audition-title">
+          ${aud.label}
+          <span class="engine-tag ${engineClass}">${aud.engine}</span>
+        </div>
+        <div class="audition-meta">${aud.note}</div>
+        <div class="progress-bar"><div class="progress-fill" id="${progId}"></div></div>
+      </div>
+    `;
+    section.appendChild(card);
+  });
+
+  app.appendChild(section);
+});
+</script>
+</body>
+</html>

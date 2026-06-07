@@ -47,13 +47,11 @@ export class HUD implements Disposable {
     this.questIndicatorEl = document.getElementById('quest-indicator');
     if (this.fpsEl) this.fpsEl.classList.toggle('hud-hidden', !debug);
 
-    // Click/tap on dialogue box dismisses it
+    // Dialogue is driven by the world state and auto-expires there.
+    // Do not make it clickable; hiding only the DOM would immediately redraw it.
     if (this.dialogueEl) {
-      this.dialogueEl.style.cursor = 'pointer';
-      this.dialogueEl.style.pointerEvents = 'auto';
-      this.dialogueEl.addEventListener('click', () => {
-        this.dialogueEl?.classList.add('hud-hidden');
-      });
+      this.dialogueEl.style.cursor = 'default';
+      this.dialogueEl.style.pointerEvents = 'none';
     }
   }
 
@@ -75,6 +73,10 @@ export class HUD implements Disposable {
   /** Returns true if any overlay panel is open (craft, map, etc.) */
   get hasOpenPanel(): boolean {
     return (this._craftPanel?.isOpen ?? false) || (this._mapPanel?.isOpen ?? false);
+  }
+
+  get isDialogueVisible(): boolean {
+    return this.dialogueEl !== null && !this.dialogueEl.classList.contains('hud-hidden');
   }
 
   /** Activate mobile layout — hides crosshair, adds body class for CSS. */

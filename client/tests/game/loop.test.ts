@@ -53,6 +53,7 @@ function mockFpCam(): FirstPersonCamera {
     flushLookActions: vi.fn(() => []),
     flushMoveActions: vi.fn(() => []),
     setMoveInput: vi.fn(),
+    clearMoveInput: vi.fn(),
     updateMovement: vi.fn(),
     updateCollisionBoxes: vi.fn(),
     getPredictiveRotation: vi.fn(() => ({ yaw: 0, pitch: 0 })),

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { loadGLB, preloadGLBs, clearModelCache, type ModelCategory } from './glb-loader.js';
-import type { Disposable } from '../types.js';
+import type { CollisionBox } from '../camera/first-person.js';
+import type { Disposable, SceneObject } from '../types.js';
 
 // ---------------------------------------------------------------------------
 // Workshop Biome — the starting area built from real GLB models
@@ -49,6 +50,46 @@ interface PlacedObject {
   name?: string;
   interactive?: boolean;
 }
+
+interface Footprint {
+  hx: number;
+  hz: number;
+  height: number;
+  solid?: boolean;
+}
+
+const WORKSHOP_ENTITY_BASE = -5000;
+
+const MODEL_FOOTPRINTS: Partial<Record<keyof typeof WORKSHOP_MODELS, Footprint>> = {
+  forge:       { hx: 1.25, hz: 1.0,  height: 1.6 },
+  workbench:   { hx: 1.35, hz: 0.75, height: 1.0 },
+  anvil:       { hx: 0.7,  hz: 0.55, height: 0.9 },
+  toolrack:    { hx: 0.25, hz: 1.3,  height: 1.8 },
+  crate:       { hx: 0.55, hz: 0.55, height: 0.9 },
+  barrel:      { hx: 0.45, hz: 0.45, height: 1.1 },
+  cottage:     { hx: 3.4,  hz: 2.8,  height: 3.0 },
+  marketStall: { hx: 1.7,  hz: 1.2,  height: 2.0 },
+  fence:       { hx: 1.35, hz: 0.12, height: 0.8 },
+  well:        { hx: 1.15, hz: 1.15, height: 1.4 },
+  bridge:      { hx: 1.2,  hz: 2.0,  height: 0.4, solid: false },
+  signpost:    { hx: 0.28, hz: 0.28, height: 2.2 },
+  lantern:     { hx: 0.18, hz: 0.18, height: 2.5 },
+  treeOak:     { hx: 0.75, hz: 0.75, height: 4.5 },
+  treePine:    { hx: 0.7,  hz: 0.7,  height: 4.8 },
+  rockLarge:   { hx: 0.85, hz: 0.7,  height: 1.0 },
+  rockCluster: { hx: 1.0,  hz: 0.8,  height: 0.8 },
+  bush:        { hx: 0.55, hz: 0.55, height: 0.7, solid: false },
+  grass:       { hx: 0.4,  hz: 0.4,  height: 0.2, solid: false },
+  stonePath:   { hx: 0.9,  hz: 0.9,  height: 0.05, solid: false },
+  chest:       { hx: 0.75, hz: 0.45, height: 0.65 },
+};
+
+const INTERACTION_MODEL_IDS: Partial<Record<keyof typeof WORKSHOP_MODELS, string>> = {
+  forge: 'forge',
+  workbench: 'workbench',
+  anvil: 'anvil',
+  chest: 'chest',
+};
 
 /**
  * Layout of the workshop biome — positions are relative to biome center (0,0).
@@ -156,6 +197,73 @@ const WORKSHOP_LAYOUT: PlacedObject[] = [
   { model: 'grass', x: 7,  z: 3,  rotY: 0.3 },
   { model: 'grass', x: -7, z: 5,  rotY: 1.5 },
 ];
+
+function rotatedFootprint(hx: number, hz: number, rotY = 0): { hx: number; hz: number } {
+  const c = Math.abs(Math.cos(rotY));
+  const s = Math.abs(Math.sin(rotY));
+  return {
+    hx: hx * c + hz * s,
+    hz: hx * s + hz * c,
+  };
+}
+
+function objectScale(obj: PlacedObject): number {
+  const def = WORKSHOP_MODELS[obj.model];
+  return (obj.scale ?? 1) * (def.scale ?? 1);
+}
+
+export function getWorkshopCollisionBoxes(offsetX: number, offsetZ: number): CollisionBox[] {
+  const boxes: CollisionBox[] = [];
+  for (const obj of WORKSHOP_LAYOUT) {
+    const fp = MODEL_FOOTPRINTS[obj.model];
+    if (!fp || fp.solid === false) continue;
+    const s = objectScale(obj);
+    const rotated = rotatedFootprint(fp.hx * s, fp.hz * s, obj.rotY);
+    boxes.push({
+      cx: offsetX + obj.x,
+      cz: offsetZ + obj.z,
+      hx: rotated.hx,
+      hz: rotated.hz,
+    });
+  }
+  return boxes;
+}
+
+export function getWorkshopGameplayObjects(offsetX: number, offsetY: number, offsetZ: number): SceneObject[] {
+  const objects: SceneObject[] = [];
+  for (let i = 0; i < WORKSHOP_LAYOUT.length; i++) {
+    const obj = WORKSHOP_LAYOUT[i]!;
+    if (!obj.interactive) continue;
+
+    const fp = MODEL_FOOTPRINTS[obj.model] ?? { hx: 0.75, hz: 0.75, height: 1.0 };
+    const s = objectScale(obj);
+    const scale = {
+      x: fp.hx * 2 * s,
+      y: fp.height * s,
+      z: fp.hz * 2 * s,
+    };
+    const name = obj.name ?? obj.model;
+    objects.push({
+      entityId: WORKSHOP_ENTITY_BASE - i,
+      position: { x: offsetX + obj.x, y: offsetY + (obj.y ?? 0), z: offsetZ + obj.z },
+      rotation: { x: 0, y: obj.rotY ?? 0, z: 0 },
+      renderable: {
+        meshType: 'model',
+        modelId: INTERACTION_MODEL_IDS[obj.model] ?? obj.model,
+        color: '#D4A574',
+        scale,
+        visible: false,
+      },
+      interactable: {
+        interactionType: obj.model === 'chest' ? 'open' : 'craft',
+        radius: obj.model === 'chest' ? 2.2 : 2.5,
+        prompt: `Interact with ${name.replace(/-/g, ' ')}`,
+      },
+      highlight: false,
+    });
+  }
+  return objects;
+}
 
 // ---------------------------------------------------------------------------
 // WorkshopBiome — async builder

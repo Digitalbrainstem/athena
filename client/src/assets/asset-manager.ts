@@ -1,10 +1,13 @@
 import * as THREE from 'three';
 import type { MasteryTier } from '@nexus-academy/core';
+import type { Vec3 } from '@nexus-academy/core';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import type { Disposable } from '../types.js';
 import { MaterialLibrary, type BiomePalette } from './materials.js';
 import { ProceduralModelGenerator, hasGenerator } from './procedural-models.js';
 import { BiomeEnvironmentGenerator, type BiomeEnvironmentConfig } from './biome-environments.js';
 import { CompanionModelGenerator, type CompanionModel } from './companion-models.js';
+import { getCompanion } from '../core/registry.js';
 
 // ---------------------------------------------------------------------------
 // AssetManager — top-level entry point for the entire asset system
@@ -16,6 +19,7 @@ export class AssetManager implements Disposable {
   readonly biomes: BiomeEnvironmentGenerator;
   readonly companions: CompanionModelGenerator;
 
+  private readonly gltfLoader = new GLTFLoader();
   private readonly modelCache = new Map<string, THREE.Group>();
   private readonly biomeCache = new Map<string, THREE.Group>();
   private readonly companionCache = new Map<string, THREE.Group>();
@@ -60,6 +64,21 @@ export class AssetManager implements Disposable {
     }
     // For cached hits, generate a fresh model (new animation state + materials)
     return this.companions.generate(companionType, tier);
+  }
+
+  /** Load the authored companion GLB from the registry, falling back to procedural geometry. */
+  async loadCompanionModel(companionType: string, tier: MasteryTier): Promise<CompanionModel> {
+    try {
+      const companion = getCompanion(companionType);
+      const gltf = await this.gltfLoader.loadAsync(companion.modelPath);
+      if (this.disposed) return this.getCompanionModel(companionType, tier);
+
+      const group = normalizeCompanionScene(companionType, tier, gltf.scene);
+      return new RegistryCompanionModel(companionType, group);
+    } catch (err) {
+      console.warn(`[Assets] Failed to load companion GLB for "${companionType}", using procedural fallback:`, err);
+      return this.getCompanionModel(companionType, tier);
+    }
   }
 
   // ---- Biome environments -----------------------------------------------
@@ -121,6 +140,76 @@ export class AssetManager implements Disposable {
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
+
+class RegistryCompanionModel implements CompanionModel {
+  readonly type: string;
+  readonly group: THREE.Group;
+
+  private readonly baseScale: number;
+
+  constructor(type: string, group: THREE.Group) {
+    this.type = type;
+    this.group = group;
+    this.baseScale = group.scale.x;
+  }
+
+  idle(time: number): void {
+    const breathe = 1 + Math.sin(time * 2.2) * 0.012;
+    this.group.scale.setScalar(this.baseScale * breathe);
+    this.group.rotation.z = Math.sin(time * 1.4) * 0.025;
+  }
+
+  speak(time: number): void {
+    const pulse = 1 + Math.sin(time * 8) * 0.025;
+    this.group.scale.setScalar(this.baseScale * pulse);
+  }
+
+  point(direction: Vec3): void {
+    this.group.rotation.y = Math.atan2(direction.x, direction.z);
+  }
+
+  emote(emotion: string): void {
+    if (emotion === 'excited' || emotion === 'encouraging') {
+      this.group.scale.setScalar(this.baseScale * 1.04);
+    }
+  }
+
+  dispose(): void {
+    this.group.removeFromParent();
+    disposeGroup(this.group);
+  }
+}
+
+function normalizeCompanionScene(
+  companionType: string,
+  tier: MasteryTier,
+  scene: THREE.Group,
+): THREE.Group {
+  const group = new THREE.Group();
+  group.name = `companion:${companionType}`;
+
+  scene.traverse((child) => {
+    if (child instanceof THREE.Mesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+
+  const box = new THREE.Box3().setFromObject(scene);
+  const size = box.getSize(new THREE.Vector3());
+  const targetHeight = tier === 'foundation' ? 0.85 : 1.0;
+  const scale = size.y > 0 ? targetHeight / size.y : 1;
+  scene.scale.setScalar(scale);
+
+  const scaledBox = new THREE.Box3().setFromObject(scene);
+  const center = scaledBox.getCenter(new THREE.Vector3());
+  scene.position.sub(center);
+
+  group.add(scene);
+  group.userData.companionType = companionType;
+  group.userData.tier = tier;
+  return group;
+}
 
 function disposeGroup(group: THREE.Group): void {
   group.traverse((child) => {

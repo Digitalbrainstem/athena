@@ -7,13 +7,15 @@
 
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { COMPANION_LIST } from '../core/registry.js';
+import type { CompanionDef } from '../core/registry.js';
 import type { Disposable } from '../types.js';
 
 // ---------------------------------------------------------------------------
-// Companion definitions
+// Picker-specific view of companion data
 // ---------------------------------------------------------------------------
 
-interface CompanionDef {
+interface PickerCompanion {
   id: string;
   emoji: string;
   name: string;
@@ -24,50 +26,16 @@ interface CompanionDef {
   accentColor: number;
 }
 
-const COMPANIONS: CompanionDef[] = [
-  {
-    id: 'fox', emoji: '🦊', name: 'Fox',
-    description: 'Playful and adventurous. Always wants to see what\u2019s next.',
-    modelPath: '/content/models/dna_test/fox_new.glb',
-    voicePath: '/content/audio/voice/casting/chatterbox/fox_excited.wav',
-    color: 0xff6b2b, accentColor: 0xffa040,
-  },
-  {
-    id: 'owl', emoji: '🦉', name: 'Owl',
-    description: 'Wise and thoughtful. Considers before acting, loves knowledge.',
-    modelPath: '/content/models/dna_test/owl_discovery.glb',
-    voicePath: '/content/audio/voice/casting/chatterbox/owl_wise.wav',
-    color: 0x8b6914, accentColor: 0xd4a574,
-  },
-  {
-    id: 'rabbit', emoji: '🐰', name: 'Rabbit',
-    description: 'Boundless energy. The cheerleader who never gives up.',
-    modelPath: '/content/models/dna_test/rabbit_curious.glb',
-    voicePath: '/content/audio/voice/casting/chatterbox/rabbit_final.wav',
-    color: 0xf5f0e8, accentColor: 0xffc0cb,
-  },
-  {
-    id: 'bear', emoji: '🐻', name: 'Bear',
-    description: 'Gentle protector. Warm, safe, always has your back.',
-    modelPath: '/content/models/dna_test/bear_new.glb',
-    voicePath: '/content/audio/voice_casting_v2/bear_new_cast.wav',
-    color: 0x8b4513, accentColor: 0xd2691e,
-  },
-  {
-    id: 'cat', emoji: '🐱', name: 'Cat',
-    description: 'Curious investigator. Wants to understand everything.',
-    modelPath: '/content/models/dna_test/cat_curious.glb',
-    voicePath: '/content/audio/voice/casting/chatterbox/cat_final_a.wav',
-    color: 0x555555, accentColor: 0x22d3ee,
-  },
-  {
-    id: 'dragon', emoji: '🐉', name: 'Dragon',
-    description: 'Ancient soul. Loyal, fierce, surprisingly deep.',
-    modelPath: '/content/models/dna_test/dragon_innovator.glb',
-    voicePath: '/content/audio/voice/casting/chatterbox/dragon_b5.wav',
-    color: 0x228b22, accentColor: 0xffd700,
-  },
-];
+function toPickerCompanion(c: CompanionDef): PickerCompanion {
+  return {
+    id: c.id, emoji: c.emoji, name: c.name,
+    description: `${c.title} — ${c.description}`,
+    modelPath: c.modelPath, voicePath: c.introVoicePath,
+    color: c.color, accentColor: c.accentColor,
+  };
+}
+
+const COMPANIONS = COMPANION_LIST.map(toPickerCompanion);
 
 const PARTICLE_COUNT = 100;
 const SWIPE_THRESHOLD = 50;

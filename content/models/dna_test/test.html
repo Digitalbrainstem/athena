@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Model DNA Assembly — Nexus Academy Prototype</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a1a;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+  
+  /* Frost (#22d3ee) + Aurora (#a78bfa) palette */
+  :root {
+    --frost: #22d3ee;
+    --aurora: #a78bfa;
+    --bg-dark: #0a0a1a;
+    --bg-panel: #111128;
+    --bg-card: #1a1a3a;
+    --text: #e0e0e0;
+    --text-dim: #8888aa;
+  }
+
+  header {
+    background: linear-gradient(135deg, #111128 0%, #1a0a2e 100%);
+    border-bottom: 1px solid rgba(34, 211, 238, 0.2);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  header h1 {
+    font-size: 22px;
+    background: linear-gradient(90deg, var(--frost), var(--aurora));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  header .subtitle {
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+  header .stats {
+    margin-left: auto;
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+  }
+  header .stats span { color: var(--frost); font-weight: 600; }
+
+  .tabs {
+    display: flex;
+    background: var(--bg-panel);
+    border-bottom: 1px solid rgba(167, 139, 250, 0.15);
+    padding: 0 16px;
+  }
+  .tab {
+    padding: 12px 20px;
+    cursor: pointer;
+    color: var(--text-dim);
+    font-size: 14px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active {
+    color: var(--frost);
+    border-bottom-color: var(--frost);
+  }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* === Panel 1: Single Model DNA === */
+  #panel-dna {
+    display: flex;
+    height: calc(100vh - 110px);
+  }
+  #panel-dna .sidebar {
+    width: 300px;
+    background: var(--bg-panel);
+    padding: 16px;
+    overflow-y: auto;
+    border-right: 1px solid rgba(34, 211, 238, 0.1);
+  }
+  #panel-dna .viewport {
+    flex: 1;
+    position: relative;
+  }
+  .sidebar h3 {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--aurora);
+    margin: 16px 0 8px;
+  }
+  .sidebar h3:first-child { margin-top: 0; }
+  .sidebar label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-dim);
+    margin: 6px 0;
+  }
+  .sidebar label span.val {
+    color: var(--frost);
+    font-family: monospace;
+    min-width: 45px;
+    text-align: right;
+  }
+  .sidebar input[type="range"] {
+    width: 100%;
+    accent-color: var(--frost);
+    margin: 2px 0 8px;
+  }
+  .sidebar input[type="color"] {
+    width: 40px;
+    height: 24px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background: none;
+    cursor: pointer;
+  }
+  .sidebar select {
+    width: 100%;
+    background: var(--bg-card);
+    color: var(--text);
+    border: 1px solid #333;
+    padding: 6px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    margin: 4px 0 8px;
+  }
+  .sidebar button {
+    width: 100%;
+    padding: 8px;
+    margin: 4px 0;
+    background: linear-gradient(135deg, rgba(34,211,238,0.15), rgba(167,139,250,0.15));
+    border: 1px solid rgba(34,211,238,0.3);
+    color: var(--frost);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+  .sidebar button:hover {
+    background: linear-gradient(135deg, rgba(34,211,238,0.25), rgba(167,139,250,0.25));
+    border-color: var(--frost);
+  }
+  .dna-code {
+    background: var(--bg-card);
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 8px;
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--frost);
+    word-break: break-all;
+    margin: 8px 0;
+    max-height: 80px;
+    overflow-y: auto;
+  }
+
+  /* === Panel 2: Variant Gallery === */
+  #panel-gallery {
+    padding: 20px;
+    height: calc(100vh - 110px);
+  }
+  .gallery-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .gallery-header select {
+    background: var(--bg-card);
+    color: var(--text);
+    border: 1px solid #333;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  .gallery-header button {
+    padding: 8px 16px;
+    background: linear-gradient(135deg, rgba(34,211,238,0.2), rgba(167,139,250,0.2));
+    border: 1px solid rgba(34,211,238,0.3);
+    color: var(--frost);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    height: calc(100% - 60px);
+    overflow-y: auto;
+  }
+  .variant-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(167,139,250,0.15);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+  }
+  .variant-card canvas {
+    width: 100% !important;
+    height: 250px !important;
+  }
+  .variant-card .info {
+    padding: 10px 12px;
+    border-top: 1px solid rgba(34,211,238,0.1);
+  }
+  .variant-card .info h4 {
+    font-size: 13px;
+    color: var(--frost);
+    margin-bottom: 4px;
+  }
+  .variant-card .info .dna-mini {
+    font-family: monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    word-break: break-all;
+  }
+  .variant-card .badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: rgba(0,0,0,0.7);
+    color: var(--aurora);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    border: 1px solid rgba(167,139,250,0.3);
+  }
+
+  /* === Panel 3: Animation DNA === */
+  #panel-anim {
+    display: flex;
+    height: calc(100vh - 110px);
+  }
+  #panel-anim .sidebar {
+    width: 280px;
+    background: var(--bg-panel);
+    padding: 16px;
+    overflow-y: auto;
+    border-right: 1px solid rgba(34, 211, 238, 0.1);
+  }
+  #panel-anim .viewport {
+    flex: 1;
+    position: relative;
+  }
+
+  /* === Panel 4: Species Lineup === */
+  #panel-lineup {
+    padding: 20px;
+    height: calc(100vh - 110px);
+  }
+  #lineup-canvas-container {
+    width: 100%;
+    height: calc(100% - 20px);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(34,211,238,0.15);
+  }
+
+  /* Loading overlay */
+  #loading {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,10,26,0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: opacity 0.5s;
+  }
+  #loading.hidden { opacity: 0; pointer-events: none; }
+  #loading .spinner {
+    width: 50px; height: 50px;
+    border: 3px solid rgba(34,211,238,0.2);
+    border-top-color: var(--frost);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  #loading p { margin-top: 16px; color: var(--text-dim); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .info-bar {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    background: rgba(10,10,26,0.85);
+    border: 1px solid rgba(34,211,238,0.2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--text-dim);
+    backdrop-filter: blur(8px);
+  }
+  .info-bar strong { color: var(--frost); }
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="spinner"></div>
+  <p id="loading-text">Loading companion models...</p>
+</div>
+
+<header>
+  <h1>🧬 Model DNA Assembly</h1>
+  <div class="subtitle">Nexus Academy — Runtime Character Variety Prototype</div>
+  <div class="stats">
+    Base models: <span>6</span> |
+    DNA dimensions: <span>12</span> |
+    Theoretical combos: <span>13,600+</span>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" data-panel="panel-dna">🧬 DNA Editor</div>
+  <div class="tab" data-panel="panel-gallery">🎨 Variant Gallery</div>
+  <div class="tab" data-panel="panel-anim">🎭 Animation DNA</div>
+  <div class="tab" data-panel="panel-lineup">👥 Species Lineup</div>
+</div>
+
+<!-- Panel 1: DNA Editor -->
+<div id="panel-dna" class="panel active">
+  <div class="sidebar">
+    <h3>Base Model</h3>
+    <select id="dna-model">
+      <option value="fox_foundation.glb">🦊 Fox (Foundation)</option>
+      <option value="owl_discovery.glb">🦉 Owl (Discovery)</option>
+      <option value="bear_builder.glb">🐻 Bear (Builder)</option>
+      <option value="dragon_innovator.glb">🐉 Dragon (Innovator)</option>
+      <option value="cat_curious.glb">🐱 Cat (Curious)</option>
+      <option value="rabbit_curious.glb">🐰 Rabbit (Curious)</option>
+    </select>
+
+    <h3>Body Scale</h3>
+    <label>Height <span class="val" id="val-height">1.00</span></label>
+    <input type="range" id="dna-height" min="0.5" max="2.0" step="0.05" value="1.0">
+    <label>Width <span class="val" id="val-width">1.00</span></label>
+    <input type="range" id="dna-width" min="0.5" max="2.0" step="0.05" value="1.0">
+    <label>Depth <span class="val" id="val-depth">1.00</span></label>
+    <input type="range" id="dna-depth" min="0.5" max="2.0" step="0.05" value="1.0">
+    <label>Overall <span class="val" id="val-overall">1.00</span></label>
+    <input type="range" id="dna-overall" min="0.3" max="2.5" step="0.05" value="1.0">
+
+    <h3>Color DNA</h3>
+    <label>Primary Color <input type="color" id="dna-color1" value="#ffffff"></label>
+    <label>Accent Color <input type="color" id="dna-color2" value="#ffffff"></label>
+    <label>Emissive Glow <input type="color" id="dna-emissive" value="#000000"></label>
+    <label>Hue Shift <span class="val" id="val-hue">0°</span></label>
+    <input type="range" id="dna-hue" min="0" max="360" step="5" value="0">
+
+    <h3>Material DNA</h3>
+    <label>Metalness <span class="val" id="val-metal">0.00</span></label>
+    <input type="range" id="dna-metalness" min="0" max="1" step="0.05" value="0">
+    <label>Roughness <span class="val" id="val-rough">1.00</span></label>
+    <input type="range" id="dna-roughness" min="0" max="1" step="0.05" value="1.0">
+    <label>Opacity <span class="val" id="val-opacity">1.00</span></label>
+    <input type="range" id="dna-opacity" min="0.2" max="1" step="0.05" value="1.0">
+
+    <h3>Animation DNA</h3>
+    <label>Idle: Bob Speed <span class="val" id="val-bob">1.0</span></label>
+    <input type="range" id="dna-bob" min="0" max="5" step="0.1" value="1.0">
+    <label>Idle: Bob Height <span class="val" id="val-bobh">0.1</span></label>
+    <input type="range" id="dna-bobh" min="0" max="0.5" step="0.01" value="0.1">
+    <label>Idle: Sway <span class="val" id="val-sway">0.0</span></label>
+    <input type="range" id="dna-sway" min="0" max="0.5" step="0.01" value="0.0">
+    <label>Idle: Spin <span class="val" id="val-spin">0.0</span></label>
+    <input type="range" id="dna-spin" min="0" max="2" step="0.05" value="0.0">
+
+    <h3>DNA String</h3>
+    <div class="dna-code" id="dna-string">—</div>
+    <button id="btn-randomize">🎲 Randomize DNA</button>
+    <button id="btn-reset">↩️ Reset to Original</button>
+    <button id="btn-copy-dna">📋 Copy DNA</button>
+  </div>
+  <div class="viewport">
+    <canvas id="canvas-dna"></canvas>
+    <div class="info-bar">
+      <strong>DNA Editor</strong> — Adjust sliders to modify the model in real-time.
+      Every combination produces a unique character from ONE base mesh.
+      With 12 DNA dimensions × continuous values = <strong>effectively infinite</strong> unique variants.
+    </div>
+  </div>
+</div>
+
+<!-- Panel 2: Variant Gallery -->
+<div id="panel-gallery" class="panel">
+  <div class="gallery-header">
+    <select id="gallery-model">
+      <option value="fox_foundation.glb">🦊 Fox</option>
+      <option value="owl_discovery.glb">🦉 Owl</option>
+      <option value="bear_builder.glb">🐻 Bear</option>
+      <option value="dragon_innovator.glb">🐉 Dragon</option>
+      <option value="cat_curious.glb">🐱 Cat</option>
+      <option value="rabbit_curious.glb">🐰 Rabbit</option>
+    </select>
+    <button id="btn-regen">🎲 Generate 8 Random Variants</button>
+    <span style="color: var(--text-dim); font-size: 13px;">
+      Each card = same base mesh, unique DNA → unique character
+    </span>
+  </div>
+  <div class="gallery-grid" id="gallery-grid"></div>
+</div>
+
+<!-- Panel 3: Animation DNA -->
+<div id="panel-anim" class="panel">
+  <div class="sidebar">
+    <h3>Animation DNA Viewer</h3>
+    <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 12px;">
+      Same model, 5 different motion profiles.<br>
+      Proves: animation parameters create distinct personalities from one mesh.
+    </p>
+    <select id="anim-model">
+      <option value="fox_foundation.glb">🦊 Fox</option>
+      <option value="owl_discovery.glb">🦉 Owl</option>
+      <option value="bear_builder.glb">🐻 Bear</option>
+      <option value="dragon_innovator.glb">🐉 Dragon</option>
+      <option value="cat_curious.glb">🐱 Cat</option>
+      <option value="rabbit_curious.glb">🐰 Rabbit</option>
+    </select>
+    <button id="btn-regen-anim" style="margin-top: 8px;">🔄 Regenerate Motions</button>
+
+    <h3 style="margin-top: 16px;">Motion Profiles</h3>
+    <div id="motion-profiles" style="font-size: 12px;"></div>
+
+    <h3 style="margin-top: 16px;">Key Insight</h3>
+    <p style="font-size: 12px; color: var(--text-dim);">
+      With just <strong style="color: var(--frost);">4 motion parameters</strong> 
+      (bob speed, bob height, sway, spin), each at 20 discrete levels, we get 
+      <strong style="color: var(--aurora);">160,000</strong> distinct idle behaviors.
+      Combined with visual DNA, this gives each NPC a unique <em>feel</em> 
+      even from the same base model.
+    </p>
+  </div>
+  <div class="viewport">
+    <canvas id="canvas-anim"></canvas>
+    <div class="info-bar">
+      <strong>Animation DNA</strong> — 5 instances of the same model with different motion parameters.
+      Notice how bob speed, sway amplitude, and spin create distinct personalities.
+    </div>
+  </div>
+</div>
+
+<!-- Panel 4: Species Lineup -->
+<div id="panel-lineup" class="panel">
+  <div style="margin-bottom: 12px; font-size: 13px; color: var(--text-dim);">
+    All 6 companion species loaded simultaneously. Each could spawn <strong style="color: var(--frost);">2,267+ unique NPCs</strong> via DNA transforms
+    (13,600 ÷ 6 species). Rotate: drag. Zoom: scroll.
+  </div>
+  <div id="lineup-canvas-container">
+    <canvas id="canvas-lineup"></canvas>
+  </div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const MODELS = {
+  'fox_foundation.glb':     { name: 'Fox',    emoji: '🦊' },
+  'owl_discovery.glb':      { name: 'Owl',    emoji: '🦉' },
+  'bear_builder.glb':       { name: 'Bear',   emoji: '🐻' },
+  'dragon_innovator.glb':   { name: 'Dragon', emoji: '🐉' },
+  'cat_curious.glb':        { name: 'Cat',    emoji: '🐱' },
+  'rabbit_curious.glb':     { name: 'Rabbit', emoji: '🐰' },
+};
+
+const loader = new GLTFLoader();
+const modelCache = {};
+let loadedCount = 0;
+
+function updateLoading(msg) {
+  const el = document.getElementById('loading-text');
+  if (el) el.textContent = msg;
+}
+
+async function loadModel(url) {
+  if (modelCache[url]) return modelCache[url].scene.clone(true);
+  return new Promise((resolve, reject) => {
+    loader.load(url, (gltf) => {
+      modelCache[url] = gltf;
+      loadedCount++;
+      updateLoading(`Loaded ${loadedCount}/6 models...`);
+      resolve(gltf.scene.clone(true));
+    }, undefined, reject);
+  });
+}
+
+function cloneModel(url) {
+  if (!modelCache[url]) return null;
+  const clone = modelCache[url].scene.clone(true);
+  // Deep clone materials so color changes don't affect originals
+  clone.traverse(child => {
+    if (child.isMesh && child.material) {
+      child.material = child.material.clone();
+    }
+  });
+  return clone;
+}
+
+// Center and normalize model size
+function normalizeModel(model, targetSize = 1.5) {
+  const box = new THREE.Box3().setFromObject(model);
+  const size = box.getSize(new THREE.Vector3());
+  const center = box.getCenter(new THREE.Vector3());
+  const maxDim = Math.max(size.x, size.y, size.z);
+  const scale = targetSize / maxDim;
+  model.scale.multiplyScalar(scale);
+  model.position.sub(center.multiplyScalar(scale));
+  return model;
+}
+
+function createScene(canvas, opts = {}) {
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(opts.bg || 0x0a0a1a);
+
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+  camera.position.set(0, 1, 4);
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.2;
+
+  // Lighting
+  const amb = new THREE.AmbientLight(0xffffff, 0.5);
+  scene.add(amb);
+  const dir = new THREE.DirectionalLight(0xffffff, 1.2);
+  dir.position.set(3, 5, 4);
+  scene.add(dir);
+  const fill = new THREE.DirectionalLight(0x8888ff, 0.3);
+  fill.position.set(-3, 2, -2);
+  scene.add(fill);
+
+  // Subtle ground
+  if (opts.ground !== false) {
+    const ground = new THREE.Mesh(
+      new THREE.CircleGeometry(5, 64),
+      new THREE.MeshStandardMaterial({ color: 0x111128, roughness: 1 })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -0.01;
+    scene.add(ground);
+  }
+
+  let controls = null;
+  if (opts.controls !== false) {
+    controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.target.set(0, 0.5, 0);
+    controls.update();
+  }
+
+  return { scene, camera, renderer, controls };
+}
+
+function resizeRenderer(renderer, camera, canvas) {
+  const parent = canvas.parentElement;
+  if (!parent) return;
+  const w = parent.clientWidth;
+  const h = parent.clientHeight;
+  if (canvas.width !== w || canvas.height !== h) {
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+}
+
+// =============================================
+// DNA System
+// =============================================
+function generateDNA() {
+  return {
+    height: parseFloat(document.getElementById('dna-height').value),
+    width: parseFloat(document.getElementById('dna-width').value),
+    depth: parseFloat(document.getElementById('dna-depth').value),
+    overall: parseFloat(document.getElementById('dna-overall').value),
+    color1: document.getElementById('dna-color1').value,
+    color2: document.getElementById('dna-color2').value,
+    emissive: document.getElementById('dna-emissive').value,
+    hue: parseInt(document.getElementById('dna-hue').value),
+    metalness: parseFloat(document.getElementById('dna-metalness').value),
+    roughness: parseFloat(document.getElementById('dna-roughness').value),
+    opacity: parseFloat(document.getElementById('dna-opacity').value),
+    bobSpeed: parseFloat(document.getElementById('dna-bob').value),
+    bobHeight: parseFloat(document.getElementById('dna-bobh').value),
+    sway: parseFloat(document.getElementById('dna-sway').value),
+    spin: parseFloat(document.getElementById('dna-spin').value),
+  };
+}
+
+function dnaToString(dna) {
+  return `H${dna.height.toFixed(2)}W${dna.width.toFixed(2)}D${dna.depth.toFixed(2)}` +
+    `S${dna.overall.toFixed(2)}|${dna.color1}${dna.color2}E${dna.emissive}` +
+    `Hu${dna.hue}|M${dna.metalness.toFixed(2)}R${dna.roughness.toFixed(2)}` +
+    `O${dna.opacity.toFixed(2)}|B${dna.bobSpeed.toFixed(1)}x${dna.bobHeight.toFixed(2)}` +
+    `Sw${dna.sway.toFixed(2)}Sp${dna.spin.toFixed(2)}`;
+}
+
+function randomDNA() {
+  const rand = (min, max) => min + Math.random() * (max - min);
+  const randColor = () => '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+  return {
+    height: rand(0.6, 1.8),
+    width: rand(0.6, 1.6),
+    depth: rand(0.7, 1.4),
+    overall: rand(0.5, 2.0),
+    color1: randColor(),
+    color2: randColor(),
+    emissive: Math.random() > 0.7 ? randColor() : '#000000',
+    hue: Math.floor(rand(0, 360)),
+    metalness: rand(0, 0.8),
+    roughness: rand(0.2, 1.0),
+    opacity: rand(0.6, 1.0),
+    bobSpeed: rand(0.3, 4.0),
+    bobHeight: rand(0.02, 0.3),
+    sway: rand(0, 0.3),
+    spin: rand(0, 1.0),
+  };
+}
+
+function hueRotateColor(hex, degrees) {
+  let r = parseInt(hex.slice(1,3), 16) / 255;
+  let g = parseInt(hex.slice(3,5), 16) / 255;
+  let b = parseInt(hex.slice(5,7), 16) / 255;
+  const color = new THREE.Color(r, g, b);
+  const hsl = {};
+  color.getHSL(hsl);
+  hsl.h = (hsl.h + degrees / 360) % 1;
+  color.setHSL(hsl.h, hsl.s, hsl.l);
+  return color;
+}
+
+function applyDNA(model, dna) {
+  // Scale
+  const baseScale = model.userData.baseScale || 1;
+  model.scale.set(
+    dna.width * dna.overall * baseScale,
+    dna.height * dna.overall * baseScale,
+    dna.depth * dna.overall * baseScale
+  );
+
+  // Materials
+  model.traverse(child => {
+    if (!child.isMesh) return;
+    const mat = child.material;
+    if (!mat) return;
+
+    // Store original color on first apply
+    if (!mat.userData.origColor) {
+      mat.userData.origColor = mat.color ? mat.color.getHex() : 0xffffff;
+      mat.userData.origMap = mat.map;
+    }
+
+    // Hue rotation on original color
+    if (dna.hue !== 0) {
+      const origHex = '#' + mat.userData.origColor.toString(16).padStart(6, '0');
+      const rotated = hueRotateColor(origHex, dna.hue);
+      mat.color.copy(rotated);
+    } else {
+      mat.color.setHex(mat.userData.origColor);
+    }
+
+    // Tint with primary color (multiply blend)
+    if (dna.color1 !== '#ffffff') {
+      const tint = new THREE.Color(dna.color1);
+      mat.color.multiply(tint);
+    }
+
+    // Emissive
+    if (mat.emissive) {
+      mat.emissive.set(dna.emissive);
+      mat.emissiveIntensity = dna.emissive === '#000000' ? 0 : 0.5;
+    }
+
+    // PBR properties
+    if (mat.metalness !== undefined) mat.metalness = dna.metalness;
+    if (mat.roughness !== undefined) mat.roughness = dna.roughness;
+    mat.opacity = dna.opacity;
+    mat.transparent = dna.opacity < 1;
+    mat.needsUpdate = true;
+  });
+
+  // Store animation DNA on the model
+  model.userData.animDNA = {
+    bobSpeed: dna.bobSpeed,
+    bobHeight: dna.bobHeight,
+    sway: dna.sway,
+    spin: dna.spin,
+  };
+}
+
+function animateModel(model, time) {
+  const a = model.userData.animDNA;
+  if (!a) return;
+  const baseY = model.userData.baseY || 0;
+  model.position.y = baseY + Math.sin(time * a.bobSpeed) * a.bobHeight;
+  model.rotation.z = Math.sin(time * a.bobSpeed * 0.7) * a.sway;
+  model.rotation.y = (model.userData.baseRotY || 0) + time * a.spin;
+}
+
+// =============================================
+// Panel 1: DNA Editor
+// =============================================
+let dnaScene, dnaCamera, dnaRenderer, dnaControls, dnaModel;
+
+async function initDNAEditor() {
+  const canvas = document.getElementById('canvas-dna');
+  const s = createScene(canvas);
+  dnaScene = s.scene; dnaCamera = s.camera;
+  dnaRenderer = s.renderer; dnaControls = s.controls;
+
+  await loadDNAModel('fox_foundation.glb');
+
+  // Bind controls
+  const sliders = document.querySelectorAll('#panel-dna input[type="range"]');
+  sliders.forEach(s => s.addEventListener('input', updateDNA));
+  document.querySelectorAll('#panel-dna input[type="color"]').forEach(
+    c => c.addEventListener('input', updateDNA)
+  );
+  document.getElementById('dna-model').addEventListener('change', async (e) => {
+    await loadDNAModel(e.target.value);
+    updateDNA();
+  });
+
+  document.getElementById('btn-randomize').addEventListener('click', () => {
+    const dna = randomDNA();
+    document.getElementById('dna-height').value = dna.height;
+    document.getElementById('dna-width').value = dna.width;
+    document.getElementById('dna-depth').value = dna.depth;
+    document.getElementById('dna-overall').value = dna.overall;
+    document.getElementById('dna-color1').value = dna.color1;
+    document.getElementById('dna-color2').value = dna.color2;
+    document.getElementById('dna-emissive').value = dna.emissive;
+    document.getElementById('dna-hue').value = dna.hue;
+    document.getElementById('dna-metalness').value = dna.metalness;
+    document.getElementById('dna-roughness').value = dna.roughness;
+    document.getElementById('dna-opacity').value = dna.opacity;
+    document.getElementById('dna-bob').value = dna.bobSpeed;
+    document.getElementById('dna-bobh').value = dna.bobHeight;
+    document.getElementById('dna-sway').value = dna.sway;
+    document.getElementById('dna-spin').value = dna.spin;
+    updateDNA();
+  });
+
+  document.getElementById('btn-reset').addEventListener('click', () => {
+    document.getElementById('dna-height').value = 1;
+    document.getElementById('dna-width').value = 1;
+    document.getElementById('dna-depth').value = 1;
+    document.getElementById('dna-overall').value = 1;
+    document.getElementById('dna-color1').value = '#ffffff';
+    document.getElementById('dna-color2').value = '#ffffff';
+    document.getElementById('dna-emissive').value = '#000000';
+    document.getElementById('dna-hue').value = 0;
+    document.getElementById('dna-metalness').value = 0;
+    document.getElementById('dna-roughness').value = 1;
+    document.getElementById('dna-opacity').value = 1;
+    document.getElementById('dna-bob').value = 1;
+    document.getElementById('dna-bobh').value = 0.1;
+    document.getElementById('dna-sway').value = 0;
+    document.getElementById('dna-spin').value = 0;
+    updateDNA();
+  });
+
+  document.getElementById('btn-copy-dna').addEventListener('click', () => {
+    const dna = generateDNA();
+    navigator.clipboard.writeText(JSON.stringify(dna, null, 2));
+  });
+
+  function animateDNA(time) {
+    requestAnimationFrame(animateDNA);
+    time *= 0.001;
+    resizeRenderer(dnaRenderer, dnaCamera, canvas);
+    if (dnaModel) animateModel(dnaModel, time);
+    if (dnaControls) dnaControls.update();
+    dnaRenderer.render(dnaScene, dnaCamera);
+  }
+  animateDNA(0);
+}
+
+async function loadDNAModel(url) {
+  if (dnaModel) dnaScene.remove(dnaModel);
+  dnaModel = await loadModel(url);
+  normalizeModel(dnaModel, 2);
+  dnaModel.userData.baseScale = dnaModel.scale.x;
+  dnaModel.userData.baseY = dnaModel.position.y;
+  dnaModel.userData.baseRotY = 0;
+  dnaModel.userData.animDNA = { bobSpeed: 1, bobHeight: 0.1, sway: 0, spin: 0 };
+  dnaScene.add(dnaModel);
+}
+
+function updateDNA() {
+  // Update value labels
+  document.getElementById('val-height').textContent = parseFloat(document.getElementById('dna-height').value).toFixed(2);
+  document.getElementById('val-width').textContent = parseFloat(document.getElementById('dna-width').value).toFixed(2);
+  document.getElementById('val-depth').textContent = parseFloat(document.getElementById('dna-depth').value).toFixed(2);
+  document.getElementById('val-overall').textContent = parseFloat(document.getElementById('dna-overall').value).toFixed(2);
+  document.getElementById('val-hue').textContent = document.getElementById('dna-hue').value + '°';
+  document.getElementById('val-metal').textContent = parseFloat(document.getElementById('dna-metalness').value).toFixed(2);
+  document.getElementById('val-rough').textContent = parseFloat(document.getElementById('dna-roughness').value).toFixed(2);
+  document.getElementById('val-opacity').textContent = parseFloat(document.getElementById('dna-opacity').value).toFixed(2);
+  document.getElementById('val-bob').textContent = parseFloat(document.getElementById('dna-bob').value).toFixed(1);
+  document.getElementById('val-bobh').textContent = parseFloat(document.getElementById('dna-bobh').value).toFixed(2);
+  document.getElementById('val-sway').textContent = parseFloat(document.getElementById('dna-sway').value).toFixed(2);
+  document.getElementById('val-spin').textContent = parseFloat(document.getElementById('dna-spin').value).toFixed(2);
+
+  if (!dnaModel) return;
+  const dna = generateDNA();
+  applyDNA(dnaModel, dna);
+  document.getElementById('dna-string').textContent = dnaToString(dna);
+}
+
+// =============================================
+// Panel 2: Variant Gallery
+// =============================================
+const galleryRenderers = [];
+
+async function initGallery() {
+  document.getElementById('btn-regen').addEventListener('click', generateGallery);
+  document.getElementById('gallery-model').addEventListener('change', generateGallery);
+}
+
+async function generateGallery() {
+  const grid = document.getElementById('gallery-grid');
+  const modelUrl = document.getElementById('gallery-model').value;
+  const modelInfo = MODELS[modelUrl];
+
+  // Clean up old renderers
+  galleryRenderers.forEach(r => {
+    r.renderer.dispose();
+    cancelAnimationFrame(r.animId);
+  });
+  galleryRenderers.length = 0;
+  grid.innerHTML = '';
+
+  // Preset DNA archetypes for variety
+  const archetypes = [
+    { name: 'Original', dna: null },
+    { name: 'Frost Giant', dna: { height: 1.8, width: 1.4, depth: 1.2, overall: 1.6, color1: '#88ccff', color2: '#ffffff', emissive: '#001133', hue: 200, metalness: 0.6, roughness: 0.3, opacity: 0.9, bobSpeed: 0.5, bobHeight: 0.05, sway: 0.02, spin: 0.1 }},
+    { name: 'Shadow Imp', dna: { height: 0.7, width: 0.8, depth: 0.8, overall: 0.6, color1: '#331144', color2: '#220033', emissive: '#440066', hue: 280, metalness: 0.2, roughness: 0.9, opacity: 0.85, bobSpeed: 3.5, bobHeight: 0.15, sway: 0.2, spin: 0.3 }},
+    { name: 'Golden Elder', dna: { height: 1.1, width: 1.0, depth: 1.0, overall: 1.1, color1: '#ffcc44', color2: '#ffaa00', emissive: '#332200', hue: 40, metalness: 0.8, roughness: 0.2, opacity: 1.0, bobSpeed: 0.8, bobHeight: 0.03, sway: 0.01, spin: 0.05 }},
+    { name: 'Neon Scout', dna: { height: 0.9, width: 0.85, depth: 0.9, overall: 0.85, color1: '#00ff88', color2: '#00ffcc', emissive: '#00ff44', hue: 150, metalness: 0.3, roughness: 0.5, opacity: 0.95, bobSpeed: 2.5, bobHeight: 0.12, sway: 0.15, spin: 0.5 }},
+    { name: 'Crystal Sage', dna: { height: 1.2, width: 0.9, depth: 0.9, overall: 1.0, color1: '#aaddff', color2: '#88aaff', emissive: '#3366cc', hue: 220, metalness: 0.9, roughness: 0.1, opacity: 0.7, bobSpeed: 1.2, bobHeight: 0.08, sway: 0.05, spin: 0.2 }},
+    { name: 'Ember Brute', dna: { height: 1.3, width: 1.6, depth: 1.3, overall: 1.4, color1: '#ff4400', color2: '#ff6600', emissive: '#ff2200', hue: 10, metalness: 0.4, roughness: 0.7, opacity: 1.0, bobSpeed: 0.6, bobHeight: 0.04, sway: 0.03, spin: 0.08 }},
+    { name: 'Phantom', dna: { height: 1.0, width: 0.7, depth: 0.7, overall: 0.9, color1: '#ccccff', color2: '#aaaadd', emissive: '#6666aa', hue: 260, metalness: 0.1, roughness: 0.8, opacity: 0.4, bobSpeed: 1.8, bobHeight: 0.2, sway: 0.25, spin: 0.4 }},
+    { name: 'Moss Wanderer', dna: { height: 1.05, width: 1.1, depth: 1.05, overall: 1.05, color1: '#558833', color2: '#446622', emissive: '#112200', hue: 100, metalness: 0.05, roughness: 0.95, opacity: 1.0, bobSpeed: 0.9, bobHeight: 0.06, sway: 0.08, spin: 0.12 }},
+  ];
+
+  for (let i = 0; i < archetypes.length; i++) {
+    const arch = archetypes[i];
+    const card = document.createElement('div');
+    card.className = 'variant-card';
+
+    const cvs = document.createElement('canvas');
+    card.appendChild(cvs);
+
+    const badge = document.createElement('div');
+    badge.className = 'badge';
+    badge.textContent = i === 0 ? 'ORIGINAL' : `Variant #${i}`;
+    card.appendChild(badge);
+
+    const info = document.createElement('div');
+    info.className = 'info';
+    info.innerHTML = `<h4>${modelInfo.emoji} ${arch.name}</h4>` +
+      (arch.dna ? `<div class="dna-mini">${dnaToString(arch.dna)}</div>` : '<div class="dna-mini">Base model — no modifications</div>');
+    card.appendChild(info);
+
+    grid.appendChild(card);
+
+    // Create mini scene
+    const s = createScene(cvs, { controls: true, bg: 0x0f0f25 });
+    const model = cloneModel(modelUrl);
+    if (!model) continue;
+
+    normalizeModel(model, 1.5);
+    model.userData.baseScale = model.scale.x;
+    model.userData.baseY = model.position.y;
+    model.userData.baseRotY = 0;
+
+    if (arch.dna) {
+      applyDNA(model, arch.dna);
+    } else {
+      model.userData.animDNA = { bobSpeed: 1, bobHeight: 0.08, sway: 0, spin: 0.15 };
+    }
+
+    s.scene.add(model);
+    s.camera.position.set(0, 1, 3);
+    s.controls.target.set(0, 0.3, 0);
+    s.controls.update();
+
+    let animId;
+    function animCard(time) {
+      animId = requestAnimationFrame(animCard);
+      time *= 0.001;
+      const w = card.clientWidth;
+      const h = 250;
+      if (cvs.width !== w * 2 || cvs.height !== h * 2) {
+        s.renderer.setSize(w, h, false);
+        s.camera.aspect = w / h;
+        s.camera.updateProjectionMatrix();
+      }
+      animateModel(model, time + i * 10);
+      s.controls.update();
+      s.renderer.render(s.scene, s.camera);
+    }
+    animCard(0);
+    galleryRenderers.push({ renderer: s.renderer, animId });
+  }
+}
+
+// =============================================
+// Panel 3: Animation DNA
+// =============================================
+let animScene, animCamera, animRenderer, animControls;
+let animModels = [];
+
+const MOTION_PRESETS = [
+  { name: '🧘 Serene Elder',     bobSpeed: 0.5, bobHeight: 0.03, sway: 0.01, spin: 0.05,  color: '#4488ff' },
+  { name: '🐿️ Nervous Scout',   bobSpeed: 4.0, bobHeight: 0.15, sway: 0.2,  spin: 0.0,   color: '#ff8844' },
+  { name: '💫 Mystic Spinner',   bobSpeed: 1.5, bobHeight: 0.1,  sway: 0.05, spin: 0.8,   color: '#aa44ff' },
+  { name: '🌊 Ocean Dreamer',    bobSpeed: 0.8, bobHeight: 0.25, sway: 0.15, spin: 0.1,   color: '#22ddcc' },
+  { name: '⚡ Hyperactive',      bobSpeed: 3.0, bobHeight: 0.08, sway: 0.3,  spin: 1.5,   color: '#ffcc00' },
+];
+
+async function initAnimPanel() {
+  const canvas = document.getElementById('canvas-anim');
+  const s = createScene(canvas);
+  animScene = s.scene; animCamera = s.camera;
+  animRenderer = s.renderer; animControls = s.controls;
+  animCamera.position.set(0, 2, 8);
+  animControls.target.set(0, 0.5, 0);
+
+  await loadAnimModels('fox_foundation.glb');
+
+  document.getElementById('anim-model').addEventListener('change', async (e) => {
+    await loadAnimModels(e.target.value);
+  });
+  document.getElementById('btn-regen-anim').addEventListener('click', async () => {
+    await loadAnimModels(document.getElementById('anim-model').value);
+  });
+
+  function animLoop(time) {
+    requestAnimationFrame(animLoop);
+    time *= 0.001;
+    resizeRenderer(animRenderer, animCamera, canvas);
+    animModels.forEach(m => animateModel(m, time));
+    animControls.update();
+    animRenderer.render(animScene, animCamera);
+  }
+  animLoop(0);
+}
+
+async function loadAnimModels(url) {
+  animModels.forEach(m => animScene.remove(m));
+  animModels = [];
+
+  const profilesDiv = document.getElementById('motion-profiles');
+  profilesDiv.innerHTML = '';
+
+  for (let i = 0; i < MOTION_PRESETS.length; i++) {
+    const preset = MOTION_PRESETS[i];
+    const model = cloneModel(url);
+    if (!model) continue;
+
+    normalizeModel(model, 1.5);
+    const spacing = 2.5;
+    const offsetX = (i - 2) * spacing;
+    model.position.x = offsetX;
+    model.userData.baseScale = model.scale.x;
+    model.userData.baseY = model.position.y;
+    model.userData.baseRotY = 0;
+
+    // Apply slight tint so each is visually distinct
+    const tintColor = new THREE.Color(preset.color);
+    model.traverse(child => {
+      if (child.isMesh && child.material) {
+        child.material = child.material.clone();
+        child.material.emissive = tintColor;
+        child.material.emissiveIntensity = 0.15;
+      }
+    });
+
+    model.userData.animDNA = {
+      bobSpeed: preset.bobSpeed,
+      bobHeight: preset.bobHeight,
+      sway: preset.sway,
+      spin: preset.spin,
+    };
+
+    animScene.add(model);
+    animModels.push(model);
+
+    // Add to sidebar
+    const div = document.createElement('div');
+    div.style.cssText = `margin: 8px 0; padding: 6px 8px; background: rgba(${parseInt(preset.color.slice(1,3),16)},${parseInt(preset.color.slice(3,5),16)},${parseInt(preset.color.slice(5,7),16)},0.1); border-left: 3px solid ${preset.color}; border-radius: 4px;`;
+    div.innerHTML = `<strong style="color: ${preset.color}">${preset.name}</strong><br>` +
+      `<span style="color: #888; font-size: 11px;">bob: ${preset.bobSpeed}×${preset.bobHeight} | sway: ${preset.sway} | spin: ${preset.spin}</span>`;
+    profilesDiv.appendChild(div);
+  }
+
+  // Add label pedestals
+  for (let i = 0; i < MOTION_PRESETS.length; i++) {
+    const preset = MOTION_PRESETS[i];
+    const spacing = 2.5;
+    const offsetX = (i - 2) * spacing;
+    
+    // Ground circle
+    const circle = new THREE.Mesh(
+      new THREE.CircleGeometry(0.5, 32),
+      new THREE.MeshStandardMaterial({ color: new THREE.Color(preset.color), opacity: 0.2, transparent: true })
+    );
+    circle.rotation.x = -Math.PI / 2;
+    circle.position.set(offsetX, 0.01, 0);
+    circle.userData.isLabel = true;
+    animScene.add(circle);
+  }
+}
+
+// =============================================
+// Panel 4: Species Lineup
+// =============================================
+let lineupScene, lineupCamera, lineupRenderer, lineupControls;
+let lineupModels = [];
+
+async function initLineup() {
+  const canvas = document.getElementById('canvas-lineup');
+  const s = createScene(canvas);
+  lineupScene = s.scene; lineupCamera = s.camera;
+  lineupRenderer = s.renderer; lineupControls = s.controls;
+  lineupCamera.position.set(0, 2, 10);
+  lineupControls.target.set(0, 0.5, 0);
+
+  const modelKeys = Object.keys(MODELS);
+  for (let i = 0; i < modelKeys.length; i++) {
+    const url = modelKeys[i];
+    const model = cloneModel(url);
+    if (!model) continue;
+
+    normalizeModel(model, 2);
+    const spacing = 3;
+    const offsetX = (i - (modelKeys.length - 1) / 2) * spacing;
+    model.position.x = offsetX;
+    model.userData.baseScale = model.scale.x;
+    model.userData.baseY = model.position.y;
+    model.userData.baseRotY = 0;
+    model.userData.animDNA = {
+      bobSpeed: 0.8 + i * 0.3,
+      bobHeight: 0.05 + i * 0.02,
+      sway: 0.02 + i * 0.01,
+      spin: 0.1 + i * 0.05,
+    };
+
+    lineupScene.add(model);
+    lineupModels.push(model);
+
+    // Species label pedestal
+    const circle = new THREE.Mesh(
+      new THREE.CircleGeometry(0.8, 32),
+      new THREE.MeshStandardMaterial({
+        color: new THREE.Color().setHSL(i / modelKeys.length, 0.6, 0.3),
+        roughness: 0.8
+      })
+    );
+    circle.rotation.x = -Math.PI / 2;
+    circle.position.set(offsetX, 0.02, 0);
+    lineupScene.add(circle);
+  }
+
+  function animLineup(time) {
+    requestAnimationFrame(animLineup);
+    time *= 0.001;
+    const container = document.getElementById('lineup-canvas-container');
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    if (canvas.width !== w || canvas.height !== h) {
+      lineupRenderer.setSize(w, h, false);
+      lineupCamera.aspect = w / h;
+      lineupCamera.updateProjectionMatrix();
+    }
+    lineupModels.forEach(m => animateModel(m, time));
+    lineupControls.update();
+    lineupRenderer.render(lineupScene, lineupCamera);
+  }
+  animLineup(0);
+}
+
+// =============================================
+// Tab switching
+// =============================================
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.panel).classList.add('active');
+  });
+});
+
+// =============================================
+// Boot
+// =============================================
+async function boot() {
+  try {
+    // Preload all models
+    const modelKeys = Object.keys(MODELS);
+    await Promise.all(modelKeys.map(url => loadModel(url)));
+    updateLoading('Initializing DNA Editor...');
+
+    await initDNAEditor();
+    updateDNA();
+    await initAnimPanel();
+    await initLineup();
+    initGallery();
+
+    // Hide loading
+    document.getElementById('loading').classList.add('hidden');
+    setTimeout(() => document.getElementById('loading').remove(), 600);
+
+    // Auto-generate gallery when tab is first opened
+    let galleryGenerated = false;
+    document.querySelector('[data-panel="panel-gallery"]').addEventListener('click', () => {
+      if (!galleryGenerated) {
+        galleryGenerated = true;
+        setTimeout(generateGallery, 100);
+      }
+    });
+
+  } catch (err) {
+    console.error('Boot error:', err);
+    updateLoading('Error: ' + err.message);
+  }
+}
+
+boot();
+</script>
+</body>
+</html>

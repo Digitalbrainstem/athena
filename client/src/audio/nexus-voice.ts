@@ -1,23 +1,13 @@
 // Nexus Voice — the cosmic voice of the world itself.
-// Uses browser SpeechSynthesis with Web Audio processing (reverb + warmth)
-// to create a futuristic, warm, ethereal voice. Designed so a pre-recorded
-// audio file can drop in later (Option A) by swapping speak() internals.
+// Uses pre-recorded Emily (Chatterbox TTS) voice lines with
+// Web Audio reverb + warmth processing for an ethereal sound.
 
+import { NEXUS_VOICE_LINES } from '../core/registry.js';
+import type { NexusVoiceLine } from '../core/registry.js';
 import type { Disposable } from '../types.js';
 
-// ---------------------------------------------------------------------------
-// Voice lines — the Nexus Voice speaks ~20 times in the entire game
-// ---------------------------------------------------------------------------
-
-export type NexusVoiceLine =
-  | 'welcome'
-  | 'welcome_back'
-  | 'long_absence'
-  | 'tier_transition'
-  | 'discovery'
-  | 'nexus_core';
-
-const LINES: Record<NexusVoiceLine, string> = {
+// Captions for accessibility
+const CAPTIONS: Record<NexusVoiceLine, string> = {
   welcome:
     'Welcome to the Nexus. Everything you need to know is already inside you. We\'re just going to help you find it.',
   welcome_back:
@@ -31,30 +21,6 @@ const LINES: Record<NexusVoiceLine, string> = {
   nexus_core:
     'You made it. You always could.',
 };
-
-// ---------------------------------------------------------------------------
-// Voice selection priority
-// ---------------------------------------------------------------------------
-
-const VOICE_PRIORITY = [
-  'Google UK English Female',
-  'Samantha',
-  'Microsoft Zira',
-];
-
-function selectVoice(voices: SpeechSynthesisVoice[]): SpeechSynthesisVoice | undefined {
-  for (const name of VOICE_PRIORITY) {
-    const match = voices.find((v) => v.name.includes(name));
-    if (match) return match;
-  }
-  // Any female English voice
-  const female = voices.find(
-    (v) => v.lang.startsWith('en') && /female|woman/i.test(v.name),
-  );
-  if (female) return female;
-  // Any English voice
-  return voices.find((v) => v.lang.startsWith('en')) ?? voices[0];
-}
 
 // ---------------------------------------------------------------------------
 // Simple impulse response for reverb (generated procedurally)
@@ -80,6 +46,7 @@ export class NexusVoice implements Disposable {
   private disposed = false;
   private audioCtx: AudioContext | null = null;
   private convolverBuffer: AudioBuffer | null = null;
+  private currentSource: AudioBufferSourceNode | null = null;
   private volume = 1.0;
 
   /** Callback when the Nexus Voice begins speaking (for captions). */
@@ -88,27 +55,19 @@ export class NexusVoice implements Disposable {
   onEnd: (() => void) | null = null;
 
   /**
-   * Speak a Nexus Voice line with ethereal audio processing.
-   * Processing chain: SpeechSynthesis → ConvolverNode (reverb) →
-   * BiquadFilter (warmth) → GainNode → destination
+   * Speak a Nexus Voice line using pre-recorded Emily WAV files
+   * with ethereal audio processing (reverb + warmth).
    */
   async speak(line: NexusVoiceLine): Promise<void> {
     if (this.disposed) return;
-    const text = LINES[line];
-    this.onSpeak?.(text);
-
-    if (typeof speechSynthesis === 'undefined') {
-      console.log(`[NexusVoice] SpeechSynthesis unavailable — skipping: "${text}"`);
-      this.onEnd?.();
-      return;
-    }
+    const caption = CAPTIONS[line];
+    const voicePath = NEXUS_VOICE_LINES[line];
+    this.onSpeak?.(caption);
 
     try {
-      await this.speakWithProcessing(text);
+      await this.playWavWithProcessing(voicePath);
     } catch (e) {
-      // Fallback: plain SpeechSynthesis without processing
-      console.warn('[NexusVoice] Processing chain failed, using plain speech:', e);
-      await this.speakPlain(text);
+      console.warn('[NexusVoice] Voice playback failed:', voicePath, e);
     }
 
     this.onEnd?.();
@@ -121,9 +80,8 @@ export class NexusVoice implements Disposable {
   dispose(): void {
     if (this.disposed) return;
     this.disposed = true;
-    if (typeof speechSynthesis !== 'undefined') {
-      speechSynthesis.cancel();
-    }
+    try { this.currentSource?.stop(); } catch { /* ignore */ }
+    this.currentSource = null;
     void this.audioCtx?.close();
     this.audioCtx = null;
     this.onSpeak = null;
@@ -152,90 +110,65 @@ export class NexusVoice implements Disposable {
   }
 
   /**
-   * Speak with the full processing chain for an ethereal sound.
-   * Uses SpeechSynthesis with carefully chosen voice params.
+   * Play a WAV file with reverb + warmth processing for ethereal sound.
    */
-  private speakWithProcessing(text: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      const utterance = new SpeechSynthesisUtterance(text);
+  private async playWavWithProcessing(url: string): Promise<void> {
+    const ctx = this.ensureAudioContext();
+    const reverbBuf = this.ensureReverbBuffer(ctx);
 
-      // Select the best voice
-      const voices = speechSynthesis.getVoices();
-      const voice = selectVoice(voices);
-      if (voice) utterance.voice = voice;
+    // Fetch and decode the WAV file
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP ${response.status} for ${url}`);
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
 
-      // Nexus Voice: slightly lower pitch, deliberate pace, letter-spacing effect
-      utterance.pitch = 1.0;
-      utterance.rate = 0.85;
-      utterance.volume = this.volume;
-
-      utterance.onend = () => resolve();
-      utterance.onerror = (e) => reject(new Error(`NexusVoice: ${e.error}`));
-
-      // Apply reverb and warmth via AudioContext post-processing
-      try {
-        const ctx = this.ensureAudioContext();
-        const reverbBuf = this.ensureReverbBuffer(ctx);
-
-        const convolver = ctx.createConvolver();
-        convolver.buffer = reverbBuf;
-
-        // Warmth filter — gentle low-pass to remove harsh highs
-        const warmth = ctx.createBiquadFilter();
-        warmth.type = 'lowpass';
-        warmth.frequency.value = 3500;
-        warmth.Q.value = 0.7;
-
-        const gain = ctx.createGain();
-        gain.gain.value = this.volume;
-
-        // Dry/wet mix: mostly dry with subtle reverb
-        const dry = ctx.createGain();
-        dry.gain.value = 0.75;
-        const wet = ctx.createGain();
-        wet.gain.value = 0.25;
-
-        // Route: source → dry → warmth → gain → dest
-        //        source → convolver → wet → warmth → gain → dest
-        // (processing happens when the system outputs to dest)
-        dry.connect(warmth);
-        convolver.connect(wet);
-        wet.connect(warmth);
-        warmth.connect(gain);
-        gain.connect(ctx.destination);
-
-        // Clean up nodes after speech ends
-        const originalOnEnd = utterance.onend;
-        utterance.onend = (ev) => {
-          dry.disconnect();
-          wet.disconnect();
-          convolver.disconnect();
-          warmth.disconnect();
-          gain.disconnect();
-          if (originalOnEnd) originalOnEnd.call(utterance, ev);
-        };
-      } catch {
-        // If Web Audio setup fails, just speak normally
-      }
-
-      console.log(`[NexusVoice] Speaking: "${text}" (voice=${voice?.name ?? 'default'})`);
-      speechSynthesis.speak(utterance);
-    });
-  }
-
-  /** Plain fallback without audio processing. */
-  private speakPlain(text: string): Promise<void> {
     return new Promise<void>((resolve) => {
-      const utterance = new SpeechSynthesisUtterance(text);
-      const voices = speechSynthesis.getVoices();
-      const voice = selectVoice(voices);
-      if (voice) utterance.voice = voice;
-      utterance.pitch = 1.0;
-      utterance.rate = 0.85;
-      utterance.volume = this.volume;
-      utterance.onend = () => resolve();
-      utterance.onerror = () => resolve();
-      speechSynthesis.speak(utterance);
+      if (this.disposed) { resolve(); return; }
+
+      const source = ctx.createBufferSource();
+      source.buffer = audioBuffer;
+      this.currentSource = source;
+
+      // Reverb convolver
+      const convolver = ctx.createConvolver();
+      convolver.buffer = reverbBuf;
+
+      // Warmth filter — gentle low-pass to remove harsh highs
+      const warmth = ctx.createBiquadFilter();
+      warmth.type = 'lowpass';
+      warmth.frequency.value = 4000;
+      warmth.Q.value = 0.7;
+
+      const gain = ctx.createGain();
+      gain.gain.value = this.volume;
+
+      // Dry/wet mix: mostly dry with subtle reverb
+      const dry = ctx.createGain();
+      dry.gain.value = 0.8;
+      const wet = ctx.createGain();
+      wet.gain.value = 0.2;
+
+      // Route: source → dry → warmth → gain → dest
+      //        source → convolver → wet → warmth → gain → dest
+      source.connect(dry);
+      source.connect(convolver);
+      dry.connect(warmth);
+      convolver.connect(wet);
+      wet.connect(warmth);
+      warmth.connect(gain);
+      gain.connect(ctx.destination);
+
+      source.onended = () => {
+        this.currentSource = null;
+        dry.disconnect();
+        wet.disconnect();
+        convolver.disconnect();
+        warmth.disconnect();
+        gain.disconnect();
+        resolve();
+      };
+
+      source.start();
     });
   }
 }

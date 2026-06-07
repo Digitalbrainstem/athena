@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { NexusVoice } from '../../src/audio/nexus-voice.js';
-import type { NexusVoiceLine } from '../../src/audio/nexus-voice.js';
+import type { NexusVoiceLine } from '../../src/core/registry.js';
 
 describe('NexusVoice', () => {
   let voice: NexusVoice;

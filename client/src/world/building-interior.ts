@@ -223,7 +223,7 @@ export class BuildingInterior implements Disposable {
 
   // ---- Floor with plank pattern ------------------------------------------
 
-  private addFloor(config: BuildingConfig, hw: number, hd: number): void {
+  private addFloor(config: BuildingConfig, _hw: number, _hd: number): void {
     const geo = new THREE.PlaneGeometry(config.width, config.depth, config.width, config.depth);
     const mat = this.makeMat(config.floorColor);
     this.geometries.push(geo);
@@ -281,19 +281,18 @@ export class BuildingInterior implements Disposable {
 
   // ---- Door frame --------------------------------------------------------
 
-  private addDoorFrame(config: BuildingConfig, hw: number, hd: number, h: number): void {
+  private addDoorFrame(config: BuildingConfig, hw: number, hd: number, _h: number): void {
     const frameMat = this.makeMat(0x3a2210);
     const doorHalf = DOOR_WIDTH / 2;
     const frameThickness = 0.12;
 
     let dx = 0, dz = 0;
-    let rotY = 0;
 
     switch (config.doorWall) {
       case 'south': dz = hd; break;
       case 'north': dz = -hd; break;
-      case 'east':  dx = hw; rotY = Math.PI / 2; break;
-      case 'west':  dx = -hw; rotY = Math.PI / 2; break;
+      case 'east':  dx = hw; break;
+      case 'west':  dx = -hw; break;
     }
 
     // Left jamb
@@ -325,7 +324,7 @@ export class BuildingInterior implements Disposable {
 
   // ---- Hanging lanterns --------------------------------------------------
 
-  private addLanterns(config: BuildingConfig, hw: number, hd: number, h: number): void {
+  private addLanterns(config: BuildingConfig, _hw: number, _hd: number, h: number): void {
     const preset = LIGHT_PRESETS[config.lighting] ?? LIGHT_PRESETS['warm']!;
     const lanternCount = config.style === 'workshop' ? 4 : 2;
     const spacing = Math.min(config.width, config.depth) * 0.3;

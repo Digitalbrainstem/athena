@@ -9,6 +9,12 @@ import { generateImpulseResponse, getReverbForBiome, getReverbConfig } from './r
 import type { ReverbPreset } from './reverb-presets.js';
 
 const FADE_DURATION_MS = 1000;
+const BIOME_MUSIC_FILES: Record<string, string> = {
+  workshop: '/content/audio/music/priority1/music-workshop-ambient.wav',
+  overworld: '/content/audio/music/priority1/music-overworld.wav',
+  portal: '/content/audio/music/priority1/music-portal-ambient.wav',
+};
+const BIOME_MUSIC_ID = 'biome-music';
 
 export class AudioManager implements Disposable {
   private ctx: AudioContext | null = null;
@@ -146,8 +152,10 @@ export class AudioManager implements Disposable {
     // Switch ambient soundscape
     this.ambientGenerator?.startBiome(biomeId);
 
-    // Switch music
-    this.musicGen?.startBiome(biomeId);
+    // The oscillator-based procedural layer reads as a constant tone in playtests.
+    // Keep generated ambience/SFX, but use pre-rendered music files only.
+    this.musicGen?.stop(250);
+    this.switchBiomeMusicFile(biomeId);
 
     // Update reverb
     const preset = getReverbForBiome(biomeId);
@@ -167,6 +175,16 @@ export class AudioManager implements Disposable {
   /** Get the current biome ID the atmosphere is playing for. */
   getCurrentBiome(): string | null {
     return this.currentBiomeId;
+  }
+
+  private switchBiomeMusicFile(biomeId: string): void {
+    const file = BIOME_MUSIC_FILES[biomeId];
+    if (!file) {
+      this.stop(BIOME_MUSIC_ID);
+      return;
+    }
+
+    void this.playMusicFile(file, BIOME_MUSIC_ID, 0.12, true);
   }
 
   // -----------------------------------------------------------------------

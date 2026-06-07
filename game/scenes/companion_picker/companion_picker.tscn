@@ -1,0 +1,75 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/companion/companion_picker.gd" id="1_script"]
+
+[sub_resource type="LabelSettings" id="SubResource_title_settings"]
+font_size = 48
+font_color = Color(0.133, 0.827, 0.933, 1)
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 4
+
+[node name="CompanionPicker" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.03, 0.12, 1)
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = 30.0
+offset_right = -40.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Title" type="Label" parent="VBox"]
+layout_mode = 2
+text = "Choose Your Companion"
+label_settings = SubResource("SubResource_title_settings")
+horizontal_alignment = 1
+
+[node name="NameEntry" type="LineEdit" parent="VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+custom_minimum_size = Vector2(400, 50)
+placeholder_text = "What's your name?"
+alignment = 1
+
+[node name="Carousel" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Description" type="Label" parent="VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 60)
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ChooseButton" type="Button" parent="VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+custom_minimum_size = Vector2(300, 60)
+text = "✦ Choose This Companion ✦"
+
+[node name="VoicePlayer" type="AudioStreamPlayer" parent="."]

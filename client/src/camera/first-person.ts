@@ -14,6 +14,7 @@ const EYE_HEIGHT = 1.6;
 const PLAYER_RADIUS = 0.3;
 
 export type HeightProvider = (x: number, z: number) => number;
+export interface CollisionBox { cx: number; cz: number; hx: number; hz: number }
 
 export class FirstPersonCamera implements Disposable {
   private yaw = 0;
@@ -36,7 +37,7 @@ export class FirstPersonCamera implements Disposable {
   private pendingMoveActions: GameAction[] = [];
 
   // Collision objects (updated each frame from scene graph)
-  private collisionBoxes: { cx: number; cz: number; hx: number; hz: number }[] = [];
+  private collisionBoxes: CollisionBox[] = [];
 
   // Terrain height provider (from WorldManager)
   private heightProvider: HeightProvider | null = null;
@@ -60,7 +61,7 @@ export class FirstPersonCamera implements Disposable {
   }
 
   /** Add extra collision boxes (e.g. interior walls from WorldManager) */
-  addExtraCollisionBoxes(boxes: { cx: number; cz: number; hx: number; hz: number }[]): void {
+  addExtraCollisionBoxes(boxes: CollisionBox[]): void {
     this.collisionBoxes.push(...boxes);
   }
 

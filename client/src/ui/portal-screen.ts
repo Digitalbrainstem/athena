@@ -15,15 +15,11 @@
 import * as THREE from 'three';
 import { createGalaxyPortalMaterial } from '../shaders/galaxy-portal.js';
 import type { GalaxyPortalUniforms } from '../shaders/galaxy-portal.js';
+import { CINEMATIC_LINES, MUSIC } from '../core/registry.js';
 import type { Disposable } from '../types.js';
 
 const FLY_DURATION = 3.0;
-const T_PROMPT_IN  = 1.5;   // clickable after 1.5s (returning players)
-
-const AUDIO_MUSIC   = '/content/audio/music/priority1/music-portal-ambient.wav';
-const AUDIO_WELCOME = '/content/audio/voice/nexus/nv-welcome-02.wav';
-const AUDIO_FOUNDER = '/content/audio/voice/casting/voice-07-alexander_hatton.wav';
-const AUDIO_PORTAL  = '/content/audio/voice/nexus/nv-portal-01.wav';
+const T_PROMPT_IN  = 1.5;
 
 export interface PortalShowOptions {
   firstTime?: boolean;
@@ -40,6 +36,8 @@ export class PortalScreen implements Disposable {
   private camera: THREE.OrthographicCamera | null = null;
   private portalMaterial: (THREE.ShaderMaterial & { uniforms: GalaxyPortalUniforms }) | null = null;
   private portalMesh: THREE.Mesh | null = null;
+  private tapPrompt: HTMLElement | null = null;
+  private logoElement: HTMLElement | null = null;
 
   private animationId = 0;
   private startTime = 0;
@@ -68,19 +66,19 @@ export class PortalScreen implements Disposable {
       if (this.firstTime) {
         this.reveal = 0.0;
         this.targetReveal = 0.0;
+        // The HTML "instant-tap" overlay already captured the gesture
+        // so we skip waitForGesture and start cinematic immediately
       }
 
-      // Load text overlay (transparent PNG) — background is procedural shader
-      const loader = new THREE.TextureLoader();
-      loader.load('/nexus-text-transparent.png', (textTex) => {
-        textTex.minFilter = THREE.LinearFilter;
-        this.initScene(textTex);
-        this.animate();
+      // Initialize WebGL
+      this.initScene();
+      this.animate();
 
-        if (this.firstTime) {
-          void this.runCinematic();
-        }
-      });
+      if (this.firstTime) {
+        void this.runCinematic();
+      } else {
+        if (this.logoElement) this.logoElement.style.opacity = '1';
+      }
     });
   }
 
@@ -96,42 +94,84 @@ export class PortalScreen implements Disposable {
   // ── Cinematic intro — first-time players only ─────────────────────────────
 
   private async runCinematic(): Promise<void> {
-    this.audioCtx = new AudioContext();
-    if (this.audioCtx.state === 'suspended') {
-      try { await this.audioCtx.resume(); } catch { /* ignore */ }
-      if (this.audioCtx.state === 'suspended') {
-        await this.waitForGesture();
-        try { await this.audioCtx.resume(); } catch { /* ignore */ }
-      }
-    }
+    console.log('[Portal] Cinematic starting (gesture already captured by HTML tap)');
 
-    // Start ambient music with fade-in
+    // Non-blocking fullscreen + landscape
+    try {
+      const el = document.documentElement as HTMLElement & {
+        webkitRequestFullscreen?: () => Promise<void>;
+      };
+      if (el.requestFullscreen) {
+        el.requestFullscreen().catch(() => {});
+      } else if (el.webkitRequestFullscreen) {
+        el.webkitRequestFullscreen().catch(() => {});
+      }
+    } catch { /* */ }
+    try { (screen.orientation as any).lock('landscape').catch(() => {}); } catch { /* */ }
+
+    // AudioContext — user already tapped via the HTML overlay
+    this.audioCtx = new AudioContext();
+    try { await this.audioCtx.resume(); } catch { /* */ }
+    console.log('[Portal] AudioContext:', this.audioCtx.state);
+
+    // Start music immediately (don't wait for it)
     this.startMusic();
 
-    // Phase 1: black screen with music (2s)
-    await this.wait(2000);
+    // Start revealing immediately — show something right away
+    this.driveReveal(0.15, 2.0);
+    console.log('[Portal] Phase 1: Music + stars emerging');
+    await this.wait(1500);
     if (this.disposed) return;
 
-    // Phase 2: Nexus Voice welcome — stars fade in
-    this.driveReveal(0.4, 4.0);
-    await this.playVoice(AUDIO_WELCOME);
+    // PHASE 2: The Call — stars appear, Emily speaks
+    console.log('[Portal] Phase 2: The Call');
+    this.driveReveal(0.3, 4.0);
+    await this.playVoice(CINEMATIC_LINES[0]); // "Have you ever wondered..."
+    if (this.disposed) return;
+
+    await this.wait(1200);
+    if (this.disposed) return;
+
+    this.driveReveal(0.5, 3.0);
+    await this.playVoice(CINEMATIC_LINES[1]); // "Not what someone told you..."
     if (this.disposed) return;
 
     await this.wait(800);
     if (this.disposed) return;
 
-    // Phase 3: Founder voice — portal ring materializes
-    this.driveReveal(0.8, 4.0);
-    await this.playVoice(AUDIO_FOUNDER);
+    // PHASE 3: The Promise — portal ring forms
+    console.log('[Portal] Phase 3: The Promise');
+    this.driveReveal(0.7, 3.0);
+    await this.playVoice(CINEMATIC_LINES[2]); // "This is the Nexus..."
     if (this.disposed) return;
 
     await this.wait(600);
     if (this.disposed) return;
 
-    // Phase 4: Nexus Voice "step through" — full reveal
-    this.driveReveal(1.0, 3.0);
-    await this.playVoice(AUDIO_PORTAL);
+    this.driveReveal(0.85, 4.0);
+    await this.playVoice(CINEMATIC_LINES[3]); // "Here, every question you ask..."
     if (this.disposed) return;
+
+    await this.wait(800);
+    if (this.disposed) return;
+
+    // PHASE 4: The Invitation — full reveal + logo appears
+    console.log('[Portal] Phase 4: The Invitation');
+    this.driveReveal(1.0, 3.0);
+
+    // Nexus Academy logo fades in as portal fully reveals
+    if (this.logoElement) this.logoElement.style.opacity = '1';
+
+    await this.playVoice(CINEMATIC_LINES[4]); // "There are no grades here..."
+    if (this.disposed) return;
+
+    await this.wait(1000);
+    if (this.disposed) return;
+
+    await this.playVoice(CINEMATIC_LINES[5]); // "Step through..."
+    if (this.disposed) return;
+
+    console.log('[Portal] Cinematic complete — portal ready');
 
     // Mark intro as seen
     try { localStorage.setItem('nexus_intro_seen', '1'); } catch { /* ignore */ }
@@ -139,11 +179,15 @@ export class PortalScreen implements Disposable {
     // Portal is now clickable
     this.ready = true;
     if (this.overlay) this.overlay.style.cursor = 'pointer';
+    if (this.tapPrompt) {
+      this.tapPrompt.textContent = '✦ Tap anywhere to enter ✦';
+      this.tapPrompt.style.opacity = '1';
+    }
   }
 
   private startMusic(): void {
     try {
-      this.musicElement = new Audio(AUDIO_MUSIC);
+      this.musicElement = new Audio(MUSIC.portal_ambient);
       this.musicElement.loop = true;
       this.musicElement.volume = 0;
       void this.musicElement.play().catch(() => { /* autoplay blocked */ });
@@ -200,20 +244,6 @@ export class PortalScreen implements Disposable {
     return new Promise((r) => setTimeout(r, ms));
   }
 
-  private waitForGesture(): Promise<void> {
-    return new Promise((resolve) => {
-      const handler = () => {
-        document.removeEventListener('click', handler);
-        document.removeEventListener('touchstart', handler);
-        document.removeEventListener('keydown', handler);
-        resolve();
-      };
-      document.addEventListener('click', handler);
-      document.addEventListener('touchstart', handler);
-      document.addEventListener('keydown', handler);
-    });
-  }
-
   private stopAudio(): void {
     try { this.currentSource?.stop(); } catch { /* ignore */ }
     this.currentSource = null;
@@ -236,7 +266,7 @@ export class PortalScreen implements Disposable {
     overlay.setAttribute('role', 'main');
     overlay.setAttribute('aria-label', 'Welcome to Nexus Academy');
     overlay.tabIndex = 0;
-    overlay.style.cursor = 'default';
+    overlay.style.cursor = 'pointer';
 
     const sr = document.createElement('div');
     sr.className = 'sr-only';
@@ -251,8 +281,48 @@ export class PortalScreen implements Disposable {
     overlay.appendChild(canvas);
     this.canvas = canvas;
 
-    // Click/tap anywhere — no button
+    // Visible tap prompt
+    const prompt = document.createElement('div');
+    prompt.id = 'portal-tap-prompt';
+    prompt.style.cssText = `
+      position: absolute; bottom: 15%; left: 0; right: 0;
+      text-align: center; z-index: 5; pointer-events: none;
+      font-family: 'Nunito', sans-serif; font-size: 1.1rem;
+      color: rgba(255,255,255,0.8); letter-spacing: 0.1em;
+      animation: pulse-glow 2s ease-in-out infinite;
+    `;
+    prompt.textContent = '✦ Tap anywhere to enter ✦';
+    // Hide until ready
+    prompt.style.opacity = '0';
+    prompt.style.transition = 'opacity 0.8s ease';
+    overlay.appendChild(prompt);
+    this.tapPrompt = prompt;
+
+    // Nexus Academy logo — your original chrome metallic text with transparent bg
+    const logo = document.createElement('div');
+    logo.id = 'portal-logo';
+    logo.style.cssText = `
+      position: absolute; top: 25%; left: 0; right: 0; transform: translateY(-50%);
+      text-align: center; z-index: 5; pointer-events: none;
+      opacity: 0; transition: opacity 2s ease;
+    `;
+    const logoImg = document.createElement('img');
+    logoImg.src = '/nexus-text-transparent.png';
+    logoImg.alt = 'Nexus Academy';
+    logoImg.style.cssText = `
+      max-width: min(80%, 500px); height: auto;
+      filter: drop-shadow(0 0 20px rgba(34,211,238,0.5)) drop-shadow(0 0 40px rgba(167,139,250,0.3));
+    `;
+    logo.appendChild(logoImg);
+    overlay.appendChild(logo);
+    this.logoElement = logo;
+
+    // Click/tap anywhere — request fullscreen + enter portal
     const enter = () => {
+      // Request fullscreen on first interaction (hides address bar)
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen?.().catch(() => { /* ignore */ });
+      }
       if (!this.ready || this.entering) return;
       this.onEnter();
     };
@@ -305,7 +375,7 @@ export class PortalScreen implements Disposable {
 
   // ── Scene: fullscreen quad with galaxy shader + text planes ──────────────
 
-  private initScene(textTex: THREE.Texture): void {
+  private initScene(): void {
     if (!this.canvas) return;
     const w = window.innerWidth;
     const h = window.innerHeight;
@@ -322,8 +392,8 @@ export class PortalScreen implements Disposable {
     this.scene = new THREE.Scene();
     this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
-    // Fullscreen quad — procedural background + text overlay
-    this.portalMaterial = createGalaxyPortalMaterial(textTex);
+    // Fullscreen quad — pure procedural portal shader
+    this.portalMaterial = createGalaxyPortalMaterial();
     this.portalMaterial.uniforms.uResolution.value.set(w, h);
     this.portalMaterial.uniforms.uReveal.value = this.reveal;
     const quad = new THREE.PlaneGeometry(2, 2);
@@ -367,6 +437,7 @@ export class PortalScreen implements Disposable {
     if (!this.firstTime && !this.ready && t >= T_PROMPT_IN) {
       this.ready = true;
       if (this.overlay) this.overlay.style.cursor = 'pointer';
+      if (this.tapPrompt) this.tapPrompt.style.opacity = '1';
     }
 
     // Fly-through

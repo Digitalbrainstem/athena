@@ -21,7 +21,6 @@ uniform float uFlythrough;
 uniform float uWarp;
 uniform float uReveal;
 uniform vec2  uResolution;
-uniform sampler2D uText;
 
 varying vec2 vUv;
 
@@ -233,44 +232,7 @@ void main() {
   // ── Fly-through: wormhole tunnel ──
   color += wormholeTunnel(pos, dist, angle, time, fly);
 
-  // ── Text layer ──
-  vec2 textUv = uv;
-
-  // Spaghettification — text stretches
-  if (warp > 0.0) {
-    float edgeDist = abs(textUv.x - 0.5) * 2.0;
-    float warpAmt = warp * edgeDist * edgeDist;
-    textUv.x = 0.5 + (textUv.x - 0.5) * (1.0 + warpAmt * 0.5);
-    textUv.y = 0.5 + (textUv.y - 0.5) * (1.0 + warpAmt * 0.7);
-  }
-
-  // Fly-through: text rips apart, dragged into the tunnel walls
-  if (fly > 0.0) {
-    // Words split vertically — pulled to top and bottom walls
-    float splitAmt = fly * fly * 2.5;
-    float isTop = step(0.5, vUv.y);
-    textUv.y += (isTop * 2.0 - 1.0) * splitAmt * 0.4;
-
-    // Horizontal stretch — pulled outward toward ring walls
-    textUv.x = 0.5 + (textUv.x - 0.5) * (1.0 + fly * fly * 2.0);
-
-    // Radial pull — text curves toward the ring edge
-    vec2 textDir = textUv - 0.5;
-    float textDist = length(textDir);
-    if (textDist > 0.001) {
-      textUv += normalize(textDir) * fly * fly * 0.15;
-    }
-  }
-
-  vec4 textSample = vec4(0.0);
-  if (textUv.x >= 0.0 && textUv.x <= 1.0 && textUv.y >= 0.0 && textUv.y <= 1.0) {
-    textSample = texture2D(uText, textUv);
-  }
-
-  // Text fades as it's torn apart
-  float textFade = 1.0 - smoothstep(0.0, 0.4, fly);
-  float textAlpha = textSample.a * textFade;
-  color = mix(color, textSample.rgb, textAlpha);
+  // Text overlay removed — cinematic is pure visuals + Emily's voice
 
   // ── Final fly-through: darken then flash ──
   if (fly > 0.25) {
@@ -296,19 +258,15 @@ export interface GalaxyPortalUniforms {
   uWarp: { value: number };
   uReveal: { value: number };
   uResolution: { value: THREE.Vector2 };
-  uText: { value: THREE.Texture | null };
 }
 
-export function createGalaxyPortalMaterial(
-  textTexture: THREE.Texture,
-): THREE.ShaderMaterial & { uniforms: GalaxyPortalUniforms } {
+export function createGalaxyPortalMaterial(): THREE.ShaderMaterial & { uniforms: GalaxyPortalUniforms } {
   const uniforms: GalaxyPortalUniforms = {
     uTime: { value: 0 },
     uFlythrough: { value: 0 },
     uWarp: { value: 0 },
     uReveal: { value: 1.0 },
     uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-    uText: { value: textTexture },
   };
 
   return new THREE.ShaderMaterial({

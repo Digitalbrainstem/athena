@@ -15,6 +15,7 @@ import { HUD } from './ui/hud.js';
 import { PortalScreen } from './ui/portal-screen.js';
 import { ProfileScreen } from './ui/profile-screen.js';
 import { CompanionPicker } from './ui/companion-picker.js';
+import { OnboardingFlow } from './ui/onboarding-flow.js';
 import { NpcDialoguePanel, findNearestNpc, npcsInBiome, BIOME_NPCS } from './ui/npc-dialogue.js';
 import type { NpcEntity } from './ui/npc-dialogue.js';
 import { TradePanel } from './ui/trade-panel.js';
@@ -36,8 +37,8 @@ async function boot(): Promise<void> {
 
   // Lock to landscape on mobile devices (best-effort, non-blocking)
   try {
-    await (screen.orientation as any).lock('landscape');
-  } catch { /* not supported or not fullscreen — CSS overlay handles it */ }
+    (screen.orientation as any).lock('landscape').catch(() => {});
+  } catch { /* */ }
   
   const canvas = document.getElementById('game-canvas') as HTMLCanvasElement | null;
   if (!canvas) { console.error('[Nexus] Could not find #game-canvas element'); return; }
@@ -47,41 +48,51 @@ async function boot(): Promise<void> {
   a11y.init();
   disposables.push(a11y);
 
-  const core = await NexusCore.create({ debug: DEBUG, sqliteWasmUrl: '/sql-wasm.wasm' });
-  debug('core', 'NexusCore created');
-  disposables.push({ dispose: () => { void core.destroy(); } });
-
-  // --- Portal Gateway (title screen) ---
-  // First-time players get full cinematic intro with voice-over.
-  // Returning players see the portal immediately.
-
+  // --- Portal Gateway FIRST — show immediately, don't wait for core ---
   const firstTime = !localStorage.getItem('nexus_intro_seen');
 
   const portalScreen = new PortalScreen();
   disposables.push(portalScreen);
 
-  // Nexus Voice — speaks as the portal opens (returning players only)
+  // Show portal WHILE NexusCore loads in parallel
+  const portalPromise = portalScreen.show({ firstTime });
+  const corePromise = NexusCore.create({ debug: DEBUG, sqliteWasmUrl: '/sql-wasm.wasm' });
+
+  // Nexus Voice for returning players
   const nexusVoice = new NexusVoice();
   disposables.push(nexusVoice);
 
-  // Show portal (cinematic for first-time, immediate for returning)
-  const portalPromise = portalScreen.show({ firstTime });
-
   if (!firstTime) {
-    // Slight delay so the portal light appears first, then the voice
-    setTimeout(() => {
-      void nexusVoice.speak('welcome');
-    }, 800);
+    setTimeout(() => { void nexusVoice.speak('welcome'); }, 800);
   }
 
-  await portalPromise;
-  debug('ui', 'Portal gateway complete — entering profile screen');
+  // Wait for BOTH portal interaction and core loading
+  const [, core] = await Promise.all([portalPromise, corePromise]);
+  debug('core', 'NexusCore created + portal complete');
+  disposables.push({ dispose: () => { void core.destroy(); } });
 
-  // --- Name Entry + Companion Picker ---
-  const companionPicker = new CompanionPicker();
-  disposables.push(companionPicker);
-  const companionResult = await companionPicker.show();
-  debug('ui', `Companion chosen: ${companionResult.companionId} for "${companionResult.name}"`);
+  // --- Onboarding: Name → Age → Companion (first-time) or quick pick (returning) ---
+  let playerName: string;
+  let companionId: string;
+  let ageTier: string;
+
+  if (firstTime) {
+    const onboarding = new OnboardingFlow();
+    disposables.push(onboarding);
+    const result = await onboarding.run();
+    playerName = result.playerName;
+    companionId = result.companionId;
+    ageTier = result.ageTier;
+    debug('ui', `Onboarding complete: ${playerName}, tier=${ageTier}, companion=${companionId}`);
+  } else {
+    const companionPicker = new CompanionPicker();
+    disposables.push(companionPicker);
+    const companionResult = await companionPicker.show();
+    playerName = companionResult.name;
+    companionId = companionResult.companionId;
+    ageTier = 'discovery';
+    debug('ui', `Returning: ${companionId} for "${playerName}"`);
+  }
 
   // --- Profile selection / creation (uses companion picker result) ---
   const profileScreen = new ProfileScreen();
@@ -91,10 +102,9 @@ async function boot(): Promise<void> {
 
   let profileId: string;
   if (profiles.length === 0) {
-    // No profiles — create one using the companion picker result
     const newProfile = await core.createProfile({
-      name: companionResult.name,
-      avatarData: companionResult.companionId,
+      name: playerName,
+      avatarData: companionId,
     });
     profileId = newProfile.id;
   } else {
@@ -150,13 +160,19 @@ async function boot(): Promise<void> {
 
   // Wire the companion character model into the scene (replaces default orb)
   if (profile?.avatarData) {
-    sceneRenderer.setCompanionModel(profile.avatarData, profile.masteryTier);
+    void sceneRenderer.setCompanionModel(profile.avatarData, profile.masteryTier);
   }
 
   const input = new InputManager();
   input.register(new KeyboardInput());
-  const isMobile = 'ontouchstart' in window && window.innerWidth < 1024;
-  if ('ontouchstart' in window) input.register(new TouchInput(isMobile));
+  const hasTouchInput = 'ontouchstart' in window
+    || navigator.maxTouchPoints > 0
+    || window.matchMedia('(pointer: coarse)').matches;
+  const isMobile = hasTouchInput && (
+    window.innerWidth < 1024
+    || window.matchMedia('(pointer: coarse)').matches
+  );
+  if (hasTouchInput) input.register(new TouchInput(isMobile));
   disposables.push(input);
 
   const fpCam = new FirstPersonCamera();
@@ -244,9 +260,11 @@ async function boot(): Promise<void> {
   });
   debug('ui', 'Crafting and map panels initialized');
 
-  // Spawn player at town-square center, ground level
-  fpCam.seedPosition(0, 0);
-  core.setPlayerPosition(0, 0);
+  // Spawn at the active opening biome so the first playable moment has models,
+  // collision, and nearby interactions instead of an empty town-square walk.
+  const startPos = worldManager.getStartPosition(core.getCurrentBiome());
+  fpCam.seedPosition(startPos.x, startPos.z);
+  core.setPlayerPosition(startPos.x, startPos.z);
 
   // Offline support — announce network status changes to screen readers
   const offlineMgr = new OfflineManager((text) => {
@@ -273,8 +291,8 @@ async function boot(): Promise<void> {
     (window as any).__nexus_debug = {
       get cameraPosition() { return fpCam.getEyePosition(); },
       get cameraVelocity() { return { vx: (fpCam as any).vx ?? 0, vz: (fpCam as any).vz ?? 0 }; },
-      get sceneGraph() { return core.getSceneGraph(); },
-      get sceneObjects() { return core.getSceneGraph().objects.length; },
+      get sceneGraph() { return worldManager.mergeGameplayObjects(core.getSceneGraph()); },
+      get sceneObjects() { return worldManager.mergeGameplayObjects(core.getSceneGraph()).objects.length; },
       get groundColor() { return core.getSceneGraph().ground.color; },
       get skyColor() { return core.getSceneGraph().sky.primaryColor; },
       get fps() { return loop.fps; },
@@ -402,15 +420,7 @@ async function boot(): Promise<void> {
   audioManager.startAtmosphere(startingBiome);
   debug('audio', `Atmosphere started for biome: ${startingBiome}`);
 
-  // Load the workshop ambient music WAV file if starting in the workshop
-  if (startingBiome === 'workshop') {
-    void audioManager.playMusicFile(
-      '/content/audio/music/priority1/music-workshop-ambient.wav',
-      'workshop-ambient-music',
-      0.15,
-      true,
-    );
-  }
+  const hasBlockingUi = () => hud.hasOpenPanel || hud.isDialogueVisible;
 
   // --- Initial quest offering for the starting biome (after a short delay) ---
   setTimeout(() => {
@@ -431,7 +441,6 @@ async function boot(): Promise<void> {
   }, 5000);
 
   canvas.addEventListener('click', () => {
-    if (!isMobile && !fpCam.isPointerLocked && loop.isRunning) fpCam.requestPointerLock(canvas);
     // Resume AudioContext on any click/tap (browser policy may suspend it)
     if (audioCtx.state === 'suspended') {
       void audioCtx.resume().then(() => {
@@ -440,11 +449,21 @@ async function boot(): Promise<void> {
     }
   });
 
-  // Mouse click while pointer-locked → fire interact action (desktop)
+  canvas.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+  });
+
+  // Mouse look is opt-in so regular clicks cannot steal the cursor from UI/dialogue.
+  // Right-click (or the L shortcut below) locks the pointer; Escape unlocks it.
   canvas.addEventListener('mousedown', (e) => {
-    if (e.button !== 0) return; // left click only
-    if (!fpCam.isPointerLocked) return;
-    input.inject({ type: 'interact', source: 'mouse' });
+    if (e.button === 2 && !isMobile && loop.isRunning && !fpCam.isPointerLocked && !hasBlockingUi()) {
+      fpCam.requestPointerLock(canvas);
+      return;
+    }
+
+    if (e.button === 0 && fpCam.isPointerLocked) {
+      input.inject({ type: 'interact', source: 'mouse' });
+    }
   });
 
   // Track last spoken dialogue to avoid re-speaking the same line each frame
@@ -590,8 +609,8 @@ async function boot(): Promise<void> {
         }
       }
 
-      const sg = core.getSceneGraph();
-      const highlighted = sg.objects.find(o => o.highlight && o.interactable);
+      const highlighted = loop.getHighlightedInteractable()
+        ?? core.getSceneGraph().objects.find(o => o.highlight && o.interactable);
       if (highlighted?.interactable) {
         const name = highlighted.interactable.prompt.replace(/^Interact with /, '');
 
@@ -670,16 +689,17 @@ async function boot(): Promise<void> {
     if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
 
     if (e.key === 'c' || e.key === 'C') {
-      // C key: toggle crafting panel (only when inside a biome with a crafting station nearby)
+      // C key: toggle crafting panel when a station is highlighted.
       if (hud.mapPanel?.isOpen) return; // don't open craft while map is open
       if (hud.craftPanel?.isOpen) {
         hud.craftPanel.close();
-      } else if (worldManager.isInside()) {
-        // Check if there's a crafting station in the current biome
-        const sg = core.getSceneGraph();
-        const craftStation = sg.objects.find(
-          o => o.interactable?.interactionType === 'craft',
-        );
+      } else {
+        const highlightedCraftStation = loop.getHighlightedInteractable();
+        const craftStation = highlightedCraftStation?.interactable?.interactionType === 'craft'
+          ? highlightedCraftStation
+          : worldManager.isInside()
+            ? core.getSceneGraph().objects.find(o => o.highlight && o.interactable?.interactionType === 'craft')
+            : undefined;
         if (craftStation) {
           const stationType = (craftStation.renderable.modelId ?? 'workbench').toLowerCase();
           hud.craftPanel?.open(stationType);
@@ -695,6 +715,12 @@ async function boot(): Promise<void> {
       if (hud.craftPanel?.isOpen) return; // don't open map while crafting
       hud.mapPanel?.toggle();
       debug('ui', `M key → map panel ${hud.mapPanel?.isOpen ? 'opened' : 'closed'}`);
+    }
+
+    if (e.key === 'l' || e.key === 'L') {
+      if (!isMobile && loop.isRunning && !fpCam.isPointerLocked && !hasBlockingUi()) {
+        fpCam.requestPointerLock(canvas);
+      }
     }
   });
 
@@ -781,25 +807,15 @@ async function boot(): Promise<void> {
     }
   }
 
-  // --- Start calibration if new profile ---
-  if (profile) {
-    const calibrationStarted = calibrationFlow.start(
-      core,
-      profile,
-      (speaker, text) => {
-        core.worldSystem.queueDialogue(speaker, text);
-        void companionVoice.speak(text, 'excited');
-      },
-      (results) => {
-        debug('calibration', 'Calibration complete:', results.detectedTier);
-        debug('calibration', 'Skill levels:', Object.fromEntries(results.skillLevels));
-        debug('calibration', 'Interests:', results.interests);
-      },
-    );
-    if (calibrationStarted) {
-      debug('calibration', 'Calibration flow started for new profile');
-    }
-  }
+  // --- Calibration disabled — will be reimplemented as natural world interactions ---
+  // The calibration system currently shows an intrusive dialog box which breaks
+  // immersion and doesn't work on touch devices. When reimplemented, calibration
+  // should be invisible — the world responds to what the player does naturally.
+  // See: docs/06-MASTERY_SYSTEM.md for the Ender Protocol design.
+  //
+  // if (profile) {
+  //   calibrationFlow.start(core, profile, ...);
+  // }
 
   // Poll for dialogue each frame and speak it via companion voice
   const dialoguePoll = setInterval(() => {

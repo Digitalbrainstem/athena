@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Companion Preview</title>
+<style>
+  body { background: #0a0a1a; color: #eee; font-family: sans-serif; margin: 0; padding: 1rem; }
+  h1 { color: #22d3ee; text-align: center; font-size: 1.3rem; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; max-width: 800px; margin: 0 auto; }
+  .card { background: #13131f; border-radius: 12px; padding: 0.75rem; text-align: center; }
+  .card img { width: 100%; border-radius: 8px; }
+  .card h3 { color: #22d3ee; margin: 0.5rem 0 0.25rem; font-size: 1rem; }
+  .card p { color: #94a3b8; font-size: 0.75rem; margin: 0; }
+  .label { display: flex; gap: 0.5rem; margin-top: 0.5rem; justify-content: center; }
+  .label span { font-size: 0.65rem; background: #222; padding: 2px 8px; border-radius: 8px; }
+  canvas { width: 100% !important; height: 250px !important; border-radius: 8px; }
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.171.0/examples/jsm/"}}</script>
+</head><body>
+<h1>Nexus Academy — Companion Models</h1>
+<h2 style="color:#a78bfa;text-align:center;font-size:1rem;margin:0.5rem 0;">✨ TRELLIS v2 (Latest)</h2>
+<p style="text-align:center;color:#94a3b8;font-size:0.8rem;">Generated with TRELLIS v2 4B on ROCm 7900 XT — game-ready decimated</p>
+<div class="grid" id="grid-v2"></div>
+
+<hr style="border:1px solid #222;margin:2rem 0;">
+<h2 style="color:#94a3b8;text-align:center;font-size:1rem;margin:0.5rem 0;">TRELLIS v1 (Previous)</h2>
+<p style="text-align:center;color:#94a3b8;font-size:0.8rem;">Text-to-3D via TRELLIS v1 342M</p>
+<div class="grid" id="grid"></div>
+
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+// === TRELLIS v2 models ===
+const v2Models = [
+  { id: 'scout_fox_v2', name: 'Scout', title: 'The Explorer', emoji: '🦊', color: '#ff6b2b', path: '/content/models/companions_trellis2/scout_fox_v2.glb' },
+];
+
+const gridV2 = document.getElementById('grid-v2');
+for (const c of v2Models) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  
+  const canvasEl = document.createElement('canvas');
+  card.appendChild(canvasEl);
+  
+  const h = document.createElement('h3');
+  h.style.color = c.color;
+  h.textContent = `${c.emoji} ${c.name} — TRELLIS v2`;
+  card.appendChild(h);
+  
+  const p = document.createElement('p');
+  p.textContent = c.title;
+  card.appendChild(p);
+  
+  const label = document.createElement('div');
+  label.className = 'label';
+  label.innerHTML = '<span style="background:#22d3ee22;color:#22d3ee;">TRELLIS v2</span><span>Game-ready mesh</span>';
+  card.appendChild(label);
+  
+  gridV2.appendChild(card);
+  
+  const clock = new THREE.Clock();
+  let mixer = null;
+  
+  const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(350, 250);
+  renderer.setClearColor(0x0a0a1a);
+  
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(40, 350/250, 0.1, 100);
+  camera.position.set(0, 0.5, 2.5);
+  
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  const dir = new THREE.DirectionalLight(0xffffff, 1.2);
+  dir.position.set(2, 3, 2);
+  scene.add(dir);
+  scene.add(new THREE.DirectionalLight(0x8888ff, 0.3).position.set(-2, 1, -2) && new THREE.DirectionalLight(0x8888ff, 0.3));
+  
+  const controls = new OrbitControls(camera, canvasEl);
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = 3;
+  controls.enableDamping = true;
+  controls.target.set(0, 0.3, 0);
+  
+  loader.load(c.path, (gltf) => {
+    const model = gltf.scene;
+    const box = new THREE.Box3().setFromObject(model);
+    const center = box.getCenter(new THREE.Vector3());
+    const size = box.getSize(new THREE.Vector3());
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const scale = 1.5 / maxDim;
+    model.scale.setScalar(scale);
+    model.position.sub(center.multiplyScalar(scale));
+    model.traverse((child) => {
+      if (child.isMesh) {
+        child.material.roughness = 0.6;
+        child.material.metalness = 0.1;
+        if (!child.material.map) {
+          child.material.vertexColors = true;
+        }
+      }
+    });
+    scene.add(model);
+    
+    let vertCount = 0, faceCount = 0;
+    model.traverse(child => {
+      if (child.isMesh && child.geometry) {
+        vertCount += child.geometry.attributes.position?.count || 0;
+        faceCount += child.geometry.index ? child.geometry.index.count / 3 : 0;
+      }
+    });
+    const info = document.createElement('span');
+    info.style.cssText = 'font-size:0.6rem; background:#1a1a2e; padding:2px 6px; border-radius:6px; color:#22d3ee;';
+    info.textContent = `${(vertCount/1000).toFixed(1)}K verts`;
+    card.querySelector('.label').appendChild(info);
+  });
+  
+  (function animateV2() {
+    requestAnimationFrame(animateV2);
+    controls.update();
+    renderer.render(scene, camera);
+  })();
+}
+
+// === TRELLIS v1 models ===
+const companions = [
+  { id: 'scout_fox', name: 'Scout', title: 'The Explorer', emoji: '🦊', color: '#ff6b2b' },
+  { id: 'merlin_owl', name: 'Merlin', title: 'The Thinker', emoji: '🦉', color: '#d4a574' },
+  { id: 'clover_rabbit', name: 'Clover', title: 'The Cheerleader', emoji: '🐰', color: '#ffc0cb' },
+  { id: 'rosie_bear', name: 'Rosie', title: 'Mama Bear', emoji: '🐻', color: '#d2691e' },
+  { id: 'starla_cat', name: 'Starla', title: 'The Star', emoji: '🐱', color: '#9370db' },
+  { id: 'rune_dragon', name: 'Rune', title: 'The Ancient Soul', emoji: '🐉', color: '#228b22' },
+];
+
+const grid = document.getElementById('grid');
+const loader = new GLTFLoader();
+
+for (const c of companions) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  
+  // Reference image
+  const img = document.createElement('img');
+  img.src = `/content/models/companions_v2/${c.id}/reference.png`;
+  img.alt = c.name;
+  card.appendChild(img);
+  
+  // 3D viewer
+  const canvasEl = document.createElement('canvas');
+  card.appendChild(canvasEl);
+  
+  const h = document.createElement('h3');
+  h.style.color = c.color;
+  h.textContent = `${c.emoji} ${c.name}`;
+  card.appendChild(h);
+  
+  const p = document.createElement('p');
+  p.textContent = c.title;
+  card.appendChild(p);
+  
+  const label = document.createElement('div');
+  label.className = 'label';
+  label.innerHTML = '<span>Reference</span><span>3D Rigged + Animated</span>';
+  card.appendChild(label);
+  
+  grid.appendChild(card);
+  
+  // Set up Three.js viewer for GLB
+  const clock = new THREE.Clock();
+  let mixer = null;
+  
+  const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(350, 250);
+  renderer.setClearColor(0x0a0a1a);
+  
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(40, 350/250, 0.1, 100);
+  camera.position.set(0, 0.5, 2.5);
+  
+  const ambient = new THREE.AmbientLight(0xffffff, 0.6);
+  scene.add(ambient);
+  const dir = new THREE.DirectionalLight(0xffffff, 1.0);
+  dir.position.set(2, 3, 2);
+  scene.add(dir);
+  const back = new THREE.DirectionalLight(0x8888ff, 0.3);
+  back.position.set(-2, 1, -2);
+  scene.add(back);
+  
+  const controls = new OrbitControls(camera, canvasEl);
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = 3;
+  controls.enableDamping = true;
+  controls.target.set(0, 0.3, 0);
+  
+  loader.load(`/content/models/companions_text3d/${c.id}.glb`, (gltf) => {
+    const model = gltf.scene;
+    const box = new THREE.Box3().setFromObject(model);
+    const center = box.getCenter(new THREE.Vector3());
+    const size = box.getSize(new THREE.Vector3());
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const scale = 1.5 / maxDim;
+    model.scale.setScalar(scale);
+    model.position.sub(center.multiplyScalar(scale));
+    
+    model.traverse((child) => {
+      if (child.isMesh) {
+        child.material.roughness = 0.7;
+        child.material.metalness = 0.0;
+      }
+    });
+    
+    scene.add(model);
+    
+    // Play embedded animations
+    if (gltf.animations && gltf.animations.length > 0) {
+      mixer = new THREE.AnimationMixer(model);
+      for (const clip of gltf.animations) {
+        mixer.clipAction(clip).play();
+      }
+      console.log(`${c.name}: ${gltf.animations.length} animations, ${gltf.animations.map(a => a.name).join(', ')}`);
+    } else {
+      console.log(`${c.name}: no animations found`);
+    }
+    
+    // Show bone count
+    let boneCount = 0;
+    model.traverse(child => { if (child.isBone) boneCount++; });
+    const info = document.createElement('span');
+    info.style.cssText = 'font-size:0.6rem; background:#1a1a2e; padding:2px 6px; border-radius:6px; color:#22d3ee;';
+    info.textContent = `${boneCount} bones`;
+    card.querySelector('.label').appendChild(info);
+  });
+  
+  function animate() {
+    requestAnimationFrame(animate);
+    const delta = clock.getDelta();
+    if (mixer) mixer.update(delta);
+    controls.update();
+    renderer.render(scene, camera);
+  }
+  animate();
+}
+</script>
+</body></html>
