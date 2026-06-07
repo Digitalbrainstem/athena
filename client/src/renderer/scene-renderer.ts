@@ -137,19 +137,10 @@ export class SceneRenderer implements Disposable {
         this.lightManager.sync(sceneGraph.lights);
         this.syncObjects([]); // Clear biome objects
       } else if (this.worldManager.isInside()) {
-        // Inside mode: interior provides floor, render biome objects at offset
+        // Inside mode: interior provides floor; GameLoop supplies world-space objects.
         this.groundRenderer.sync({ ...sceneGraph.ground, color: '#000000', size: { width: 0, depth: 0 } });
         this.lightManager.sync(sceneGraph.lights);
-        const offset = this.worldManager.getBiomeOffset();
-        const offsetObjects = sceneGraph.objects.map((obj) => ({
-          ...obj,
-          position: {
-            x: obj.position.x + offset.x,
-            y: obj.position.y + offset.y,
-            z: obj.position.z + offset.z,
-          },
-        }));
-        this.syncObjects(offsetObjects);
+        this.syncObjects(sceneGraph.objects);
       } else {
         // Transitioning: render nothing extra
         this.lightManager.sync(sceneGraph.lights);

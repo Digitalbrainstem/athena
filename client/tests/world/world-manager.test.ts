@@ -25,6 +25,19 @@ function findByName(root: THREE.Object3D, name: string): THREE.Object3D | null {
 }
 
 describe('WorldManager', () => {
+  it('starts the player on the workshop approach path outside craft range', () => {
+    const scene = new THREE.Scene();
+    const world = new WorldManager(scene);
+
+    try {
+      const start = world.getStartPosition('workshop');
+      expect(start).toEqual({ x: -40, z: 38 });
+      expect(Math.hypot(start.x - -40, start.z - 34)).toBeGreaterThan(2.5);
+    } finally {
+      world.dispose();
+    }
+  });
+
   it('populates natural biomes instead of entering an empty scene', () => {
     const scene = new THREE.Scene();
     const world = new WorldManager(scene);

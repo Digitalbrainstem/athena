@@ -285,11 +285,8 @@ export class WorldManager implements Disposable {
   getStartPosition(biomeId = 'workshop'): { x: number; z: number } {
     const loc = getBiomeLocation(biomeId);
     if (!loc) return { x: 0, z: 0 };
-    if (biomeId === 'workshop') {
-      return { x: loc.worldPosition.x, z: loc.worldPosition.z + 2 };
-    }
     const entranceLength = Math.hypot(loc.entranceOffset.x, loc.entranceOffset.z);
-    const clearDistance = Math.max(entranceLength * 0.7, landmarkHalfSize(loc) + 0.9);
+    const clearDistance = Math.max(entranceLength, landmarkHalfSize(loc) + 0.9);
     if (entranceLength === 0) {
       return { x: loc.worldPosition.x, z: loc.worldPosition.z + clearDistance };
     }

@@ -60,6 +60,23 @@ function createMaterial(category: ModelCategory): THREE.MeshStandardMaterial {
   });
 }
 
+function hasUsableMaterial(material: THREE.Material | THREE.Material[] | null | undefined): boolean {
+  if (!material) return false;
+  if (Array.isArray(material)) return material.length > 0 && material.every(m => m !== null && m !== undefined);
+  return true;
+}
+
+function prepareImportedMaterial(material: THREE.Material | THREE.Material[]): void {
+  const materials = Array.isArray(material) ? material : [material];
+  for (const mat of materials) {
+    mat.needsUpdate = true;
+    if (mat instanceof THREE.MeshStandardMaterial || mat instanceof THREE.MeshPhysicalMaterial) {
+      mat.roughness = Math.max(mat.roughness, 0.45);
+      mat.metalness = Math.min(mat.metalness, 0.65);
+    }
+  }
+}
+
 /**
  * Special case: trees get a brown trunk + green canopy.
  * We apply brown to the lower half geometry and green to the upper.
@@ -97,18 +114,20 @@ export async function loadGLB(
       path,
       (gltf) => {
         const group = new THREE.Group();
-        const material = createMaterial(cat);
+        const fallbackMaterial = createMaterial(cat);
         const s = scale ?? 1;
 
         gltf.scene.traverse((child) => {
           if ((child as THREE.Mesh).isMesh) {
             const mesh = child as THREE.Mesh;
-            // Compute normals for untextured models
-            if (mesh.geometry) {
+            if (mesh.geometry && !mesh.geometry.attributes.normal) {
               mesh.geometry.computeVertexNormals();
             }
-            // Apply our default material
-            mesh.material = material;
+            if (hasUsableMaterial(mesh.material)) {
+              prepareImportedMaterial(mesh.material);
+            } else {
+              mesh.material = fallbackMaterial;
+            }
             mesh.castShadow = true;
             mesh.receiveShadow = true;
           }

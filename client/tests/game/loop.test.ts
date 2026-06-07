@@ -54,8 +54,10 @@ function mockFpCam(): FirstPersonCamera {
     flushMoveActions: vi.fn(() => []),
     setMoveInput: vi.fn(),
     clearMoveInput: vi.fn(),
+    setHeightProvider: vi.fn(),
     updateMovement: vi.fn(),
     updateCollisionBoxes: vi.fn(),
+    addExtraCollisionBoxes: vi.fn(),
     getPredictiveRotation: vi.fn(() => ({ yaw: 0, pitch: 0 })),
     getEyePosition: vi.fn(() => ({ x: 0, y: 1.6, z: 0 })),
     seedPosition: vi.fn(),
@@ -102,6 +104,8 @@ function mockHud(): HUD {
     showQuestIndicator: vi.fn(),
     hideQuestIndicator: vi.fn(),
     dispose: vi.fn(),
+    hasOpenPanel: false,
+    isDialogueVisible: false,
   } as unknown as HUD;
 }
 
@@ -218,5 +222,114 @@ describe('GameLoop', () => {
     expect(loop.isRunning).toBe(true);
     loop.stop();
     expect(loop.isRunning).toBe(false);
+  });
+
+  it('does not release mouse-look for passive dialogue', () => {
+    (fpCam as unknown as { isPointerLocked: boolean }).isPointerLocked = true;
+    (hud as unknown as { hasOpenPanel: boolean; isDialogueVisible: boolean }).hasOpenPanel = false;
+    (hud as unknown as { hasOpenPanel: boolean; isDialogueVisible: boolean }).isDialogueVisible = true;
+
+    loop.start();
+    runFrame(0);
+    runFrame(16.67);
+
+    expect(fpCam.exitPointerLock).not.toHaveBeenCalled();
+  });
+
+  it('releases mouse-look when a panel opens', () => {
+    (fpCam as unknown as { isPointerLocked: boolean }).isPointerLocked = true;
+    (hud as unknown as { hasOpenPanel: boolean }).hasOpenPanel = true;
+
+    loop.start();
+    runFrame(0);
+    runFrame(16.67);
+
+    expect(fpCam.exitPointerLock).toHaveBeenCalled();
+  });
+
+  it('keeps object prompts ahead of biome entrance prompts', () => {
+    const graph = emptySceneGraph();
+    graph.objects.push({
+      entityId: 1,
+      position: { x: 0, y: 0, z: 0 },
+      rotation: { x: 0, y: 0, z: 0 },
+      renderable: {
+        meshType: 'model',
+        modelId: 'workbench',
+        color: '#D4A574',
+        scale: { x: 1, y: 1, z: 1 },
+        visible: true,
+      },
+      interactable: {
+        interactionType: 'craft',
+        radius: 2,
+        prompt: 'Interact with Workbench',
+      },
+      highlight: true,
+    });
+    (core.getSceneGraph as ReturnType<typeof vi.fn>).mockReturnValue(graph);
+    loop.setWorldManager({
+      getHeightAt: vi.fn(() => 0),
+      isOverworld: vi.fn(() => true),
+      isInside: vi.fn(() => false),
+      update: vi.fn(),
+      getOverworldSky: vi.fn(() => graph.sky),
+      mergeGameplayObjects: vi.fn((g: SceneGraph) => g),
+      getOverworldCollisionBoxes: vi.fn(() => []),
+      nearbyBiome: {
+        biome: { name: 'The Workshop' },
+        entranceDistance: 1,
+      },
+    } as unknown as Parameters<GameLoop['setWorldManager']>[0]);
+
+    loop.start();
+    runFrame(0);
+    runFrame(16.67);
+
+    expect(hud.showPrompt).toHaveBeenCalledWith('Press E to use the Workbench');
+    expect(hud.showPrompt).not.toHaveBeenCalledWith('Press E to enter The Workshop');
+  });
+
+  it('highlights inside-biome objects after applying the biome world offset', () => {
+    const graph = emptySceneGraph();
+    graph.objects.push({
+      entityId: 1,
+      position: { x: 0, y: 0, z: -3 },
+      rotation: { x: 0, y: 0, z: 0 },
+      renderable: {
+        meshType: 'model',
+        modelId: 'workbench',
+        color: '#D4A574',
+        scale: { x: 1, y: 1, z: 1 },
+        visible: true,
+      },
+      interactable: {
+        interactionType: 'craft',
+        radius: 3,
+        prompt: 'Interact with Workbench',
+      },
+      highlight: false,
+    });
+    (core.getSceneGraph as ReturnType<typeof vi.fn>).mockReturnValue(graph);
+    (fpCam.getEyePosition as ReturnType<typeof vi.fn>).mockReturnValue({ x: -40, y: 2.1, z: 27.2 });
+    fpCam.posX = -40;
+    fpCam.posZ = 27.2;
+    loop.setWorldManager({
+      getHeightAt: vi.fn(() => 0.5),
+      getBiomeOffset: vi.fn(() => ({ x: -40, y: 0.5, z: 30 })),
+      isOverworld: vi.fn(() => false),
+      isInside: vi.fn(() => true),
+      update: vi.fn(),
+      mergeGameplayObjects: vi.fn((g: SceneGraph) => g),
+      getExtraCollisionBoxes: vi.fn(() => []),
+      isNearDoor: true,
+    } as unknown as Parameters<GameLoop['setWorldManager']>[0]);
+
+    loop.start();
+    runFrame(0);
+    runFrame(16.67);
+
+    expect(hud.showPrompt).toHaveBeenCalledWith('Press E to use the Workbench');
+    expect(hud.showPrompt).not.toHaveBeenCalledWith('Press E to exit');
   });
 });

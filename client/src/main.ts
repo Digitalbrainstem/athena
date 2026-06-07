@@ -31,6 +31,38 @@ const DEBUG = import.meta.env.DEV;
 
 const disposables: Disposable[] = [];
 
+const STARTER_INVENTORY: Array<{ itemType: string; quantity: number }> = [
+  { itemType: 'red-pigment', quantity: 3 },
+  { itemType: 'blue-pigment', quantity: 3 },
+  { itemType: 'yellow-pigment', quantity: 3 },
+  { itemType: 'pine-wood', quantity: 5 },
+  { itemType: 'clay', quantity: 2 },
+  { itemType: 'H2O', quantity: 2 },
+];
+
+function describeInteraction(name: string, biomeId: string): string {
+  const normalized = name.toLowerCase();
+  if (normalized.includes('crop')) return 'These rows are alive with patterns: count the spacing, compare the heights, and the farm starts to make sense.';
+  if (normalized.includes('scarecrow')) return 'The scarecrow marks the wind and shadow direction. It is a quiet clue for where crops need protection.';
+  if (normalized.includes('well')) return 'The well is a water source. Water, soil, and sunlight are the farm system working together.';
+  if (normalized.includes('wheelbarrow')) return 'The wheelbarrow helps move materials. Heavy loads become easier when the wheel carries the friction.';
+  if (normalized.includes('barn')) return 'The barn stores tools and harvests. Good storage keeps a farm running through changing weather.';
+  if (normalized.includes('chest')) return 'The chest is ready for discoveries. Useful materials should feel like treasures, not menu items.';
+  if (normalized.includes('workbench')) return 'The workbench is where materials become inventions. Try combining pigments or building with pine wood.';
+  if (normalized.includes('forge')) return 'The forge is for heat, metal, and transformation. The right material changes when energy is added.';
+  if (normalized.includes('anvil')) return 'The anvil gives metal a place to change shape. Force works best when the surface beneath it is solid.';
+  return biomeId === 'farm'
+    ? `The ${name} belongs to the farm system. Look for how it connects to water, soil, sunlight, and motion.`
+    : `You examine the ${name}. The world is waiting for the right idea, not the right menu click.`;
+}
+
+function ensureStarterInventory(core: NexusCore): void {
+  if (core.worldSystem.getInventory().length > 0) return;
+  for (const item of STARTER_INVENTORY) {
+    core.worldSystem.addInventoryItem(item.itemType, item.quantity);
+  }
+}
+
 async function boot(): Promise<void> {
   // Start debug bridge — pipes browser console to terminal via WebSocket
   initDebugBridge();
@@ -119,6 +151,7 @@ async function boot(): Promise<void> {
 
   // Load the selected profile into the engine
   await core.loadProfile(profileId);
+  ensureStarterInventory(core);
   // Force one tick so WorldSystem loads biome data from DB
   core.update(1 / 60, []);
   debug('core', 'Profile loaded + first tick:', profileId);
@@ -420,7 +453,14 @@ async function boot(): Promise<void> {
   audioManager.startAtmosphere(startingBiome);
   debug('audio', `Atmosphere started for biome: ${startingBiome}`);
 
-  const hasBlockingUi = () => hud.hasOpenPanel || hud.isDialogueVisible;
+  const hasBlockingUi = () => hud.hasOpenPanel
+    || npcDialogue.isOpen
+    || tradePanel.isOpen
+    || document.getElementById('calibration-challenge') !== null;
+
+  const releasePointerForUi = (): void => {
+    if (fpCam.isPointerLocked) fpCam.exitPointerLock();
+  };
 
   // --- Initial quest offering for the starting biome (after a short delay) ---
   setTimeout(() => {
@@ -453,16 +493,11 @@ async function boot(): Promise<void> {
     e.preventDefault();
   });
 
-  // Mouse look is opt-in so regular clicks cannot steal the cursor from UI/dialogue.
-  // Right-click (or the L shortcut below) locks the pointer; Escape unlocks it.
+  // Desktop game controls: left-click enters mouse-look; E/gamepad/touch handle use.
+  // Real UI panels explicitly release pointer lock before opening.
   canvas.addEventListener('mousedown', (e) => {
-    if (e.button === 2 && !isMobile && loop.isRunning && !fpCam.isPointerLocked && !hasBlockingUi()) {
+    if (!isMobile && loop.isRunning && !fpCam.isPointerLocked && !hasBlockingUi() && (e.button === 0 || e.button === 2)) {
       fpCam.requestPointerLock(canvas);
-      return;
-    }
-
-    if (e.button === 0 && fpCam.isPointerLocked) {
-      input.inject({ type: 'interact', source: 'mouse' });
     }
   });
 
@@ -514,63 +549,18 @@ async function boot(): Promise<void> {
 
     // Interact with highlighted object → trigger companion dialogue + interaction SFX
     if (action.type === 'interact') {
-      // WorldManager biome entry/exit takes priority
-      if (worldManager.isOverworld()) {
-        const nearby = worldManager.nearbyBiome;
-        if (nearby && nearby.entranceDistance < 5) {
-          void worldManager.enterBiome().then((biomeId) => {
-            if (biomeId) {
-              // Move player inside
-              const pos = worldManager.getEntryPosition(biomeId);
-              if (pos) {
-                fpCam.seedPosition(pos.x, pos.z);
-                core.setPlayerPosition(pos.x, pos.z);
-              }
-              // Switch core to this biome for objects/audio
-              core.worldSystem.discoverBiome(biomeId);
-              core.worldSystem.changeBiome(biomeId);
-              core.update(1 / 60, []);
-              debug('world', `Entered biome: ${biomeId}`);
-
-              // Check for available quests in this biome
-              const available = core.selectAvailableQuests(biomeId);
-              if (available.length > 0 && core.getActiveQuests().length === 0) {
-                pendingQuestOffer = available;
-                const first = available[0]!;
-                const intro = first.content.companionIntro
-                  ?? `I noticed something interesting here…`;
-                setTimeout(() => {
-                  core.worldSystem.queueDialogue(
-                    core.getCompanionState()?.name ?? 'Companion',
-                    intro,
-                  );
-                  core.worldSystem.queueSfx('discovery-sparkle', 0.4);
-                }, 2000);
-                debug('quest', `Biome entry quest offer in ${biomeId}: ${available.map(q => q.title).join(', ')}`);
-              }
-            }
-          });
-          return;
-        }
-      } else if (worldManager.isInside() && worldManager.isNearDoor) {
-        void worldManager.exitBiome().then(() => {
-          const pos = worldManager.getExitPosition();
-          if (pos) {
-            fpCam.seedPosition(pos.x, pos.z);
-            core.setPlayerPosition(pos.x, pos.z);
-          }
-          debug('world', 'Exited to overworld');
-        });
-        return;
-      }
+      const highlighted = loop.getHighlightedInteractable()
+        ?? core.getSceneGraph().objects.find(o => o.highlight && o.interactable);
+      const highlightedIsNpc = highlighted?.interactable?.interactionType === 'talk';
 
       // --- NPC Interaction ---
       // Check if there's a nearby NPC when inside a biome
-      if (worldManager.isInside() && !npcDialogue.isOpen && !tradePanel.isOpen) {
+      if (worldManager.isInside() && (!highlighted?.interactable || highlightedIsNpc) && !npcDialogue.isOpen && !tradePanel.isOpen) {
         const biomeId = worldManager.activeBiomeId ?? core.getCurrentBiome();
         const eye = fpCam.getEyePosition();
         const nearbyNpc = findNearestNpc(biomeId, eye.x, eye.z);
         if (nearbyNpc) {
+          releasePointerForUi();
           // Handle calibration challenge interaction
           if (calibrationFlow.isActive && calibrationFlow.activeChallenge) {
             const challengeOverlay = document.getElementById('calibration-challenge');
@@ -609,14 +599,13 @@ async function boot(): Promise<void> {
         }
       }
 
-      const highlighted = loop.getHighlightedInteractable()
-        ?? core.getSceneGraph().objects.find(o => o.highlight && o.interactable);
       if (highlighted?.interactable) {
         const name = highlighted.interactable.prompt.replace(/^Interact with /, '');
 
         // --- Crafting station interaction → open craft panel ---
         if (highlighted.interactable.interactionType === 'craft') {
           const stationType = (highlighted.renderable.modelId ?? 'workbench').toLowerCase();
+          releasePointerForUi();
           hud.craftPanel?.open(stationType);
           debug('craft', `Opened crafting panel for station: ${stationType}`);
           return;
@@ -678,7 +667,58 @@ async function boot(): Promise<void> {
             profileId,
             context: `examine_${name.toLowerCase().replace(/\s+/g, '_')}`,
           });
+          core.worldSystem.queueDialogue(
+            core.getCompanionState()?.name ?? 'Companion',
+            describeInteraction(name, worldManager.activeBiomeId ?? core.getCurrentBiome()),
+          );
         }
+        return;
+      }
+
+      // Biome travel is a fallback when no nearby object/NPC owns the E press.
+      if (worldManager.isOverworld()) {
+        const nearby = worldManager.nearbyBiome;
+        if (nearby && nearby.entranceDistance < 5) {
+          void worldManager.enterBiome().then((biomeId) => {
+            if (biomeId) {
+              const pos = worldManager.getEntryPosition(biomeId);
+              if (pos) {
+                fpCam.seedPosition(pos.x, pos.z);
+                core.setPlayerPosition(pos.x, pos.z);
+              }
+              core.worldSystem.discoverBiome(biomeId);
+              core.worldSystem.changeBiome(biomeId);
+              core.update(1 / 60, []);
+              debug('world', `Entered biome: ${biomeId}`);
+
+              const available = core.selectAvailableQuests(biomeId);
+              if (available.length > 0 && core.getActiveQuests().length === 0) {
+                pendingQuestOffer = available;
+                const first = available[0]!;
+                const intro = first.content.companionIntro
+                  ?? `I noticed something interesting here…`;
+                setTimeout(() => {
+                  core.worldSystem.queueDialogue(
+                    core.getCompanionState()?.name ?? 'Companion',
+                    intro,
+                  );
+                  core.worldSystem.queueSfx('discovery-sparkle', 0.4);
+                }, 2000);
+                debug('quest', `Biome entry quest offer in ${biomeId}: ${available.map(q => q.title).join(', ')}`);
+              }
+            }
+          });
+          return;
+        }
+      } else if (worldManager.isInside() && worldManager.isNearDoor) {
+        void worldManager.exitBiome().then(() => {
+          const pos = worldManager.getExitPosition();
+          if (pos) {
+            fpCam.seedPosition(pos.x, pos.z);
+            core.setPlayerPosition(pos.x, pos.z);
+          }
+          debug('world', 'Exited to overworld');
+        });
       }
     }
   });
@@ -702,6 +742,7 @@ async function boot(): Promise<void> {
             : undefined;
         if (craftStation) {
           const stationType = (craftStation.renderable.modelId ?? 'workbench').toLowerCase();
+          releasePointerForUi();
           hud.craftPanel?.open(stationType);
           debug('craft', `C key → opened crafting panel for: ${stationType}`);
         } else {
@@ -713,6 +754,7 @@ async function boot(): Promise<void> {
     if (e.key === 'm' || e.key === 'M') {
       // M key: toggle map panel
       if (hud.craftPanel?.isOpen) return; // don't open map while crafting
+      if (!hud.mapPanel?.isOpen) releasePointerForUi();
       hud.mapPanel?.toggle();
       debug('ui', `M key → map panel ${hud.mapPanel?.isOpen ? 'opened' : 'closed'}`);
     }

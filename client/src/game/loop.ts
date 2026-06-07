@@ -216,6 +216,20 @@ export class GameLoop implements Disposable {
     if (steps >= MAX_STEPS_PER_FRAME) this.accumulator = 0;
 
     let sceneGraph: SceneGraph = this.core.getSceneGraph();
+    if (this.worldManager?.isInside()) {
+      const offset = this.worldManager.getBiomeOffset();
+      sceneGraph = {
+        ...sceneGraph,
+        objects: sceneGraph.objects.map(obj => ({
+          ...obj,
+          position: {
+            x: obj.position.x + offset.x,
+            y: obj.position.y + offset.y,
+            z: obj.position.z + offset.z,
+          },
+        })),
+      };
+    }
 
     // Override scene graph camera with client-authoritative position & rotation
     const rot = this.fpCam.getPredictiveRotation();
@@ -257,25 +271,28 @@ export class GameLoop implements Disposable {
       debug('camera', 'Camera:', highlighted.camera);
     }
 
+    const highlightedInteractable = highlighted.objects.find(o => o.highlight && o.interactable);
     // Show / hide interaction prompts based on highlight state
     this.updateInteractionPrompt(highlighted);
 
     // WorldManager biome proximity prompts
-    if (this.worldManager) {
+    if (this.worldManager && !highlightedInteractable) {
       if (this.worldManager.isOverworld()) {
         const nearby = this.worldManager.nearbyBiome;
         if (nearby && nearby.entranceDistance < 5) {
           this.hud.showPrompt(`Press E to enter ${nearby.biome.name}`);
         }
-      } else if (this.worldManager.isInside() && this.worldManager.isNearDoor) {
-        this.hud.showPrompt('Press E to exit');
       } else if (this.worldManager.isInside() && this.npcProximityChecker) {
         // NPC proximity prompt — only when inside a biome
         const npcName = this.npcProximityChecker(eye.x, eye.z);
         if (npcName) {
           const action = this.mobile ? 'Tap' : 'Press E';
           this.hud.showPrompt(`${action} to talk to ${npcName}`);
+        } else if (this.worldManager.isNearDoor) {
+          this.hud.showPrompt('Press E to exit');
         }
+      } else if (this.worldManager.isInside() && this.worldManager.isNearDoor) {
+        this.hud.showPrompt('Press E to exit');
       }
     }
 
@@ -303,7 +320,7 @@ export class GameLoop implements Disposable {
     this.hud.processCaptions(highlighted.captions);
     this.hud.updateFPS(this._fps);
 
-    if (this.fpCam.isPointerLocked && (this.hud.hasOpenPanel || this.hud.isDialogueVisible)) {
+    if (this.fpCam.isPointerLocked && this.hud.hasOpenPanel) {
       this.fpCam.exitPointerLock();
     }
 
@@ -405,14 +422,20 @@ export class GameLoop implements Disposable {
     const highlighted = scene.objects.find(o => o.highlight && o.interactable);
     if (highlighted?.interactable) {
       const name = highlighted.interactable.prompt.replace(/^Interact with /, '');
-      const verb = highlighted.interactable.interactionType === 'craft'
-        ? 'use'
-        : highlighted.interactable.interactionType === 'open'
-          ? 'open'
-          : 'examine';
+      const actionText = (() => {
+        switch (highlighted.interactable.interactionType) {
+          case 'craft': return `use the ${name}`;
+          case 'open': return `open the ${name}`;
+          case 'talk': return `talk to ${name}`;
+          case 'pickup': return `pick up the ${name}`;
+          case 'build': return `build with the ${name}`;
+          case 'use': return `use the ${name}`;
+          default: return `examine the ${name}`;
+        }
+      })();
       const text = this.mobile
-        ? `Tap to ${verb} the ${name}`
-        : `Press E to ${verb} the ${name}`;
+        ? `Tap to ${actionText}`
+        : `Press E to ${actionText}`;
       this.hud.showPrompt(text);
     } else {
       this.hud.hidePrompt();
