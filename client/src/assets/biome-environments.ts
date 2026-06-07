@@ -15,7 +15,7 @@ export interface BiomeEnvironmentConfig {
   reducedMotion?: boolean;
 }
 
-interface PropPlacement {
+export interface PropPlacement {
   type: string;
   pos: [number, number, number];
   rot?: [number, number, number];
@@ -52,13 +52,9 @@ export class BiomeEnvironmentGenerator {
       const propCount = config.reducedDetail ? Math.ceil(layout.length / 2) : layout.length;
       for (let i = 0; i < propCount; i++) {
         const prop = layout[i]!;
-        const model = loadCachedWorldModel(prop.type) ?? this.models.generate(prop.type, tier);
+        const model = createBiomePropModel(prop, tier, this.models);
         model.name = `${biomeId}:${prop.type}:${i}`;
-        model.userData.biomePropType = prop.type;
         model.userData.biomePropIndex = i;
-        model.position.set(...prop.pos);
-        if (prop.rot) model.rotation.set(...prop.rot);
-        if (prop.scale) model.scale.multiply(new THREE.Vector3(...prop.scale));
         group.add(model);
       }
     }
@@ -77,6 +73,23 @@ export class BiomeEnvironmentGenerator {
     m.name = 'biome-ground';
     return m;
   }
+}
+
+export function getBiomeLayout(biomeId: string): readonly PropPlacement[] {
+  return BIOME_LAYOUTS[biomeId] ?? [];
+}
+
+export function createBiomePropModel(
+  prop: PropPlacement,
+  tier: MasteryTier,
+  models: ProceduralModelGenerator,
+): THREE.Group {
+  const model = loadCachedWorldModel(prop.type) ?? models.generate(prop.type, tier);
+  model.userData.biomePropType = prop.type;
+  model.position.set(...prop.pos);
+  if (prop.rot) model.rotation.set(...prop.rot);
+  if (prop.scale) model.scale.multiply(new THREE.Vector3(...prop.scale));
+  return model;
 }
 
 // ---------------------------------------------------------------------------
@@ -266,18 +279,38 @@ const BIOME_LAYOUTS: Record<string, PropPlacement[]> = {
   ],
 
   'farm': [
-    { type: 'barn', pos: [0, 0, -6] },
-    { type: 'fence', pos: [-3, 0, -2] },
-    { type: 'fence', pos: [-2, 0, -2] },
-    { type: 'fence', pos: [-1, 0, -2] },
-    { type: 'fence', pos: [0, 0, -2] },
-    { type: 'cropRow', pos: [2, 0, 0] },
-    { type: 'cropRow', pos: [3, 0, 0] },
-    { type: 'cropRow', pos: [4, 0, 0] },
-    { type: 'wheelbarrow', pos: [-4, 0, 0] },
-    { type: 'scarecrow', pos: [3, 0, -3] },
-    { type: 'wellBucket', pos: [-5, 0, -3] },
-    { type: 'tree', pos: [6, 0, -4] },
+    { type: 'barn', pos: [0, 0, -8], scale: [1.45, 1.25, 1.35] },
+    { type: 'stonePath', pos: [0, 0.02, -2.5], scale: [1.4, 1, 1.4] },
+    { type: 'stonePath', pos: [0, 0.02, -4.5], scale: [1.4, 1, 1.4] },
+    { type: 'fenceGate', pos: [0, 0, -1.8] },
+    { type: 'fence', pos: [-4.5, 0, -2], rot: [0, 0.1, 0] },
+    { type: 'fence', pos: [-3.2, 0, -2] },
+    { type: 'fence', pos: [-1.8, 0, -2] },
+    { type: 'fence', pos: [1.8, 0, -2] },
+    { type: 'fence', pos: [3.2, 0, -2] },
+    { type: 'fence', pos: [4.5, 0, -2], rot: [0, -0.1, 0] },
+    { type: 'cropDirt', pos: [2, 0, 0] },
+    { type: 'cropDirt', pos: [3.4, 0, 0] },
+    { type: 'cropDirt', pos: [4.8, 0, 0] },
+    { type: 'cropRow', pos: [2, 0, 0.45] },
+    { type: 'cropRow', pos: [3.4, 0, 0.45] },
+    { type: 'cropRow', pos: [4.8, 0, 0.45] },
+    { type: 'corn', pos: [2.1, 0, 2.0] },
+    { type: 'corn', pos: [3.5, 0, 2.0] },
+    { type: 'corn', pos: [4.9, 0, 2.0] },
+    { type: 'carrot', pos: [2.3, 0, 3.4] },
+    { type: 'carrot', pos: [3.6, 0, 3.4] },
+    { type: 'carrot', pos: [4.9, 0, 3.4] },
+    { type: 'wheelbarrow', pos: [-4.5, 0, 0], rot: [0, 0.35, 0] },
+    { type: 'scarecrow', pos: [4.7, 0, -3.8], scale: [1.3, 1.3, 1.3] },
+    { type: 'wellBucket', pos: [-5.2, 0, -3.7] },
+    { type: 'barrel', pos: [-3.2, 0, -4.1] },
+    { type: 'crate', pos: [-4.2, 0, -4.3], rot: [0, -0.3, 0] },
+    { type: 'tree', pos: [7.0, 0, -5.2], scale: [1.25, 1.25, 1.25] },
+    { type: 'treePine', pos: [-7.0, 0, -4.7], scale: [1.1, 1.1, 1.1] },
+    { type: 'bush', pos: [6.5, 0, -1.2] },
+    { type: 'grass', pos: [-6.2, 0, 1.2] },
+    { type: 'flower', pos: [-5.7, 0, 2.1] },
   ],
 
   'laboratory': [

@@ -17,7 +17,7 @@ import { WorkshopBiome } from './workshop-biome.js';
 import { getWorkshopCollisionBoxes } from './workshop-biome.js';
 import { MaterialLibrary } from '../assets/materials.js';
 import { ProceduralModelGenerator } from '../assets/procedural-models.js';
-import { BiomeEnvironmentGenerator } from '../assets/biome-environments.js';
+import { BiomeEnvironmentGenerator, getBiomeLayout } from '../assets/biome-environments.js';
 import type { MasteryTier } from '@nexus-academy/core';
 
 // ---------------------------------------------------------------------------
@@ -37,6 +37,7 @@ const TOWN_SQUARE_COLLISION_BOXES: CollisionBox[] = [
 const BIOME_ENVIRONMENT_TIER: MasteryTier = 'foundation';
 const ENVIRONMENT_ENTITY_ID_BASE = -300_000;
 const WORKSHOP_INTERIOR_ENTITY_BASE = -350_000;
+const BUILDING_INTERIOR_ENTITY_BASE = -360_000;
 const PASS_THROUGH_ENVIRONMENT_PROPS = new Set([
   'flower',
   'grass',
@@ -354,6 +355,17 @@ export class WorldManager implements Disposable {
     };
   }
 
+  /** Convert a world-space point to coordinates local to the active biome. */
+  worldToActiveBiomeLocal(x: number, z: number): { x: number; z: number } | null {
+    if (!this._activeBiomeId) return null;
+    const loc = getBiomeLocation(this._activeBiomeId);
+    if (!loc) return null;
+    return {
+      x: x - loc.worldPosition.x,
+      z: z - loc.worldPosition.z,
+    };
+  }
+
   /** Get extra collision boxes (interior walls when inside a building) */
   getExtraCollisionBoxes(): CollisionBox[] {
     if (this._activeInterior) return this._activeInterior.wallBoxes;
@@ -403,6 +415,12 @@ export class WorldManager implements Disposable {
       ...graph,
       objects: [...graph.objects, ...objects],
     };
+  }
+
+  revealCraftedPigment(itemId: string): boolean {
+    return this._activeBiomeId === 'workshop'
+      ? this._activeInterior?.revealCraftedPigment(itemId) ?? false
+      : false;
   }
 
   /** Get overworld sky descriptor */
@@ -599,7 +617,7 @@ export class WorldManager implements Disposable {
       this._activeEnvironmentCollisionBoxes = [];
       this._activeEnvironmentGameplayObjects = biome.id === 'workshop'
         ? getWorkshopInteriorGameplayObjects(biome.worldPosition.x, biome.baseHeight, biome.worldPosition.z)
-        : [];
+        : getBuildingInteriorGameplayObjects(biome.id, biome.worldPosition.x, biome.baseHeight, biome.worldPosition.z);
       return;
     }
 
@@ -653,6 +671,46 @@ export class WorldManager implements Disposable {
     const dz = pz - door.z;
     return Math.sqrt(dx * dx + dz * dz) < EXIT_RANGE;
   }
+}
+
+function getBuildingInteriorGameplayObjects(
+  biomeId: string,
+  offsetX: number,
+  offsetY: number,
+  offsetZ: number,
+): SceneObject[] {
+  return getBiomeLayout(biomeId)
+    .filter(prop => !NON_INTERACTIVE_ENVIRONMENT_PROPS.has(prop.type))
+    .map((prop, index) => {
+      const label = humanizePropType(prop.type);
+      const scale = prop.scale ?? [1, 1, 1];
+      const maxScale = Math.max(scale[0], scale[2], 1);
+      return {
+        entityId: BUILDING_INTERIOR_ENTITY_BASE - index,
+        position: {
+          x: offsetX + prop.pos[0],
+          y: offsetY + prop.pos[1],
+          z: offsetZ + prop.pos[2],
+        },
+        rotation: {
+          x: prop.rot?.[0] ?? 0,
+          y: prop.rot?.[1] ?? 0,
+          z: prop.rot?.[2] ?? 0,
+        },
+        renderable: {
+          meshType: 'model',
+          modelId: prop.type,
+          scale: { x: scale[0], y: scale[1], z: scale[2] },
+          visible: false,
+        },
+        interactable: {
+          interactionType: 'examine',
+          radius: Math.max(2.2, Math.min(maxScale + 1.7, 4)),
+          prompt: `Interact with ${label}`,
+        },
+        highlight: false,
+      };
+    });
 }
 
 function yawForDirection(dx: number, dz: number): number {

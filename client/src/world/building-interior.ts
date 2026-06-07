@@ -1,6 +1,10 @@
 import * as THREE from 'three';
+import type { MasteryTier } from '@nexus-academy/core';
 import type { BiomeLocation } from './overworld.js';
 import type { Disposable } from '../types.js';
+import { createBiomePropModel, getBiomeLayout } from '../assets/biome-environments.js';
+import { MaterialLibrary } from '../assets/materials.js';
+import { ProceduralModelGenerator } from '../assets/procedural-models.js';
 import { loadCachedWorldModel } from '../assets/world-models.js';
 
 // ---------------------------------------------------------------------------
@@ -122,6 +126,13 @@ const LIGHT_PRESETS: Record<string, { color: number; intensity: number }> = {
 };
 
 const DUST_PARTICLE_COUNT = 60;
+const INTERIOR_PROP_TIER: MasteryTier = 'foundation';
+
+const PIGMENT_SWATCHES: Record<string, { color: number; label: string; x: number }> = {
+  'purple-pigment': { color: 0x8b5cf6, label: 'purple', x: -2.1 },
+  'green-pigment': { color: 0x22c55e, label: 'green', x: 0 },
+  'orange-pigment': { color: 0xf97316, label: 'orange', x: 2.1 },
+};
 
 export class BuildingInterior implements Disposable {
   /** The interior group positioned at the biome's world position */
@@ -137,6 +148,10 @@ export class BuildingInterior implements Disposable {
 
   private readonly geometries: THREE.BufferGeometry[] = [];
   private readonly materials: THREE.Material[] = [];
+  private readonly propMaterials = new MaterialLibrary();
+  private readonly propModels = new ProceduralModelGenerator(this.propMaterials);
+  private readonly craftedPigments = new Set<string>();
+  private pigmentDisplay: THREE.Group | null = null;
 
   constructor(biome: BiomeLocation) {
     const config = BUILDING_CONFIGS[biome.id] ?? BUILDING_CONFIGS['workshop']!;
@@ -179,7 +194,7 @@ export class BuildingInterior implements Disposable {
     this.addWindows(config, hw, hd, h);
 
     // Furniture (style-specific)
-    this.addFurniture(config, hw, hd, h);
+    this.addFurniture(biome.id, config, hw, hd, h);
 
     // Dust motes floating in light beams
     this.addDustParticles(config, hw, hd, h);
@@ -220,6 +235,56 @@ export class BuildingInterior implements Disposable {
   dispose(): void {
     for (const g of this.geometries) g.dispose();
     for (const m of this.materials) m.dispose();
+    this.propModels.dispose();
+    this.propMaterials.dispose();
+  }
+
+  revealCraftedPigment(itemId: string): boolean {
+    const swatch = PIGMENT_SWATCHES[itemId];
+    if (!swatch || this.craftedPigments.has(itemId)) return Boolean(swatch);
+    if (!this.pigmentDisplay) {
+      this.pigmentDisplay = new THREE.Group();
+      this.pigmentDisplay.name = 'workshop-pigment-display';
+      this.group.add(this.pigmentDisplay);
+    }
+
+    const baseMat = this.makeMat(0x4a2a10);
+    const jarMat = this.makeMat(swatch.color, swatch.color, 0.25);
+    const glowMat = new THREE.MeshBasicMaterial({
+      color: swatch.color,
+      transparent: true,
+      opacity: 0.28,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    this.materials.push(glowMat);
+
+    const jarGeo = new THREE.CylinderGeometry(0.28, 0.34, 0.55, 16);
+    const capGeo = new THREE.CylinderGeometry(0.36, 0.36, 0.08, 16);
+    const glowGeo = new THREE.CircleGeometry(0.75, 24);
+    const panelGeo = new THREE.BoxGeometry(1.0, 0.68, 0.08);
+    this.geometries.push(jarGeo, capGeo, glowGeo, panelGeo);
+
+    const display = new THREE.Group();
+    display.name = `crafted-${itemId}-display`;
+    display.userData.craftedPigment = itemId;
+
+    const jar = new THREE.Mesh(jarGeo, jarMat);
+    jar.position.set(swatch.x, 0.33, 4.6);
+    const cap = new THREE.Mesh(capGeo, baseMat);
+    cap.position.set(swatch.x, 0.65, 4.6);
+    const glow = new THREE.Mesh(glowGeo, glowMat);
+    glow.name = `${swatch.label}-pigment-glow`;
+    glow.position.set(swatch.x, 0.025, 4.6);
+    glow.rotation.x = -Math.PI / 2;
+    const panel = new THREE.Mesh(panelGeo, jarMat);
+    panel.name = `${swatch.label}-mural-swatch`;
+    panel.position.set(swatch.x, 2.0, -9.82);
+
+    display.add(glow, jar, cap, panel);
+    this.pigmentDisplay.add(display);
+    this.craftedPigments.add(itemId);
+    return true;
   }
 
   // ---- Floor with plank pattern ------------------------------------------
@@ -363,13 +428,12 @@ export class BuildingInterior implements Disposable {
 
   // ---- Furniture ---------------------------------------------------------
 
-  private addFurniture(config: BuildingConfig, hw: number, hd: number, _h: number): void {
+  private addFurniture(biomeId: string, config: BuildingConfig, hw: number, hd: number, _h: number): void {
     if (config.style === 'workshop') {
       this.addWorkshopFurniture(hw, hd);
-    } else if (config.style === 'library') {
-      this.addLibraryFurniture(hw, hd);
+    } else {
+      this.addBiomeLayoutFurniture(biomeId, hw, hd);
     }
-    // Other biomes keep their existing scene-graph objects from the core
   }
 
   private addWorkshopFurniture(hw: number, hd: number): void {
@@ -404,20 +468,18 @@ export class BuildingInterior implements Disposable {
     }
   }
 
-  private addLibraryFurniture(hw: number, hd: number): void {
-    const woodMat = this.makeMat(0x6b4423);
+  private addBiomeLayoutFurniture(biomeId: string, hw: number, hd: number): void {
+    const layout = getBiomeLayout(biomeId);
+    const safeX = Math.max(1, hw - 1.0);
+    const safeZ = Math.max(1, hd - 1.0);
 
-    // Bookshelves against east and west walls
-    for (const side of [-1, 1]) {
-      const x = side * (hw - 0.6);
-      for (let row = 0; row < 3; row++) {
-        const z = -hd + 2 + row * 3;
-        const shelfGeo = new THREE.BoxGeometry(0.8, 2.5, 1.8);
-        this.geometries.push(shelfGeo);
-        const shelf = new THREE.Mesh(shelfGeo, woodMat);
-        shelf.position.set(x, 1.25, z);
-        this.group.add(shelf);
-      }
+    for (let i = 0; i < layout.length; i++) {
+      const prop = layout[i]!;
+      const model = createBiomePropModel(prop, INTERIOR_PROP_TIER, this.propModels);
+      model.name = `interior-${biomeId}-${prop.type}-${i}`;
+      model.position.x = THREE.MathUtils.clamp(model.position.x, -safeX, safeX);
+      model.position.z = THREE.MathUtils.clamp(model.position.z, -safeZ, safeZ);
+      this.group.add(model);
     }
   }
 

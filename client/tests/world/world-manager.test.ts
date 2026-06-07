@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { describe, expect, it, vi } from 'vitest';
 import { BIOME_ENTER_RANGE, WorldManager } from '../../src/world/world-manager.js';
+import { findNearestNpc } from '../../src/ui/npc-dialogue.js';
 
 vi.mock('../../src/world/workshop-biome.js', async () => {
   const THREE = await import('three');
@@ -109,6 +110,75 @@ describe('WorldManager', () => {
       ]));
       expect(graph.objects.every(obj => obj.renderable.visible === false)).toBe(true);
       expect(graph.objects.every(obj => obj.interactable?.interactionType === 'examine')).toBe(true);
+    } finally {
+      world.dispose();
+    }
+  });
+
+  it('converts world-space camera positions to local biome coordinates for NPC checks', () => {
+    const scene = new THREE.Scene();
+    const world = new WorldManager(scene);
+
+    try {
+      world.forceEnterBiome('workshop');
+      const local = world.worldToActiveBiomeLocal(-43, 26);
+
+      expect(local).toEqual({ x: -3, z: -4 });
+      expect(findNearestNpc('workshop', local!.x, local!.z)?.name).toBe('Hilda');
+    } finally {
+      world.dispose();
+    }
+  });
+
+  it('reveals a persistent pigment display after Workshop color crafting', () => {
+    const scene = new THREE.Scene();
+    const world = new WorldManager(scene);
+
+    try {
+      world.forceEnterBiome('workshop');
+
+      expect(world.revealCraftedPigment('purple-pigment')).toBe(true);
+      expect(findByName(scene, 'crafted-purple-pigment-display')).not.toBeNull();
+      expect(findByName(scene, 'purple-mural-swatch')).not.toBeNull();
+    } finally {
+      world.dispose();
+    }
+  });
+
+  it('populates early building interiors with biome-specific props and interactions', () => {
+    const scene = new THREE.Scene();
+    const world = new WorldManager(scene);
+
+    try {
+      world.forceEnterBiome('gallery');
+
+      expect(findByName(scene, 'interior-gallery-easel-0')).not.toBeNull();
+      expect(findByName(scene, 'interior-gallery-statue-2')).not.toBeNull();
+
+      const graph = world.mergeGameplayObjects({
+        camera: {
+          position: { x: 0, y: 1.6, z: 0 },
+          rotation: { x: 0, y: 0, z: 0 },
+          fov: 70,
+          near: 0.1,
+          far: 500,
+        },
+        lights: [],
+        objects: [],
+        sky: { type: 'color', primaryColor: '#87CEEB' },
+        ground: { type: 'tile', color: '#f5deb3', size: { width: 100, depth: 100 } },
+        ui: { elements: [], dialogueActive: false, inventoryOpen: false, mapOpen: false, paused: false },
+        audio: [],
+        announcements: [],
+        captions: [],
+      });
+
+      expect(graph.objects.map(obj => obj.renderable.modelId)).toEqual(expect.arrayContaining([
+        'easel',
+        'statue',
+        'paintingFrame',
+      ]));
+      expect(graph.objects.some(obj => obj.interactable?.prompt === 'Interact with easel')).toBe(true);
     } finally {
       world.dispose();
     }

@@ -83,6 +83,12 @@ function ensureStarterInventory(core: NexusCore): void {
   }
 }
 
+function formatItemName(itemId: string): string {
+  return itemId
+    .replace(/[-_]+/g, ' ')
+    .replace(/\b\w/g, c => c.toUpperCase());
+}
+
 function buildDebugSceneGraph(sceneGraph: SceneGraph, worldManager: WorldManager): SceneGraph {
   const offset = worldManager.isInside() ? worldManager.getBiomeOffset() : null;
   const biomeObjects = worldManager.activeBiomeId === 'workshop'
@@ -304,7 +310,8 @@ async function boot(): Promise<void> {
   // Wire NPC proximity detection into the game loop
   loop.setNpcProximityChecker((px, pz) => {
     const biomeId = worldManager.activeBiomeId ?? core.getCurrentBiome();
-    const npc = findNearestNpc(biomeId, px, pz);
+    const local = worldManager.worldToActiveBiomeLocal(px, pz);
+    const npc = findNearestNpc(biomeId, local?.x ?? px, local?.z ?? pz);
     return npc ? npc.name : null;
   });
 
@@ -326,7 +333,7 @@ async function boot(): Promise<void> {
     loop.clearQuestOffer();
   };
 
-  const handleCraftComplete = (recipe: CraftRecipe, _result: CraftResult): void => {
+  const handleCraftComplete = (recipe: CraftRecipe, result: CraftResult): void => {
     const activeQuests = core.getActiveQuests();
     const activeProgress = activeQuests[0] ?? null;
     let currentQuest = activeProgress ? core.getQuestById(activeProgress.questId) : undefined;
@@ -367,6 +374,16 @@ async function boot(): Promise<void> {
       core.getCompanionState()?.name ?? 'Companion',
       step.successResponse,
     );
+    if (result.output && worldManager.revealCraftedPigment(result.output.id)) {
+      core.worldSystem.queueSfx('discovery-sparkle', 0.65);
+      window.setTimeout(() => {
+        hud.craftPanel?.close();
+        core.worldSystem.queueDialogue(
+          core.getCompanionState()?.name ?? 'Companion',
+          `${formatItemName(result.output!.id)} is on the Workshop mural now. Try the next color when you're ready.`,
+        );
+      }, 850);
+    }
     core.update(1 / 60, []);
     debug('quest', `Craft progressed ${currentQuest.id}: ${recipe.id}`);
   };
@@ -442,6 +459,27 @@ async function boot(): Promise<void> {
       get cameraVelocity() { return { vx: (fpCam as any).vx ?? 0, vz: (fpCam as any).vz ?? 0 }; },
       get sceneGraph() { return buildDebugSceneGraph(core.getSceneGraph(), worldManager); },
       get sceneObjects() { return buildDebugSceneGraph(core.getSceneGraph(), worldManager).objects.length; },
+      findSceneObject(name: string) {
+        let found: { name: string; userData: Record<string, unknown>; position: { x: number; y: number; z: number } } | null = null;
+        sceneRenderer.scene.traverse((child) => {
+          if (found) return;
+          if (child.name === name || child.name.includes(name)) {
+            found = {
+              name: child.name,
+              userData: { ...child.userData },
+              position: { x: child.position.x, y: child.position.y, z: child.position.z },
+            };
+          }
+        });
+        return found;
+      },
+      listSceneObjects(filter = '') {
+        const names: string[] = [];
+        sceneRenderer.scene.traverse((child) => {
+          if (child.name && (!filter || child.name.includes(filter))) names.push(child.name);
+        });
+        return names;
+      },
       get groundColor() { return core.getSceneGraph().ground.color; },
       get skyColor() { return core.getSceneGraph().sky.primaryColor; },
       get fps() { return loop.fps; },
@@ -475,6 +513,9 @@ async function boot(): Promise<void> {
           ...p,
           quest: core.getQuestById(p.questId),
         }));
+      },
+      get inventory() {
+        return core.worldSystem.getInventory();
       },
       startQuest(questId: string) {
         core.questSystem.queueAction({
@@ -518,6 +559,15 @@ async function boot(): Promise<void> {
       get npcsInCurrentBiome() {
         const biomeId = worldManager.activeBiomeId ?? core.getCurrentBiome();
         return npcsInBiome(biomeId).map(n => ({ id: n.id, name: n.name, type: n.type }));
+      },
+      nearestNpc() {
+        const biomeId = worldManager.activeBiomeId ?? core.getCurrentBiome();
+        const eye = fpCam.getEyePosition();
+        const local = worldManager.worldToActiveBiomeLocal(eye.x, eye.z);
+        return findNearestNpc(biomeId, local?.x ?? eye.x, local?.z ?? eye.z);
+      },
+      revealCraftedPigment(itemId: string) {
+        return worldManager.revealCraftedPigment(itemId);
       },
       openNpcDialogue(npcId: string) {
         const npc = BIOME_NPCS.find((n: NpcEntity) => n.id === npcId);
@@ -730,7 +780,8 @@ async function boot(): Promise<void> {
       if (worldManager.isInside() && (!highlighted?.interactable || highlightedIsNpc) && !npcDialogue.isOpen && !tradePanel.isOpen) {
         const biomeId = worldManager.activeBiomeId ?? core.getCurrentBiome();
         const eye = fpCam.getEyePosition();
-        const nearbyNpc = findNearestNpc(biomeId, eye.x, eye.z);
+        const local = worldManager.worldToActiveBiomeLocal(eye.x, eye.z);
+        const nearbyNpc = findNearestNpc(biomeId, local?.x ?? eye.x, local?.z ?? eye.z);
         if (nearbyNpc) {
           releasePointerForUi();
           // Handle calibration challenge interaction

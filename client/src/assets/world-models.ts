@@ -31,6 +31,7 @@ const WORLD_MODEL_CATALOG: Record<string, WorldModelSpec> = {
   signpost: { path: `${K}/nature/sign.glb`, category: 'wood', scale: 1.5 },
   lantern: { path: `${K}/furniture/lampSquareTable.glb`, category: 'lantern', scale: 2 },
   chest: { path: `${K}/furniture/cardboardBoxOpen.glb`, category: 'chest', scale: 1.2 },
+  ladder: { path: `${K}/medieval/ladder.glb`, category: 'wood', scale: 1.5 },
 
   // Nature
   treeoak: { path: `${K}/nature/tree_oak.glb`, category: 'tree', scale: 2.8 },
@@ -50,20 +51,25 @@ const WORLD_MODEL_CATALOG: Record<string, WorldModelSpec> = {
   carrot: { path: `${K}/nature/crop_carrot.glb`, category: 'grass', scale: 1.8 },
   wheelbarrow: { path: `${K}/medieval/pulley-crate.glb`, category: 'wood', scale: 0.8 },
   scarecrow: { path: `${K}/nature/sign.glb`, category: 'wood', scale: 1.7 },
+  fencegate: { path: `${K}/nature/fence_gate.glb`, category: 'wood', scale: 1.35 },
 
   // Interior / reusable furniture
+  bench: { path: `${K}/furniture/bench.glb`, category: 'wood', scale: 1.5 },
   desk: { path: `${K}/furniture/desk.glb`, category: 'wood', scale: 1.8 },
   table: { path: `${K}/furniture/table.glb`, category: 'wood', scale: 1.5 },
   chair: { path: `${K}/furniture/chair.glb`, category: 'wood', scale: 1.4 },
   bookshelf: { path: `${K}/furniture/bookcaseOpen.glb`, category: 'wood', scale: 1.6 },
   cabinet: { path: `${K}/furniture/kitchenCabinet.glb`, category: 'wood', scale: 1.5 },
+  rug: { path: `${K}/furniture/rugRectangle.glb`, category: 'default', scale: 1.5 },
+  pottedplant: { path: `${K}/furniture/pottedPlant.glb`, category: 'bush', scale: 1.4 },
+  sidetable: { path: `${K}/furniture/sideTable.glb`, category: 'wood', scale: 1.3 },
+  stool: { path: `${K}/furniture/stoolBar.glb`, category: 'wood', scale: 1.2 },
 };
 
 const WORLD_MODEL_ALIASES: Record<string, string> = {
   toolRack: 'toolrack',
   draftingTable: 'workbench',
   alchemyTable: 'workbench',
-  readingDesk: 'workbench',
   labBench: 'desk',
   marketStall: 'marketstall',
   market_stall: 'marketstall',
@@ -98,8 +104,19 @@ const WORLD_MODEL_ALIASES: Record<string, string> = {
   seed_box: 'cropdirt',
   seedBox: 'cropdirt',
   sign: 'signpost',
+  fenceGate: 'fencegate',
+  fence_gate: 'fencegate',
   wheelBarrow: 'wheelbarrow',
   tool_rack: 'toolrack',
+  cropDirt: 'cropdirt',
+  pottedPlant: 'pottedplant',
+  sideTable: 'sidetable',
+  scrollRack: 'bookshelf',
+  readingDesk: 'desk',
+  easel: 'signpost',
+  paintingFrame: 'rug',
+  statue: 'rocklarge',
+  globe: 'pottedplant',
 };
 
 const STARTER_MODEL_IDS = [
@@ -119,6 +136,7 @@ const STARTER_MODEL_IDS = [
   'signpost',
   'lantern',
   'chest',
+  'ladder',
   'treeoak',
   'treepine',
   'rocklarge',
@@ -133,11 +151,17 @@ const STARTER_MODEL_IDS = [
   'cropdirt',
   'wheelbarrow',
   'scarecrow',
+  'fencegate',
+  'bench',
   'desk',
   'table',
   'chair',
   'bookshelf',
   'cabinet',
+  'rug',
+  'pottedplant',
+  'sidetable',
+  'stool',
 ] as const;
 
 function normalizeModelId(modelId: string): string {
