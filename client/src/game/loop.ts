@@ -33,6 +33,7 @@ export class GameLoop implements Disposable {
   private _fps = 0;
   private positionSeeded = false;
   private mobile = false;
+  private activeControl: 'keyboard' | 'gamepad' | 'touch' = 'keyboard';
 
   // --- Footstep movement tracking ---
   private lastPosX = 0;
@@ -111,7 +112,10 @@ export class GameLoop implements Disposable {
   get fixedTimestep(): number { return this.fixedDt; }
 
   /** Enable mobile-specific behaviour (touch prompts, etc.). */
-  setMobile(mobile: boolean): void { this.mobile = mobile; }
+  setMobile(mobile: boolean): void {
+    this.mobile = mobile;
+    if (mobile) this.activeControl = 'touch';
+  }
 
   /** Return the most recent highlighted interactable, including direct world models. */
   getHighlightedInteractable(): SceneObject | undefined {
@@ -151,6 +155,7 @@ export class GameLoop implements Disposable {
       ...this.inputManager.flush(),
       ...this.fpCam.flushLookActions(),
     ];
+    this.updateActiveControl(rawActions);
 
     // Feed movement & look input into the FP camera (applied to every sub-step)
     for (const a of rawActions) {
@@ -280,19 +285,19 @@ export class GameLoop implements Disposable {
       if (this.worldManager.isOverworld()) {
         const nearby = this.worldManager.nearbyBiome;
         if (nearby && nearby.entranceDistance < 5) {
-          this.hud.showPrompt(`Press E to enter ${nearby.biome.name}`);
+          this.hud.showPrompt(`${this.actionLabel()} to enter ${nearby.biome.name}`);
         }
       } else if (this.worldManager.isInside() && this.npcProximityChecker) {
         // NPC proximity prompt — only when inside a biome
         const npcName = this.npcProximityChecker(eye.x, eye.z);
         if (npcName) {
-          const action = this.mobile ? 'Tap' : 'Press E';
+          const action = this.actionLabel();
           this.hud.showPrompt(`${action} to talk to ${npcName}`);
         } else if (this.worldManager.isNearDoor) {
-          this.hud.showPrompt('Press E to exit');
+          this.hud.showPrompt(`${this.actionLabel()} to exit`);
         }
       } else if (this.worldManager.isInside() && this.worldManager.isNearDoor) {
-        this.hud.showPrompt('Press E to exit');
+        this.hud.showPrompt(`${this.actionLabel()} to exit`);
       }
     }
 
@@ -342,6 +347,12 @@ export class GameLoop implements Disposable {
 
   /** Update quest panel each frame — check active quests, detect completion, trigger offers. */
   private updateQuestPanel(frameDt: number, _scene: SceneGraph): void {
+    if (this.hud.hasOpenPanel) {
+      this.hud.hideQuestIndicator();
+      this.hud.hideQuestPanel();
+      return;
+    }
+
     const activeQuests = this.core.getActiveQuests();
 
     if (activeQuests.length > 0) {
@@ -419,7 +430,7 @@ export class GameLoop implements Disposable {
 
   private showGuidance(scene: SceneGraph): void {
     const highlighted = scene.objects.find(o => o.highlight && o.interactable);
-    const action = this.mobile ? 'Tap' : 'Press E';
+    const action = this.actionLabel();
 
     if (highlighted?.interactable) {
       const name = highlighted.interactable.prompt.replace(/^Interact with /, '');
@@ -454,19 +465,29 @@ export class GameLoop implements Disposable {
         this.hud.showGuidance(
           `Enter ${nearby.biome.name}`,
           `${action} to step inside and find the first hands-on challenge.`,
-          'Left-click locks mouse-look. Escape releases it for menus.',
+          this.controlHint(),
         );
       } else {
         this.hud.showGuidance(
           'Find a Place to Explore',
           'Walk toward a landmark, then use the prompt when you reach its entrance.',
-          'WASD moves, mouse looks, Shift runs, M opens the map.',
+          this.controlHint(),
         );
       }
       return;
     }
 
-    const biomeName = this.worldManager?.activeBiomeId?.replace(/[-_]+/g, ' ') ?? this.core.getCurrentBiome();
+    const activeBiome = this.worldManager?.activeBiomeId ?? this.core.getCurrentBiome();
+    const biomeName = activeBiome.replace(/[-_]+/g, ' ');
+    if (activeBiome === 'workshop') {
+      this.hud.showGuidance(
+        'First Workshop Challenge',
+        `${action} at the Workbench, then select Red Pigment and Blue Pigment to mix purple paint.`,
+        this.controlHint(),
+      );
+      return;
+    }
+
     this.hud.showGuidance(
       `Explore ${biomeName}`,
       'Aim at objects until a prompt appears, then interact to learn what they do.',
@@ -476,6 +497,11 @@ export class GameLoop implements Disposable {
 
   /** Show an interaction prompt when a highlighted interactable is nearby. */
   private updateInteractionPrompt(scene: SceneGraph): void {
+    if (this.hud.hasOpenPanel) {
+      this.hud.hidePrompt();
+      return;
+    }
+
     const highlighted = scene.objects.find(o => o.highlight && o.interactable);
     if (highlighted?.interactable) {
       const name = highlighted.interactable.prompt.replace(/^Interact with /, '');
@@ -492,10 +518,38 @@ export class GameLoop implements Disposable {
       })();
       const text = this.mobile
         ? `Tap to ${actionText}`
-        : `Press E to ${actionText}`;
+        : `${this.actionLabel()} to ${actionText}`;
       this.hud.showPrompt(text);
     } else {
       this.hud.hidePrompt();
     }
+  }
+
+  private updateActiveControl(actions: GameAction[]): void {
+    for (const action of actions) {
+      if (action.source === 'gamepad') {
+        this.activeControl = 'gamepad';
+      } else if (action.source === 'touch') {
+        this.activeControl = 'touch';
+      } else if (action.source === 'keyboard' || action.source === 'mouse') {
+        this.activeControl = 'keyboard';
+      }
+    }
+  }
+
+  private actionLabel(): string {
+    if (this.mobile || this.activeControl === 'touch') return 'Tap';
+    if (this.activeControl === 'gamepad') return 'Press A';
+    return 'Press E';
+  }
+
+  private controlHint(): string {
+    if (this.mobile || this.activeControl === 'touch') {
+      return 'Left thumb moves, right thumb looks, and the Action button appears when something can be used.';
+    }
+    if (this.activeControl === 'gamepad') {
+      return 'Left stick moves, right stick looks, A uses objects, B backs out, and RB opens the map.';
+    }
+    return 'WASD moves, mouse looks, Shift runs, E uses objects, and M opens the map.';
   }
 }

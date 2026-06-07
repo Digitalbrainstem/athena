@@ -248,6 +248,39 @@ describe('GameLoop', () => {
     expect(fpCam.exitPointerLock).toHaveBeenCalled();
   });
 
+  it('hides prompts and quest guidance while a panel is open', () => {
+    const graph = emptySceneGraph();
+    graph.objects.push({
+      entityId: 1,
+      position: { x: 0, y: 0, z: 0 },
+      rotation: { x: 0, y: 0, z: 0 },
+      renderable: {
+        meshType: 'model',
+        modelId: 'workbench',
+        color: '#D4A574',
+        scale: { x: 1, y: 1, z: 1 },
+        visible: true,
+      },
+      interactable: {
+        interactionType: 'craft',
+        radius: 3,
+        prompt: 'Interact with Workbench',
+      },
+      highlight: false,
+    });
+    (core.getSceneGraph as ReturnType<typeof vi.fn>).mockReturnValue(graph);
+    (hud as unknown as { hasOpenPanel: boolean }).hasOpenPanel = true;
+
+    loop.start();
+    runFrame(0);
+    runFrame(16.67);
+
+    expect(hud.hidePrompt).toHaveBeenCalled();
+    expect(hud.hideQuestPanel).toHaveBeenCalled();
+    expect(hud.showPrompt).not.toHaveBeenCalled();
+    expect(hud.showGuidance).not.toHaveBeenCalled();
+  });
+
   it('keeps object prompts ahead of biome entrance prompts', () => {
     const graph = emptySceneGraph();
     graph.objects.push({
@@ -297,10 +330,42 @@ describe('GameLoop', () => {
     runFrame(16.67);
 
     expect(hud.showGuidance).toHaveBeenCalledWith(
-      'Explore workshop',
-      'Aim at objects until a prompt appears, then interact to learn what they do.',
-      'The goal is not a quiz; use the world itself to discover the rule.',
+      'First Workshop Challenge',
+      'Press E at the Workbench, then select Red Pigment and Blue Pigment to mix purple paint.',
+      'WASD moves, mouse looks, Shift runs, E uses objects, and M opens the map.',
     );
+  });
+
+  it('uses gamepad prompt labels after gamepad input', () => {
+    const graph = emptySceneGraph();
+    graph.objects.push({
+      entityId: 1,
+      position: { x: 0, y: 0, z: 0 },
+      rotation: { x: 0, y: 0, z: 0 },
+      renderable: {
+        meshType: 'model',
+        modelId: 'workbench',
+        color: '#D4A574',
+        scale: { x: 1, y: 1, z: 1 },
+        visible: true,
+      },
+      interactable: {
+        interactionType: 'craft',
+        radius: 3,
+        prompt: 'Interact with Workbench',
+      },
+      highlight: false,
+    });
+    (core.getSceneGraph as ReturnType<typeof vi.fn>).mockReturnValue(graph);
+    (input.flush as ReturnType<typeof vi.fn>).mockReturnValueOnce([
+      { type: 'move', source: 'gamepad', payload: { direction: { x: 0, z: -1 }, running: false } },
+    ]);
+
+    loop.start();
+    runFrame(0);
+    runFrame(16.67);
+
+    expect(hud.showPrompt).toHaveBeenCalledWith('Press A to use the Workbench');
   });
 
   it('highlights inside-biome objects after applying the biome world offset', () => {

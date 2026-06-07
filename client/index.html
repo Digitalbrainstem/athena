@@ -127,6 +127,24 @@
       opacity: 1;
     }
 
+    #touch-action-button {
+      position: absolute;
+      right: 1.25rem;
+      bottom: 8.5rem;
+      min-width: 6rem;
+      min-height: 3.5rem;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--frost);
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.92), rgba(167, 139, 250, 0.92));
+      color: var(--deep-space);
+      font: inherit;
+      font-weight: 800;
+      box-shadow: 0 0 20px rgba(34, 211, 238, 0.35);
+      pointer-events: auto;
+      touch-action: manipulation;
+    }
+
     /* ------------------------------------------------------------------ */
     /* FPS counter (debug only) — Aurora colored                          */
     /* ------------------------------------------------------------------ */
@@ -258,6 +276,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    body:not(.mobile) #touch-action-button {
+      display: none !important;
     }
 
     body.mobile #fps-counter {
@@ -1225,6 +1247,7 @@
     <p id="quest-indicator" class="quest-indicator" role="status" aria-live="polite"></p>
 
     <p id="interaction-prompt" role="status" aria-live="polite" aria-label="">Press E to interact</p>
+    <button id="touch-action-button" class="hud-hidden" type="button" aria-label="Action">Action</button>
     <p id="fps-counter" aria-hidden="true" class="hud-hidden">-- FPS</p>
     <div id="dialogue-box" class="hud-hidden" role="log" aria-live="polite" aria-label="Companion dialogue"></div>
     <div id="caption-container" aria-label="Captions" role="log" aria-live="off"></div>

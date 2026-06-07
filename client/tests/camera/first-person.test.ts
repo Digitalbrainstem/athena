@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { FirstPersonCamera } from '../../src/camera/first-person.js';
+import type { SceneObject } from '@nexus-academy/core';
 
 describe('FirstPersonCamera', () => {
   let cam: FirstPersonCamera;
@@ -47,5 +48,35 @@ describe('FirstPersonCamera', () => {
     cam.dispose();
     const el = document.createElement('div');
     expect(() => cam.requestPointerLock(el)).not.toThrow();
+  });
+
+  it('does not add interactable objects as collision blockers', () => {
+    const baseObject: SceneObject = {
+      entityId: 1,
+      position: { x: 0, y: 0, z: 0 },
+      rotation: { x: 0, y: 0, z: 0 },
+      renderable: {
+        meshType: 'box',
+        color: '#888888',
+        scale: { x: 2, y: 1, z: 2 },
+        visible: true,
+      },
+      highlight: false,
+    };
+
+    cam.updateCollisionBoxes([
+      baseObject,
+      {
+        ...baseObject,
+        entityId: 2,
+        interactable: {
+          interactionType: 'craft',
+          radius: 2,
+          prompt: 'Interact with Workbench',
+        },
+      },
+    ]);
+
+    expect((cam as unknown as { collisionBoxes: unknown[] }).collisionBoxes).toHaveLength(1);
   });
 });

@@ -89,6 +89,7 @@ export class FirstPersonCamera implements Disposable {
     this.collisionBoxes = [];
     for (const obj of objects) {
       if (!obj.renderable || !obj.renderable.visible) continue;
+      if (obj.interactable) continue;
       const s = obj.renderable.scale;
       const p = obj.position;
       this.collisionBoxes.push({

@@ -224,6 +224,7 @@ export function getWorkshopCollisionBoxes(offsetX: number, offsetZ: number): Col
   const boxes: CollisionBox[] = [];
   for (const obj of WORKSHOP_LAYOUT) {
     const fp = MODEL_FOOTPRINTS[obj.model];
+    if (obj.interactive) continue;
     if (!fp || fp.solid === false) continue;
     const s = objectScale(obj);
     const rotated = rotatedFootprint(fp.hx * s, fp.hz * s, obj.rotY);

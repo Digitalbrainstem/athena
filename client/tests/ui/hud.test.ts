@@ -52,6 +52,7 @@ describe('HUD', () => {
   let promptEl: HTMLElement;
   let fpsEl: HTMLElement;
   let crosshairEl: HTMLElement;
+  let actionButtonEl: HTMLButtonElement;
 
   beforeEach(() => {
     promptEl = document.createElement('div');
@@ -66,6 +67,11 @@ describe('HUD', () => {
     crosshairEl.id = 'crosshair';
     document.body.appendChild(crosshairEl);
 
+    actionButtonEl = document.createElement('button');
+    actionButtonEl.id = 'touch-action-button';
+    actionButtonEl.className = 'hud-hidden';
+    document.body.appendChild(actionButtonEl);
+
     hud = new HUD();
     hud.init(true);
   });
@@ -75,6 +81,7 @@ describe('HUD', () => {
     promptEl.remove();
     fpsEl.remove();
     crosshairEl.remove();
+    actionButtonEl.remove();
   });
 
   /* ---------- Original tests ---------- */
@@ -90,6 +97,20 @@ describe('HUD', () => {
     hud.showPrompt('test');
     hud.hidePrompt();
     expect(promptEl.classList.contains('visible')).toBe(false);
+    expect(promptEl.textContent).toBe('');
+  });
+
+  it('shows mobile action button and invokes action handler', () => {
+    const handler = vi.fn();
+    hud.setActionHandler(handler);
+    hud.setMobile(true);
+
+    hud.showPrompt('Tap to use the Workbench');
+    expect(actionButtonEl.classList.contains('hud-hidden')).toBe(false);
+    expect(actionButtonEl.textContent).toBe('use the Workbench');
+
+    actionButtonEl.click();
+    expect(handler).toHaveBeenCalledOnce();
   });
 
   it('updateFPS sets text content', () => {
@@ -118,6 +139,43 @@ describe('HUD', () => {
 
   it('update with UIState does not throw', () => {
     expect(() => hud.update(makeUIState())).not.toThrow();
+  });
+
+  it('hides dialogue while a panel is open', () => {
+    const dialogueEl = document.createElement('div');
+    dialogueEl.id = 'dialogue-box';
+    dialogueEl.className = 'hud-hidden';
+    document.body.appendChild(dialogueEl);
+
+    hud.dispose();
+    hud = new HUD();
+    hud.init(true);
+    hud.initCraftPanel({
+      core: {
+        worldSystem: {
+          getWorldState: vi.fn(() => ({ inventory: [], activeBiome: 'workshop' })),
+        },
+        getWorld: vi.fn(() => ({
+          query: vi.fn(() => []),
+        })),
+        craftSystem: {
+          getAvailableRecipes: vi.fn(() => []),
+          craft: vi.fn(),
+        },
+      } as never,
+      profileId: 'tester',
+      onCompanionSpeak: vi.fn(),
+    });
+    hud.craftPanel?.open('workbench');
+
+    hud.update(makeUIState({
+      dialogueActive: true,
+      dialogueText: 'This should wait.',
+      dialogueSpeaker: 'Buddy',
+    }));
+
+    expect(dialogueEl.classList.contains('hud-hidden')).toBe(true);
+    dialogueEl.remove();
   });
 
   it('update hides crosshair when paused', () => {

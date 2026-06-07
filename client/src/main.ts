@@ -4,6 +4,7 @@ import { SceneRenderer } from './renderer/scene-renderer.js';
 import { GameLoop } from './game/loop.js';
 import { InputManager } from './input/manager.js';
 import { KeyboardInput } from './input/keyboard.js';
+import { GamepadInput } from './input/gamepad.js';
 import { debug, debugSceneGraph } from './debug.js';
 import { initDebugBridge } from './debug-bridge.js';
 import { TouchInput } from './input/touch.js';
@@ -216,6 +217,7 @@ async function boot(): Promise<void> {
 
   const input = new InputManager();
   input.register(new KeyboardInput());
+  input.register(new GamepadInput());
   const hasTouchInput = 'ontouchstart' in window
     || navigator.maxTouchPoints > 0
     || window.matchMedia('(pointer: coarse)').matches;
@@ -243,6 +245,7 @@ async function boot(): Promise<void> {
   const hud = new HUD();
   hud.init(DEBUG, a11y);
   if (isMobile) hud.setMobile(true);
+  hud.setActionHandler(() => input.inject({ type: 'interact', source: 'touch' }));
   disposables.push(hud);
 
   // --- NPC Interaction + Trading ---
@@ -490,6 +493,51 @@ async function boot(): Promise<void> {
     if (fpCam.isPointerLocked) fpCam.exitPointerLock();
   };
 
+  const openNearbyCraftStation = (source: string): void => {
+    if (hud.mapPanel?.isOpen) return;
+    if (hud.craftPanel?.isOpen) {
+      hud.craftPanel.close();
+      return;
+    }
+
+    const highlightedCraftStation = loop.getHighlightedInteractable();
+    const craftStation = highlightedCraftStation?.interactable?.interactionType === 'craft'
+      ? highlightedCraftStation
+      : undefined;
+    if (craftStation) {
+      const stationType = (craftStation.renderable.modelId ?? 'workbench').toLowerCase();
+      releasePointerForUi();
+      hud.craftPanel?.open(stationType);
+      debug('craft', `${source} → opened crafting panel for: ${stationType}`);
+      return;
+    }
+
+    companionSpeak(worldManager.activeBiomeId === 'workshop'
+      ? 'The workbench is your first goal. Walk close to it, then use Action or press E to open crafting.'
+      : "There's no crafting station nearby.");
+  };
+
+  const toggleMapPanel = (source: string): void => {
+    if (hud.craftPanel?.isOpen) return;
+    if (!hud.mapPanel?.isOpen) releasePointerForUi();
+    hud.mapPanel?.toggle();
+    debug('ui', `${source} → map panel ${hud.mapPanel?.isOpen ? 'opened' : 'closed'}`);
+  };
+
+  const handleBackAction = (): void => {
+    if (hud.craftPanel?.isOpen) {
+      hud.craftPanel.close();
+    } else if (hud.mapPanel?.isOpen) {
+      hud.mapPanel.close();
+    } else if (npcDialogue.isOpen) {
+      npcDialogue.hide();
+    } else if (tradePanel.isOpen) {
+      tradePanel.hide();
+    } else if (fpCam.isPointerLocked) {
+      fpCam.exitPointerLock();
+    }
+  };
+
   // --- Initial quest offering for the starting biome (after a short delay) ---
   setTimeout(() => {
     const biome = core.getCurrentBiome();
@@ -574,6 +622,18 @@ async function boot(): Promise<void> {
 
   input.onAction((action) => {
     if (action.type === 'pause' && fpCam.isPointerLocked) fpCam.exitPointerLock();
+    if (action.type === 'back') {
+      handleBackAction();
+      return;
+    }
+    if (action.type === 'craft') {
+      openNearbyCraftStation(action.source);
+      return;
+    }
+    if (action.type === 'map') {
+      toggleMapPanel(action.source);
+      return;
+    }
 
     // Interact with highlighted object → trigger companion dialogue + interaction SFX
     if (action.type === 'interact') {
@@ -755,41 +815,10 @@ async function boot(): Promise<void> {
     }
   });
 
-  // --- Keyboard shortcuts for panels (C = craft, M = map) ---
+  // --- Keyboard shortcut not represented as a game action ---
   document.addEventListener('keydown', (e) => {
     // Don't capture keys when typing in an input/textarea
     if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
-
-    if (e.key === 'c' || e.key === 'C') {
-      // C key: toggle crafting panel when a station is highlighted.
-      if (hud.mapPanel?.isOpen) return; // don't open craft while map is open
-      if (hud.craftPanel?.isOpen) {
-        hud.craftPanel.close();
-      } else {
-        const highlightedCraftStation = loop.getHighlightedInteractable();
-        const craftStation = highlightedCraftStation?.interactable?.interactionType === 'craft'
-          ? highlightedCraftStation
-          : worldManager.isInside()
-            ? core.getSceneGraph().objects.find(o => o.highlight && o.interactable?.interactionType === 'craft')
-            : undefined;
-        if (craftStation) {
-          const stationType = (craftStation.renderable.modelId ?? 'workbench').toLowerCase();
-          releasePointerForUi();
-          hud.craftPanel?.open(stationType);
-          debug('craft', `C key → opened crafting panel for: ${stationType}`);
-        } else {
-          companionSpeak("There's no crafting station nearby.");
-        }
-      }
-    }
-
-    if (e.key === 'm' || e.key === 'M') {
-      // M key: toggle map panel
-      if (hud.craftPanel?.isOpen) return; // don't open map while crafting
-      if (!hud.mapPanel?.isOpen) releasePointerForUi();
-      hud.mapPanel?.toggle();
-      debug('ui', `M key → map panel ${hud.mapPanel?.isOpen ? 'opened' : 'closed'}`);
-    }
 
     if (e.key === 'l' || e.key === 'L') {
       if (!isMobile && loop.isRunning && !fpCam.isPointerLocked && !hasBlockingUi()) {

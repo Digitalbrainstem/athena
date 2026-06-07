@@ -13,6 +13,7 @@ export class HUD implements Disposable {
   private promptEl: HTMLElement | null = null;
   private fpsEl: HTMLElement | null = null;
   private crosshairEl: HTMLElement | null = null;
+  private actionButtonEl: HTMLButtonElement | null = null;
   private dialogueEl: HTMLElement | null = null;
   private questPanelEl: HTMLElement | null = null;
   private questTitleEl: HTMLElement | null = null;
@@ -27,6 +28,7 @@ export class HUD implements Disposable {
   private hintTimeout: ReturnType<typeof setTimeout> | null = null;
   private completeTimeout: ReturnType<typeof setTimeout> | null = null;
   private mobile = false;
+  private actionHandler: (() => void) | null = null;
 
   // Panels
   private _craftPanel: CraftPanel | null = null;
@@ -38,6 +40,7 @@ export class HUD implements Disposable {
     this.promptEl = document.getElementById('interaction-prompt');
     this.fpsEl = document.getElementById('fps-counter');
     this.crosshairEl = document.getElementById('crosshair');
+    this.actionButtonEl = document.getElementById('touch-action-button') as HTMLButtonElement | null;
     this.dialogueEl = document.getElementById('dialogue-box');
     this.questPanelEl = document.getElementById('quest-panel');
     this.questTitleEl = this.questPanelEl?.querySelector('.quest-title') ?? null;
@@ -46,6 +49,7 @@ export class HUD implements Disposable {
     this.questHintEl = this.questPanelEl?.querySelector('.quest-hint') ?? null;
     this.questIndicatorEl = document.getElementById('quest-indicator');
     if (this.fpsEl) this.fpsEl.classList.toggle('hud-hidden', !debug);
+    this.actionButtonEl?.addEventListener('click', this.handleActionButton);
 
     // Dialogue is driven by the world state and auto-expires there.
     // Do not make it clickable; hiding only the DOM would immediately redraw it.
@@ -84,16 +88,21 @@ export class HUD implements Disposable {
     this.mobile = mobile;
     document.body.classList.toggle('mobile', mobile);
     if (mobile) this.setCrosshairVisible(false);
+    this.actionButtonEl?.classList.add('hud-hidden');
   }
 
   get isMobile(): boolean { return this.mobile; }
+
+  setActionHandler(handler: () => void): void {
+    this.actionHandler = handler;
+  }
 
   update(ui: UIState): void {
     if (this.disposed) return;
 
     // Dialogue
     if (this.dialogueEl) {
-      if (ui.dialogueActive && ui.dialogueText) {
+      if (ui.dialogueActive && ui.dialogueText && !this.hasOpenPanel) {
         this.dialogueEl.classList.remove('hud-hidden');
         const speaker = ui.dialogueSpeaker ? `${ui.dialogueSpeaker}: ` : '';
         const fullText = `${speaker}${ui.dialogueText}`;
@@ -126,6 +135,11 @@ export class HUD implements Disposable {
       this.promptEl.setAttribute('aria-label', text);
     }
     this.promptEl.classList.add('visible');
+    if (this.mobile && this.actionButtonEl) {
+      this.actionButtonEl.textContent = text.replace(/^Tap to\s+/i, '');
+      this.actionButtonEl.setAttribute('aria-label', text);
+      this.actionButtonEl.classList.remove('hud-hidden');
+    }
   }
 
   hidePrompt(): void {
@@ -133,6 +147,11 @@ export class HUD implements Disposable {
     this.promptEl.classList.remove('visible');
     this.promptEl.textContent = '';
     this.promptEl.removeAttribute('aria-label');
+    if (this.actionButtonEl) {
+      this.actionButtonEl.classList.add('hud-hidden');
+      this.actionButtonEl.textContent = 'Action';
+      this.actionButtonEl.setAttribute('aria-label', 'Action');
+    }
   }
 
   flashPrompt(text: string, ms = 1500): void {
@@ -251,9 +270,11 @@ export class HUD implements Disposable {
     this._craftPanel = null;
     this._mapPanel?.dispose();
     this._mapPanel = null;
+    this.actionButtonEl?.removeEventListener('click', this.handleActionButton);
     this.promptEl = null;
     this.fpsEl = null;
     this.crosshairEl = null;
+    this.actionButtonEl = null;
     this.dialogueEl = null;
     this.questPanelEl = null;
     this.questTitleEl = null;
@@ -263,4 +284,9 @@ export class HUD implements Disposable {
     this.questIndicatorEl = null;
     this.a11y = null;
   }
+
+  private handleActionButton = (event: Event): void => {
+    event.preventDefault();
+    this.actionHandler?.();
+  };
 }
