@@ -15,21 +15,21 @@ const K = `${M}/kenney`;
 const WORKSHOP_MODELS = {
   // Workshop items
   forge:      { path: `${K}/furniture/kitchenStove.glb`,       category: 'metal' as const, scale: 2.2 },
-  workbench:  { path: `${K}/furniture/tableCross.glb`,         category: 'wood' as const,  scale: 1.0 },
-  anvil:      { path: `${K}/nature/stone_largeA.glb`,          category: 'stone' as const, scale: 1.3 },
-  toolrack:   { path: `${K}/furniture/coatRackStanding.glb`,   category: 'wood' as const,  scale: 1.35 },
-  crate:      { path: `${K}/medieval/detail-crate.glb`,        category: 'wood' as const,  scale: 0.75 },
-  barrel:     { path: `${K}/medieval/barrels.glb`,             category: 'wood' as const,  scale: 0.45 },
+  workbench:  { path: `${K}/furniture/tableCross.glb`,         category: 'wood' as const,  scale: 2.0 },
+  anvil:      { path: `${K}/nature/stone_largeA.glb`,          category: 'stone' as const, scale: 1.8 },
+  toolrack:   { path: `${K}/furniture/coatRackStanding.glb`,   category: 'wood' as const,  scale: 1.75 },
+  crate:      { path: `${K}/medieval/detail-crate.glb`,        category: 'wood' as const,  scale: 1.6 },
+  barrel:     { path: `${K}/medieval/barrels.glb`,             category: 'wood' as const,  scale: 1.2 },
   // Buildings
   workshopHouse: { path: `${K}/medieval/wall-pane-wood-door.glb`, category: 'wood' as const, scale: 2.0 },
-  marketStall:{ path: `${K}/furniture/table.glb`,              category: 'wood' as const,  scale: 2.0 },
+  marketStall:{ path: `${K}/furniture/table.glb`,              category: 'wood' as const,  scale: 3.0 },
   // Structures
-  fence:      { path: `${K}/nature/fence_simple.glb`,          category: 'wood' as const,  scale: 1.35 },
-  well:       { path: `${K}/nature/pot_large.glb`,             category: 'stone' as const, scale: 1.4 },
+  fence:      { path: `${K}/nature/fence_simple.glb`,          category: 'wood' as const,  scale: 1.8 },
+  well:       { path: `${K}/nature/pot_large.glb`,             category: 'stone' as const, scale: 5.0 },
   bridge:     { path: `${K}/nature/bridge_wood.glb`,           category: 'wood' as const,  scale: 1.4 },
   stonePath:  { path: `${K}/nature/path_stone.glb`,            category: 'stone' as const, scale: 1.3 },
-  signpost:   { path: `${K}/nature/sign.glb`,                  category: 'wood' as const,  scale: 1.5 },
-  lantern:    { path: `${K}/furniture/lampSquareTable.glb`,    category: 'lantern' as const, scale: 2.0 },
+  signpost:   { path: `${K}/nature/sign.glb`,                  category: 'wood' as const,  scale: 4.0 },
+  lantern:    { path: `${K}/furniture/lampSquareTable.glb`,    category: 'lantern' as const, scale: 4.5 },
   // Nature
   treeOak:    { path: `${K}/nature/tree_oak.glb`,              category: 'tree' as const,  scale: 2.8 },
   treePine:   { path: `${K}/nature/tree_pineTallA.glb`,        category: 'tree' as const,  scale: 2.8 },
@@ -69,29 +69,31 @@ interface Footprint {
 
 const WORKSHOP_ENTITY_BASE = -5000;
 const WORKSHOP_LAYOUT_SCALE = 1.25;
+const WORKSHOP_APPROACH_MARGIN = 16;
+const WORKSHOP_ENTRY_OUTSIDE_MARGIN = 0.7;
 
 const MODEL_FOOTPRINTS: Partial<Record<keyof typeof WORKSHOP_MODELS, Footprint>> = {
-  forge:       { hx: 1.25, hz: 1.0,  height: 1.6 },
-  workbench:   { hx: 1.35, hz: 0.75, height: 1.0 },
-  anvil:       { hx: 0.7,  hz: 0.55, height: 0.9 },
-  toolrack:    { hx: 0.25, hz: 1.3,  height: 1.8 },
-  crate:       { hx: 0.55, hz: 0.55, height: 0.9 },
-  barrel:      { hx: 0.45, hz: 0.45, height: 1.1 },
-  workshopHouse: { hx: 3.5, hz: 2.5, height: 3.2 },
-  marketStall: { hx: 1.7,  hz: 1.2,  height: 2.0 },
-  fence:       { hx: 1.35, hz: 0.12, height: 0.8 },
-  well:        { hx: 1.15, hz: 1.15, height: 1.4 },
-  bridge:      { hx: 1.2,  hz: 2.0,  height: 0.4, solid: false },
-  signpost:    { hx: 0.28, hz: 0.28, height: 2.2 },
-  lantern:     { hx: 0.18, hz: 0.18, height: 2.5 },
-  treeOak:     { hx: 0.75, hz: 0.75, height: 4.5 },
-  treePine:    { hx: 0.7,  hz: 0.7,  height: 4.8 },
-  rockLarge:   { hx: 0.85, hz: 0.7,  height: 1.0 },
-  rockCluster: { hx: 1.0,  hz: 0.8,  height: 0.8 },
-  bush:        { hx: 0.55, hz: 0.55, height: 0.7, solid: false },
-  grass:       { hx: 0.4,  hz: 0.4,  height: 0.2, solid: false },
-  stonePath:   { hx: 0.9,  hz: 0.9,  height: 0.05, solid: false },
-  chest:       { hx: 0.75, hz: 0.45, height: 0.65 },
+  forge:       { hx: 0.75, hz: 0.75, height: 1.0 },
+  workbench:   { hx: 1.0,  hz: 0.6,  height: 0.75 },
+  anvil:       { hx: 0.75, hz: 0.65, height: 0.5 },
+  toolrack:    { hx: 0.3,  hz: 0.35, height: 1.35 },
+  crate:       { hx: 0.3,  hz: 0.3,  height: 0.5 },
+  barrel:      { hx: 0.38, hz: 0.22, height: 0.6 },
+  workshopHouse: { hx: 3.9, hz: 2.8, height: 4.2 },
+  marketStall: { hx: 1.3,  hz: 0.8,  height: 1.0 },
+  fence:       { hx: 0.9,  hz: 0.08, height: 0.65 },
+  well:        { hx: 1.4,  hz: 1.25, height: 1.05 },
+  bridge:      { hx: 0.85, hz: 0.85, height: 0.55, solid: false },
+  signpost:    { hx: 0.6,  hz: 0.2,  height: 1.7 },
+  lantern:     { hx: 0.25, hz: 0.25, height: 1.35 },
+  treeOak:     { hx: 1.0,  hz: 1.15, height: 3.45 },
+  treePine:    { hx: 0.6,  hz: 0.6,  height: 4.3 },
+  rockLarge:   { hx: 0.7,  hz: 0.9,  height: 0.5 },
+  rockCluster: { hx: 0.7,  hz: 0.9,  height: 0.5 },
+  bush:        { hx: 0.45, hz: 0.45, height: 0.35, solid: false },
+  grass:       { hx: 0.35, hz: 0.35, height: 0.25, solid: false },
+  stonePath:   { hx: 0.65, hz: 0.45, height: 0.05, solid: false },
+  chest:       { hx: 0.45, hz: 0.3,  height: 0.35 },
 };
 
 const INTERACTION_MODEL_IDS: Partial<Record<keyof typeof WORKSHOP_MODELS, string>> = {
@@ -101,13 +103,19 @@ const INTERACTION_MODEL_IDS: Partial<Record<keyof typeof WORKSHOP_MODELS, string
   chest: 'chest',
 };
 
+const PIGMENT_SWATCHES: Record<string, { color: number; label: string; x: number }> = {
+  'purple-pigment': { color: 0x8b5cf6, label: 'purple', x: -1.25 },
+  'green-pigment': { color: 0x22c55e, label: 'green', x: 0 },
+  'orange-pigment': { color: 0xf97316, label: 'orange', x: 1.25 },
+};
+
 /**
  * Layout of the workshop biome — positions are relative to biome center (0,0).
  * The biome center is at worldPosition (-40, 30) per overworld.ts.
  */
 const WORKSHOP_LAYOUT: PlacedObject[] = [
   // === Central Workshop Area ===
-  { model: 'workshopHouse', x: 0, z: -2, rotY: 0, name: 'workshop-building' },
+  { model: 'workshopHouse', x: 0, z: -2, rotY: 0, scale: 1.35, name: 'workshop-building' },
 
   // Workshop work area (in front of the cottage)
   { model: 'forge',     x: -3.5, z: 3,  rotY: 0,    name: 'forge',     interactive: true },
@@ -216,9 +224,8 @@ function rotatedFootprint(hx: number, hz: number, rotY = 0): { hx: number; hz: n
   };
 }
 
-function objectScale(obj: PlacedObject): number {
-  const def = WORKSHOP_MODELS[obj.model];
-  return (obj.scale ?? 1) * (def.scale ?? 1);
+function placementScale(obj: PlacedObject): number {
+  return obj.scale ?? 1;
 }
 
 function placedX(obj: PlacedObject): number {
@@ -229,13 +236,63 @@ function placedZ(obj: PlacedObject): number {
   return obj.z * WORKSHOP_LAYOUT_SCALE;
 }
 
+export interface WorkshopExteriorBounds {
+  minX: number;
+  maxX: number;
+  minZ: number;
+  maxZ: number;
+}
+
+function getPlacedObjectBounds(obj: PlacedObject): WorkshopExteriorBounds | null {
+  const fp = MODEL_FOOTPRINTS[obj.model];
+  if (!fp) return null;
+  const s = placementScale(obj);
+  const rotated = rotatedFootprint(fp.hx * s, fp.hz * s, obj.rotY);
+  const x = placedX(obj);
+  const z = placedZ(obj);
+  return {
+    minX: x - rotated.hx,
+    maxX: x + rotated.hx,
+    minZ: z - rotated.hz,
+    maxZ: z + rotated.hz,
+  };
+}
+
+export function getWorkshopExteriorBounds(): WorkshopExteriorBounds {
+  const bounds: WorkshopExteriorBounds = { minX: 0, maxX: 0, minZ: 0, maxZ: 0 };
+  for (const obj of WORKSHOP_LAYOUT) {
+    const b = getPlacedObjectBounds(obj);
+    if (!b) continue;
+    bounds.minX = Math.min(bounds.minX, b.minX);
+    bounds.maxX = Math.max(bounds.maxX, b.maxX);
+    bounds.minZ = Math.min(bounds.minZ, b.minZ);
+    bounds.maxZ = Math.max(bounds.maxZ, b.maxZ);
+  }
+  return bounds;
+}
+
+export function getWorkshopExteriorEntryOffset(): { x: number; z: number } {
+  const cottage = WORKSHOP_LAYOUT.find(obj => obj.model === 'workshopHouse');
+  const cottageFootprint = MODEL_FOOTPRINTS.workshopHouse;
+  if (!cottage || !cottageFootprint) return { x: 0, z: 0 };
+  return {
+    x: placedX(cottage),
+    z: placedZ(cottage) + cottageFootprint.hz * placementScale(cottage) + WORKSHOP_ENTRY_OUTSIDE_MARGIN,
+  };
+}
+
+export function getWorkshopApproachOffset(): { x: number; z: number } {
+  const bounds = getWorkshopExteriorBounds();
+  return { x: 0, z: bounds.maxZ + WORKSHOP_APPROACH_MARGIN };
+}
+
 export function getWorkshopCollisionBoxes(offsetX: number, offsetZ: number): CollisionBox[] {
   const boxes: CollisionBox[] = [];
   for (const obj of WORKSHOP_LAYOUT) {
     const fp = MODEL_FOOTPRINTS[obj.model];
     if (obj.interactive) continue;
     if (!fp || fp.solid === false) continue;
-    const s = objectScale(obj);
+    const s = placementScale(obj);
     const rotated = rotatedFootprint(fp.hx * s, fp.hz * s, obj.rotY);
     boxes.push({
       cx: offsetX + placedX(obj),
@@ -254,7 +311,7 @@ export function getWorkshopGameplayObjects(offsetX: number, offsetY: number, off
     if (!obj.interactive) continue;
 
     const fp = MODEL_FOOTPRINTS[obj.model] ?? { hx: 0.75, hz: 0.75, height: 1.0 };
-    const s = objectScale(obj);
+    const s = placementScale(obj);
     const scale = {
       x: fp.hx * 2 * s,
       y: fp.height * s,
@@ -291,6 +348,8 @@ export class WorkshopBiome implements Disposable {
   readonly group = new THREE.Group();
   private loaded = false;
   private disposed = false;
+  private readonly craftedPigments = new Set<string>();
+  private pigmentDisplay: THREE.Group | null = null;
 
   constructor() {
     this.group.name = 'workshop-biome';
@@ -411,6 +470,55 @@ export class WorkshopBiome implements Disposable {
       }
     });
     this.group.clear();
+  }
+
+  revealCraftedPigment(itemId: string): boolean {
+    const swatch = PIGMENT_SWATCHES[itemId];
+    if (!swatch || this.craftedPigments.has(itemId)) return Boolean(swatch);
+    if (!this.pigmentDisplay) {
+      this.pigmentDisplay = new THREE.Group();
+      this.pigmentDisplay.name = 'workshop-exterior-pigment-display';
+      this.pigmentDisplay.position.set(0, 0.05, 5.7);
+      this.group.add(this.pigmentDisplay);
+    }
+
+    const jarMat = new THREE.MeshStandardMaterial({
+      color: swatch.color,
+      emissive: swatch.color,
+      emissiveIntensity: 0.18,
+      roughness: 0.55,
+      metalness: 0.05,
+    });
+    const capMat = new THREE.MeshStandardMaterial({ color: 0x4a2a10, roughness: 0.75 });
+    const glowMat = new THREE.MeshBasicMaterial({
+      color: swatch.color,
+      transparent: true,
+      opacity: 0.3,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+
+    const display = new THREE.Group();
+    display.name = `crafted-${itemId}-display`;
+    display.userData.craftedPigment = itemId;
+
+    const jar = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.32, 0.55, 16), jarMat);
+    jar.position.set(swatch.x, 0.35, 0);
+    const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.34, 0.34, 0.08, 16), capMat);
+    cap.position.set(swatch.x, 0.67, 0);
+    const glow = new THREE.Mesh(new THREE.CircleGeometry(0.7, 24), glowMat);
+    glow.name = `${swatch.label}-pigment-glow`;
+    glow.position.set(swatch.x, 0.02, 0);
+    glow.rotation.x = -Math.PI / 2;
+    const swatchPanel = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.55, 0.08), jarMat);
+    swatchPanel.name = `${swatch.label}-mural-swatch`;
+    swatchPanel.position.set(swatch.x, 1.55, -5.05);
+    swatchPanel.rotation.y = Math.PI;
+
+    display.add(glow, jar, cap, swatchPanel);
+    this.pigmentDisplay.add(display);
+    this.craftedPigments.add(itemId);
+    return true;
   }
 }
 

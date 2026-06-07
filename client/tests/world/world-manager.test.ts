@@ -2,18 +2,30 @@ import * as THREE from 'three';
 import { describe, expect, it, vi } from 'vitest';
 import { BIOME_ENTER_RANGE, WorldManager } from '../../src/world/world-manager.js';
 import { findNearestNpc } from '../../src/ui/npc-dialogue.js';
+import { getWorkshopApproachOffset, getWorkshopExteriorBounds, getWorkshopExteriorEntryOffset } from '../../src/world/workshop-biome.js';
+import type { SceneGraph } from '../../src/types.js';
 
 vi.mock('../../src/world/workshop-biome.js', async () => {
   const THREE = await import('three');
+  const actual = await vi.importActual<typeof import('../../src/world/workshop-biome.js')>(
+    '../../src/world/workshop-biome.js',
+  );
 
   return {
+    ...actual,
     WorkshopBiome: class MockWorkshopBiome {
       readonly group = new THREE.Group();
       init(): Promise<void> { return Promise.resolve(); }
       dispose(): void { this.group.clear(); }
+      revealCraftedPigment(itemId: string): boolean {
+        if (itemId !== 'purple-pigment') return false;
+        const display = new THREE.Group();
+        display.name = `crafted-${itemId}-display`;
+        this.group.add(display);
+        return true;
+      }
     },
     getWorkshopCollisionBoxes: vi.fn(() => []),
-    getWorkshopGameplayObjects: vi.fn(() => []),
   };
 });
 
@@ -25,6 +37,26 @@ function findByName(root: THREE.Object3D, name: string): THREE.Object3D | null {
   return found;
 }
 
+function emptyGraph(): SceneGraph {
+  return {
+    camera: {
+      position: { x: 0, y: 1.6, z: 0 },
+      rotation: { x: 0, y: 0, z: 0 },
+      fov: 70,
+      near: 0.1,
+      far: 500,
+    },
+    lights: [],
+    objects: [],
+    sky: { type: 'color', primaryColor: '#87CEEB' },
+    ground: { type: 'grass', color: '#228B22', size: { width: 100, depth: 100 } },
+    ui: { elements: [], dialogueActive: false, inventoryOpen: false, mapOpen: false, paused: false },
+    audio: [],
+    announcements: [],
+    captions: [],
+  };
+}
+
 describe('WorldManager', () => {
   it('starts the player on the workshop approach path outside craft range', () => {
     const scene = new THREE.Scene();
@@ -32,9 +64,65 @@ describe('WorldManager', () => {
 
     try {
       const start = world.getStartPosition('workshop');
-      expect(start.x).toBeCloseTo(-40);
-      expect(start.z).toBeCloseTo(42.25);
-      expect(Math.hypot(start.x - -40, start.z - 38)).toBeGreaterThan(BIOME_ENTER_RANGE);
+      const exterior = getWorkshopExteriorBounds();
+      const entry = getWorkshopExteriorEntryOffset();
+      const approach = getWorkshopApproachOffset();
+
+      expect(start.x).toBeCloseTo(-40 + approach.x);
+      expect(start.z).toBeGreaterThan(30 + exterior.maxZ);
+      expect(start.z).toBeCloseTo(30 + approach.z);
+      expect(Math.hypot(start.x - -40, start.z - (30 + entry.z))).toBeGreaterThan(BIOME_ENTER_RANGE);
+    } finally {
+      world.dispose();
+    }
+  });
+
+  it('enters the workshop only at the cottage doorway, not the old open-yard trigger', () => {
+    const scene = new THREE.Scene();
+    const world = new WorldManager(scene);
+
+    try {
+      world.update(-40, 38, 1 / 60);
+      expect(world.nearbyBiome?.biome.id).toBe('workshop');
+      expect(world.nearbyBiome!.entranceDistance).toBeGreaterThan(BIOME_ENTER_RANGE);
+
+      const entry = getWorkshopExteriorEntryOffset();
+      world.update(-40 + entry.x, 30 + entry.z, 1 / 60);
+      expect(world.nearbyBiome?.biome.id).toBe('workshop');
+      expect(world.nearbyBiome!.entranceDistance).toBeLessThanOrEqual(BIOME_ENTER_RANGE);
+    } finally {
+      world.dispose();
+    }
+  });
+
+  it('wires visible workshop yard stations into overworld interactions', () => {
+    const scene = new THREE.Scene();
+    const world = new WorldManager(scene);
+
+    try {
+      const graph = world.mergeGameplayObjects(emptyGraph());
+      const models = graph.objects.map(obj => obj.renderable.modelId);
+
+      expect(models).toEqual(expect.arrayContaining([
+        'workbench',
+        'forge',
+        'anvil',
+        'chest',
+      ]));
+      expect(graph.objects.every(obj => obj.renderable.visible === false)).toBe(true);
+      expect(graph.objects.filter(obj => obj.interactable?.interactionType === 'craft').length).toBeGreaterThanOrEqual(3);
+    } finally {
+      world.dispose();
+    }
+  });
+
+  it('reveals crafted pigments while using the overworld workshop workbench', () => {
+    const scene = new THREE.Scene();
+    const world = new WorldManager(scene);
+
+    try {
+      expect(world.isOverworld()).toBe(true);
+      expect(world.revealCraftedPigment('purple-pigment')).toBe(true);
     } finally {
       world.dispose();
     }

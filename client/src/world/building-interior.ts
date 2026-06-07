@@ -28,7 +28,7 @@ export interface BuildingConfig {
 
 const BUILDING_CONFIGS: Record<string, BuildingConfig> = {
   'workshop': {
-    width: 15, depth: 20, height: 4,
+    width: 11, depth: 12, height: 4.5,
     wallColor: 0x8b6914, floorColor: 0x6b4423, ceilingColor: 0x7a5a2e,
     doorWall: 'south', lighting: 'warm', style: 'workshop',
   },
@@ -134,6 +134,15 @@ const PIGMENT_SWATCHES: Record<string, { color: number; label: string; x: number
   'orange-pigment': { color: 0xf97316, label: 'orange', x: 2.1 },
 };
 
+function getDoorLocalPosition(config: BuildingConfig, hw: number, hd: number): { x: number; z: number } {
+  switch (config.doorWall) {
+    case 'north': return { x: 0, z: -hd };
+    case 'south': return { x: 0, z: hd };
+    case 'east': return { x: hw, z: 0 };
+    case 'west': return { x: -hw, z: 0 };
+  }
+}
+
 export class BuildingInterior implements Disposable {
   /** The interior group positioned at the biome's world position */
   readonly group: THREE.Group;
@@ -199,10 +208,8 @@ export class BuildingInterior implements Disposable {
     // Dust motes floating in light beams
     this.addDustParticles(config, hw, hd, h);
 
-    // Door world position (for exit detection)
-    const dx = biome.entranceOffset.x;
-    const dz = biome.entranceOffset.z;
-    this.doorWorldPosition = { x: bx + dx, y: by, z: bz + dz };
+    const door = getDoorLocalPosition(config, hw, hd);
+    this.doorWorldPosition = { x: bx + door.x, y: by, z: bz + door.z };
   }
 
   /** Call each frame to animate dust motes */

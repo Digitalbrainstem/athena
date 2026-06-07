@@ -13,8 +13,13 @@ import { BuildingInterior, hasBuildingInterior } from './building-interior.js';
 import { PathNetwork } from './paths.js';
 import { OverworldSkyDome } from './sky-dome.js';
 import { TransitionOverlay } from './transition.js';
-import { WorkshopBiome } from './workshop-biome.js';
-import { getWorkshopCollisionBoxes } from './workshop-biome.js';
+import {
+  WorkshopBiome,
+  getWorkshopApproachOffset,
+  getWorkshopCollisionBoxes,
+  getWorkshopExteriorEntryOffset,
+  getWorkshopGameplayObjects,
+} from './workshop-biome.js';
 import { MaterialLibrary } from '../assets/materials.js';
 import { ProceduralModelGenerator } from '../assets/procedural-models.js';
 import { BiomeEnvironmentGenerator, getBiomeLayout } from '../assets/biome-environments.js';
@@ -327,6 +332,13 @@ export class WorldManager implements Disposable {
   getStartPosition(biomeId = 'workshop'): { x: number; z: number } {
     const loc = getBiomeLocation(biomeId);
     if (!loc) return { x: 0, z: 0 };
+    if (biomeId === 'workshop') {
+      const approach = getWorkshopApproachOffset();
+      return {
+        x: loc.worldPosition.x + approach.x,
+        z: loc.worldPosition.z + approach.z,
+      };
+    }
     const entranceLength = Math.hypot(loc.entranceOffset.x, loc.entranceOffset.z);
     const clearDistance = Math.max(
       entranceLength + BIOME_ENTER_RANGE + 1.5,
@@ -402,7 +414,14 @@ export class WorldManager implements Disposable {
   /** Gameplay metadata for direct Three.js overworld content. */
   getOverworldGameplayObjects(): SceneObject[] {
     if (!this.isOverworld()) return [];
-    return [];
+    const workshop = getBiomeLocation('workshop');
+    return workshop
+      ? getWorkshopGameplayObjects(
+          workshop.worldPosition.x,
+          workshop.baseHeight,
+          workshop.worldPosition.z,
+        )
+      : [];
   }
 
   /** Merge direct Three.js world content into the renderer-agnostic gameplay graph. */
@@ -418,8 +437,11 @@ export class WorldManager implements Disposable {
   }
 
   revealCraftedPigment(itemId: string): boolean {
-    return this._activeBiomeId === 'workshop'
-      ? this._activeInterior?.revealCraftedPigment(itemId) ?? false
+    if (this._activeBiomeId === 'workshop') {
+      return this._activeInterior?.revealCraftedPigment(itemId) ?? false;
+    }
+    return this.isOverworld()
+      ? this.workshopBiome?.revealCraftedPigment(itemId) ?? false
       : false;
   }
 
@@ -551,6 +573,13 @@ export class WorldManager implements Disposable {
     if (!this._activeBiomeId) return null;
     const loc = getBiomeLocation(this._activeBiomeId);
     if (!loc) return null;
+    if (this._activeBiomeId === 'workshop') {
+      const entry = getWorkshopExteriorEntryOffset();
+      return {
+        x: loc.worldPosition.x + entry.x,
+        z: loc.worldPosition.z + entry.z + BIOME_ENTER_RANGE + 1,
+      };
+    }
     // Place player just outside the entrance
     return {
       x: loc.worldPosition.x + loc.entranceOffset.x * 1.5,
@@ -563,6 +592,7 @@ export class WorldManager implements Disposable {
     if (!this._activeBiomeId) return null;
     const loc = getBiomeLocation(this._activeBiomeId);
     if (!loc) return null;
+    if (this._activeBiomeId === 'workshop') return yawForDirection(0, 1);
     return yawForDirection(loc.entranceOffset.x, loc.entranceOffset.z);
   }
 
@@ -645,8 +675,11 @@ export class WorldManager implements Disposable {
       const dz = pz - biome.worldPosition.z;
       const distance = Math.sqrt(dx * dx + dz * dz);
 
-      const ex = px - (biome.worldPosition.x + biome.entranceOffset.x);
-      const ez = pz - (biome.worldPosition.z + biome.entranceOffset.z);
+      const entryOffset = biome.id === 'workshop'
+        ? getWorkshopExteriorEntryOffset()
+        : biome.entranceOffset;
+      const ex = px - (biome.worldPosition.x + entryOffset.x);
+      const ez = pz - (biome.worldPosition.z + entryOffset.z);
       const entranceDistance = Math.sqrt(ex * ex + ez * ez);
 
       if (!nearest || entranceDistance < nearest.entranceDistance) {

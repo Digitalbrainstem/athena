@@ -464,6 +464,15 @@ export class GameLoop implements Disposable {
     }
 
     if (this.worldManager?.isOverworld()) {
+      if (this.core.getCurrentBiome() === 'workshop') {
+        this.hud.showGuidance(
+          'Reach the Workbench',
+          `Walk through the Workshop yard and use the outside workbench with ${action}.`,
+          'Mix Red Pigment and Blue Pigment to make purple paint; the world will show what changed.',
+        );
+        return;
+      }
+
       const nearby = this.worldManager.nearbyBiome;
       if (nearby && nearby.entranceDistance <= BIOME_ENTER_RANGE) {
         this.hud.showGuidance(
