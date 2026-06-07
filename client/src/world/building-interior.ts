@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import type { BiomeLocation } from './overworld.js';
 import type { Disposable } from '../types.js';
+import { loadCachedWorldModel } from '../assets/world-models.js';
 
 // ---------------------------------------------------------------------------
 // Building interior generator — enclosed spaces with walls, floor, ceiling,
@@ -364,12 +365,43 @@ export class BuildingInterior implements Disposable {
 
   private addFurniture(config: BuildingConfig, hw: number, hd: number, _h: number): void {
     if (config.style === 'workshop') {
-      // Workshop gameplay objects are rendered as authored GLBs by the scene graph.
-      // Avoid duplicating them with primitive placeholder furniture.
+      this.addWorkshopFurniture(hw, hd);
     } else if (config.style === 'library') {
       this.addLibraryFurniture(hw, hd);
     }
     // Other biomes keep their existing scene-graph objects from the core
+  }
+
+  private addWorkshopFurniture(hw: number, hd: number): void {
+    const placements: Array<{
+      modelId: string;
+      position: [number, number, number];
+      rotY?: number;
+      scale?: number;
+      name?: string;
+    }> = [
+      { modelId: 'workbench', position: [0, 0, -2.7], scale: 1.25, name: 'interior-workbench' },
+      { modelId: 'forge', position: [-4.8, 0, -1.6], rotY: Math.PI / 2, scale: 0.9, name: 'interior-forge' },
+      { modelId: 'anvil', position: [4.8, 0, -1.4], rotY: -0.25, scale: 0.9, name: 'interior-anvil' },
+      { modelId: 'toolrack', position: [-hw + 1.0, 0, 2.0], rotY: Math.PI / 2, name: 'interior-toolrack' },
+      { modelId: 'cabinet', position: [hw - 1.0, 0, 2.4], rotY: -Math.PI / 2, scale: 0.85, name: 'interior-cabinet' },
+      { modelId: 'crate', position: [-4.9, 0, hd - 3.2], rotY: 0.4, name: 'interior-crate-a' },
+      { modelId: 'barrel', position: [-3.6, 0, hd - 3.1], rotY: -0.2, name: 'interior-barrel' },
+      { modelId: 'chest', position: [4.4, 0, hd - 3.2], rotY: -Math.PI / 5, name: 'interior-chest' },
+      { modelId: 'table', position: [0, 0, 3.0], rotY: Math.PI / 2, scale: 0.75, name: 'interior-material-table' },
+      { modelId: 'lantern', position: [-2.8, 0, 2.2], scale: 0.75, name: 'interior-lantern-a' },
+      { modelId: 'lantern', position: [2.8, 0, 2.2], scale: 0.75, name: 'interior-lantern-b' },
+    ];
+
+    for (const placement of placements) {
+      const model = loadCachedWorldModel(placement.modelId);
+      if (!model) continue;
+      model.name = placement.name ?? `interior-${placement.modelId}`;
+      model.position.set(...placement.position);
+      if (placement.rotY !== undefined) model.rotation.y = placement.rotY;
+      if (placement.scale !== undefined) model.scale.multiplyScalar(placement.scale);
+      this.group.add(model);
+    }
   }
 
   private addLibraryFurniture(hw: number, hd: number): void {

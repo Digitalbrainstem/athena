@@ -7,6 +7,7 @@ import type { FirstPersonCamera } from '../camera/first-person.js';
 import type { AudioManager } from '../audio/audio-manager.js';
 import type { HUD } from '../ui/hud.js';
 import type { WorldManager } from '../world/world-manager.js';
+import { BIOME_ENTER_RANGE } from '../world/world-manager.js';
 import { debug, debugSceneGraph } from '../debug.js';
 
 /** Callback to check for nearby NPCs. Returns NPC name if one is in range, null otherwise. */
@@ -196,6 +197,7 @@ export class GameLoop implements Disposable {
     }
 
     let steps = 0;
+    const smoothedActions: GameAction[] = [];
     while (this.accumulator >= this.fixedDt && steps < MAX_STEPS_PER_FRAME) {
       // Update velocity physics (acceleration / friction / clamping / collision)
       this.fpCam.updateMovement(this.fixedDt);
@@ -204,13 +206,7 @@ export class GameLoop implements Disposable {
       this.core.setPlayerPosition(this.fpCam.posX, this.fpCam.posZ);
 
       // Replace raw move actions with smoothed ones from the velocity system
-      const smoothedMoves = this.fpCam.flushMoveActions();
-      // Non-move actions (interact, back, etc.) only on the first step
-      const actions = steps === 0
-        ? [...nonMoveActions, ...smoothedMoves]
-        : smoothedMoves;
-
-      this.core.update(this.fixedDt, actions);
+      smoothedActions.push(...this.fpCam.flushMoveActions());
       this.accumulator -= this.fixedDt;
       steps++;
     }
@@ -220,12 +216,20 @@ export class GameLoop implements Disposable {
 
     if (steps >= MAX_STEPS_PER_FRAME) this.accumulator = 0;
 
+    const updateDt = steps > 0 ? steps * this.fixedDt : frameDt;
+    this.core.update(updateDt, [...nonMoveActions, ...smoothedActions]);
+
     let sceneGraph: SceneGraph = this.core.getSceneGraph();
-    if (this.worldManager?.isInside()) {
+    if (this.worldManager?.isOverworld()) {
+      sceneGraph = { ...sceneGraph, objects: [] };
+    } else if (this.worldManager?.isInside()) {
       const offset = this.worldManager.getBiomeOffset();
+      const biomeObjects = this.worldManager.activeBiomeId === 'workshop'
+        ? sceneGraph.objects.filter(obj => obj.renderable.modelId === 'npc')
+        : sceneGraph.objects;
       sceneGraph = {
         ...sceneGraph,
-        objects: sceneGraph.objects.map(obj => ({
+        objects: biomeObjects.map(obj => ({
           ...obj,
           position: {
             x: obj.position.x + offset.x,
@@ -284,7 +288,7 @@ export class GameLoop implements Disposable {
     if (this.worldManager && !highlightedInteractable) {
       if (this.worldManager.isOverworld()) {
         const nearby = this.worldManager.nearbyBiome;
-        if (nearby && nearby.entranceDistance < 5) {
+        if (nearby && nearby.entranceDistance <= BIOME_ENTER_RANGE) {
           this.hud.showPrompt(`${this.actionLabel()} to enter ${nearby.biome.name}`);
         }
       } else if (this.worldManager.isInside() && this.npcProximityChecker) {
@@ -461,7 +465,7 @@ export class GameLoop implements Disposable {
 
     if (this.worldManager?.isOverworld()) {
       const nearby = this.worldManager.nearbyBiome;
-      if (nearby && nearby.entranceDistance < 5) {
+      if (nearby && nearby.entranceDistance <= BIOME_ENTER_RANGE) {
         this.hud.showGuidance(
           `Enter ${nearby.biome.name}`,
           `${action} to step inside and find the first hands-on challenge.`,

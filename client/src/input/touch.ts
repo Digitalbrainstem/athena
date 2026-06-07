@@ -82,6 +82,7 @@ export class TouchInput implements InputProvider {
       // Left half → virtual joystick (movement)
       if (this.joystick.claimTouch(t)) {
         e.preventDefault();
+        this.emitMovement();
         continue;
       }
 
@@ -102,6 +103,7 @@ export class TouchInput implements InputProvider {
 
       if (this.joystick.handleMove(t)) {
         e.preventDefault();
+        this.emitMovement();
         continue;
       }
 

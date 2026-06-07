@@ -8,7 +8,7 @@ describe('WorkshopBiome gameplay metadata', () => {
     expect(boxes.length).toBeGreaterThan(20);
     expect(boxes).toContainEqual(expect.objectContaining({
       cx: -40,
-      cz: 34,
+      cz: 27.5,
     }));
   });
 
@@ -19,7 +19,7 @@ describe('WorkshopBiome gameplay metadata', () => {
     expect(modelIds).toEqual(expect.arrayContaining(['forge', 'workbench', 'anvil', 'chest']));
 
     const workbench = objects.find(obj => obj.renderable.modelId === 'workbench');
-    expect(workbench?.position).toEqual(expect.objectContaining({ x: -40, z: 34 }));
+    expect(workbench?.position).toEqual(expect.objectContaining({ x: -40, z: 35 }));
     expect(workbench?.interactable).toEqual(expect.objectContaining({
       interactionType: 'craft',
       prompt: 'Interact with workbench',

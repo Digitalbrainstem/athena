@@ -14,7 +14,7 @@ import { PathNetwork } from './paths.js';
 import { OverworldSkyDome } from './sky-dome.js';
 import { TransitionOverlay } from './transition.js';
 import { WorkshopBiome } from './workshop-biome.js';
-import { getWorkshopCollisionBoxes, getWorkshopGameplayObjects } from './workshop-biome.js';
+import { getWorkshopCollisionBoxes } from './workshop-biome.js';
 import { MaterialLibrary } from '../assets/materials.js';
 import { ProceduralModelGenerator } from '../assets/procedural-models.js';
 import { BiomeEnvironmentGenerator } from '../assets/biome-environments.js';
@@ -25,7 +25,7 @@ import type { MasteryTier } from '@nexus-academy/core';
 // ---------------------------------------------------------------------------
 
 /** Distance to biome entrance that triggers "Press E to enter" prompt */
-const ENTER_RANGE = 5;
+export const BIOME_ENTER_RANGE = 2.75;
 /** Distance to door inside building that triggers "Press E to exit" prompt */
 const EXIT_RANGE = 3;
 
@@ -36,6 +36,7 @@ const TOWN_SQUARE_COLLISION_BOXES: CollisionBox[] = [
 
 const BIOME_ENVIRONMENT_TIER: MasteryTier = 'foundation';
 const ENVIRONMENT_ENTITY_ID_BASE = -300_000;
+const WORKSHOP_INTERIOR_ENTITY_BASE = -350_000;
 const PASS_THROUGH_ENVIRONMENT_PROPS = new Set([
   'flower',
   'grass',
@@ -75,6 +76,44 @@ function humanizePropType(propType: string): string {
     .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
     .replace(/[-_]+/g, ' ')
     .toLowerCase();
+}
+
+function getWorkshopInteriorGameplayObjects(offsetX: number, offsetY: number, offsetZ: number): SceneObject[] {
+  const placements: Array<{
+    modelId: string;
+    name: string;
+    interactionType: string;
+    x: number;
+    z: number;
+    hx: number;
+    hz: number;
+    height: number;
+    radius: number;
+  }> = [
+    { modelId: 'workbench', name: 'Workbench', interactionType: 'craft', x: 0, z: -2.7, hx: 1.7, hz: 0.95, height: 1.0, radius: 3.0 },
+    { modelId: 'forge', name: 'Forge', interactionType: 'craft', x: -4.8, z: -1.6, hx: 1.4, hz: 1.2, height: 1.7, radius: 2.8 },
+    { modelId: 'anvil', name: 'Anvil', interactionType: 'craft', x: 4.8, z: -1.4, hx: 0.8, hz: 0.6, height: 1.0, radius: 2.5 },
+    { modelId: 'chest', name: 'Treasure Chest', interactionType: 'open', x: 4.4, z: 6.8, hx: 0.8, hz: 0.5, height: 0.7, radius: 2.3 },
+  ];
+
+  return placements.map((obj, index) => ({
+    entityId: WORKSHOP_INTERIOR_ENTITY_BASE - index,
+    position: { x: offsetX + obj.x, y: offsetY, z: offsetZ + obj.z },
+    rotation: { x: 0, y: 0, z: 0 },
+    renderable: {
+      meshType: 'model',
+      modelId: obj.modelId,
+      color: '#D4A574',
+      scale: { x: obj.hx * 2, y: obj.height, z: obj.hz * 2 },
+      visible: false,
+    },
+    interactable: {
+      interactionType: obj.interactionType,
+      radius: obj.radius,
+      prompt: `Interact with ${obj.name}`,
+    },
+    highlight: false,
+  }));
 }
 
 export type WorldMode = 'overworld' | 'entering' | 'inside' | 'exiting';
@@ -288,7 +327,10 @@ export class WorldManager implements Disposable {
     const loc = getBiomeLocation(biomeId);
     if (!loc) return { x: 0, z: 0 };
     const entranceLength = Math.hypot(loc.entranceOffset.x, loc.entranceOffset.z);
-    const clearDistance = Math.max(entranceLength, landmarkHalfSize(loc) + 0.9);
+    const clearDistance = Math.max(
+      entranceLength + BIOME_ENTER_RANGE + 1.5,
+      landmarkHalfSize(loc) + 0.9,
+    );
     if (entranceLength === 0) {
       return { x: loc.worldPosition.x, z: loc.worldPosition.z + clearDistance };
     }
@@ -348,17 +390,7 @@ export class WorldManager implements Disposable {
   /** Gameplay metadata for direct Three.js overworld content. */
   getOverworldGameplayObjects(): SceneObject[] {
     if (!this.isOverworld()) return [];
-
-    const objects: SceneObject[] = [];
-    const workshop = getBiomeLocation('workshop');
-    if (workshop) {
-      objects.push(...getWorkshopGameplayObjects(
-        workshop.worldPosition.x,
-        workshop.baseHeight,
-        workshop.worldPosition.z,
-      ));
-    }
-    return objects;
+    return [];
   }
 
   /** Merge direct Three.js world content into the renderer-agnostic gameplay graph. */
@@ -404,7 +436,7 @@ export class WorldManager implements Disposable {
    */
   async enterBiome(): Promise<string | null> {
     if (this._mode !== 'overworld' || !this._nearbyBiome) return null;
-    if (this._nearbyBiome.entranceDistance > ENTER_RANGE) return null;
+    if (this._nearbyBiome.entranceDistance > BIOME_ENTER_RANGE) return null;
     if (this.transition.isAnimating) return null;
 
     const biome = this._nearbyBiome.biome;
@@ -565,7 +597,9 @@ export class WorldManager implements Disposable {
       this._activeInterior = new BuildingInterior(biome);
       this.interiorGroup.add(this._activeInterior.group);
       this._activeEnvironmentCollisionBoxes = [];
-      this._activeEnvironmentGameplayObjects = [];
+      this._activeEnvironmentGameplayObjects = biome.id === 'workshop'
+        ? getWorkshopInteriorGameplayObjects(biome.worldPosition.x, biome.baseHeight, biome.worldPosition.z)
+        : [];
       return;
     }
 

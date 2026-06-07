@@ -89,6 +89,7 @@ export class HUD implements Disposable {
     document.body.classList.toggle('mobile', mobile);
     if (mobile) this.setCrosshairVisible(false);
     this.actionButtonEl?.classList.add('hud-hidden');
+    this.fpsEl?.classList.toggle('hud-hidden', mobile || !this.debug);
   }
 
   get isMobile(): boolean { return this.mobile; }
@@ -161,7 +162,7 @@ export class HUD implements Disposable {
   }
 
   updateFPS(fps: number): void {
-    if (!this.debug || !this.fpsEl) return;
+    if (!this.debug || this.mobile || !this.fpsEl) return;
     this.fpsEl.textContent = `${fps} FPS`;
   }
 
@@ -174,6 +175,10 @@ export class HUD implements Disposable {
   /** Show the quest panel with the active quest and its current step. */
   showQuestPanel(quest: Quest, progress: QuestProgress): void {
     if (this.disposed || !this.questPanelEl) return;
+    if (this.mobile && this.hasVisiblePrompt()) {
+      this.hideQuestPanel();
+      return;
+    }
 
     if (this.questTitleEl) {
       this.questTitleEl.textContent = quest.title;
@@ -211,6 +216,10 @@ export class HUD implements Disposable {
   /** Show immediate guidance when no formal quest is active yet. */
   showGuidance(title: string, step: string, hint = ''): void {
     if (this.disposed || !this.questPanelEl) return;
+    if (this.mobile && this.hasVisiblePrompt()) {
+      this.hideQuestPanel();
+      return;
+    }
     if (this.questTitleEl) this.questTitleEl.textContent = title;
     if (this.questStepEl) this.questStepEl.textContent = step;
     if (this.questProgressEl) this.questProgressEl.textContent = 'Getting started';
@@ -289,4 +298,8 @@ export class HUD implements Disposable {
     event.preventDefault();
     this.actionHandler?.();
   };
+
+  private hasVisiblePrompt(): boolean {
+    return this.promptEl?.classList.contains('visible') ?? false;
+  }
 }

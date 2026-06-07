@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { describe, expect, it, vi } from 'vitest';
-import { WorldManager } from '../../src/world/world-manager.js';
+import { BIOME_ENTER_RANGE, WorldManager } from '../../src/world/world-manager.js';
 
 vi.mock('../../src/world/workshop-biome.js', async () => {
   const THREE = await import('three');
@@ -31,8 +31,9 @@ describe('WorldManager', () => {
 
     try {
       const start = world.getStartPosition('workshop');
-      expect(start).toEqual({ x: -40, z: 38 });
-      expect(Math.hypot(start.x - -40, start.z - 34)).toBeGreaterThan(2.5);
+      expect(start.x).toBeCloseTo(-40);
+      expect(start.z).toBeCloseTo(42.25);
+      expect(Math.hypot(start.x - -40, start.z - 38)).toBeGreaterThan(BIOME_ENTER_RANGE);
     } finally {
       world.dispose();
     }

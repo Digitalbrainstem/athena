@@ -8,6 +8,7 @@ export interface CraftPanelOptions {
   core: NexusCore;
   profileId: string;
   onCompanionSpeak: (text: string) => void;
+  onCraftComplete?: (recipe: CraftRecipe, result: CraftResult) => void;
 }
 
 interface InventorySlot {
@@ -31,6 +32,7 @@ const STATION_LABELS: Record<string, string> = {
 export class CraftPanel implements Disposable {
   private readonly core: NexusCore;
   private readonly onCompanionSpeak: (text: string) => void;
+  private readonly onCraftComplete?: (recipe: CraftRecipe, result: CraftResult) => void;
 
   private root: HTMLElement | null = null;
   private disposed = false;
@@ -56,6 +58,7 @@ export class CraftPanel implements Disposable {
   constructor(opts: CraftPanelOptions) {
     this.core = opts.core;
     this.onCompanionSpeak = opts.onCompanionSpeak;
+    this.onCraftComplete = opts.onCraftComplete;
   }
 
   get isOpen(): boolean { return this._open; }
@@ -378,6 +381,7 @@ export class CraftPanel implements Disposable {
         }
         // Add crafted item
         this.core.worldSystem.addInventoryItem(result.output.id, result.output.quantity);
+        this.onCraftComplete?.(this.matchedRecipe, result);
 
         // Emit learning events
         for (const skill of result.learningEvents) {

@@ -262,30 +262,34 @@
     }
 
     body.mobile #dialogue-box {
-      max-width: 95vw;
-      font-size: 1.25rem;
-      bottom: 18%;
-      padding: 1rem 1.5rem;
+      max-width: 72vw;
+      font-size: 0.95rem;
+      bottom: 1rem;
+      padding: 0.55rem 0.8rem;
+      border-radius: 0.75rem;
     }
 
     body.mobile #interaction-prompt {
-      font-size: 1rem;
-      padding: 0.75rem 1.5rem;
-      bottom: 28%;
-      min-height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: none;
     }
 
     body:not(.mobile) #touch-action-button {
       display: none !important;
     }
 
-    body.mobile #fps-counter {
-      font-size: 0.875rem;
-      top: 0.75rem;
+    body.mobile #touch-action-button {
       right: 1rem;
+      bottom: 1rem;
+      min-width: 5.25rem;
+      min-height: 3.25rem;
+      max-width: 44vw;
+      padding: 0.65rem 0.9rem;
+      font-size: 0.95rem;
+      line-height: 1.1;
+    }
+
+    body.mobile #fps-counter {
+      display: none !important;
     }
 
     /* ------------------------------------------------------------------ */
@@ -790,14 +794,18 @@
 
     /* Mobile quest panel */
     body.mobile #quest-panel {
-      max-width: 60vw;
-      font-size: 1rem;
+      max-width: min(76vw, 20rem);
+      padding: 0.5rem 0.7rem;
       top: 0.75rem;
       left: 0.75rem;
+      border-radius: 0.75rem;
     }
 
-    body.mobile .quest-title { font-size: 1rem; }
-    body.mobile .quest-step { font-size: 0.9375rem; }
+    body.mobile .quest-title { font-size: 0.85rem; margin-bottom: 0.1rem; }
+    body.mobile .quest-step { font-size: 0.78rem; line-height: 1.25; margin-bottom: 0.1rem; }
+    body.mobile .quest-progress { display: none; }
+    body.mobile .quest-hint { display: none; }
+    body.mobile .quest-indicator { display: none; }
 
     /* ------------------------------------------------------------------ */
     /* Panel shared — hidden state                                         */

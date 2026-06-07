@@ -68,6 +68,7 @@ interface Footprint {
 }
 
 const WORKSHOP_ENTITY_BASE = -5000;
+const WORKSHOP_LAYOUT_SCALE = 1.25;
 
 const MODEL_FOOTPRINTS: Partial<Record<keyof typeof WORKSHOP_MODELS, Footprint>> = {
   forge:       { hx: 1.25, hz: 1.0,  height: 1.6 },
@@ -220,6 +221,14 @@ function objectScale(obj: PlacedObject): number {
   return (obj.scale ?? 1) * (def.scale ?? 1);
 }
 
+function placedX(obj: PlacedObject): number {
+  return obj.x * WORKSHOP_LAYOUT_SCALE;
+}
+
+function placedZ(obj: PlacedObject): number {
+  return obj.z * WORKSHOP_LAYOUT_SCALE;
+}
+
 export function getWorkshopCollisionBoxes(offsetX: number, offsetZ: number): CollisionBox[] {
   const boxes: CollisionBox[] = [];
   for (const obj of WORKSHOP_LAYOUT) {
@@ -229,8 +238,8 @@ export function getWorkshopCollisionBoxes(offsetX: number, offsetZ: number): Col
     const s = objectScale(obj);
     const rotated = rotatedFootprint(fp.hx * s, fp.hz * s, obj.rotY);
     boxes.push({
-      cx: offsetX + obj.x,
-      cz: offsetZ + obj.z,
+      cx: offsetX + placedX(obj),
+      cz: offsetZ + placedZ(obj),
       hx: rotated.hx,
       hz: rotated.hz,
     });
@@ -254,7 +263,7 @@ export function getWorkshopGameplayObjects(offsetX: number, offsetY: number, off
     const name = obj.name ?? obj.model;
     objects.push({
       entityId: WORKSHOP_ENTITY_BASE - i,
-      position: { x: offsetX + obj.x, y: offsetY + (obj.y ?? 0), z: offsetZ + obj.z },
+      position: { x: offsetX + placedX(obj), y: offsetY + (obj.y ?? 0), z: offsetZ + placedZ(obj) },
       rotation: { x: 0, y: obj.rotY ?? 0, z: 0 },
       renderable: {
         meshType: 'model',
@@ -312,7 +321,7 @@ export class WorkshopBiome implements Disposable {
     if (this.loaded || this.disposed) return;
 
     // Ground plane for the workshop area
-    const groundGeo = new THREE.CircleGeometry(14, 32);
+    const groundGeo = new THREE.CircleGeometry(20, 40);
     const groundMat = new THREE.MeshStandardMaterial({
       color: 0x6b8f4e,
       roughness: 0.95,
@@ -326,7 +335,7 @@ export class WorkshopBiome implements Disposable {
     this.group.add(ground);
 
     // Workshop floor (slightly raised, darker)
-    const floorGeo = new THREE.PlaneGeometry(12, 10);
+    const floorGeo = new THREE.PlaneGeometry(17, 14);
     const floorMat = new THREE.MeshStandardMaterial({
       color: 0x8b7355,
       roughness: 0.9,
@@ -345,7 +354,7 @@ export class WorkshopBiome implements Disposable {
         ? await buildWorkshopHouse(obj.scale ?? 1)
         : (await loadPlacedModel(obj));
 
-      group.position.set(obj.x, obj.y ?? 0, obj.z);
+      group.position.set(placedX(obj), obj.y ?? 0, placedZ(obj));
       if (obj.rotY) group.rotation.y = obj.rotY;
       if (obj.name) group.name = obj.name;
 
@@ -368,7 +377,7 @@ export class WorkshopBiome implements Disposable {
     const lanternPositions = WORKSHOP_LAYOUT.filter(o => o.model === 'lantern');
     for (const lp of lanternPositions) {
       const light = new THREE.PointLight(0xffd700, 0.6, 8);
-      light.position.set(lp.x, 2.5, lp.z);
+      light.position.set(placedX(lp), 2.5, placedZ(lp));
       this.group.add(light);
     }
 
@@ -379,7 +388,7 @@ export class WorkshopBiome implements Disposable {
 
     // Forge glow
     const forgeGlow = new THREE.PointLight(0xff4400, 0.8, 6);
-    forgeGlow.position.set(-3.5, 1.5, 3);
+    forgeGlow.position.set(-3.5 * WORKSHOP_LAYOUT_SCALE, 1.5, 3 * WORKSHOP_LAYOUT_SCALE);
     this.group.add(forgeGlow);
 
     this.loaded = true;

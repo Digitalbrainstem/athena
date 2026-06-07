@@ -1,5 +1,5 @@
 import { NexusCore } from '@nexus-academy/core';
-import type { Quest, SceneGraph } from '@nexus-academy/core';
+import type { CraftRecipe, CraftResult, Quest, SceneGraph, SceneObject } from '@nexus-academy/core';
 import { SceneRenderer } from './renderer/scene-renderer.js';
 import { GameLoop } from './game/loop.js';
 import { InputManager } from './input/manager.js';
@@ -25,7 +25,7 @@ import { AccessibilityManager } from './a11y/accessibility-manager.js';
 import { OfflineManager } from './net/offline.js';
 import { registerServiceWorker } from './net/sw-register.js';
 import { AssetManager } from './assets/asset-manager.js';
-import { WorldManager } from './world/world-manager.js';
+import { BIOME_ENTER_RANGE, WorldManager } from './world/world-manager.js';
 import type { Disposable } from './types.js';
 
 const DEBUG = import.meta.env.DEV;
@@ -40,6 +40,13 @@ const STARTER_INVENTORY: Array<{ itemType: string; quantity: number }> = [
   { itemType: 'clay', quantity: 2 },
   { itemType: 'H2O', quantity: 2 },
 ];
+
+const WORKSHOP_COLOR_QUEST_ID = 'f-workshop-colorful-workbench';
+const WORKSHOP_COLOR_RECIPE_IDS = new Set([
+  'mix-purple-paint',
+  'mix-green-paint',
+  'mix-orange-paint',
+]);
 
 function describeInteraction(name: string, biomeId: string): string {
   const normalized = name.toLowerCase();
@@ -57,6 +64,18 @@ function describeInteraction(name: string, biomeId: string): string {
     : `You examine the ${name}. The world is waiting for the right idea, not the right menu click.`;
 }
 
+function objectMatchesQuestTarget(object: SceneObject, target: unknown): boolean {
+  const candidates = Array.isArray(target) ? target : [target];
+  const prompt = object.interactable?.prompt.toLowerCase() ?? '';
+  const modelId = object.renderable.modelId?.toLowerCase() ?? '';
+
+  return candidates.some((candidate) => {
+    if (typeof candidate !== 'string') return false;
+    const normalizedTarget = candidate.toLowerCase();
+    return prompt.includes(normalizedTarget) || modelId === normalizedTarget;
+  });
+}
+
 function ensureStarterInventory(core: NexusCore): void {
   if (core.worldSystem.getInventory().length > 0) return;
   for (const item of STARTER_INVENTORY) {
@@ -66,10 +85,18 @@ function ensureStarterInventory(core: NexusCore): void {
 
 function buildDebugSceneGraph(sceneGraph: SceneGraph, worldManager: WorldManager): SceneGraph {
   const offset = worldManager.isInside() ? worldManager.getBiomeOffset() : null;
-  const worldSpaceGraph = offset
+  const biomeObjects = worldManager.activeBiomeId === 'workshop'
+    ? sceneGraph.objects.filter(obj => obj.renderable.modelId === 'npc')
+    : sceneGraph.objects;
+  const renderSpaceGraph = worldManager.isOverworld()
     ? {
         ...sceneGraph,
-        objects: sceneGraph.objects.map(obj => ({
+        objects: [],
+      }
+    : offset
+    ? {
+        ...sceneGraph,
+        objects: biomeObjects.map(obj => ({
           ...obj,
           position: {
             x: obj.position.x + offset.x,
@@ -79,7 +106,7 @@ function buildDebugSceneGraph(sceneGraph: SceneGraph, worldManager: WorldManager
         })),
       }
     : sceneGraph;
-  return worldManager.mergeGameplayObjects(worldSpaceGraph);
+  return worldManager.mergeGameplayObjects(renderSpaceGraph);
 }
 
 async function boot(): Promise<void> {
@@ -284,6 +311,66 @@ async function boot(): Promise<void> {
   disposables.push(worldManager);
   debug('world', 'WorldManager created — overworld terrain, landmarks, and paths loaded');
 
+  // --- Quest state ---
+  let activeQuestId: string | null = null;
+  let pendingQuestOffer: Quest[] = [];
+
+  const startQuest = (quest: Quest): void => {
+    core.questSystem.queueAction({
+      type: 'start',
+      questId: quest.id,
+      profileId,
+    });
+    activeQuestId = quest.id;
+    pendingQuestOffer = [];
+    loop.clearQuestOffer();
+  };
+
+  const handleCraftComplete = (recipe: CraftRecipe, _result: CraftResult): void => {
+    const activeQuests = core.getActiveQuests();
+    const activeProgress = activeQuests[0] ?? null;
+    let currentQuest = activeProgress ? core.getQuestById(activeProgress.questId) : undefined;
+    let stepsCompleted = activeProgress?.stepsCompleted ?? 0;
+
+    if (!currentQuest && WORKSHOP_COLOR_RECIPE_IDS.has(recipe.id)) {
+      const quest = core.getQuestById(WORKSHOP_COLOR_QUEST_ID);
+      const canStart = quest
+        && (pendingQuestOffer.some((q) => q.id === WORKSHOP_COLOR_QUEST_ID)
+          || core.selectAvailableQuests('workshop').some((q) => q.id === WORKSHOP_COLOR_QUEST_ID));
+      if (!quest || !canStart) return;
+
+      startQuest(quest);
+      currentQuest = quest;
+      stepsCompleted = 0;
+    }
+
+    if (!currentQuest || currentQuest.id !== WORKSHOP_COLOR_QUEST_ID) return;
+    const step = currentQuest.content.steps[stepsCompleted];
+    if (!step || step.objectiveType !== 'craft') return;
+
+    if (step.targetId !== recipe.id) {
+      const reminder = step.companionRepeat ?? step.spokenInstruction ?? step.instruction;
+      core.worldSystem.queueDialogue(
+        core.getCompanionState()?.name ?? 'Companion',
+        reminder,
+      );
+      return;
+    }
+
+    core.questSystem.queueAction({
+      type: 'progress',
+      questId: currentQuest.id,
+      profileId,
+      stepsCompleted: stepsCompleted + 1,
+    });
+    core.worldSystem.queueDialogue(
+      core.getCompanionState()?.name ?? 'Companion',
+      step.successResponse,
+    );
+    core.update(1 / 60, []);
+    debug('quest', `Craft progressed ${currentQuest.id}: ${recipe.id}`);
+  };
+
   // --- Crafting + Map Panels ---
   const handleFastTravel = (biomeId: string): void => {
     // Fast-travel: switch core biome and world manager
@@ -305,6 +392,7 @@ async function boot(): Promise<void> {
     core,
     profileId,
     onCompanionSpeak: companionSpeak,
+    onCraftComplete: handleCraftComplete,
   });
 
   hud.initMapPanel({
@@ -580,10 +668,6 @@ async function boot(): Promise<void> {
   // Track last spoken dialogue to avoid re-speaking the same line each frame
   let lastDialogueText = '';
 
-  // --- Quest state ---
-  let activeQuestId: string | null = null;
-  let pendingQuestOffer: Quest[] = [];
-
   // Quest offer callback — companion announces available quests
   loop.onQuestOffer((quests) => {
     if (activeQuestId) return; // Already in a quest
@@ -712,7 +796,8 @@ async function boot(): Promise<void> {
         if (currentQuest && currentProgress && currentProgress.status === 'active') {
           // Active quest — check if this object matches current step target
           const step = currentQuest.content.steps[currentProgress.stepsCompleted];
-          if (step) {
+          const stepTarget = step?.targetId ?? step?.targetValue;
+          if (step && step.objectiveType !== 'craft' && stepTarget && objectMatchesQuestTarget(highlighted, stepTarget)) {
             // Progress the quest: advance by one step
             const newSteps = currentProgress.stepsCompleted + 1;
             core.questSystem.queueAction({
@@ -728,18 +813,16 @@ async function boot(): Promise<void> {
               step.successResponse,
             );
             debug('quest', `Quest step ${newSteps}/${currentQuest.content.steps.length}: ${step.instruction}`);
+          } else {
+            core.worldSystem.queueDialogue(
+              core.getCompanionState()?.name ?? 'Companion',
+              step?.companionRepeat ?? step?.instruction ?? describeInteraction(name, worldManager.activeBiomeId ?? core.getCurrentBiome()),
+            );
           }
         } else if (!currentQuest && pendingQuestOffer.length > 0) {
           // No active quest but we have a pending offer — start the first offered quest
           const quest = pendingQuestOffer[0]!;
-          core.questSystem.queueAction({
-            type: 'start',
-            questId: quest.id,
-            profileId,
-          });
-          activeQuestId = quest.id;
-          pendingQuestOffer = [];
-          loop.clearQuestOffer();
+          startQuest(quest);
 
           // Companion introduces the quest
           const intro = quest.content.companionIntro ?? `Let's try: ${quest.title}`;
@@ -766,7 +849,7 @@ async function boot(): Promise<void> {
       // Biome travel is a fallback when no nearby object/NPC owns the E press.
       if (worldManager.isOverworld()) {
         const nearby = worldManager.nearbyBiome;
-        if (nearby && nearby.entranceDistance < 5) {
+        if (nearby && nearby.entranceDistance <= BIOME_ENTER_RANGE) {
           void worldManager.enterBiome().then((biomeId) => {
             if (biomeId) {
               const pos = worldManager.getEntryPosition(biomeId);

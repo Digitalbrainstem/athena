@@ -156,12 +156,13 @@ describe('GameLoop', () => {
     custom.dispose();
   });
 
-  it('runs multiple fixed steps for long frames', () => {
+  it('substeps camera physics for long frames but updates core once', () => {
     loop = new GameLoop(core, input, fpCam, renderer, audio, hud, 1 / 60);
     loop.start();
     runFrame(0);
     runFrame(50);
-    expect((core.update as ReturnType<typeof vi.fn>).mock.calls.length).toBeGreaterThanOrEqual(2);
+    expect(fpCam.updateMovement).toHaveBeenCalledTimes(3);
+    expect(core.update).toHaveBeenCalledTimes(1);
   });
 
   it('clamps frame time to prevent spiral-of-death', () => {
@@ -301,14 +302,21 @@ describe('GameLoop', () => {
       },
       highlight: true,
     });
-    (core.getSceneGraph as ReturnType<typeof vi.fn>).mockReturnValue(graph);
+    const worldObject = graph.objects[0]!;
+    (core.getSceneGraph as ReturnType<typeof vi.fn>).mockReturnValue({
+      ...graph,
+      objects: [],
+    });
     loop.setWorldManager({
       getHeightAt: vi.fn(() => 0),
       isOverworld: vi.fn(() => true),
       isInside: vi.fn(() => false),
       update: vi.fn(),
       getOverworldSky: vi.fn(() => graph.sky),
-      mergeGameplayObjects: vi.fn((g: SceneGraph) => g),
+      mergeGameplayObjects: vi.fn((g: SceneGraph) => ({
+        ...g,
+        objects: [...g.objects, worldObject],
+      })),
       getOverworldCollisionBoxes: vi.fn(() => []),
       nearbyBiome: {
         biome: { name: 'The Workshop' },

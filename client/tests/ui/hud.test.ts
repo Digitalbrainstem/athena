@@ -113,6 +113,28 @@ describe('HUD', () => {
     expect(handler).toHaveBeenCalledOnce();
   });
 
+  it('keeps mobile quest panel hidden while an action prompt is visible', () => {
+    const questPanel = document.createElement('div');
+    questPanel.id = 'quest-panel';
+    questPanel.innerHTML = `
+      <h3 class="quest-title"></h3>
+      <p class="quest-step"></p>
+      <p class="quest-progress"></p>
+      <p class="quest-hint"></p>
+    `;
+    document.body.appendChild(questPanel);
+
+    hud.dispose();
+    hud = new HUD();
+    hud.init(true);
+    hud.setMobile(true);
+    hud.showPrompt('Tap to use the Workbench');
+    hud.showGuidance('First Workshop Challenge', 'Use the Workbench.');
+
+    expect(questPanel.classList.contains('quest-visible')).toBe(false);
+    questPanel.remove();
+  });
+
   it('updateFPS sets text content', () => {
     hud.updateFPS(60);
     expect(fpsEl.textContent).toBe('60 FPS');

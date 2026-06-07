@@ -7,8 +7,8 @@ const PITCH_LIMIT = (85 * Math.PI) / 180; // ±85 degrees
 // Movement physics constants
 const MAX_WALK_SPEED = 4;
 const MAX_RUN_SPEED = 8;
-const ACCEL_TIME = 0.3; // seconds to reach max speed
-const DECEL_TIME = 0.3; // seconds to stop
+const ACCEL_TIME = 0.12; // seconds to reach max speed
+const DECEL_TIME = 0.14; // seconds to stop
 const STOP_THRESHOLD = 0.05;
 const EYE_HEIGHT = 1.6;
 const PLAYER_RADIUS = 0.3;
