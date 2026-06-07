@@ -52,6 +52,9 @@ export class BiomeEnvironmentGenerator {
       for (let i = 0; i < propCount; i++) {
         const prop = layout[i]!;
         const model = this.models.generate(prop.type, tier);
+        model.name = `${biomeId}:${prop.type}:${i}`;
+        model.userData.biomePropType = prop.type;
+        model.userData.biomePropIndex = i;
         model.position.set(...prop.pos);
         if (prop.rot) model.rotation.set(...prop.rot);
         if (prop.scale) model.scale.set(...prop.scale);

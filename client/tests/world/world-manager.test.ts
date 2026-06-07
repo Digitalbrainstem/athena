@@ -37,6 +37,7 @@ describe('WorldManager', () => {
       expect(world.activeBiomeId).toBe('farm');
       expect(farm).toBeDefined();
       expect(farm!.children.length).toBeGreaterThan(1);
+      expect(world.getExtraCollisionBoxes().length).toBeGreaterThan(0);
       expect(findByName(scene, 'overworld')).toBeNull();
     } finally {
       world.dispose();
@@ -55,6 +56,45 @@ describe('WorldManager', () => {
       expect(world.activeBiomeId).toBeNull();
       expect(findByName(scene, 'biome:farm')).toBeNull();
       expect(findByName(scene, 'overworld')).toBeDefined();
+    } finally {
+      world.dispose();
+    }
+  });
+
+  it('bridges natural biome props into gameplay interactions', () => {
+    const scene = new THREE.Scene();
+    const world = new WorldManager(scene);
+
+    try {
+      world.forceEnterBiome('farm');
+      const graph = world.mergeGameplayObjects({
+        camera: {
+          position: { x: 0, y: 1.6, z: 0 },
+          rotation: { x: 0, y: 0, z: 0 },
+          fov: 70,
+          near: 0.1,
+          far: 500,
+        },
+        lights: [],
+        objects: [],
+        sky: { type: 'color', primaryColor: '#87CEEB' },
+        ground: { type: 'grass', color: '#228B22', size: { width: 100, depth: 100 } },
+        ui: { elements: [], dialogueActive: false, inventoryOpen: false, mapOpen: false, paused: false },
+        audio: [],
+        announcements: [],
+        captions: [],
+      });
+
+      expect(graph.objects.length).toBeGreaterThan(0);
+      expect(graph.objects.map(obj => obj.renderable.modelId)).toEqual(expect.arrayContaining([
+        'barn',
+        'cropRow',
+        'wheelbarrow',
+        'scarecrow',
+        'wellBucket',
+      ]));
+      expect(graph.objects.every(obj => obj.renderable.visible === false)).toBe(true);
+      expect(graph.objects.every(obj => obj.interactable?.interactionType === 'examine')).toBe(true);
     } finally {
       world.dispose();
     }

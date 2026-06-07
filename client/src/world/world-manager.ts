@@ -35,9 +35,46 @@ const TOWN_SQUARE_COLLISION_BOXES: CollisionBox[] = [
 ];
 
 const BIOME_ENVIRONMENT_TIER: MasteryTier = 'foundation';
+const ENVIRONMENT_ENTITY_ID_BASE = -300_000;
+const PASS_THROUGH_ENVIRONMENT_PROPS = new Set([
+  'flower',
+  'grass',
+  'candle',
+  'torch',
+  'lantern',
+  'banner',
+]);
+const NON_INTERACTIVE_ENVIRONMENT_PROPS = new Set([
+  'fence',
+  'tree',
+  'bush',
+  'flower',
+  'grass',
+  'rock',
+  'torch',
+  'lantern',
+  'banner',
+]);
 
 function landmarkHalfSize(biome: BiomeLocation): number {
   return Math.max(2, Math.min(biome.radius * 0.45, 6));
+}
+
+function propTypeFromObject(obj: THREE.Object3D): string | null {
+  const propType = obj.userData.biomePropType;
+  return typeof propType === 'string' ? propType : null;
+}
+
+function propIndexFromObject(obj: THREE.Object3D): number {
+  const propIndex = obj.userData.biomePropIndex;
+  return typeof propIndex === 'number' ? propIndex : 0;
+}
+
+function humanizePropType(propType: string): string {
+  return propType
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replace(/[-_]+/g, ' ')
+    .toLowerCase();
 }
 
 export type WorldMode = 'overworld' | 'entering' | 'inside' | 'exiting';
@@ -121,6 +158,8 @@ export class WorldManager implements Disposable {
   private _activeBiomeId: string | null = null;
   private _activeInterior: BuildingInterior | null = null;
   private _activeEnvironment: THREE.Group | null = null;
+  private _activeEnvironmentCollisionBoxes: CollisionBox[] = [];
+  private _activeEnvironmentGameplayObjects: SceneObject[] = [];
 
   // Sub-systems
   private readonly terrain: OverworldTerrain;
@@ -277,7 +316,7 @@ export class WorldManager implements Disposable {
   /** Get extra collision boxes (interior walls when inside a building) */
   getExtraCollisionBoxes(): CollisionBox[] {
     if (this._activeInterior) return this._activeInterior.wallBoxes;
-    return [];
+    return this._activeEnvironmentCollisionBoxes;
   }
 
   /** Get collision boxes for direct Three.js overworld content. */
@@ -325,12 +364,13 @@ export class WorldManager implements Disposable {
 
   /** Merge direct Three.js world content into the renderer-agnostic gameplay graph. */
   mergeGameplayObjects(graph: SceneGraph): SceneGraph {
-    if (!this.isOverworld()) return graph;
-    const overworldObjects = this.getOverworldGameplayObjects();
-    if (overworldObjects.length === 0) return graph;
+    const objects = this.isOverworld()
+      ? this.getOverworldGameplayObjects()
+      : this._activeEnvironmentGameplayObjects;
+    if (objects.length === 0) return graph;
     return {
       ...graph,
-      objects: [...graph.objects, ...overworldObjects],
+      objects: [...graph.objects, ...objects],
     };
   }
 
@@ -500,12 +540,16 @@ export class WorldManager implements Disposable {
       this.interiorGroup.remove(this._activeEnvironment);
       this._activeEnvironment = null;
     }
+    this._activeEnvironmentCollisionBoxes = [];
+    this._activeEnvironmentGameplayObjects = [];
   }
 
   private createActiveBiomeArea(biome: BiomeLocation): void {
     if (hasBuildingInterior(biome.id)) {
       this._activeInterior = new BuildingInterior(biome);
       this.interiorGroup.add(this._activeInterior.group);
+      this._activeEnvironmentCollisionBoxes = [];
+      this._activeEnvironmentGameplayObjects = [];
       return;
     }
 
@@ -520,6 +564,9 @@ export class WorldManager implements Disposable {
     );
     this._activeEnvironment = environment;
     this.interiorGroup.add(environment);
+    environment.updateMatrixWorld(true);
+    this._activeEnvironmentCollisionBoxes = collectEnvironmentCollisionBoxes(environment);
+    this._activeEnvironmentGameplayObjects = collectEnvironmentGameplayObjects(environment);
   }
 
   private findNearestBiome(px: number, pz: number): NearbyBiome | null {
@@ -556,4 +603,66 @@ export class WorldManager implements Disposable {
     const dz = pz - door.z;
     return Math.sqrt(dx * dx + dz * dz) < EXIT_RANGE;
   }
+}
+
+function collectEnvironmentCollisionBoxes(environment: THREE.Group): CollisionBox[] {
+  const boxes: CollisionBox[] = [];
+  for (const child of environment.children) {
+    const propType = propTypeFromObject(child);
+    if (!propType || PASS_THROUGH_ENVIRONMENT_PROPS.has(propType)) continue;
+
+    child.updateWorldMatrix(true, true);
+    const bounds = new THREE.Box3().setFromObject(child);
+    if (bounds.isEmpty()) continue;
+
+    const size = bounds.getSize(new THREE.Vector3());
+    const center = bounds.getCenter(new THREE.Vector3());
+    if (size.x < 0.05 || size.z < 0.05) continue;
+
+    boxes.push({
+      cx: center.x,
+      cz: center.z,
+      hx: Math.max(0.25, Math.min(size.x * 0.5, 4)),
+      hz: Math.max(0.25, Math.min(size.z * 0.5, 4)),
+    });
+  }
+  return boxes;
+}
+
+function collectEnvironmentGameplayObjects(environment: THREE.Group): SceneObject[] {
+  const objects: SceneObject[] = [];
+  for (const child of environment.children) {
+    const propType = propTypeFromObject(child);
+    if (!propType || NON_INTERACTIVE_ENVIRONMENT_PROPS.has(propType)) continue;
+
+    child.updateWorldMatrix(true, true);
+    const bounds = new THREE.Box3().setFromObject(child);
+    if (bounds.isEmpty()) continue;
+
+    const center = bounds.getCenter(new THREE.Vector3());
+    const size = bounds.getSize(new THREE.Vector3());
+    const label = humanizePropType(propType);
+    objects.push({
+      entityId: ENVIRONMENT_ENTITY_ID_BASE - propIndexFromObject(child),
+      position: { x: center.x, y: center.y, z: center.z },
+      rotation: { x: child.rotation.x, y: child.rotation.y, z: child.rotation.z },
+      renderable: {
+        meshType: 'model',
+        modelId: propType,
+        scale: {
+          x: Math.max(size.x, 0.5),
+          y: Math.max(size.y, 0.5),
+          z: Math.max(size.z, 0.5),
+        },
+        visible: false,
+      },
+      interactable: {
+        interactionType: 'examine',
+        radius: Math.max(2, Math.min(Math.max(size.x, size.z) * 0.6 + 1, 4)),
+        prompt: `Interact with ${label}`,
+      },
+      highlight: false,
+    });
+  }
+  return objects;
 }
