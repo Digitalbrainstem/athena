@@ -353,35 +353,45 @@ export class SceneRenderer implements Disposable {
 
       const existing = this.entityMeshes.get(obj.entityId);
       if (existing) {
-        this.objectFactory.updateMesh(existing, obj);
-      } else {
-        const mesh = this.objectFactory.createMesh(obj);
-
-        // Check if a procedural group was created for this entity
-        const group = this.objectFactory.getProceduralGroup(obj.entityId);
-        if (group) {
-          this.entityGroups.set(obj.entityId, group);
-          this.scene.add(group);
-          // Still track the placeholder mesh so the loop works
-          this.entityMeshes.set(obj.entityId, mesh);
+        if (this.objectFactory.shouldRecreateObject(obj)) {
+          this.removeEntityObject(obj.entityId, existing);
+          this.addEntityObject(obj);
         } else {
-          this.entityMeshes.set(obj.entityId, mesh);
-          this.scene.add(mesh);
+          this.objectFactory.updateMesh(existing, obj);
         }
+      } else {
+        this.addEntityObject(obj);
       }
     }
 
     for (const [id, mesh] of this.entityMeshes) {
       if (!incoming.has(id)) {
-        this.scene.remove(mesh);
-        this.entityMeshes.delete(id);
-
-        const group = this.objectFactory.removeProceduralGroup(id);
-        if (group) {
-          this.scene.remove(group);
-          this.entityGroups.delete(id);
-        }
+        this.removeEntityObject(id, mesh);
       }
+    }
+  }
+
+  private addEntityObject(obj: SceneObject): void {
+    const mesh = this.objectFactory.createMesh(obj);
+    const group = this.objectFactory.getProceduralGroup(obj.entityId);
+    if (group) {
+      this.entityGroups.set(obj.entityId, group);
+      this.scene.add(group);
+      this.entityMeshes.set(obj.entityId, mesh);
+    } else {
+      this.entityMeshes.set(obj.entityId, mesh);
+      this.scene.add(mesh);
+    }
+  }
+
+  private removeEntityObject(id: number, mesh: THREE.Mesh): void {
+    this.scene.remove(mesh);
+    this.entityMeshes.delete(id);
+
+    const group = this.objectFactory.removeProceduralGroup(id);
+    if (group) {
+      this.scene.remove(group);
+      this.entityGroups.delete(id);
     }
   }
 

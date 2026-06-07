@@ -23,8 +23,9 @@ export class ObjectFactory implements Disposable {
    */
   private assetManager: AssetManager | null = null;
 
-  /** Cached procedural group objects keyed by entityId. */
+  /** Cached authored/procedural group objects keyed by entityId. */
   private readonly proceduralGroups = new Map<number, THREE.Group>();
+  private readonly groupModelIds = new Map<number, string>();
 
   setAssetManager(manager: AssetManager): void {
     this.assetManager = manager;
@@ -103,21 +104,24 @@ export class ObjectFactory implements Disposable {
   createMesh(obj: SceneObject): THREE.Mesh {
     const { renderable, position, rotation } = obj;
 
-    // Attempt procedural model resolution when a modelId is present
+    // Attempt real GLB model resolution first, then procedural model fallback.
     if (renderable.modelId && this.assetManager) {
+      if (this.assetManager.hasAuthoredModel(renderable.modelId)) {
+        const group = this.assetManager.getAuthoredModel(renderable.modelId);
+        if (group) {
+          this.configureGroup(group, obj);
+          this.proceduralGroups.set(obj.entityId, group);
+          this.groupModelIds.set(obj.entityId, renderable.modelId);
+          return this.createHiddenPlaceholder(obj);
+        }
+      }
+
       if (this.assetManager.hasModel(renderable.modelId)) {
         const group = this.assetManager.getModel(renderable.modelId, DEFAULT_TIER);
-        group.position.set(position.x, position.y, position.z);
-        group.rotation.set(rotation.x, rotation.y, rotation.z);
-        group.visible = renderable.visible;
+        this.configureGroup(group, obj);
         this.proceduralGroups.set(obj.entityId, group);
-        const placeholder = new THREE.Mesh(
-          this.getGeometry('box', { x: 0.01, y: 0.01, z: 0.01 }),
-          this.getMaterial(renderable.color, renderable.material),
-        );
-        placeholder.visible = false;
-        placeholder.userData.proceduralEntityId = obj.entityId;
-        return placeholder;
+        this.groupModelIds.set(obj.entityId, renderable.modelId);
+        return this.createHiddenPlaceholder(obj);
       }
     }
 
@@ -140,25 +144,26 @@ export class ObjectFactory implements Disposable {
     return this.proceduralGroups.get(entityId);
   }
 
+  shouldRecreateObject(obj: SceneObject): boolean {
+    const currentGroupModelId = this.groupModelIds.get(obj.entityId);
+    if (currentGroupModelId !== undefined) {
+      return currentGroupModelId !== (obj.renderable.modelId ?? '');
+    }
+    return Boolean(
+      obj.renderable.modelId
+        && this.assetManager
+        && (this.assetManager.hasAuthoredModel(obj.renderable.modelId)
+          || this.assetManager.hasModel(obj.renderable.modelId)),
+    );
+  }
+
   updateMesh(mesh: THREE.Mesh, obj: SceneObject): void {
     const { renderable, position, rotation } = obj;
 
     // For procedural group objects, update the group directly
     const group = this.proceduralGroups.get(obj.entityId);
     if (group) {
-      group.position.set(position.x, position.y, position.z);
-      group.rotation.set(rotation.x, rotation.y, rotation.z);
-      group.visible = renderable.visible;
-
-      // Toggle highlight glow on child meshes
-      group.traverse((child) => {
-        if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
-          if (obj.highlight) {
-            child.material.emissive = child.material.emissive ?? new THREE.Color(0x000000);
-            child.material.emissiveIntensity = Math.max(child.material.emissiveIntensity, 0.25);
-          }
-        }
-      });
+      this.configureGroup(group, obj);
       return;
     }
 
@@ -184,6 +189,7 @@ export class ObjectFactory implements Disposable {
     const group = this.proceduralGroups.get(entityId);
     if (group) {
       this.proceduralGroups.delete(entityId);
+      this.groupModelIds.delete(entityId);
     }
     return group;
   }
@@ -196,5 +202,58 @@ export class ObjectFactory implements Disposable {
     for (const mat of this.highlightMaterialCache.values()) mat.dispose();
     this.highlightMaterialCache.clear();
     this.proceduralGroups.clear();
+    this.groupModelIds.clear();
+  }
+
+  private createHiddenPlaceholder(obj: SceneObject): THREE.Mesh {
+    const placeholder = new THREE.Mesh(
+      this.getGeometry('box', { x: 0.01, y: 0.01, z: 0.01 }),
+      this.getMaterial(obj.renderable.color, obj.renderable.material),
+    );
+    placeholder.visible = false;
+    placeholder.userData.proceduralEntityId = obj.entityId;
+    return placeholder;
+  }
+
+  private configureGroup(group: THREE.Group, obj: SceneObject): void {
+    const { renderable, position, rotation } = obj;
+    group.position.set(position.x, position.y, position.z);
+    group.rotation.set(rotation.x, rotation.y, rotation.z);
+    const baseScale = group.userData.baseScale instanceof THREE.Vector3
+      ? group.userData.baseScale
+      : new THREE.Vector3(1, 1, 1);
+    const shouldApplySceneScale = group.userData.authoredWorldModel === true;
+    group.scale.set(
+      baseScale.x * (shouldApplySceneScale ? renderable.scale.x : 1),
+      baseScale.y * (shouldApplySceneScale ? renderable.scale.y : 1),
+      baseScale.z * (shouldApplySceneScale ? renderable.scale.z : 1),
+    );
+    group.visible = renderable.visible;
+    this.applyGroupHighlight(group, obj.highlight);
+  }
+
+  private applyGroupHighlight(group: THREE.Group, highlighted: boolean): void {
+    group.traverse((child) => {
+      if (!(child instanceof THREE.Mesh)) return;
+      const materials = Array.isArray(child.material) ? child.material : [child.material];
+      for (const mat of materials) {
+        if (!(mat instanceof THREE.MeshStandardMaterial) && !(mat instanceof THREE.MeshPhysicalMaterial)) continue;
+        const data = mat.userData as {
+          originalEmissive?: number;
+          originalEmissiveIntensity?: number;
+        };
+        if (data.originalEmissive === undefined) {
+          data.originalEmissive = mat.emissive.getHex();
+          data.originalEmissiveIntensity = mat.emissiveIntensity;
+        }
+        if (highlighted) {
+          mat.emissive.setHex(0x22d3ee);
+          mat.emissiveIntensity = Math.max(data.originalEmissiveIntensity ?? 0, 0.28);
+        } else {
+          mat.emissive.setHex(data.originalEmissive);
+          mat.emissiveIntensity = data.originalEmissiveIntensity ?? 0;
+        }
+      }
+    });
   }
 }

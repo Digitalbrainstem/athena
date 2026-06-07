@@ -8,10 +8,17 @@ import { ProceduralModelGenerator, hasGenerator } from './procedural-models.js';
 import { BiomeEnvironmentGenerator, type BiomeEnvironmentConfig } from './biome-environments.js';
 import { CompanionModelGenerator, type CompanionModel } from './companion-models.js';
 import { getCompanion } from '../core/registry.js';
+import {
+  hasWorldModel,
+  loadCachedWorldModel,
+  preloadWorldModels,
+} from './world-models.js';
 
 // ---------------------------------------------------------------------------
 // AssetManager — top-level entry point for the entire asset system
 // ---------------------------------------------------------------------------
+
+const USE_AUTHORED_COMPANION_MODELS = false;
 
 export class AssetManager implements Disposable {
   readonly materials: MaterialLibrary;
@@ -49,6 +56,18 @@ export class AssetManager implements Disposable {
     return hasGenerator(objectType);
   }
 
+  hasAuthoredModel(objectType: string): boolean {
+    return hasWorldModel(objectType);
+  }
+
+  getAuthoredModel(objectType: string): THREE.Group | null {
+    return loadCachedWorldModel(objectType);
+  }
+
+  async preloadAuthoredModels(modelIds?: string[]): Promise<void> {
+    await preloadWorldModels(modelIds);
+  }
+
   // ---- Companion models --------------------------------------------------
 
   /** Get (or generate & cache) a companion model for a type + tier. */
@@ -68,6 +87,10 @@ export class AssetManager implements Disposable {
 
   /** Load the authored companion GLB from the registry, falling back to procedural geometry. */
   async loadCompanionModel(companionType: string, tier: MasteryTier): Promise<CompanionModel> {
+    if (!USE_AUTHORED_COMPANION_MODELS) {
+      return this.getCompanionModel(companionType, tier);
+    }
+
     try {
       const companion = getCompanion(companionType);
       const gltf = await this.gltfLoader.loadAsync(companion.modelPath);

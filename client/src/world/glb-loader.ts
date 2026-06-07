@@ -91,6 +91,30 @@ export interface LoadedModel {
 
 const modelCache = new Map<string, THREE.Group>();
 
+function normalizeToGround(scene: THREE.Object3D): void {
+  scene.updateMatrixWorld(true);
+  const bounds = new THREE.Box3().setFromObject(scene);
+  if (bounds.isEmpty()) return;
+
+  const center = bounds.getCenter(new THREE.Vector3());
+  scene.position.x -= center.x;
+  scene.position.y -= bounds.min.y;
+  scene.position.z -= center.z;
+}
+
+function cloneModelGroup(group: THREE.Group): THREE.Group {
+  const clone = group.clone(true);
+  clone.traverse((child) => {
+    if (!(child instanceof THREE.Mesh)) return;
+    if (Array.isArray(child.material)) {
+      child.material = child.material.map(mat => mat.clone());
+    } else {
+      child.material = child.material.clone();
+    }
+  });
+  return clone;
+}
+
 /**
  * Load a GLB model from the given path, compute normals, and apply a
  * default material based on the inferred category.
@@ -105,7 +129,7 @@ export async function loadGLB(
 
   const cached = modelCache.get(cacheKey);
   if (cached) {
-    const clone = cached.clone();
+    const clone = cloneModelGroup(cached);
     return { group: clone, dispose: () => disposeGroup(clone) };
   }
 
@@ -133,11 +157,13 @@ export async function loadGLB(
           }
         });
 
+        normalizeToGround(gltf.scene);
         gltf.scene.scale.set(s, s, s);
         group.add(gltf.scene);
         group.name = path.split('/').pop()?.replace('.glb', '') ?? 'model';
+        group.userData.baseScale = group.scale.clone();
 
-        modelCache.set(cacheKey, group.clone());
+        modelCache.set(cacheKey, cloneModelGroup(group));
         resolve({ group, dispose: () => disposeGroup(group) });
       },
       undefined,
@@ -163,7 +189,7 @@ export function loadGLBCached(path: string, category?: ModelCategory, scale?: nu
   const cat = category ?? inferCategory(path);
   const cacheKey = `${path}:${cat}:${scale ?? 1}`;
   const cached = modelCache.get(cacheKey);
-  return cached ? cached.clone() : null;
+  return cached ? cloneModelGroup(cached) : null;
 }
 
 /** Pre-load a batch of GLB models (call at startup). */

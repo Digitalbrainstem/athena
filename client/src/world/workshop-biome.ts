@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { loadGLB, preloadGLBs, clearModelCache, type ModelCategory } from './glb-loader.js';
+import { loadGLB, preloadGLBs, type ModelCategory } from './glb-loader.js';
 import type { CollisionBox } from '../camera/first-person.js';
 import type { Disposable, SceneObject } from '../types.js';
 
@@ -9,35 +9,44 @@ import type { Disposable, SceneObject } from '../types.js';
 
 // Base path to content models (served via Vite public or dev server)
 const M = '/content/models';
+const K = `${M}/kenney`;
 
 /** All models used in the workshop biome with their paths and categories */
 const WORKSHOP_MODELS = {
   // Workshop items
-  forge:      { path: `${M}/workshop/workshop_forge.glb`,      category: 'metal' as const, scale: 1.0 },
-  workbench:  { path: `${M}/workshop/workshop_workbench.glb`,  category: 'wood' as const,  scale: 1.0 },
-  anvil:      { path: `${M}/workshop/workshop_anvil.glb`,      category: 'metal' as const, scale: 1.0 },
-  toolrack:   { path: `${M}/workshop/workshop_toolrack.glb`,   category: 'wood' as const,  scale: 1.0 },
-  crate:      { path: `${M}/workshop/workshop_crate.glb`,      category: 'wood' as const,  scale: 1.0 },
-  barrel:     { path: `${M}/workshop/workshop_barrel.glb`,     category: 'wood' as const,  scale: 1.0 },
+  forge:      { path: `${K}/furniture/kitchenStove.glb`,       category: 'metal' as const, scale: 2.2 },
+  workbench:  { path: `${K}/furniture/tableCross.glb`,         category: 'wood' as const,  scale: 1.0 },
+  anvil:      { path: `${K}/nature/stone_largeA.glb`,          category: 'stone' as const, scale: 1.3 },
+  toolrack:   { path: `${K}/furniture/coatRackStanding.glb`,   category: 'wood' as const,  scale: 1.35 },
+  crate:      { path: `${K}/medieval/detail-crate.glb`,        category: 'wood' as const,  scale: 0.75 },
+  barrel:     { path: `${K}/medieval/barrels.glb`,             category: 'wood' as const,  scale: 0.45 },
   // Buildings
-  cottage:    { path: `${M}/buildings/cottage_small.glb`,       category: 'wood' as const,  scale: 1.2 },
-  marketStall:{ path: `${M}/buildings/market_stall.glb`,        category: 'wood' as const,  scale: 1.0 },
+  workshopHouse: { path: `${K}/medieval/wall-pane-wood-door.glb`, category: 'wood' as const, scale: 2.0 },
+  marketStall:{ path: `${K}/furniture/table.glb`,              category: 'wood' as const,  scale: 2.0 },
   // Structures
-  fence:      { path: `${M}/structures/wooden_fence.glb`,      category: 'wood' as const,  scale: 1.0 },
-  well:       { path: `${M}/structures/well_stone.glb`,        category: 'stone' as const, scale: 1.0 },
-  bridge:     { path: `${M}/structures/wooden_bridge.glb`,     category: 'wood' as const,  scale: 1.0 },
-  stonePath:  { path: `${M}/structures/stone_path.glb`,        category: 'stone' as const, scale: 1.0 },
-  signpost:   { path: `${M}/structures/signpost_wooden.glb`,   category: 'wood' as const,  scale: 1.0 },
-  lantern:    { path: `${M}/structures/lantern_post.glb`,      category: 'lantern' as const, scale: 1.0 },
+  fence:      { path: `${K}/nature/fence_simple.glb`,          category: 'wood' as const,  scale: 1.35 },
+  well:       { path: `${K}/nature/pot_large.glb`,             category: 'stone' as const, scale: 1.4 },
+  bridge:     { path: `${K}/nature/bridge_wood.glb`,           category: 'wood' as const,  scale: 1.4 },
+  stonePath:  { path: `${K}/nature/path_stone.glb`,            category: 'stone' as const, scale: 1.3 },
+  signpost:   { path: `${K}/nature/sign.glb`,                  category: 'wood' as const,  scale: 1.5 },
+  lantern:    { path: `${K}/furniture/lampSquareTable.glb`,    category: 'lantern' as const, scale: 2.0 },
   // Nature
-  treeOak:    { path: `${M}/nature/tree_oak.glb`,              category: 'tree' as const,  scale: 1.2 },
-  treePine:   { path: `${M}/nature/tree_pine.glb`,             category: 'tree' as const,  scale: 1.2 },
-  rockLarge:  { path: `${M}/nature/rock_large.glb`,            category: 'stone' as const, scale: 1.0 },
-  rockCluster:{ path: `${M}/nature/rock_cluster.glb`,          category: 'stone' as const, scale: 1.0 },
-  bush:       { path: `${M}/nature/bush_flowering.glb`,        category: 'bush' as const,  scale: 1.0 },
-  grass:      { path: `${M}/nature/grass_patch.glb`,           category: 'grass' as const, scale: 1.0 },
+  treeOak:    { path: `${K}/nature/tree_oak.glb`,              category: 'tree' as const,  scale: 2.8 },
+  treePine:   { path: `${K}/nature/tree_pineTallA.glb`,        category: 'tree' as const,  scale: 2.8 },
+  rockLarge:  { path: `${K}/nature/rock_largeA.glb`,           category: 'stone' as const, scale: 1.8 },
+  rockCluster:{ path: `${K}/nature/stone_largeA.glb`,          category: 'stone' as const, scale: 1.5 },
+  bush:       { path: `${K}/nature/plant_bushLarge.glb`,       category: 'bush' as const,  scale: 1.4 },
+  grass:      { path: `${K}/nature/grass_large.glb`,           category: 'grass' as const, scale: 1.3 },
   // Items
-  chest:      { path: `${M}/items/treasure_chest.glb`,         category: 'chest' as const, scale: 0.8 },
+  chest:      { path: `${K}/furniture/cardboardBoxOpen.glb`,   category: 'chest' as const, scale: 1.2 },
+};
+
+const WORKSHOP_HOUSE_PARTS = {
+  door:   { path: `${K}/medieval/wall-pane-wood-door.glb`,   category: 'wood' as const, scale: 2.0 },
+  wall:   { path: `${K}/medieval/wall-pane-wood.glb`,        category: 'wood' as const, scale: 2.0 },
+  window: { path: `${K}/medieval/wall-pane-wood-window.glb`, category: 'wood' as const, scale: 2.0 },
+  roof:   { path: `${K}/medieval/roof.glb`,                  category: 'wood' as const, scale: 2.0 },
+  edge:   { path: `${K}/medieval/roof-edge.glb`,             category: 'wood' as const, scale: 2.0 },
 };
 
 interface PlacedObject {
@@ -67,7 +76,7 @@ const MODEL_FOOTPRINTS: Partial<Record<keyof typeof WORKSHOP_MODELS, Footprint>>
   toolrack:    { hx: 0.25, hz: 1.3,  height: 1.8 },
   crate:       { hx: 0.55, hz: 0.55, height: 0.9 },
   barrel:      { hx: 0.45, hz: 0.45, height: 1.1 },
-  cottage:     { hx: 3.4,  hz: 2.8,  height: 3.0 },
+  workshopHouse: { hx: 3.5, hz: 2.5, height: 3.2 },
   marketStall: { hx: 1.7,  hz: 1.2,  height: 2.0 },
   fence:       { hx: 1.35, hz: 0.12, height: 0.8 },
   well:        { hx: 1.15, hz: 1.15, height: 1.4 },
@@ -97,8 +106,7 @@ const INTERACTION_MODEL_IDS: Partial<Record<keyof typeof WORKSHOP_MODELS, string
  */
 const WORKSHOP_LAYOUT: PlacedObject[] = [
   // === Central Workshop Area ===
-  // Cottage as the main workshop building
-  { model: 'cottage', x: 0, z: -2, rotY: 0, name: 'workshop-building' },
+  { model: 'workshopHouse', x: 0, z: -2, rotY: 0, name: 'workshop-building' },
 
   // Workshop work area (in front of the cottage)
   { model: 'forge',     x: -3.5, z: 3,  rotY: 0,    name: 'forge',     interactive: true },
@@ -282,9 +290,17 @@ export class WorkshopBiome implements Disposable {
   async preload(): Promise<void> {
     const uniqueModels = new Map<string, { path: string; category?: ModelCategory; scale?: number }>();
     for (const obj of WORKSHOP_LAYOUT) {
-      const def = WORKSHOP_MODELS[obj.model];
-      if (!uniqueModels.has(def.path)) {
-        uniqueModels.set(def.path, { path: def.path, category: def.category, scale: def.scale });
+      if (obj.model === 'workshopHouse') {
+        for (const part of Object.values(WORKSHOP_HOUSE_PARTS)) {
+          if (!uniqueModels.has(part.path)) {
+            uniqueModels.set(part.path, { path: part.path, category: part.category, scale: part.scale });
+          }
+        }
+      } else {
+        const def = WORKSHOP_MODELS[obj.model];
+        if (!uniqueModels.has(def.path)) {
+          uniqueModels.set(def.path, { path: def.path, category: def.category, scale: def.scale });
+        }
       }
     }
     await preloadGLBs(Array.from(uniqueModels.values()));
@@ -324,22 +340,22 @@ export class WorkshopBiome implements Disposable {
 
     // Load and place all models
     const loadPromises = WORKSHOP_LAYOUT.map(async (obj) => {
-      const def = WORKSHOP_MODELS[obj.model];
-      const s = (obj.scale ?? 1) * (def.scale ?? 1);
-      const result = await loadGLB(def.path, def.category, s);
+      const group = obj.model === 'workshopHouse'
+        ? await buildWorkshopHouse(obj.scale ?? 1)
+        : (await loadPlacedModel(obj));
 
-      result.group.position.set(obj.x, obj.y ?? 0, obj.z);
-      if (obj.rotY) result.group.rotation.y = obj.rotY;
-      if (obj.name) result.group.name = obj.name;
+      group.position.set(obj.x, obj.y ?? 0, obj.z);
+      if (obj.rotY) group.rotation.y = obj.rotY;
+      if (obj.name) group.name = obj.name;
 
       // Mark interactive objects with userData
       if (obj.interactive) {
-        result.group.userData.interactive = true;
-        result.group.userData.interactionType = obj.model === 'chest' ? 'open' : 'craft';
-        result.group.userData.prompt = obj.name ?? obj.model;
+        group.userData.interactive = true;
+        group.userData.interactionType = obj.model === 'chest' ? 'open' : 'craft';
+        group.userData.prompt = obj.name ?? obj.model;
       }
 
-      return result.group;
+      return group;
     });
 
     const meshes = await Promise.all(loadPromises);
@@ -385,6 +401,52 @@ export class WorkshopBiome implements Disposable {
       }
     });
     this.group.clear();
-    clearModelCache();
   }
+}
+
+async function loadPlacedModel(obj: PlacedObject): Promise<THREE.Group> {
+  const def = WORKSHOP_MODELS[obj.model];
+  const s = (obj.scale ?? 1) * (def.scale ?? 1);
+  return (await loadGLB(def.path, def.category, s)).group;
+}
+
+async function buildWorkshopHouse(scale: number): Promise<THREE.Group> {
+  const house = new THREE.Group();
+  house.name = 'workshop-house';
+
+  const addPart = async (
+    part: keyof typeof WORKSHOP_HOUSE_PARTS,
+    position: [number, number, number],
+    rotY = 0,
+    extraScale = 1,
+  ): Promise<void> => {
+    const def = WORKSHOP_HOUSE_PARTS[part];
+    const result = await loadGLB(def.path, def.category, def.scale * scale * extraScale);
+    result.group.position.set(position[0] * scale, position[1] * scale, position[2] * scale);
+    result.group.rotation.y = rotY;
+    house.add(result.group);
+  };
+
+  await Promise.all([
+    // Front wall with door, facing the player path.
+    addPart('wall', [-1.9, 0, 1.5]),
+    addPart('door', [0, 0, 1.5]),
+    addPart('window', [1.9, 0, 1.5]),
+    // Back wall.
+    addPart('window', [-1.9, 0, -1.5], Math.PI),
+    addPart('wall', [0, 0, -1.5], Math.PI),
+    addPart('window', [1.9, 0, -1.5], Math.PI),
+    // Side walls.
+    addPart('wall', [-2.9, 0, -0.55], Math.PI / 2),
+    addPart('wall', [-2.9, 0, 0.95], Math.PI / 2),
+    addPart('wall', [2.9, 0, -0.55], -Math.PI / 2),
+    addPart('wall', [2.9, 0, 0.95], -Math.PI / 2),
+    // Roof pieces.
+    addPart('roof', [-1.2, 1.45, 0], 0, 1.25),
+    addPart('roof', [1.2, 1.45, 0], 0, 1.25),
+    addPart('edge', [-2.6, 1.45, 0], 0, 1.1),
+    addPart('edge', [2.6, 1.45, 0], Math.PI, 1.1),
+  ]);
+
+  return house;
 }

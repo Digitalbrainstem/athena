@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import type { MasteryTier } from '@nexus-academy/core';
 import { MaterialLibrary, BIOME_PALETTES } from './materials.js';
 import { ProceduralModelGenerator } from './procedural-models.js';
+import { loadCachedWorldModel } from './world-models.js';
 
 // ---------------------------------------------------------------------------
 // BiomeEnvironmentGenerator — produces a full 3D environment for each biome
@@ -51,13 +52,13 @@ export class BiomeEnvironmentGenerator {
       const propCount = config.reducedDetail ? Math.ceil(layout.length / 2) : layout.length;
       for (let i = 0; i < propCount; i++) {
         const prop = layout[i]!;
-        const model = this.models.generate(prop.type, tier);
+        const model = loadCachedWorldModel(prop.type) ?? this.models.generate(prop.type, tier);
         model.name = `${biomeId}:${prop.type}:${i}`;
         model.userData.biomePropType = prop.type;
         model.userData.biomePropIndex = i;
         model.position.set(...prop.pos);
         if (prop.rot) model.rotation.set(...prop.rot);
-        if (prop.scale) model.scale.set(...prop.scale);
+        if (prop.scale) model.scale.multiply(new THREE.Vector3(...prop.scale));
         group.add(model);
       }
     }

@@ -55,6 +55,12 @@ export class FirstPersonCamera implements Disposable {
     this.posZ = z;
   }
 
+  /** Set camera facing after scripted teleports such as biome entry/exit. */
+  faceYaw(yaw: number, pitch = 0): void {
+    this.yaw = yaw;
+    this.pitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, pitch));
+  }
+
   /** Set the height provider for terrain-following. */
   setHeightProvider(provider: HeightProvider | null): void {
     this.heightProvider = provider;

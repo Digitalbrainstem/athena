@@ -99,6 +99,7 @@ function mockHud(): HUD {
     processCaptions: vi.fn(),
     showQuestPanel: vi.fn(),
     hideQuestPanel: vi.fn(),
+    showGuidance: vi.fn(),
     showQuestHint: vi.fn(),
     showQuestComplete: vi.fn(),
     showQuestIndicator: vi.fn(),
@@ -288,6 +289,18 @@ describe('GameLoop', () => {
 
     expect(hud.showPrompt).toHaveBeenCalledWith('Press E to use the Workbench');
     expect(hud.showPrompt).not.toHaveBeenCalledWith('Press E to enter The Workshop');
+  });
+
+  it('shows getting-started guidance when no quest is active', () => {
+    loop.start();
+    runFrame(0);
+    runFrame(16.67);
+
+    expect(hud.showGuidance).toHaveBeenCalledWith(
+      'Explore workshop',
+      'Aim at objects until a prompt appears, then interact to learn what they do.',
+      'The goal is not a quiz; use the world itself to discover the rule.',
+    );
   });
 
   it('highlights inside-biome objects after applying the biome world offset', () => {

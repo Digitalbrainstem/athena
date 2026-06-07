@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import * as THREE from 'three';
 import { ObjectFactory } from '../../src/renderer/object-factory.js';
 import type { SceneObject } from '@nexus-academy/core';
+import type { AssetManager } from '../../src/assets/asset-manager.js';
 
 function makeObject(overrides?: Partial<SceneObject>): SceneObject {
   return {
@@ -114,6 +115,99 @@ describe('ObjectFactory', () => {
   it('uses fallback box geometry for model meshType', () => {
     const mesh = factory.createMesh(makeObject({ renderable: { meshType: 'model', modelId: 'some_model', color: '#FF0000', scale: { x: 1, y: 1, z: 1 }, visible: true } }));
     expect(mesh.geometry).toBeInstanceOf(THREE.BoxGeometry);
+  });
+
+  it('uses authored model groups before procedural placeholders', () => {
+    const authored = new THREE.Group();
+    authored.userData.authoredWorldModel = true;
+    authored.userData.baseScale = new THREE.Vector3(1, 1, 1);
+    authored.add(new THREE.Mesh(
+      new THREE.BoxGeometry(1, 1, 1),
+      new THREE.MeshStandardMaterial({ color: 0x00ff00 }),
+    ));
+    factory.setAssetManager({
+      hasAuthoredModel: () => true,
+      getAuthoredModel: () => authored,
+      hasModel: () => true,
+    } as unknown as AssetManager);
+
+    const mesh = factory.createMesh(makeObject({
+      renderable: {
+        meshType: 'model',
+        modelId: 'workbench',
+        color: '#FF0000',
+        scale: { x: 2, y: 3, z: 4 },
+        visible: true,
+      },
+    }));
+
+    expect(mesh.visible).toBe(false);
+    expect(factory.getProceduralGroup(1)).toBe(authored);
+    expect(authored.visible).toBe(true);
+    expect(authored.scale.toArray()).toEqual([2, 3, 4]);
+  });
+
+  it('does not inflate procedural groups with scene scale', () => {
+    const procedural = new THREE.Group();
+    procedural.scale.set(1.5, 1.5, 1.5);
+    procedural.userData.baseScale = procedural.scale.clone();
+    factory.setAssetManager({
+      hasAuthoredModel: () => false,
+      hasModel: () => true,
+      getModel: () => procedural,
+    } as unknown as AssetManager);
+
+    factory.createMesh(makeObject({
+      renderable: {
+        meshType: 'model',
+        modelId: 'irrigation',
+        color: '#4169E1',
+        scale: { x: 4, y: 0.5, z: 3 },
+        visible: true,
+      },
+    }));
+
+    expect(factory.getProceduralGroup(1)).toBe(procedural);
+    expect(procedural.scale.toArray()).toEqual([1.5, 1.5, 1.5]);
+  });
+
+  it('requests recreation when a grouped entity changes model id', () => {
+    const procedural = new THREE.Group();
+    factory.setAssetManager({
+      hasAuthoredModel: () => false,
+      hasModel: () => true,
+      getModel: () => procedural,
+    } as unknown as AssetManager);
+
+    factory.createMesh(makeObject({
+      renderable: {
+        meshType: 'model',
+        modelId: 'npc',
+        color: '#DAA520',
+        scale: { x: 1, y: 1, z: 1 },
+        visible: true,
+      },
+    }));
+
+    expect(factory.shouldRecreateObject(makeObject({
+      renderable: {
+        meshType: 'model',
+        modelId: 'npc',
+        color: '#DAA520',
+        scale: { x: 1, y: 1, z: 1 },
+        visible: true,
+      },
+    }))).toBe(false);
+
+    expect(factory.shouldRecreateObject(makeObject({
+      renderable: {
+        meshType: 'model',
+        modelId: 'irrigation',
+        color: '#4169E1',
+        scale: { x: 1, y: 1, z: 1 },
+        visible: true,
+      },
+    }))).toBe(true);
   });
 
   it('dispose cleans up all cached resources', () => {

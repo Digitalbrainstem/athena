@@ -153,6 +153,8 @@ function createTownSquare(): THREE.Group {
 }
 
 export class WorldManager implements Disposable {
+  readonly ready: Promise<void>;
+
   // State
   private _mode: WorldMode = 'overworld';
   private _activeBiomeId: string | null = null;
@@ -233,16 +235,16 @@ export class WorldManager implements Disposable {
     scene.add(this.overworldGroup);
 
     // Load the Workshop biome with real 3D models (async)
-    this.loadWorkshopBiome();
+    this.ready = this.loadWorkshopBiome();
   }
 
   /** Asynchronously load the Workshop biome GLB models into the overworld. */
-  private loadWorkshopBiome(): void {
+  private loadWorkshopBiome(): Promise<void> {
     const workshopLoc = getBiomeLocation('workshop');
-    if (!workshopLoc) return;
+    if (!workshopLoc) return Promise.resolve();
 
     this.workshopBiome = new WorkshopBiome();
-    void this.workshopBiome.init().then(() => {
+    return this.workshopBiome.init().then(() => {
       if (!this.workshopBiome) return;
       // Position the biome at its world location
       this.workshopBiome.group.position.set(
@@ -478,11 +480,20 @@ export class WorldManager implements Disposable {
   getEntryPosition(biomeId: string): { x: number; z: number } | null {
     const loc = getBiomeLocation(biomeId);
     if (!loc) return null;
-    // Place player just inside the building, opposite the entrance offset
+    // Place player clearly inside the building, away from the door prompt zone.
+    const entryLength = Math.hypot(loc.entranceOffset.x, loc.entranceOffset.z);
+    const interiorFactor = entryLength > 0 ? Math.min(0.6, Math.max(0.35, 4.5 / entryLength)) : 0.3;
     return {
-      x: loc.worldPosition.x + loc.entranceOffset.x * 0.3,
-      z: loc.worldPosition.z + loc.entranceOffset.z * 0.3,
+      x: loc.worldPosition.x + loc.entranceOffset.x * interiorFactor,
+      z: loc.worldPosition.z + loc.entranceOffset.z * interiorFactor,
     };
+  }
+
+  /** Get the yaw that faces from the entrance into the biome interior. */
+  getEntryYaw(biomeId: string): number | null {
+    const loc = getBiomeLocation(biomeId);
+    if (!loc) return null;
+    return yawForDirection(-loc.entranceOffset.x, -loc.entranceOffset.z);
   }
 
   /** Get the position the player should be teleported to when exiting */
@@ -495,6 +506,14 @@ export class WorldManager implements Disposable {
       x: loc.worldPosition.x + loc.entranceOffset.x * 1.5,
       z: loc.worldPosition.z + loc.entranceOffset.z * 1.5,
     };
+  }
+
+  /** Get the yaw that faces away from the active biome after exiting. */
+  getExitYaw(): number | null {
+    if (!this._activeBiomeId) return null;
+    const loc = getBiomeLocation(this._activeBiomeId);
+    if (!loc) return null;
+    return yawForDirection(loc.entranceOffset.x, loc.entranceOffset.z);
   }
 
   dispose(): void {
@@ -600,6 +619,10 @@ export class WorldManager implements Disposable {
     const dz = pz - door.z;
     return Math.sqrt(dx * dx + dz * dz) < EXIT_RANGE;
   }
+}
+
+function yawForDirection(dx: number, dz: number): number {
+  return Math.atan2(-dx, -dz);
 }
 
 function collectEnvironmentCollisionBoxes(environment: THREE.Group): CollisionBox[] {

@@ -1,5 +1,5 @@
 import { NexusCore } from '@nexus-academy/core';
-import type { Quest } from '@nexus-academy/core';
+import type { Quest, SceneGraph } from '@nexus-academy/core';
 import { SceneRenderer } from './renderer/scene-renderer.js';
 import { GameLoop } from './game/loop.js';
 import { InputManager } from './input/manager.js';
@@ -61,6 +61,24 @@ function ensureStarterInventory(core: NexusCore): void {
   for (const item of STARTER_INVENTORY) {
     core.worldSystem.addInventoryItem(item.itemType, item.quantity);
   }
+}
+
+function buildDebugSceneGraph(sceneGraph: SceneGraph, worldManager: WorldManager): SceneGraph {
+  const offset = worldManager.isInside() ? worldManager.getBiomeOffset() : null;
+  const worldSpaceGraph = offset
+    ? {
+        ...sceneGraph,
+        objects: sceneGraph.objects.map(obj => ({
+          ...obj,
+          position: {
+            x: obj.position.x + offset.x,
+            y: obj.position.y + offset.y,
+            z: obj.position.z + offset.z,
+          },
+        })),
+      }
+    : sceneGraph;
+  return worldManager.mergeGameplayObjects(worldSpaceGraph);
 }
 
 async function boot(): Promise<void> {
@@ -274,6 +292,8 @@ async function boot(): Promise<void> {
       fpCam.seedPosition(pos.x, pos.z);
       core.setPlayerPosition(pos.x, pos.z);
     }
+    const yaw = worldManager.getEntryYaw(biomeId);
+    if (yaw !== null) fpCam.faceYaw(yaw);
     core.update(1 / 60, []);
     debug('travel', `Fast-traveled to biome: ${biomeId}`);
   };
@@ -298,6 +318,11 @@ async function boot(): Promise<void> {
   const startPos = worldManager.getStartPosition(core.getCurrentBiome());
   fpCam.seedPosition(startPos.x, startPos.z);
   core.setPlayerPosition(startPos.x, startPos.z);
+
+  debug('assets', 'Preloading authored starter models...');
+  await worldManager.ready;
+  await assetManager.preloadAuthoredModels();
+  debug('assets', 'Authored starter models ready');
 
   // Offline support — announce network status changes to screen readers
   const offlineMgr = new OfflineManager((text) => {
@@ -324,8 +349,8 @@ async function boot(): Promise<void> {
     (window as any).__nexus_debug = {
       get cameraPosition() { return fpCam.getEyePosition(); },
       get cameraVelocity() { return { vx: (fpCam as any).vx ?? 0, vz: (fpCam as any).vz ?? 0 }; },
-      get sceneGraph() { return worldManager.mergeGameplayObjects(core.getSceneGraph()); },
-      get sceneObjects() { return worldManager.mergeGameplayObjects(core.getSceneGraph()).objects.length; },
+      get sceneGraph() { return buildDebugSceneGraph(core.getSceneGraph(), worldManager); },
+      get sceneObjects() { return buildDebugSceneGraph(core.getSceneGraph(), worldManager).objects.length; },
       get groundColor() { return core.getSceneGraph().ground.color; },
       get skyColor() { return core.getSceneGraph().sky.primaryColor; },
       get fps() { return loop.fps; },
@@ -333,11 +358,14 @@ async function boot(): Promise<void> {
       get profileId() { return profileId; },
       get currentBiome() { return core.getSceneGraph().ground; },
       setPlayerPosition(x: number, z: number) { fpCam.seedPosition(x, z); core.setPlayerPosition(x, z); },
+      faceYaw(yaw: number) { fpCam.faceYaw(yaw); },
       changeBiome(biomeId: string) {
         core.worldSystem.discoverBiome(biomeId);
         core.worldSystem.changeBiome(biomeId);
         // Also switch WorldManager to show the biome interior
         worldManager.forceEnterBiome(biomeId);
+        const yaw = worldManager.getEntryYaw(biomeId);
+        if (yaw !== null) fpCam.faceYaw(yaw);
         core.update(1 / 60, []);
       },
       get worldMode() { return worldManager.mode; },
@@ -686,6 +714,8 @@ async function boot(): Promise<void> {
                 fpCam.seedPosition(pos.x, pos.z);
                 core.setPlayerPosition(pos.x, pos.z);
               }
+              const yaw = worldManager.getEntryYaw(biomeId);
+              if (yaw !== null) fpCam.faceYaw(yaw);
               core.worldSystem.discoverBiome(biomeId);
               core.worldSystem.changeBiome(biomeId);
               core.update(1 / 60, []);
@@ -713,10 +743,12 @@ async function boot(): Promise<void> {
       } else if (worldManager.isInside() && worldManager.isNearDoor) {
         void worldManager.exitBiome().then(() => {
           const pos = worldManager.getExitPosition();
+          const yaw = worldManager.getExitYaw();
           if (pos) {
             fpCam.seedPosition(pos.x, pos.z);
             core.setPlayerPosition(pos.x, pos.z);
           }
+          if (yaw !== null) fpCam.faceYaw(yaw);
           debug('world', 'Exited to overworld');
         });
       }

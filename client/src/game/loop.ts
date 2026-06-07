@@ -386,8 +386,8 @@ export class GameLoop implements Disposable {
       }
     } else {
       // No active quests — maybe offer one
-      this.hud.hideQuestPanel();
       this.hud.hideQuestIndicator();
+      this.showGuidance(_scene);
       this.lastQuestId = null;
       this.lastStepsCompleted = -1;
 
@@ -415,6 +415,63 @@ export class GameLoop implements Disposable {
   /** Mark the quest offer as consumed (called after player accepts or dismisses). */
   clearQuestOffer(): void {
     this.questOfferPending = false;
+  }
+
+  private showGuidance(scene: SceneGraph): void {
+    const highlighted = scene.objects.find(o => o.highlight && o.interactable);
+    const action = this.mobile ? 'Tap' : 'Press E';
+
+    if (highlighted?.interactable) {
+      const name = highlighted.interactable.prompt.replace(/^Interact with /, '');
+      const type = highlighted.interactable.interactionType;
+      if (type === 'craft') {
+        this.hud.showGuidance(
+          'Try the Workshop',
+          `${action} to use the ${name}, then choose materials to combine.`,
+          'Start with pigments or pine wood; the world reacts when materials fit together.',
+        );
+        return;
+      }
+      if (type === 'talk') {
+        this.hud.showGuidance(
+          'Meet the Locals',
+          `${action} to talk to ${name}.`,
+          'NPCs can point you toward useful places, trades, and challenges.',
+        );
+        return;
+      }
+      this.hud.showGuidance(
+        'Investigate the World',
+        `${action} to examine ${name}.`,
+        'Useful objects teach by doing; look for what changes in the world.',
+      );
+      return;
+    }
+
+    if (this.worldManager?.isOverworld()) {
+      const nearby = this.worldManager.nearbyBiome;
+      if (nearby && nearby.entranceDistance < 5) {
+        this.hud.showGuidance(
+          `Enter ${nearby.biome.name}`,
+          `${action} to step inside and find the first hands-on challenge.`,
+          'Left-click locks mouse-look. Escape releases it for menus.',
+        );
+      } else {
+        this.hud.showGuidance(
+          'Find a Place to Explore',
+          'Walk toward a landmark, then use the prompt when you reach its entrance.',
+          'WASD moves, mouse looks, Shift runs, M opens the map.',
+        );
+      }
+      return;
+    }
+
+    const biomeName = this.worldManager?.activeBiomeId?.replace(/[-_]+/g, ' ') ?? this.core.getCurrentBiome();
+    this.hud.showGuidance(
+      `Explore ${biomeName}`,
+      'Aim at objects until a prompt appears, then interact to learn what they do.',
+      'The goal is not a quiz; use the world itself to discover the rule.',
+    );
   }
 
   /** Show an interaction prompt when a highlighted interactable is nearby. */

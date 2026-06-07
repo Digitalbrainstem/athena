@@ -120,7 +120,7 @@ const LIGHT_PRESETS: Record<string, { color: number; intensity: number }> = {
   'dim':    { color: 0xffcc88, intensity: 0.6 },
 };
 
-const DUST_PARTICLE_COUNT = 200;
+const DUST_PARTICLE_COUNT = 60;
 
 export class BuildingInterior implements Disposable {
   /** The interior group positioned at the biome's world position */
@@ -364,136 +364,12 @@ export class BuildingInterior implements Disposable {
 
   private addFurniture(config: BuildingConfig, hw: number, hd: number, _h: number): void {
     if (config.style === 'workshop') {
-      this.addWorkshopFurniture(hw, hd);
+      // Workshop gameplay objects are rendered as authored GLBs by the scene graph.
+      // Avoid duplicating them with primitive placeholder furniture.
     } else if (config.style === 'library') {
       this.addLibraryFurniture(hw, hd);
     }
     // Other biomes keep their existing scene-graph objects from the core
-  }
-
-  private addWorkshopFurniture(hw: number, hd: number): void {
-    const woodMat = this.makeMat(0x5a3a1a);
-    const darkWoodMat = this.makeMat(0x3a2210);
-    const metalMat = this.makeMat(0x555555, 0x000000, 0);
-    metalMat.metalness = 0.6;
-    metalMat.roughness = 0.3;
-
-    // --- Workbenches against walls ---
-
-    // North wall workbench (long)
-    this.addWorkbench(-hw + 2, -hd + 1.2, hw * 2 - 4, woodMat, darkWoodMat);
-
-    // East wall workbench
-    this.addWallBench(hw - 1.2, -hd + 3, 4, woodMat, darkWoodMat, Math.PI / 2);
-
-    // West wall workbench
-    this.addWallBench(-hw + 1.2, -hd + 3, 4, woodMat, darkWoodMat, -Math.PI / 2);
-
-    // --- Central anvil ---
-    const anvilBaseGeo = new THREE.BoxGeometry(0.6, 0.5, 0.4);
-    this.geometries.push(anvilBaseGeo);
-    const anvilBase = new THREE.Mesh(anvilBaseGeo, metalMat);
-    anvilBase.position.set(0, 0.25, 0);
-    this.group.add(anvilBase);
-
-    const anvilTopGeo = new THREE.BoxGeometry(0.8, 0.15, 0.5);
-    this.geometries.push(anvilTopGeo);
-    const anvilTop = new THREE.Mesh(anvilTopGeo, metalMat);
-    anvilTop.position.set(0, 0.58, 0);
-    this.group.add(anvilTop);
-
-    // Horn
-    const hornGeo = new THREE.ConeGeometry(0.12, 0.4, 6);
-    this.geometries.push(hornGeo);
-    const horn = new THREE.Mesh(hornGeo, metalMat);
-    horn.position.set(0.5, 0.55, 0);
-    horn.rotation.z = -Math.PI / 2;
-    this.group.add(horn);
-
-    // --- Tool rack on north wall ---
-    this.addToolRack(-2, 1.8, -hd + 0.3, metalMat);
-    this.addToolRack(2, 1.8, -hd + 0.3, metalMat);
-
-    // --- Small objects on workbenches ---
-    // Gear on east bench
-    const gearGeo = new THREE.TorusGeometry(0.12, 0.03, 6, 8);
-    this.geometries.push(gearGeo);
-    const gear = new THREE.Mesh(gearGeo, metalMat);
-    gear.position.set(hw - 1.2, 0.88, -hd + 3.5);
-    gear.rotation.x = Math.PI / 2;
-    this.group.add(gear);
-
-    // Small box on west bench
-    const boxGeo = new THREE.BoxGeometry(0.3, 0.2, 0.25);
-    this.geometries.push(boxGeo);
-    const box = new THREE.Mesh(boxGeo, woodMat);
-    box.position.set(-hw + 1.2, 0.95, -hd + 4);
-    this.group.add(box);
-  }
-
-  private addWorkbench(x: number, z: number, width: number, topMat: THREE.MeshStandardMaterial, legMat: THREE.MeshStandardMaterial): void {
-    const benchW = Math.min(width, 6);
-    // Tabletop
-    const topGeo = new THREE.BoxGeometry(benchW, 0.1, 1.0);
-    this.geometries.push(topGeo);
-    const top = new THREE.Mesh(topGeo, topMat);
-    top.position.set(x + benchW / 2, 0.85, z);
-    this.group.add(top);
-
-    // Legs
-    const legGeo = new THREE.BoxGeometry(0.1, 0.8, 0.1);
-    this.geometries.push(legGeo);
-    for (const [lx, lz] of [[x + 0.2, z - 0.4], [x + 0.2, z + 0.4],
-                              [x + benchW - 0.2, z - 0.4], [x + benchW - 0.2, z + 0.4]]) {
-      const leg = new THREE.Mesh(legGeo, legMat);
-      leg.position.set(lx, 0.4, lz);
-      this.group.add(leg);
-    }
-
-    // Shelf underneath
-    const shelfGeo = new THREE.BoxGeometry(benchW - 0.4, 0.05, 0.7);
-    this.geometries.push(shelfGeo);
-    const shelf = new THREE.Mesh(shelfGeo, topMat);
-    shelf.position.set(x + benchW / 2, 0.3, z);
-    this.group.add(shelf);
-  }
-
-  private addWallBench(x: number, z: number, depth: number, topMat: THREE.MeshStandardMaterial, legMat: THREE.MeshStandardMaterial, _rotY: number): void {
-    // Table top
-    const topGeo = new THREE.BoxGeometry(1.0, 0.1, depth);
-    this.geometries.push(topGeo);
-    const top = new THREE.Mesh(topGeo, topMat);
-    top.position.set(x, 0.85, z + depth / 2);
-    this.group.add(top);
-
-    // Legs
-    const legGeo = new THREE.BoxGeometry(0.1, 0.8, 0.1);
-    this.geometries.push(legGeo);
-    for (const [lx, lz] of [[x - 0.4, z + 0.2], [x + 0.4, z + 0.2],
-                              [x - 0.4, z + depth - 0.2], [x + 0.4, z + depth - 0.2]]) {
-      const leg = new THREE.Mesh(legGeo, legMat);
-      leg.position.set(lx, 0.4, lz);
-      this.group.add(leg);
-    }
-  }
-
-  private addToolRack(x: number, y: number, z: number, metalMat: THREE.MeshStandardMaterial): void {
-    // Horizontal bar
-    const barGeo = new THREE.CylinderGeometry(0.03, 0.03, 1.5, 6);
-    this.geometries.push(barGeo);
-    const bar = new THREE.Mesh(barGeo, metalMat);
-    bar.position.set(x, y, z);
-    bar.rotation.z = Math.PI / 2;
-    this.group.add(bar);
-
-    // Hooks / tool shapes hanging from bar
-    for (let i = 0; i < 3; i++) {
-      const hookGeo = new THREE.CylinderGeometry(0.015, 0.015, 0.3, 4);
-      this.geometries.push(hookGeo);
-      const hook = new THREE.Mesh(hookGeo, metalMat);
-      hook.position.set(x - 0.5 + i * 0.5, y - 0.2, z + 0.05);
-      this.group.add(hook);
-    }
   }
 
   private addLibraryFurniture(hw: number, hd: number): void {
@@ -516,10 +392,11 @@ export class BuildingInterior implements Disposable {
   // ---- Dust motes --------------------------------------------------------
 
   private addDustParticles(config: BuildingConfig, hw: number, hd: number, h: number): void {
-    const positions = new Float32Array(DUST_PARTICLE_COUNT * 3);
-    const velocities = new Float32Array(DUST_PARTICLE_COUNT * 3);
+    const particleCount = config.style === 'workshop' ? 24 : DUST_PARTICLE_COUNT;
+    const positions = new Float32Array(particleCount * 3);
+    const velocities = new Float32Array(particleCount * 3);
 
-    for (let i = 0; i < DUST_PARTICLE_COUNT; i++) {
+    for (let i = 0; i < particleCount; i++) {
       positions[i * 3]     = (Math.random() - 0.5) * hw * 1.6;
       positions[i * 3 + 1] = 0.3 + Math.random() * (h - 0.6);
       positions[i * 3 + 2] = (Math.random() - 0.5) * hd * 1.6;
@@ -538,7 +415,7 @@ export class BuildingInterior implements Disposable {
       size: 0.03,
       color: preset.color,
       transparent: true,
-      opacity: 0.35,
+      opacity: config.style === 'workshop' ? 0.16 : 0.24,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
       sizeAttenuation: true,
@@ -790,6 +667,8 @@ export class BuildingInterior implements Disposable {
       win.position.set(...w.pos);
       win.rotation.set(...w.rot);
       this.group.add(win);
+
+      if (config.style === 'workshop') continue;
 
       // Volumetric light beam from each window (subtle cone)
       const beamLen = Math.min(config.width, config.depth) * 0.4;

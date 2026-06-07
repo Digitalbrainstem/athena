@@ -182,6 +182,24 @@ const GENERATORS: Record<string, GeneratorFn> = {
     return makeGroup(board, peg1, peg2, peg3);
   },
 
+  npc: (lib, tier, g) => {
+    const s = seg(tier);
+    const cloth = lib.get('fabric', tier);
+    const accent = lib.get('neonBlue', tier);
+    const skin = new THREE.MeshStandardMaterial({ color: 0xf2c49b, roughness: 0.75 });
+    const hair = new THREE.MeshStandardMaterial({ color: 0x5a3418, roughness: 0.85 });
+
+    const body = mesh(g.cone(0.28, 0.75, s), cloth, [0, 0.72, 0]);
+    const sash = mesh(g.torus(0.22, 0.018, 6, s), accent, [0, 0.82, 0], [Math.PI / 2, 0, 0]);
+    const head = mesh(g.sphere(0.19, s, s), skin, [0, 1.23, 0]);
+    const cap = mesh(g.sphere(0.2, s, Math.max(4, Math.floor(s / 2))), hair, [0, 1.34, 0], undefined, [1, 0.45, 1]);
+    const armL = mesh(g.cylinder(0.035, 0.04, 0.52, s), skin, [-0.29, 0.78, 0], [0, 0, -0.28]);
+    const armR = mesh(g.cylinder(0.035, 0.04, 0.52, s), skin, [0.29, 0.78, 0], [0, 0, 0.28]);
+    const footL = mesh(g.box(0.16, 0.06, 0.24, 1), hair, [-0.1, 0.03, 0.03]);
+    const footR = mesh(g.box(0.16, 0.06, 0.24, 1), hair, [0.1, 0.03, 0.03]);
+    return makeGroup(body, sash, head, cap, armL, armR, footL, footR);
+  },
+
   hammer: (lib, tier, g) => {
     const wood = lib.get('wood', tier);
     const mtl = lib.get('metal', tier);

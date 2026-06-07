@@ -128,7 +128,12 @@ export class HUD implements Disposable {
     this.promptEl.classList.add('visible');
   }
 
-  hidePrompt(): void { this.promptEl?.classList.remove('visible'); }
+  hidePrompt(): void {
+    if (!this.promptEl) return;
+    this.promptEl.classList.remove('visible');
+    this.promptEl.textContent = '';
+    this.promptEl.removeAttribute('aria-label');
+  }
 
   flashPrompt(text: string, ms = 1500): void {
     this.showPrompt(text);
@@ -182,6 +187,16 @@ export class HUD implements Disposable {
     if (this.questStepEl) this.questStepEl.textContent = '';
     if (this.questProgressEl) this.questProgressEl.textContent = '';
     if (this.questHintEl) this.questHintEl.textContent = '';
+  }
+
+  /** Show immediate guidance when no formal quest is active yet. */
+  showGuidance(title: string, step: string, hint = ''): void {
+    if (this.disposed || !this.questPanelEl) return;
+    if (this.questTitleEl) this.questTitleEl.textContent = title;
+    if (this.questStepEl) this.questStepEl.textContent = step;
+    if (this.questProgressEl) this.questProgressEl.textContent = 'Getting started';
+    if (this.questHintEl) this.questHintEl.textContent = hint;
+    this.questPanelEl.classList.add('quest-visible');
   }
 
   /** Show a hint in the quest panel (after struggle detection from FlowEngine). */
