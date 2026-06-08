@@ -27,6 +27,11 @@ import { registerServiceWorker } from './net/sw-register.js';
 import { AssetManager } from './assets/asset-manager.js';
 import { BIOME_ENTER_RANGE, WorldManager } from './world/world-manager.js';
 import type { Disposable } from './types.js';
+import {
+  WORKSHOP_COLOR_QUEST_ID,
+  WORKSHOP_COLOR_RECIPE_IDS,
+  resolveWorkshopColorCraft,
+} from './game/workshop-color-quest.js';
 
 const DEBUG = import.meta.env.DEV;
 
@@ -40,13 +45,6 @@ const STARTER_INVENTORY: Array<{ itemType: string; quantity: number }> = [
   { itemType: 'clay', quantity: 2 },
   { itemType: 'H2O', quantity: 2 },
 ];
-
-const WORKSHOP_COLOR_QUEST_ID = 'f-workshop-colorful-workbench';
-const WORKSHOP_COLOR_RECIPE_IDS = new Set([
-  'mix-purple-paint',
-  'mix-green-paint',
-  'mix-orange-paint',
-]);
 
 function describeInteraction(name: string, biomeId: string): string {
   const normalized = name.toLowerCase();
@@ -335,7 +333,7 @@ async function boot(): Promise<void> {
 
   const handleCraftComplete = (recipe: CraftRecipe, result: CraftResult): void => {
     const activeQuests = core.getActiveQuests();
-    const activeProgress = activeQuests[0] ?? null;
+    const activeProgress = activeQuests.find(progress => progress.questId === WORKSHOP_COLOR_QUEST_ID) ?? null;
     let currentQuest = activeProgress ? core.getQuestById(activeProgress.questId) : undefined;
     let stepsCompleted = activeProgress?.stepsCompleted ?? 0;
 
@@ -351,41 +349,43 @@ async function boot(): Promise<void> {
       stepsCompleted = 0;
     }
 
-    if (!currentQuest || currentQuest.id !== WORKSHOP_COLOR_QUEST_ID) return;
-    const step = currentQuest.content.steps[stepsCompleted];
-    if (!step || step.objectiveType !== 'craft') return;
+    const completedItemIds = new Set(core.worldSystem.getInventory()
+      .filter(item => item.quantity > 0)
+      .map(item => item.itemType));
+    if (result.output) completedItemIds.add(result.output.id);
 
-    if (step.targetId !== recipe.id) {
-      const reminder = step.companionRepeat ?? step.spokenInstruction ?? step.instruction;
-      core.worldSystem.queueDialogue(
-        core.getCompanionState()?.name ?? 'Companion',
-        reminder,
-      );
-      return;
+    const resolution = resolveWorkshopColorCraft(currentQuest, stepsCompleted, recipe, completedItemIds);
+    if (!resolution.relevant || !resolution.craftedStep) return;
+
+    if (resolution.advanced) {
+      core.questSystem.queueAction({
+        type: 'progress',
+        questId: currentQuest!.id,
+        profileId,
+        stepsCompleted: resolution.nextStepsCompleted,
+      });
     }
 
-    core.questSystem.queueAction({
-      type: 'progress',
-      questId: currentQuest.id,
-      profileId,
-      stepsCompleted: stepsCompleted + 1,
-    });
     core.worldSystem.queueDialogue(
       core.getCompanionState()?.name ?? 'Companion',
-      step.successResponse,
+      resolution.craftedStep.successResponse,
     );
+
     if (result.output && worldManager.revealCraftedPigment(result.output.id)) {
       core.worldSystem.queueSfx('discovery-sparkle', 0.65);
       window.setTimeout(() => {
         hud.craftPanel?.close();
+        const nextPrompt = resolution.nextIncompleteStep
+          ? ` ${formatItemName(result.output!.id)} is saved, and ${formatItemName(String(resolution.nextIncompleteStep.targetValue))} is still waiting for its own mix.`
+          : ` The color story is complete.`;
         core.worldSystem.queueDialogue(
           core.getCompanionState()?.name ?? 'Companion',
-          `${formatItemName(result.output!.id)} is on the Workshop mural now. Try the next color when you're ready.`,
+          `${formatItemName(result.output!.id)} is on the Workshop mural now.${nextPrompt}`,
         );
       }, 850);
     }
     core.update(1 / 60, []);
-    debug('quest', `Craft progressed ${currentQuest.id}: ${recipe.id}`);
+    debug('quest', `Craft recognized ${currentQuest!.id}: ${recipe.id} (${resolution.nextStepsCompleted}/${currentQuest!.content.steps.length})`);
   };
 
   // --- Crafting + Map Panels ---

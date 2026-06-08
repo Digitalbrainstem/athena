@@ -47,6 +47,7 @@ export class GameLoop implements Disposable {
   private questCompleteCooldown = 0;
   private questCheckTimer = 0;
   private questOfferPending = false;
+  private pendingQuestComplete: Quest | null = null;
 
   // --- NPC proximity ---
   private npcProximityChecker: NpcProximityChecker | null = null;
@@ -351,13 +352,20 @@ export class GameLoop implements Disposable {
 
   /** Update quest panel each frame — check active quests, detect completion, trigger offers. */
   private updateQuestPanel(frameDt: number, _scene: SceneGraph): void {
+    const activeQuests = this.core.getActiveQuests();
+    this.captureCompletedQuest(activeQuests);
+
     if (this.hud.hasOpenPanel) {
       this.hud.hideQuestIndicator();
       this.hud.hideQuestPanel();
       return;
     }
 
-    const activeQuests = this.core.getActiveQuests();
+    if (this.pendingQuestComplete) {
+      this.showCompletedQuest(this.pendingQuestComplete);
+      this.pendingQuestComplete = null;
+      return;
+    }
 
     if (activeQuests.length > 0) {
       const progress = activeQuests[0]!;
@@ -368,11 +376,7 @@ export class GameLoop implements Disposable {
         if (progress.status === 'completed' || progress.stepsCompleted >= quest.content.steps.length) {
           // Quest just completed — check if we already handled it
           if (this.lastQuestId === quest.id && this.lastStepsCompleted < quest.content.steps.length) {
-            this.hud.showQuestComplete(quest.title);
-            this.questCompleteCooldown = QUEST_OFFER_COOLDOWN;
-            this.questOfferPending = false;
-            this.questCompleteCallback?.(quest);
-            debug('quest', `Quest completed: ${quest.title}`);
+            this.showCompletedQuest(quest);
           }
           this.lastQuestId = null;
           this.lastStepsCompleted = -1;
@@ -400,17 +404,19 @@ export class GameLoop implements Disposable {
         }
       }
     } else {
-      // No active quests — maybe offer one
       this.hud.hideQuestIndicator();
-      this.showGuidance(_scene);
+
       this.lastQuestId = null;
       this.lastStepsCompleted = -1;
 
-      // Cooldown timer after completion
+      // Keep the completion panel from being overwritten by fallback guidance.
       if (this.questCompleteCooldown > 0) {
         this.questCompleteCooldown -= frameDt;
         return;
       }
+
+      // No active quests — maybe offer one
+      this.showGuidance(_scene);
 
       // Periodic check for available quests
       this.questCheckTimer += frameDt;
@@ -425,6 +431,25 @@ export class GameLoop implements Disposable {
         }
       }
     }
+  }
+
+  private captureCompletedQuest(activeQuests: readonly { questId: string }[]): void {
+    if (activeQuests.length > 0 || !this.lastQuestId || this.lastStepsCompleted < 0) return;
+
+    const completedQuest = this.core.getQuestById(this.lastQuestId);
+    if (!completedQuest) return;
+
+    this.pendingQuestComplete = completedQuest;
+    this.lastQuestId = null;
+    this.lastStepsCompleted = -1;
+  }
+
+  private showCompletedQuest(quest: Quest): void {
+    this.hud.showQuestComplete(quest.title);
+    this.questCompleteCooldown = QUEST_OFFER_COOLDOWN;
+    this.questOfferPending = false;
+    this.questCompleteCallback?.(quest);
+    debug('quest', `Quest completed: ${quest.title}`);
   }
 
   /** Mark the quest offer as consumed (called after player accepts or dismisses). */

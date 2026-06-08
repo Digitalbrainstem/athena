@@ -344,6 +344,63 @@ describe('GameLoop', () => {
     );
   });
 
+  it('shows completion when an active quest is completed before the next frame', () => {
+    const quest = {
+      id: 'f-workshop-colorful-workbench',
+      title: 'The Colorful Workbench',
+      content: {
+        steps: [
+          { objectiveType: 'craft', instruction: 'Make purple.', targetId: 'mix-purple-paint' },
+        ],
+      },
+    };
+    (core.getQuestById as ReturnType<typeof vi.fn>).mockReturnValue(quest);
+    (core.getActiveQuests as ReturnType<typeof vi.fn>)
+      .mockReturnValueOnce([{ questId: quest.id, stepsCompleted: 0, status: 'active' }])
+      .mockReturnValue([]);
+
+    loop.start();
+    runFrame(0);
+    runFrame(16.67);
+    runFrame(33.34);
+
+    expect(hud.showQuestComplete).toHaveBeenCalledWith('The Colorful Workbench');
+    expect(hud.showGuidance).not.toHaveBeenLastCalledWith(
+      'First Workshop Challenge',
+      expect.any(String),
+      expect.any(String),
+    );
+  });
+
+  it('defers disappeared quest completion until modal panels close', () => {
+    const quest = {
+      id: 'f-workshop-colorful-workbench',
+      title: 'The Colorful Workbench',
+      content: {
+        steps: [
+          { objectiveType: 'craft', instruction: 'Make purple.', targetId: 'mix-purple-paint' },
+        ],
+      },
+    };
+    (core.getQuestById as ReturnType<typeof vi.fn>).mockReturnValue(quest);
+    (core.getActiveQuests as ReturnType<typeof vi.fn>)
+      .mockReturnValueOnce([{ questId: quest.id, stepsCompleted: 0, status: 'active' }])
+      .mockReturnValue([]);
+
+    loop.start();
+    runFrame(0);
+    runFrame(16.67);
+
+    (hud as unknown as { hasOpenPanel: boolean }).hasOpenPanel = true;
+    runFrame(33.34);
+    expect(hud.hideQuestPanel).toHaveBeenCalled();
+    expect(hud.showQuestComplete).not.toHaveBeenCalled();
+
+    (hud as unknown as { hasOpenPanel: boolean }).hasOpenPanel = false;
+    runFrame(50);
+    expect(hud.showQuestComplete).toHaveBeenCalledWith('The Colorful Workbench');
+  });
+
   it('uses gamepad prompt labels after gamepad input', () => {
     const graph = emptySceneGraph();
     graph.objects.push({

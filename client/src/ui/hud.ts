@@ -243,7 +243,7 @@ export class HUD implements Disposable {
   showQuestComplete(title: string): void {
     if (this.disposed || !this.questPanelEl) return;
     if (this.questTitleEl) this.questTitleEl.textContent = title;
-    if (this.questStepEl) this.questStepEl.textContent = 'Complete!';
+    if (this.questStepEl) this.questStepEl.textContent = 'Completed!';
     if (this.questProgressEl) this.questProgressEl.textContent = '';
     if (this.questHintEl) this.questHintEl.textContent = '';
 
