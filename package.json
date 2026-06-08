@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "playcheck:station-ux": "node e2e/station-ux.mjs"
+  },
   "dependencies": {
     "puppeteer": "^24.40.0",
     "ws": "^8.20.0"
