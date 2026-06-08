@@ -318,4 +318,25 @@ describe('WorldManager', () => {
       world.dispose();
     }
   });
+
+  it('adds style-specific accents to early building interiors', () => {
+    const scene = new THREE.Scene();
+    const world = new WorldManager(scene);
+
+    try {
+      world.forceEnterBiome('library-echoes');
+      expect(findByName(scene, 'interior-library-story-rug')).not.toBeNull();
+      expect(findByName(scene, 'interior-library-glowing-book')).not.toBeNull();
+
+      world.forceEnterBiome('gallery');
+      expect(findByName(scene, 'interior-gallery-viewing-line')).not.toBeNull();
+      expect(findByName(scene, 'interior-gallery-color-study-0')).not.toBeNull();
+
+      world.forceEnterBiome('observatory');
+      expect(findByName(scene, 'interior-observatory-starfield')).not.toBeNull();
+      expect(findByName(scene, 'interior-observatory-orbit-ring-2')).not.toBeNull();
+    } finally {
+      world.dispose();
+    }
+  });
 });

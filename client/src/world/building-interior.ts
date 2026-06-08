@@ -204,6 +204,7 @@ export class BuildingInterior implements Disposable {
 
     // Furniture (style-specific)
     this.addFurniture(biome.id, config, hw, hd, h);
+    this.addStyleAccents(config, hw, hd, h);
 
     // Dust motes floating in light beams
     this.addDustParticles(config, hw, hd, h);
@@ -487,6 +488,120 @@ export class BuildingInterior implements Disposable {
       model.position.x = THREE.MathUtils.clamp(model.position.x, -safeX, safeX);
       model.position.z = THREE.MathUtils.clamp(model.position.z, -safeZ, safeZ);
       this.group.add(model);
+    }
+  }
+
+  private addStyleAccents(config: BuildingConfig, hw: number, hd: number, h: number): void {
+    switch (config.style) {
+      case 'library':
+        this.addLibraryAccents(hw, hd);
+        break;
+      case 'gallery':
+        this.addGalleryAccents(hw, hd);
+        break;
+      case 'observatory':
+        this.addObservatoryAccents(hw, hd, h);
+        break;
+    }
+  }
+
+  private addLibraryAccents(hw: number, _hd: number): void {
+    const rugGeo = new THREE.CircleGeometry(1.65, 32);
+    const rugMat = this.makeMat(0x8b3a62);
+    this.geometries.push(rugGeo);
+    const rug = new THREE.Mesh(rugGeo, rugMat);
+    rug.name = 'interior-library-story-rug';
+    rug.rotation.x = -Math.PI / 2;
+    rug.position.set(0, 0.035, 0.8);
+    this.group.add(rug);
+
+    const cardGeo = new THREE.BoxGeometry(0.7, 0.42, 0.05);
+    const cardMat = this.makeMat(0xf8e7c1);
+    this.geometries.push(cardGeo);
+    for (let i = 0; i < 4; i++) {
+      const card = new THREE.Mesh(cardGeo, cardMat);
+      card.name = `interior-library-catalog-card-${i}`;
+      card.position.set(-hw + 0.08, 1.1 + i * 0.38, -2.4 + i * 0.35);
+      card.rotation.y = Math.PI / 2;
+      this.group.add(card);
+    }
+
+    const glowGeo = new THREE.BoxGeometry(0.42, 0.1, 0.34);
+    const glowMat = this.makeMat(0x22d3ee, 0x22d3ee, 0.35);
+    this.geometries.push(glowGeo);
+    const glowingBook = new THREE.Mesh(glowGeo, glowMat);
+    glowingBook.name = 'interior-library-glowing-book';
+    glowingBook.position.set(0, 0.86, -1.0);
+    glowingBook.rotation.y = 0.3;
+    this.group.add(glowingBook);
+  }
+
+  private addGalleryAccents(hw: number, hd: number): void {
+    const plinthGeo = new THREE.CylinderGeometry(0.34, 0.42, 0.55, 16);
+    const plinthMat = this.makeMat(0xf0ead6);
+    this.geometries.push(plinthGeo);
+    for (const [index, x] of [-2.8, 0, 2.8].entries()) {
+      const plinth = new THREE.Mesh(plinthGeo, plinthMat);
+      plinth.name = `interior-gallery-plinth-${index}`;
+      plinth.position.set(x, 0.275, -hd + 2.0);
+      this.group.add(plinth);
+    }
+
+    const swatchGeo = new THREE.BoxGeometry(0.65, 0.65, 0.05);
+    this.geometries.push(swatchGeo);
+    const colors = [0x22d3ee, 0xa78bfa, 0xf97316, 0x22c55e];
+    for (let i = 0; i < colors.length; i++) {
+      const swatchMat = this.makeMat(colors[i]!, colors[i]!, 0.15);
+      const swatch = new THREE.Mesh(swatchGeo, swatchMat);
+      swatch.name = `interior-gallery-color-study-${i}`;
+      swatch.position.set(-hw + 0.05, 1.25 + (i % 2) * 0.9, -2.2 + Math.floor(i / 2) * 1.4);
+      swatch.rotation.y = Math.PI / 2;
+      this.group.add(swatch);
+    }
+
+    const guideGeo = new THREE.PlaneGeometry(3.0, 0.08);
+    const guideMat = this.makeMat(0x22d3ee, 0x22d3ee, 0.2);
+    this.geometries.push(guideGeo);
+    const guide = new THREE.Mesh(guideGeo, guideMat);
+    guide.name = 'interior-gallery-viewing-line';
+    guide.rotation.x = -Math.PI / 2;
+    guide.position.set(0, 0.04, 0.9);
+    this.group.add(guide);
+  }
+
+  private addObservatoryAccents(_hw: number, _hd: number, h: number): void {
+    const starGeo = new THREE.SphereGeometry(0.035, 8, 6);
+    const starMat = this.makeMat(0xf8fbff, 0x22d3ee, 0.6);
+    this.geometries.push(starGeo);
+    const starPositions: [number, number, number][] = [
+      [-2.6, h - 0.45, -2.8],
+      [-1.2, h - 0.35, -3.4],
+      [0.4, h - 0.55, -2.6],
+      [1.7, h - 0.4, -3.1],
+      [2.6, h - 0.5, -1.8],
+      [-2.2, h - 0.6, 0.6],
+      [0.1, h - 0.35, 1.4],
+      [2.0, h - 0.65, 0.8],
+    ];
+    const starField = new THREE.Group();
+    starField.name = 'interior-observatory-starfield';
+    for (let i = 0; i < starPositions.length; i++) {
+      const star = new THREE.Mesh(starGeo, starMat);
+      star.name = `interior-observatory-star-${i}`;
+      star.position.set(...starPositions[i]!);
+      starField.add(star);
+    }
+    this.group.add(starField);
+
+    const ringMat = this.makeMat(0x22d3ee, 0x22d3ee, 0.25);
+    for (let i = 0; i < 3; i++) {
+      const ringGeo = new THREE.TorusGeometry(1.1 + i * 0.55, 0.012, 8, 64);
+      this.geometries.push(ringGeo);
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.name = `interior-observatory-orbit-ring-${i}`;
+      ring.rotation.x = -Math.PI / 2;
+      ring.position.set(0, 0.055 + i * 0.004, -0.1);
+      this.group.add(ring);
     }
   }
 
