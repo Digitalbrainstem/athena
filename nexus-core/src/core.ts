@@ -10,7 +10,7 @@ import { QuestRepository } from './db/repositories/quest.js';
 import { LearningEventRepository } from './db/repositories/learning-event.js';
 import { WorldStateRepository } from './db/repositories/world-state.js';
 import { CompanionRepository } from './db/repositories/companion.js';
-import { MasterySystem } from './systems/mastery.js';
+import { MasterySystem, type PendingLearningEvent } from './systems/mastery.js';
 import { QuestSystem } from './systems/quest.js';
 import { WorldSystem } from './systems/world.js';
 import { CompanionSystem } from './systems/companion.js';
@@ -48,6 +48,15 @@ export interface NexusCoreConfig {
   debug?: boolean;
   /** Existing database to load */
   existingData?: Uint8Array;
+}
+
+export interface RecordLearningEventInput {
+  skillId: string;
+  eventType: string;
+  quality: number;
+  context?: string;
+  questId?: string;
+  responseTimeMs?: number;
 }
 
 export class NexusCore {
@@ -299,6 +308,33 @@ export class NexusCore {
 
   getMasteryForProfile(profileId: string): MasteryRecord[] {
     return this.mastery.getForProfile(profileId);
+  }
+
+  getDueMasteryReviews(profileId = this.activeProfileId): MasteryRecord[] {
+    return profileId ? this.masterySystem.getDueForReview(profileId) : [];
+  }
+
+  recordLearningEvent(input: RecordLearningEventInput): boolean {
+    if (!this.activeProfileId) return false;
+    const event: PendingLearningEvent = {
+      profileId: this.activeProfileId,
+      skillId: input.skillId,
+      eventType: input.eventType,
+      quality: input.quality,
+      context: input.context,
+      questId: input.questId,
+      responseTimeMs: input.responseTimeMs,
+    };
+    this.masterySystem.queueEvent(event);
+    return true;
+  }
+
+  recordLearningEvents(inputs: RecordLearningEventInput[]): number {
+    let recorded = 0;
+    for (const input of inputs) {
+      if (this.recordLearningEvent(input)) recorded++;
+    }
+    return recorded;
   }
 
   getActiveQuests(): QuestProgress[] {

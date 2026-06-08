@@ -510,6 +510,7 @@ export class CraftPanel implements Disposable {
     this.combineBtn.disabled = true;
 
     if (this.matchedRecipe) {
+      const recipe = this.matchedRecipe;
       // Build inputs from selected slots
       const inputs: RecipeInput[] = this.selectedSlots.map(s => ({
         type: this.getInputType(s.itemType),
@@ -518,29 +519,31 @@ export class CraftPanel implements Disposable {
       }));
 
       const result: CraftResult = this.core.craftSystem.attemptCraft(
-        this.matchedRecipe,
+        recipe,
         inputs,
       );
 
       if (result.success && result.output) {
         // Remove consumed ingredients from world state
-        for (const inp of this.matchedRecipe.inputs) {
+        for (const inp of recipe.inputs) {
           this.core.worldSystem.removeInventoryItem(inp.id, inp.quantity);
         }
         // Add crafted item
         this.core.worldSystem.addInventoryItem(result.output.id, result.output.quantity);
-        this.onCraftComplete?.(this.matchedRecipe, result);
 
-        // Emit learning events
-        for (const skill of result.learningEvents) {
-          this.core.getWorld().emitEvent({
-            type: 'learning_event',
-            data: { skill, source: 'craft', recipeId: this.matchedRecipe.id },
-          });
-        }
+        const learnedSkills = [...new Set(
+          result.learningEvents.length > 0 ? result.learningEvents : recipe.skillsTaught,
+        )];
+        this.core.recordLearningEvents(learnedSkills.map(skillId => ({
+          skillId,
+          eventType: 'craft_success',
+          quality: 4,
+          context: `${this.currentStationType}:${recipe.id}`,
+        })));
+        this.onCraftComplete?.(recipe, result);
 
         // Companion speaks the science explanation
-        const explanation = this.matchedRecipe.scienceExplanation;
+        const explanation = recipe.scienceExplanation;
         this.onCompanionSpeak(explanation || `Nice! You made ${formatItemName(result.output.id)}!`);
 
         // Show success

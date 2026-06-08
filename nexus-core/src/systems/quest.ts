@@ -184,12 +184,29 @@ export class QuestSystem implements System {
       });
     });
 
-    // Sort by relevance (prefer quests that teach skills due for review)
-    return qualified.slice(0, maxActive - activeQuests.length);
+    // Sort by relevance: due-review skills surface naturally as normal quests.
+    const dueReviewSkills = new Set(
+      this.masteryRepo.getDueForReview(criteria.profileId).map(record => record.skillId),
+    );
+    const ranked = [...qualified].sort((a, b) =>
+      questReviewScore(b, dueReviewSkills) - questReviewScore(a, dueReviewSkills),
+    );
+    return ranked.slice(0, maxActive - activeQuests.length);
   }
 
   getActiveQuests(profileId: string): QuestProgress[] {
     if (!this.questRepo) return [];
     return this.questRepo.getActiveForProfile(profileId);
   }
+}
+
+function questReviewScore(quest: Quest, dueReviewSkills: ReadonlySet<string>): number {
+  let score = 0;
+  for (const skillId of quest.skillsTaught) {
+    if (dueReviewSkills.has(skillId)) score += 2;
+  }
+  for (const skillId of quest.skillsRequired) {
+    if (dueReviewSkills.has(skillId)) score += 1;
+  }
+  return score;
 }

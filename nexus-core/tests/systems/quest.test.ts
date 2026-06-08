@@ -41,6 +41,7 @@ describe('QuestSystem', () => {
   let questSystem: QuestSystem;
   let masterySystem: MasterySystem;
   let questRepo: QuestRepository;
+  let masteryRepo: MasteryRepository;
   let profileId: string;
 
   const sampleQuest = {
@@ -70,7 +71,7 @@ describe('QuestSystem', () => {
     profileId = profile.id;
 
     questRepo = new QuestRepository(db);
-    const masteryRepo = new MasteryRepository(db);
+    masteryRepo = new MasteryRepository(db);
     const eventRepo = new LearningEventRepository(db);
 
     masterySystem = new MasterySystem();
@@ -173,6 +174,39 @@ describe('QuestSystem', () => {
     });
 
     expect(selected.length).toBeGreaterThan(0);
+  });
+
+  it('prioritizes quests that naturally review due skills', () => {
+    questRepo.create({
+      ...sampleQuest,
+      id: 'quest-counting',
+      title: 'Count the Crates',
+      skillsTaught: ['math.counting'],
+    });
+    questRepo.create({
+      ...sampleQuest,
+      id: 'quest-shapes',
+      title: 'Shape the Bridge',
+      skillsTaught: ['math.geometry'],
+    });
+    masteryRepo.upsert(profileId, 'math.geometry', {
+      level: 0.5,
+      retentionScore: 0.4,
+      transferScore: 0.4,
+      depthScore: 0.4,
+      nextReview: '2000-01-01 00:00:00',
+      attempts: 1,
+      successes: 1,
+    });
+
+    const selected = questSystem.selectQuests({
+      profileId,
+      biome: 'workshop',
+      masteryTier: 'foundation',
+      maxActive: 3,
+    });
+
+    expect(selected.map(q => q.id)).toEqual(['quest-shapes', 'quest-counting']);
   });
 
   it('respects max active quest limit', () => {

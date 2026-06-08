@@ -80,6 +80,7 @@ function makeCore(
       addInventoryItem: vi.fn(),
     },
     getWorld: vi.fn(() => world),
+    recordLearningEvents: vi.fn(),
     craftSystem: {
       getAvailableRecipes: vi.fn(() => recipes),
       attemptCraft: vi.fn((recipe: CraftRecipe) => ({
@@ -190,6 +191,12 @@ describe('CraftPanel station UX', () => {
       towerRecipe,
       expect.objectContaining({ success: true, output: towerRecipe.output }),
     );
+    expect(core.recordLearningEvents).toHaveBeenCalledWith([{
+      skillId: 'basic-stability',
+      eventType: 'craft_success',
+      quality: 4,
+      context: 'anvil:stack-block-tower',
+    }]);
 
     panel.dispose();
   });

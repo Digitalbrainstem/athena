@@ -592,6 +592,15 @@ async function boot(): Promise<void> {
       get inventory() {
         return core.worldSystem.getInventory();
       },
+      get mastery() {
+        return core.getMasteryForProfile(profileId);
+      },
+      get dueMasteryReviews() {
+        return core.getDueMasteryReviews(profileId);
+      },
+      get learningEvents() {
+        return core.learningEvents.getForProfile(profileId, 100);
+      },
       startQuest(questId: string) {
         core.questSystem.queueAction({
           type: 'start',
@@ -933,6 +942,13 @@ async function boot(): Promise<void> {
               profileId,
               stepsCompleted: newSteps,
             });
+            core.recordLearningEvents(currentQuest.skillsTaught.map(skillId => ({
+              skillId,
+              questId: currentQuest.id,
+              eventType: 'quest_step',
+              quality: 3,
+              context: `${currentQuest.biome}:${step.objectiveType}:${stepTarget}`,
+            })));
 
             // Show step success response via companion
             core.worldSystem.queueDialogue(

@@ -109,6 +109,36 @@ describe('NexusCore Integration', () => {
     expect(updated[0]!.skillId).toBe('math.arithmetic');
   });
 
+  it('records active-profile learning events through the public API', async () => {
+    core = await NexusCore.create();
+
+    expect(core.recordLearningEvent({
+      skillId: 'math.before-profile',
+      eventType: 'practice',
+      quality: 4,
+    })).toBe(false);
+
+    const profile = await core.createProfile({ name: 'Event Recorder' });
+    await core.loadProfile(profile.id);
+
+    expect(core.recordLearningEvent({
+      skillId: 'science.color-mixing',
+      eventType: 'craft_success',
+      quality: 4,
+      context: 'workbench:mix-purple-paint',
+    })).toBe(true);
+    core.update(0.016, []);
+
+    const mastery = core.getMasteryForProfile(profile.id);
+    expect(mastery).toHaveLength(1);
+    expect(mastery[0]!.skillId).toBe('science.color-mixing');
+
+    const events = core.learningEvents.getForProfile(profile.id);
+    expect(events).toHaveLength(1);
+    expect(events[0]!.eventType).toBe('craft_success');
+    expect(events[0]!.context).toBe('workbench:mix-purple-paint');
+  });
+
   it('manages quests end-to-end', async () => {
     core = await NexusCore.create();
 
