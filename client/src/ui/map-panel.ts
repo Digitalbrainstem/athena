@@ -1,9 +1,10 @@
 // MapPanel — World map showing discovered biomes as connected nodes
 // M key opens/closes. Click biome → fast travel (if discovered).
 
-import type { NexusCore } from '@nexus-academy/core';
+import type { BiomeRoute, NexusCore } from '@nexus-academy/core';
 import { BIOME_ROUTES } from '@nexus-academy/core';
 import { BIOME_LOCATIONS } from '../world/overworld.js';
+import type { BiomeLocation } from '../world/overworld.js';
 import type { WorldManager } from '../world/world-manager.js';
 import type { Disposable } from '../types.js';
 
@@ -44,6 +45,20 @@ const BIOME_COLORS: Record<string, string> = {
 };
 
 const DEFAULT_BIOME_COLOR = '#94A3B8';
+
+const FOUNDATION_TIER = 'foundation';
+
+function routeIncludes(route: BiomeRoute, biomeId: string): boolean {
+  return route.from === biomeId || route.to === biomeId;
+}
+
+function otherRouteEnd(route: BiomeRoute, biomeId: string): string {
+  return route.from === biomeId ? route.to : route.from;
+}
+
+function humanizeRoutePart(value: string): string {
+  return value.replace(/[-_]+/g, ' ');
+}
 
 export class MapPanel implements Disposable {
   private readonly core: NexusCore;
@@ -90,7 +105,7 @@ export class MapPanel implements Disposable {
         <div class="map-biomes" role="list" aria-label="Discovered biomes">
         </div>
       </div>
-      <p class="map-hint">Click a discovered biome to travel there</p>
+      <p class="map-hint">Discovered places allow fast travel. Named paths are walk-to-discover routes.</p>
     `;
 
     this.canvas = this.root.querySelector('.map-canvas');
@@ -184,6 +199,24 @@ export class MapPanel implements Disposable {
           btn.addEventListener('click', () => this.travelTo(biome.id));
         }
       } else {
+        const revealedRoute = this.getRevealedRouteTo(biome.id);
+        if (revealedRoute) {
+          const origin = otherRouteEnd(revealedRoute, biome.id);
+          const originName = BIOME_LOCATIONS.find(b => b.id === origin)?.name ?? humanizeRoutePart(origin);
+          btn.classList.add('map-reachable');
+          btn.setAttribute('aria-label',
+            `${biome.name} — walking path from ${originName}. Walk there once to unlock fast travel.`,
+          );
+          btn.innerHTML = `
+            <span class="map-node-dot map-node-route" style="background:${BIOME_COLORS[biome.id] ?? DEFAULT_BIOME_COLOR}"></span>
+            <span class="map-node-name">${biome.name}</span>
+            <span class="map-node-badge">Walk there</span>
+          `;
+          btn.addEventListener('click', () => this.describeRouteTo(biome, revealedRoute));
+          this.listEl.appendChild(btn);
+          continue;
+        }
+
         btn.classList.add('map-undiscovered');
         btn.setAttribute('aria-label', 'Undiscovered biome — explore to reveal');
         btn.disabled = true;
@@ -291,6 +324,23 @@ export class MapPanel implements Disposable {
         ctx.textAlign = 'center';
         ctx.fillText(biome.name, sx, sy + 18);
       } else {
+        const revealedRoute = this.getRevealedRouteTo(biome.id);
+        if (revealedRoute) {
+          ctx.beginPath();
+          ctx.arc(sx, sy, 6, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(34, 211, 238, 0.28)';
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(34, 211, 238, 0.55)';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+
+          ctx.fillStyle = 'rgba(245, 240, 232, 0.78)';
+          ctx.font = '10px Nunito, system-ui, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(biome.name, sx, sy + 18);
+          continue;
+        }
+
         // Undiscovered — faint "?" node
         ctx.beginPath();
         ctx.arc(sx, sy, 5, 0, Math.PI * 2);
@@ -324,6 +374,26 @@ export class MapPanel implements Disposable {
     this.onCompanionSpeak(`Let's head to ${name}!`);
     this.close();
     this.onTravelTo(biomeId);
+  }
+
+  private describeRouteTo(biome: BiomeLocation, route: BiomeRoute): void {
+    const originId = otherRouteEnd(route, biome.id);
+    const originName = BIOME_LOCATIONS.find(b => b.id === originId)?.name ?? humanizeRoutePart(originId);
+    const landmarks = route.landmarks.map(humanizeRoutePart).join(', ');
+    const routeHint = landmarks
+      ? ` Follow ${landmarks}.`
+      : '';
+    this.onCompanionSpeak(
+      `${biome.name} is a walking path from ${originName}, not fast travel yet.${routeHint} Walk there once and the map will remember it.`,
+    );
+  }
+
+  private getRevealedRouteTo(biomeId: string): BiomeRoute | null {
+    if (this.discoveredBiomes.has(biomeId)) return null;
+    return BIOME_ROUTES.find(route => {
+      if (route.minTier !== FOUNDATION_TIER || !routeIncludes(route, biomeId)) return false;
+      return this.discoveredBiomes.has(otherRouteEnd(route, biomeId));
+    }) ?? null;
   }
 
   private handleKey(e: KeyboardEvent): void {

@@ -2,6 +2,7 @@
   "scripts": {
     "playcheck:forest-density": "node e2e/living-forest-density.mjs",
     "playcheck:interior-accents": "node e2e/interior-accents.mjs",
+    "playcheck:map-routes": "node e2e/map-routes.mjs",
     "playcheck:npc-dialogue": "node e2e/npc-dialogue.mjs",
     "playcheck:station-ux": "node e2e/station-ux.mjs"
   },

@@ -1210,7 +1210,9 @@
     }
 
     .map-biome-node.map-discovered:hover,
-    .map-biome-node.map-discovered:focus-visible {
+    .map-biome-node.map-discovered:focus-visible,
+    .map-biome-node.map-reachable:hover,
+    .map-biome-node.map-reachable:focus-visible {
       border-color: var(--frost);
       background: rgba(34, 211, 238, 0.1);
     }
@@ -1225,6 +1227,11 @@
       cursor: default;
     }
 
+    .map-biome-node.map-reachable {
+      border-color: rgba(34, 211, 238, 0.28);
+      background: rgba(34, 211, 238, 0.06);
+    }
+
     .map-node-dot {
       width: 10px;
       height: 10px;
@@ -1234,6 +1241,10 @@
 
     .map-node-unknown {
       background: var(--text-muted) !important;
+    }
+
+    .map-node-route {
+      box-shadow: 0 0 10px rgba(34, 211, 238, 0.45);
     }
 
     .map-node-name {
