@@ -17,7 +17,13 @@ import { PortalScreen } from './ui/portal-screen.js';
 import { ProfileScreen } from './ui/profile-screen.js';
 import { CompanionPicker } from './ui/companion-picker.js';
 import { OnboardingFlow } from './ui/onboarding-flow.js';
-import { NpcDialoguePanel, findNearestNpc, npcsInBiome, BIOME_NPCS } from './ui/npc-dialogue.js';
+import {
+  NpcDialoguePanel,
+  buildNpcOptionResponse,
+  findNearestNpc,
+  npcsInBiome,
+  BIOME_NPCS,
+} from './ui/npc-dialogue.js';
 import type { NpcEntity } from './ui/npc-dialogue.js';
 import { TradePanel } from './ui/trade-panel.js';
 import { CalibrationFlow } from './game/calibration-flow.js';
@@ -323,6 +329,19 @@ async function boot(): Promise<void> {
     core.worldSystem.queueDialogue(speaker, text);
   };
 
+  const speakDialogueLine = (speaker: string, text: string): void => {
+    if (DEBUG) {
+      const speechLog = (window as any).__athenaSpeechLog;
+      if (Array.isArray(speechLog)) speechLog.push({ speaker, text });
+    }
+    const emotion = text.includes('!')
+      ? 'excited' as const
+      : text.includes('?')
+        ? 'curious' as const
+        : 'neutral' as const;
+    void companionVoice.speak(text, emotion, speaker);
+  };
+
   const loop = new GameLoop(core, input, fpCam, sceneRenderer, audioManager, hud);
   if (isMobile) loop.setMobile(true);
   disposables.push(loop);
@@ -346,6 +365,35 @@ async function boot(): Promise<void> {
   // --- Quest state ---
   let activeQuestId: string | null = null;
   let pendingQuestOffer: Quest[] = [];
+
+  const getNpcConversationContext = (npc?: NpcEntity) => {
+    const biomeId = worldManager.activeBiomeId ?? core.getCurrentBiome();
+    const activeProgress = core.getActiveQuests()[0] ?? null;
+    const activeQuest = activeProgress ? core.getQuestById(activeProgress.questId) : null;
+    const activeStep = activeQuest && activeProgress
+      ? activeQuest.content.steps[activeProgress.stepsCompleted] ?? null
+      : null;
+    const npcQuest = npc?.questIds
+      ?.map((questId) => core.getQuestById(questId))
+      .find((quest): quest is Quest => Boolean(quest)) ?? null;
+    const availableQuest = npcQuest
+      ?? pendingQuestOffer[0]
+      ?? core.selectAvailableQuests(biomeId)[0]
+      ?? null;
+
+    return { biomeId, activeQuest, activeStep, availableQuest };
+  };
+
+  const openNpcDialogue = (npc: NpcEntity): void => {
+    npcDialogue.show(
+      npc,
+      (selectedNpc, optionId) => { handleNpcOption(selectedNpc, optionId); },
+      {
+        context: getNpcConversationContext(npc),
+        onLine: speakDialogueLine,
+      },
+    );
+  };
 
   const startQuest = (quest: Quest): void => {
     core.questSystem.queueAction({
@@ -599,7 +647,7 @@ async function boot(): Promise<void> {
       openNpcDialogue(npcId: string) {
         const npc = BIOME_NPCS.find((n: NpcEntity) => n.id === npcId);
         if (npc) {
-          npcDialogue.show(npc, (n, opt) => handleNpcOption(n, opt));
+          openNpcDialogue(npc);
           return `Opened dialogue with ${npc.name}`;
         }
         return 'NPC not found';
@@ -826,9 +874,7 @@ async function boot(): Promise<void> {
             return;
           }
 
-          npcDialogue.show(nearbyNpc, (npc, optionId) => {
-            handleNpcOption(npc, optionId);
-          });
+          openNpcDialogue(nearbyNpc);
           debug('npc', `Opened dialogue with ${nearbyNpc.name} (${nearbyNpc.type})`);
           return;
         }
@@ -1009,6 +1055,7 @@ async function boot(): Promise<void> {
       case 'browse':
       case 'sell': {
         if (!npc.merchant) return;
+        speakDialogueLine(npc.name, buildNpcOptionResponse(npc, optionId, getNpcConversationContext(npc)));
         npcDialogue.hide();
 
         // Initialize market if needed and get prices
@@ -1050,31 +1097,22 @@ async function boot(): Promise<void> {
             debug('quest', `NPC quest started: ${quest.title}`);
           }
         } else {
-          core.worldSystem.queueDialogue(npc.name,
-            "I don't have anything right now, but check back later!",
-          );
+          const line = buildNpcOptionResponse(npc, optionId, getNpcConversationContext(npc));
+          core.worldSystem.queueDialogue(npc.name, line);
         }
         break;
       }
 
       case 'learn': {
         // Sage explains a concept
-        const topic = npc.expertise?.[0] ?? 'the world';
-        npcDialogue.updateText(
-          `Let me tell you what I know about ${topic}... Every question leads to a discovery!`,
-        );
-        debug('npc', `Sage ${npc.name} teaching about ${topic}`);
+        npcDialogue.updateText(buildNpcOptionResponse(npc, optionId, getNpcConversationContext(npc)));
+        debug('npc', `Sage ${npc.name} teaching`);
         break;
       }
 
       case 'chat': {
         // Villager/NPC ambient chat
-        const chatLines = [
-          "It's always wonderful to meet someone curious about the world!",
-          "I've been thinking about how everything in this place is connected...",
-          "Did you notice the way the light changes here? Isn't it beautiful?",
-        ];
-        npcDialogue.updateText(chatLines[Math.floor(Math.random() * chatLines.length)]!);
+        npcDialogue.updateText(buildNpcOptionResponse(npc, optionId, getNpcConversationContext(npc)));
         debug('npc', `Chatting with ${npc.name}`);
         break;
       }
@@ -1100,10 +1138,7 @@ async function boot(): Promise<void> {
     if (sg.ui.dialogueActive && sg.ui.dialogueText && sg.ui.dialogueText !== lastDialogueText) {
       lastDialogueText = sg.ui.dialogueText;
       sceneRenderer.setCompanionSpeaking(true);
-      const emotion = sg.ui.dialogueText.includes('!')
-        ? 'excited' as const
-        : 'neutral' as const;
-      void companionVoice.speak(sg.ui.dialogueText, emotion);
+      speakDialogueLine(sg.ui.dialogueSpeaker ?? core.getCompanionState()?.name ?? 'Companion', sg.ui.dialogueText);
     } else if (!sg.ui.dialogueActive) {
       lastDialogueText = '';
       sceneRenderer.setCompanionSpeaking(false);

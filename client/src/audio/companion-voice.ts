@@ -118,7 +118,13 @@ function createCompanionReverb(ctx: AudioContext): AudioBuffer {
 export class CompanionVoiceManager implements Disposable {
   private disposed = false;
   private speaking = false;
-  private queue: Array<{ text: string; emotion: Emotion; resolve: () => void }> = [];
+  private queue: Array<{
+    text: string;
+    emotion: Emotion;
+    speakerName: string;
+    companionType: string;
+    resolve: () => void;
+  }> = [];
   private audioCtx: AudioContext | null = null;
   private reverbBuffer: AudioBuffer | null = null;
 
@@ -128,27 +134,26 @@ export class CompanionVoiceManager implements Disposable {
   onEnd: (() => void) | null = null;
 
   private speakerName = 'Buddy';
-  private companionType = '';
 
   setSpeaker(name: string): void {
     this.speakerName = name;
-    this.companionType = name.toLowerCase();
   }
 
   /**
    * Speak a line of dialogue. Queues if another line is already playing.
    * Returns a promise that resolves when the utterance finishes.
    */
-  speak(text: string, emotion: Emotion = 'neutral'): Promise<void> {
+  speak(text: string, emotion: Emotion = 'neutral', speakerName = this.speakerName): Promise<void> {
     if (this.disposed) return Promise.resolve();
+    const companionType = speakerName.toLowerCase();
     if (typeof speechSynthesis === 'undefined') {
       console.log(`[CompanionVoice] SpeechSynthesis unavailable — skipping: "${text}"`);
-      this.onSpeak?.(this.speakerName, text);
+      this.onSpeak?.(speakerName, text);
       return Promise.resolve();
     }
 
     return new Promise<void>((resolve) => {
-      this.queue.push({ text, emotion, resolve });
+      this.queue.push({ text, emotion, speakerName, companionType, resolve });
       if (!this.speaking) {
         void this.drain();
       }
@@ -171,10 +176,10 @@ export class CompanionVoiceManager implements Disposable {
 
     while (this.queue.length > 0 && !this.disposed) {
       const item = this.queue.shift()!;
-      this.onSpeak?.(this.speakerName, item.text);
+      this.onSpeak?.(item.speakerName, item.text);
 
       try {
-        await this.speakUtterance(item.text, item.emotion);
+        await this.speakUtterance(item.text, item.emotion, item.companionType);
       } catch (e) {
         console.warn('[CompanionVoice] SpeechSynthesis error:', e);
       }
@@ -186,13 +191,13 @@ export class CompanionVoiceManager implements Disposable {
     this.onEnd?.();
   }
 
-  private speakUtterance(text: string, emotion: Emotion): Promise<void> {
+  private speakUtterance(text: string, emotion: Emotion, companionType: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      const profile = COMPANION_PROFILES[this.companionType] ?? DEFAULT_PROFILE;
+      const profile = COMPANION_PROFILES[companionType] ?? DEFAULT_PROFILE;
       const emotionParams = EMOTION_MAP[emotion];
 
       // Apply personality transforms to text
-      const processedText = applyPersonality(text, this.companionType);
+      const processedText = applyPersonality(text, companionType);
 
       const utterance = new SpeechSynthesisUtterance(processedText);
 
@@ -225,7 +230,7 @@ export class CompanionVoiceManager implements Disposable {
       this.applyProcessing();
 
       console.log(
-        `[CompanionVoice] Speaking (${this.companionType}): "${text}" ` +
+        `[CompanionVoice] Speaking (${companionType}): "${text}" ` +
         `(emotion=${emotion}, pitch=${utterance.pitch.toFixed(2)}, rate=${utterance.rate.toFixed(2)}, voice=${voice?.name ?? 'default'})`,
       );
       speechSynthesis.speak(utterance);

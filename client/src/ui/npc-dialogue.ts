@@ -5,6 +5,8 @@
 
 import type {
   NpcMerchant,
+  Quest,
+  QuestStep,
 } from '@nexus-academy/core';
 import type { Disposable } from '../types.js';
 
@@ -29,6 +31,18 @@ export interface NpcEntity {
   questIds?: string[];
   /** Subject expertise for sages */
   expertise?: string[];
+}
+
+export interface NpcConversationContext {
+  biomeId: string;
+  activeQuest?: Quest | null;
+  activeStep?: QuestStep | null;
+  availableQuest?: Quest | null;
+}
+
+export interface NpcDialogueShowOptions {
+  context?: NpcConversationContext;
+  onLine?: (speaker: string, text: string) => void;
 }
 
 export type NpcPersonality =
@@ -271,6 +285,55 @@ const NPC_VILLAGER_LINES: readonly string[] = [
   "I've lived here for as long as I can remember. This place never stops surprising me.",
 ];
 
+interface NpcGuidanceProfile {
+  opening: string;
+  chat: string;
+  learn?: string;
+  quest?: string;
+  trade?: string;
+}
+
+const NPC_GUIDANCE: Record<string, NpcGuidanceProfile> = {
+  'npc-hilda-blacksmith': {
+    opening: 'The Workbench is the first useful stop: red plus blue makes purple, then the mural shows what changed. The Chest has extra wood and stone if you want to shape something at the Anvil.',
+    chat: 'Tools belong where hands can reach them. Workbench for mixing, Anvil for shaping, Forge for heat once hotter recipes unlock.',
+    trade: 'I can open the supply shelf, but your starter pack already has enough pigment for the first color challenge.',
+  },
+  'npc-workshop-sage': {
+    opening: 'Every station teaches a rule. Pigments teach mixtures, the Anvil teaches stable shapes, and the Forge teaches how heat transforms matter.',
+    chat: 'If a recipe works, the world should answer. Watch for murals, objects, and companion lines after you craft.',
+    learn: 'A good experiment changes one thing at a time. Pick two pigments, combine them, then compare the new color to the ones you started with.',
+  },
+  'npc-workshop-villager': {
+    opening: 'Cog here! If you are wondering what to do, start at the Workbench and make purple. The Workshop gets more interesting when the mural wakes up.',
+    chat: 'I like watching the color jars. Red and blue feel like two ideas becoming one new idea.',
+  },
+  'npc-sage-herbalist': {
+    opening: 'The forest is full of hungry helpers. Rabbit, bird, squirrel, and deer each ask for the food that fits their real diet.',
+    chat: 'A forest is a web, not a pile of trees. Food, water, shelter, and sunlight all pull on each other.',
+    trade: 'I can trade forest supplies, but the first lesson is right in the clearing: match each animal to what it naturally eats.',
+  },
+  'npc-forest-storyteller': {
+    opening: 'Fern says: follow the sounds. Chirps point to birds, rustles point to small paws, and the quiet deer waits near the meadow edge.',
+    chat: 'The animals are not decorations. They are clues about habitats, food, and how living things share a place.',
+  },
+  'npc-forest-quest': {
+    opening: 'Moss watches the paths. If you want a forest challenge, help the animals first; the clearing is arranged like a living puzzle.',
+    chat: 'The old trees remember every careful choice. Feed the right animal and the whole clearing feels calmer.',
+    quest: 'I have a forest task ready. It starts with observation, not guessing.',
+  },
+  'npc-library-sage': {
+    opening: 'Whisper says the Library is a room of clues. The rug marks the story space, the glowing book marks the next idea, and the catalog cards keep order.',
+    chat: 'Stories are maps for memory. A good clue points you forward without feeling like a worksheet.',
+    learn: 'Look for sequence: beginning, middle, end. The room is arranged to help you feel that order before anyone names it.',
+  },
+  'npc-library-quest': {
+    opening: 'Page has a reading path ready. Start with the glowing book, then let the room tell you what belongs together.',
+    chat: 'A library quest should feel like discovering a secret path between ideas.',
+    quest: 'There is a story puzzle waiting in these shelves.',
+  },
+};
+
 // ---------------------------------------------------------------------------
 // Dialogue response options per NPC type
 // ---------------------------------------------------------------------------
@@ -326,18 +389,21 @@ export class NpcDialoguePanel implements Disposable {
   private disposed = false;
   private activeNpc: NpcEntity | null = null;
   private onSelect: NpcDialogueCallback | null = null;
+  private onLine: ((speaker: string, text: string) => void) | null = null;
   private dialogueSeed = 0;
 
   /** Show dialogue panel for an NPC */
-  show(npc: NpcEntity, callback: NpcDialogueCallback): void {
+  show(npc: NpcEntity, callback: NpcDialogueCallback, options: NpcDialogueShowOptions = {}): void {
     if (this.disposed) return;
     this.hide(); // close any existing panel
 
     this.activeNpc = npc;
     this.onSelect = callback;
+    this.onLine = options.onLine ?? null;
     this.dialogueSeed++;
 
-    const greeting = this.pickLine(NPC_GREETINGS[npc.personality]);
+    const greeting = buildNpcOpeningLine(npc, options.context)
+      ?? this.pickLine(NPC_GREETINGS[npc.personality]);
     let flavorLine = '';
     switch (npc.type) {
       case 'merchant': flavorLine = this.pickLine(NPC_MERCHANT_LINES); break;
@@ -346,7 +412,7 @@ export class NpcDialoguePanel implements Disposable {
       case 'villager': flavorLine = this.pickLine(NPC_VILLAGER_LINES); break;
     }
 
-    const options = getDialogueOptions(npc);
+    const dialogueOptions = getDialogueOptions(npc);
 
     // Build DOM
     const overlay = document.createElement('div');
@@ -400,6 +466,8 @@ export class NpcDialoguePanel implements Disposable {
       panel.appendChild(flavorEl);
     }
 
+    this.onLine?.(npc.name, flavorLine ? `${greeting} ${flavorLine}` : greeting);
+
     // Response options
     const optionsContainer = document.createElement('div');
     optionsContainer.setAttribute('role', 'group');
@@ -408,7 +476,7 @@ export class NpcDialoguePanel implements Disposable {
       display: flex; flex-wrap: wrap; gap: 0.5rem;
     `;
 
-    for (const opt of options) {
+    for (const opt of dialogueOptions) {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.textContent = opt.text;
@@ -482,6 +550,7 @@ export class NpcDialoguePanel implements Disposable {
     if (!this.overlay) return;
     const greetEl = this.overlay.querySelector('p[aria-live]');
     if (greetEl) greetEl.textContent = text;
+    if (this.activeNpc) this.onLine?.(this.activeNpc.name, text);
   }
 
   /** Hide and clean up the dialogue panel */
@@ -492,6 +561,7 @@ export class NpcDialoguePanel implements Disposable {
     }
     this.activeNpc = null;
     this.onSelect = null;
+    this.onLine = null;
   }
 
   dispose(): void {
@@ -542,4 +612,67 @@ export function findNearestNpc(
   }
 
   return nearest;
+}
+
+export function buildNpcOpeningLine(
+  npc: NpcEntity,
+  context?: NpcConversationContext,
+): string | null {
+  if (context?.activeQuest?.biome === npc.biome && context.activeStep) {
+    const stepLine = context.activeStep.companionRepeat
+      ?? context.activeStep.spokenInstruction
+      ?? context.activeStep.instruction;
+    if (npc.type === 'sage') {
+      return `You are working on "${context.activeQuest.title}." The useful clue is: ${stepLine}`;
+    }
+    if (npc.type === 'quest_giver') {
+      return `That active path is "${context.activeQuest.title}." I would follow the next clue: ${stepLine}`;
+    }
+    return `I see your current challenge: ${stepLine}`;
+  }
+
+  if (npc.type === 'quest_giver' && context?.availableQuest) {
+    const profile = NPC_GUIDANCE[npc.id];
+    return `${profile?.quest ?? 'I have a challenge ready.'} It is called "${context.availableQuest.title}."`;
+  }
+
+  return NPC_GUIDANCE[npc.id]?.opening ?? null;
+}
+
+export function buildNpcOptionResponse(
+  npc: NpcEntity,
+  optionId: string,
+  context?: NpcConversationContext,
+): string {
+  const profile = NPC_GUIDANCE[npc.id];
+
+  if (optionId === 'chat') {
+    return profile?.chat ?? NPC_VILLAGER_LINES[0]!;
+  }
+
+  if (optionId === 'learn') {
+    if (context?.activeQuest?.biome === npc.biome && context.activeStep) {
+      const stepLine = context.activeStep.companionRepeat
+        ?? context.activeStep.spokenInstruction
+        ?? context.activeStep.instruction;
+      return `For "${context.activeQuest.title}", focus on this next: ${stepLine}`;
+    }
+    return profile?.learn
+      ?? `Let me tell you what I know about ${npc.expertise?.[0] ?? 'this place'}: look for what changes when you interact with the world.`;
+  }
+
+  if (optionId === 'quest') {
+    if (context?.availableQuest) {
+      return profile?.quest
+        ? `${profile.quest} "${context.availableQuest.title}" is ready.`
+        : `"${context.availableQuest.title}" is ready.`;
+    }
+    return "I don't have a new task right now. Check the objects nearby; the world still has clues.";
+  }
+
+  if (optionId === 'browse' || optionId === 'sell') {
+    return profile?.trade ?? 'Let me open my trade shelf. Take only what helps the world make sense.';
+  }
+
+  return profile?.opening ?? NPC_GREETINGS[npc.personality][0] ?? '';
 }
