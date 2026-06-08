@@ -46,6 +46,12 @@ const STARTER_INVENTORY: Array<{ itemType: string; quantity: number }> = [
   { itemType: 'H2O', quantity: 2 },
 ];
 
+const WORKSHOP_CHEST_REWARDS: Array<{ itemType: string; quantity: number }> = [
+  { itemType: 'oak-wood', quantity: 6 },
+  { itemType: 'sandstone', quantity: 8 },
+  { itemType: 'SiO2', quantity: 3 },
+];
+
 function describeInteraction(name: string, biomeId: string): string {
   const normalized = name.toLowerCase();
   if (normalized.includes('crop')) return 'These rows are alive with patterns: count the spacing, compare the heights, and the farm starts to make sense.';
@@ -60,6 +66,23 @@ function describeInteraction(name: string, biomeId: string): string {
   return biomeId === 'farm'
     ? `The ${name} belongs to the farm system. Look for how it connects to water, soil, sunlight, and motion.`
     : `You examine the ${name}. The world is waiting for the right idea, not the right menu click.`;
+}
+
+function claimChestContents(core: NexusCore, profileId: string, biomeId: string, chestName: string): string {
+  const key = `athena:chest:${profileId}:${biomeId}:${chestName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+  if (globalThis.localStorage?.getItem(key) === 'claimed') {
+    return 'The chest is open now. You already moved its useful building materials into your pack.';
+  }
+
+  for (const reward of WORKSHOP_CHEST_REWARDS) {
+    core.worldSystem.addInventoryItem(reward.itemType, reward.quantity);
+  }
+  globalThis.localStorage?.setItem(key, 'claimed');
+
+  const contents = WORKSHOP_CHEST_REWARDS
+    .map(reward => `${reward.quantity} ${formatItemName(reward.itemType)}`)
+    .join(', ');
+  return `Inside the chest you find ${contents}. Those materials are in your pack now. The wood and stone are ready for the Anvil, and the glass sand will matter when Forge heat recipes unlock.`;
 }
 
 function objectMatchesQuestTarget(object: SceneObject, target: unknown): boolean {
@@ -824,6 +847,9 @@ async function boot(): Promise<void> {
 
       if (highlighted?.interactable) {
         const name = highlighted.interactable.prompt.replace(/^Interact with /, '');
+        const chestRewardText = highlighted.interactable.interactionType === 'open' && name.toLowerCase().includes('chest')
+          ? claimChestContents(core, profileId, worldManager.activeBiomeId ?? core.getCurrentBiome(), name)
+          : null;
 
         // --- Crafting station interaction → open craft panel ---
         if (highlighted.interactable.interactionType === 'craft') {
@@ -861,15 +887,25 @@ async function boot(): Promise<void> {
             // Show step success response via companion
             core.worldSystem.queueDialogue(
               core.getCompanionState()?.name ?? 'Companion',
-              step.successResponse,
+              chestRewardText ? `${step.successResponse} ${chestRewardText}` : step.successResponse,
             );
             debug('quest', `Quest step ${newSteps}/${currentQuest.content.steps.length}: ${step.instruction}`);
+          } else if (chestRewardText) {
+            core.worldSystem.queueDialogue(
+              core.getCompanionState()?.name ?? 'Companion',
+              chestRewardText,
+            );
           } else {
             core.worldSystem.queueDialogue(
               core.getCompanionState()?.name ?? 'Companion',
               step?.companionRepeat ?? step?.instruction ?? describeInteraction(name, worldManager.activeBiomeId ?? core.getCurrentBiome()),
             );
           }
+        } else if (chestRewardText) {
+          core.worldSystem.queueDialogue(
+            core.getCompanionState()?.name ?? 'Companion',
+            chestRewardText,
+          );
         } else if (!currentQuest && pendingQuestOffer.length > 0) {
           // No active quest but we have a pending offer — start the first offered quest
           const quest = pendingQuestOffer[0]!;

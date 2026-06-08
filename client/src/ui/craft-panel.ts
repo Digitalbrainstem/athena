@@ -1,7 +1,7 @@
 // CraftPanel — Crafting interface for workbench, cauldron, forge interactions
 // Select-then-place (no drag-and-drop) per accessibility rules
 
-import type { NexusCore, CraftRecipe, RecipeInput, CraftResult, MasteryTier } from '@nexus-academy/core';
+import { RECIPES, type NexusCore, type CraftRecipe, type RecipeInput, type CraftResult, type MasteryTier } from '@nexus-academy/core';
 import type { Disposable } from '../types.js';
 
 export interface CraftPanelOptions {
@@ -21,13 +21,66 @@ interface CraftSlot {
   quantity: number;
 }
 
-// Station types that can open the crafting panel
-const STATION_LABELS: Record<string, string> = {
-  workbench: 'Workbench',
-  cauldron: 'Cauldron',
-  forge: 'Forge',
-  'alchemist-table': "Alchemist's Table",
+interface StationProfile {
+  label: string;
+  actionLabel: string;
+  purpose: string;
+  slotHint: string;
+  emptyRecipeText: string;
+  unknownResult: string;
+  matchesRecipe: (recipe: CraftRecipe) => boolean;
+}
+
+const STATION_PROFILES: Record<string, StationProfile> = {
+  workbench: {
+    label: 'Workbench',
+    actionLabel: 'Combine',
+    purpose: 'Mix pigments and assemble simple materials here. Start with Red Pigment + Blue Pigment to make Purple Pigment.',
+    slotHint: 'Select materials from your pack. The recipe guide shows what this workbench can make.',
+    emptyRecipeText: 'No workbench recipes are available here yet.',
+    unknownResult: 'No known workbench result yet — try one of the guided combinations above.',
+    matchesRecipe: recipe => textIncludesAny(recipeText(recipe), ['pigment', 'color', 'paint', 'wood', 'tower', 'brick', 'clay']),
+  },
+  forge: {
+    label: 'Forge',
+    actionLabel: 'Heat',
+    purpose: 'Use heat to transform materials. Sand can become glass once you have enough of the right material.',
+    slotHint: 'Add heat-ready materials such as sand, glass sand, or metal compounds.',
+    emptyRecipeText: 'The forge has no heat recipe at this mastery tier yet. Look for sand or metal discoveries.',
+    unknownResult: 'That does not react to heat at the forge yet.',
+    matchesRecipe: recipe => textIncludesAny(recipeText(recipe), ['heat', 'heated', 'melting', 'glass', 'metal', 'forge', 'temperature', 'smelt', 'burn', 'ore']),
+  },
+  anvil: {
+    label: 'Anvil',
+    actionLabel: 'Shape',
+    purpose: 'Shape strong materials and test structure ideas. Wide bases and stable stacks belong here.',
+    slotHint: 'Add building materials such as pine wood, oak wood, or stone blocks.',
+    emptyRecipeText: 'The anvil has no structure recipes available here yet.',
+    unknownResult: 'That does not form a stable shape on the anvil yet.',
+    matchesRecipe: recipe => recipe.output.type === 'structure'
+      || textIncludesAny(recipeText(recipe), ['structure', 'stable', 'stability', 'tower', 'bridge', 'wall', 'load', 'building']),
+  },
+  cauldron: {
+    label: 'Cauldron',
+    actionLabel: 'Mix',
+    purpose: 'Mix liquids and reactions. Count exact drops when a recipe asks for them.',
+    slotHint: 'Add liquids, compounds, or pigments that belong in a mixture.',
+    emptyRecipeText: 'No cauldron recipes are available in this biome yet.',
+    unknownResult: 'That mixture does not react in the cauldron yet.',
+    matchesRecipe: recipe => textIncludesAny(recipeText(recipe), ['potion', 'drop', 'liquid', 'water', 'compound', 'reaction', 'acid', 'base']),
+  },
+  'alchemist-table': {
+    label: "Alchemist's Table",
+    actionLabel: 'React',
+    purpose: 'Run careful chemistry reactions with exact amounts.',
+    slotHint: 'Add compounds in the amounts shown by the recipe guide.',
+    emptyRecipeText: 'No alchemy recipes are available in this biome yet.',
+    unknownResult: 'Those materials need a different reaction setup.',
+    matchesRecipe: recipe => textIncludesAny(recipeText(recipe), ['compound', 'reaction', 'chemical', 'acid', 'base', 'stoichiometry', 'equation']),
+  },
 };
+
+const DEFAULT_STATION_PROFILE = STATION_PROFILES.workbench!;
 
 export class CraftPanel implements Disposable {
   private readonly core: NexusCore;
@@ -43,9 +96,14 @@ export class CraftPanel implements Disposable {
   private selectedSlots: CraftSlot[] = [];
   private matchedRecipe: CraftRecipe | null = null;
   private availableRecipes: CraftRecipe[] = [];
+  private lockedPreviewRecipes: CraftRecipe[] = [];
+  private currentStationType = 'workbench';
+  private currentStationProfile: StationProfile = DEFAULT_STATION_PROFILE;
 
   // DOM refs (cached for perf)
   private titleEl: HTMLElement | null = null;
+  private stationPurposeEl: HTMLElement | null = null;
+  private recipeGuideEl: HTMLElement | null = null;
   private ingredientsEl: HTMLElement | null = null;
   private slotsEl: HTMLElement | null = null;
   private resultEl: HTMLElement | null = null;
@@ -80,8 +138,12 @@ export class CraftPanel implements Disposable {
         <button class="craft-close" aria-label="Close crafting panel">&times;</button>
       </div>
       <div class="craft-body">
+        <p class="craft-station-purpose"></p>
+        <div class="craft-recipe-guide" aria-label="Station recipe guide"></div>
+        <h4 class="craft-section-title">Materials in your pack</h4>
         <div class="craft-ingredients" role="listbox" aria-label="Available ingredients">
         </div>
+        <h4 class="craft-section-title">Selected materials</h4>
         <div class="craft-slots" role="list" aria-label="Selected ingredients">
           <p class="craft-slots-hint">Select ingredients to combine</p>
         </div>
@@ -96,6 +158,8 @@ export class CraftPanel implements Disposable {
     `;
 
     this.titleEl = this.root.querySelector('.craft-title');
+    this.stationPurposeEl = this.root.querySelector('.craft-station-purpose');
+    this.recipeGuideEl = this.root.querySelector('.craft-recipe-guide');
     this.ingredientsEl = this.root.querySelector('.craft-ingredients');
     this.slotsEl = this.root.querySelector('.craft-slots');
     this.resultEl = this.root.querySelector('.craft-result-text');
@@ -117,10 +181,17 @@ export class CraftPanel implements Disposable {
     if (!this.root) return;
 
     this._open = true;
+    this.currentStationType = normalizeStationType(stationType);
+    this.currentStationProfile = getStationProfile(this.currentStationType);
+    this.root.setAttribute('aria-label', `${this.currentStationProfile.label} crafting`);
 
     // Update title
     if (this.titleEl) {
-      this.titleEl.textContent = STATION_LABELS[stationType] ?? 'Crafting Station';
+      this.titleEl.textContent = this.currentStationProfile.label;
+    }
+    if (this.combineBtn) {
+      this.combineBtn.textContent = this.currentStationProfile.actionLabel;
+      this.combineBtn.setAttribute('aria-label', `${this.currentStationProfile.actionLabel} selected materials`);
     }
 
     // Refresh state from core
@@ -129,6 +200,7 @@ export class CraftPanel implements Disposable {
     this.selectedSlots = [];
     this.matchedRecipe = null;
 
+    this.renderStationGuide();
     this.renderIngredients();
     this.renderSlots();
     this.renderResult();
@@ -183,13 +255,72 @@ export class CraftPanel implements Disposable {
       // fallback to foundation
     }
 
-    this.availableRecipes = this.core.craftSystem.getAvailableRecipes(
+    const activeBiome = state?.activeBiome ?? 'workshop';
+    const recipes = this.core.craftSystem.getAvailableRecipes(
       masteryTier,
-      state?.activeBiome ?? 'workshop',
+      activeBiome,
     );
+    this.availableRecipes = recipes.filter(recipe => this.currentStationProfile.matchesRecipe(recipe));
+    const unlockedIds = new Set(recipes.map(recipe => recipe.id));
+    this.lockedPreviewRecipes = RECIPES
+      .filter(recipe => (recipe.biome === activeBiome || recipe.biome === 'any') && !unlockedIds.has(recipe.id))
+      .filter(recipe => this.currentStationProfile.matchesRecipe(recipe))
+      .sort((a, b) => tierRank(a.tier) - tierRank(b.tier));
   }
 
   // ── Rendering ────────────────────────────────────────────────────────────
+
+  private renderStationGuide(): void {
+    if (this.stationPurposeEl) {
+      this.stationPurposeEl.textContent = this.currentStationProfile.purpose;
+    }
+    if (!this.recipeGuideEl) return;
+
+    this.recipeGuideEl.innerHTML = '';
+
+    const heading = document.createElement('h4');
+    heading.className = 'craft-section-title';
+    heading.textContent = `${this.currentStationProfile.label} recipes`;
+    this.recipeGuideEl.appendChild(heading);
+
+    const visibleUnlocked = this.availableRecipes.slice(0, 4);
+    const visibleLocked = this.lockedPreviewRecipes.slice(0, Math.max(0, 4 - visibleUnlocked.length));
+    const visibleRecipes = [
+      ...visibleUnlocked.map(recipe => ({ recipe, locked: false })),
+      ...visibleLocked.map(recipe => ({ recipe, locked: true })),
+    ];
+
+    if (visibleRecipes.length === 0) {
+      const empty = document.createElement('p');
+      empty.className = 'craft-empty';
+      empty.textContent = this.currentStationProfile.emptyRecipeText;
+      this.recipeGuideEl.appendChild(empty);
+      return;
+    }
+
+    for (const { recipe, locked } of visibleRecipes) {
+      const card = document.createElement('div');
+      const isReady = this.canCraftRecipe(recipe);
+      card.className = `craft-recipe-card ${locked ? 'craft-recipe-locked' : isReady ? 'craft-recipe-ready' : 'craft-recipe-missing'}`;
+
+      const name = document.createElement('span');
+      name.className = 'craft-recipe-name';
+      name.textContent = recipe.name;
+      card.appendChild(name);
+
+      const formula = document.createElement('span');
+      formula.className = 'craft-recipe-formula';
+      formula.textContent = this.buildFormulaDisplay(recipe);
+      card.appendChild(formula);
+
+      const status = document.createElement('span');
+      status.className = 'craft-recipe-status';
+      status.textContent = locked ? `Unlocks in ${formatTierName(recipe.tier)}` : isReady ? 'Ready' : this.describeMissingInputs(recipe);
+      card.appendChild(status);
+
+      this.recipeGuideEl.appendChild(card);
+    }
+  }
 
   private renderIngredients(): void {
     if (!this.ingredientsEl) return;
@@ -228,7 +359,7 @@ export class CraftPanel implements Disposable {
     if (this.selectedSlots.length === 0) {
       const hint = document.createElement('p');
       hint.className = 'craft-slots-hint';
-      hint.textContent = 'Select ingredients to combine';
+      hint.textContent = this.currentStationProfile.slotHint;
       this.slotsEl.appendChild(hint);
       return;
     }
@@ -279,7 +410,7 @@ export class CraftPanel implements Disposable {
       this.formulaEl.textContent = this.buildFormulaDisplay(this.matchedRecipe);
       this.combineBtn.disabled = false;
     } else {
-      this.resultEl.textContent = 'Unknown result — try it!';
+      this.resultEl.textContent = this.currentStationProfile.unknownResult;
       this.formulaEl.textContent = '';
       // Allow experimental crafting even without a known recipe match
       this.combineBtn.disabled = false;
@@ -303,6 +434,23 @@ export class CraftPanel implements Disposable {
       : outputName;
 
     return `${inputParts.join(' + ')} → ${outputPart}`;
+  }
+
+  private canCraftRecipe(recipe: CraftRecipe): boolean {
+    return recipe.inputs.every(input => {
+      const inventoryItem = this.inventory.find(item => item.itemType === input.id);
+      return (inventoryItem?.quantity ?? 0) >= input.quantity;
+    });
+  }
+
+  private describeMissingInputs(recipe: CraftRecipe): string {
+    const missing = recipe.inputs.flatMap(input => {
+      const inventoryItem = this.inventory.find(item => item.itemType === input.id);
+      const needed = input.quantity - (inventoryItem?.quantity ?? 0);
+      if (needed <= 0) return [];
+      return formatRecipeInput({ ...input, quantity: needed });
+    });
+    return missing.length > 0 ? `Need ${missing.join(', ')}` : 'Ready';
   }
 
   // ── Interaction ──────────────────────────────────────────────────────────
@@ -405,6 +553,7 @@ export class CraftPanel implements Disposable {
         // Reset slots and refresh
         this.selectedSlots = [];
         this.refreshInventory();
+        this.renderStationGuide();
         this.renderIngredients();
         this.renderSlots();
         setTimeout(() => this.renderResult(), 2000);
@@ -462,4 +611,50 @@ function subscriptFormula(formula: string): string {
     const subscripts = '₀₁₂₃₄₅₆₇₈₉';
     return d.split('').map((ch: string) => subscripts[parseInt(ch, 10)] ?? ch).join('');
   });
+}
+
+function normalizeStationType(stationType: string): string {
+  const normalized = stationType.toLowerCase();
+  return Object.keys(STATION_PROFILES).find(key => normalized.includes(key)) ?? 'workbench';
+}
+
+function getStationProfile(stationType: string): StationProfile {
+  return STATION_PROFILES[stationType] ?? DEFAULT_STATION_PROFILE;
+}
+
+function recipeText(recipe: CraftRecipe): string {
+  return [
+    recipe.id,
+    recipe.name,
+    recipe.description,
+    recipe.output.id,
+    recipe.output.type,
+    ...recipe.skillsTaught,
+  ].join(' ').toLowerCase();
+}
+
+function formatRecipeInput(input: RecipeInput): string {
+  const name = input.type === 'element' || input.type === 'compound'
+    ? subscriptFormula(input.id)
+    : formatItemName(input.id);
+  return input.quantity > 1 ? `${input.quantity} ${name}` : name;
+}
+
+function textIncludesAny(text: string, needles: readonly string[]): boolean {
+  return needles.some(needle => text.includes(needle));
+}
+
+function tierRank(tier: MasteryTier): number {
+  const order: Record<MasteryTier, number> = {
+    foundation: 0,
+    discovery: 1,
+    builder: 2,
+    innovator: 3,
+    creator: 4,
+  };
+  return order[tier];
+}
+
+function formatTierName(tier: MasteryTier): string {
+  return tier.charAt(0).toUpperCase() + tier.slice(1);
 }
