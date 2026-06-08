@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "playcheck:forest-density": "node e2e/living-forest-density.mjs",
     "playcheck:station-ux": "node e2e/station-ux.mjs"
   },
   "dependencies": {

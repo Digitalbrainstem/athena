@@ -203,6 +203,53 @@ describe('WorldManager', () => {
     }
   });
 
+  it('densifies Living Forest with quest target props and pass-through interactions', () => {
+    const scene = new THREE.Scene();
+    const world = new WorldManager(scene);
+
+    try {
+      world.forceEnterBiome('living-forest');
+      const forest = findByName(scene, 'biome:living-forest');
+      expect(forest).not.toBeNull();
+      expect(forest!.children.length).toBeGreaterThan(35);
+      expect(world.getExtraCollisionBoxes().length).toBeLessThan(forest!.children.length);
+
+      const graph = world.mergeGameplayObjects({
+        camera: {
+          position: { x: 0, y: 1.6, z: 0 },
+          rotation: { x: 0, y: 0, z: 0 },
+          fov: 70,
+          near: 0.1,
+          far: 500,
+        },
+        lights: [],
+        objects: [],
+        sky: { type: 'color', primaryColor: '#87CEEB' },
+        ground: { type: 'grass', color: '#228B22', size: { width: 100, depth: 100 } },
+        ui: { elements: [], dialogueActive: false, inventoryOpen: false, mapOpen: false, paused: false },
+        audio: [],
+        announcements: [],
+        captions: [],
+      });
+
+      expect(graph.objects.map(obj => obj.renderable.modelId)).toEqual(expect.arrayContaining([
+        'rabbit',
+        'bird',
+        'squirrel',
+        'deer',
+        'food-basket',
+        'garden-plot',
+        'watering-can',
+        'red-butterfly',
+        'blue-butterfly',
+      ]));
+      expect(graph.objects.find(obj => obj.renderable.modelId === 'watering-can')?.interactable?.prompt)
+        .toBe('Interact with watering can');
+    } finally {
+      world.dispose();
+    }
+  });
+
   it('converts world-space camera positions to local biome coordinates for NPC checks', () => {
     const scene = new THREE.Scene();
     const world = new WorldManager(scene);

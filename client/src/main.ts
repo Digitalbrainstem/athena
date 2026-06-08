@@ -87,14 +87,18 @@ function claimChestContents(core: NexusCore, profileId: string, biomeId: string,
 
 function objectMatchesQuestTarget(object: SceneObject, target: unknown): boolean {
   const candidates = Array.isArray(target) ? target : [target];
-  const prompt = object.interactable?.prompt.toLowerCase() ?? '';
-  const modelId = object.renderable.modelId?.toLowerCase() ?? '';
+  const prompt = normalizeInteractionToken(object.interactable?.prompt ?? '');
+  const modelId = normalizeInteractionToken(object.renderable.modelId ?? '');
 
   return candidates.some((candidate) => {
     if (typeof candidate !== 'string') return false;
-    const normalizedTarget = candidate.toLowerCase();
+    const normalizedTarget = normalizeInteractionToken(candidate);
     return prompt.includes(normalizedTarget) || modelId === normalizedTarget;
   });
+}
+
+function normalizeInteractionToken(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, '');
 }
 
 function ensureStarterInventory(core: NexusCore): void {

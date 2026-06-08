@@ -52,6 +52,23 @@ describe('ProceduralModelGenerator', () => {
     expect(group.userData.fallback).toBe(true);
   });
 
+  it('generates Living Forest quest props from hyphenated IDs', () => {
+    for (const type of [
+      'food-basket',
+      'sunflower-seeds',
+      'garden-plot',
+      'watering-can',
+      'plant-stem',
+      'red-butterfly',
+      'blue-butterfly',
+    ]) {
+      const group = gen.generate(type, 'foundation');
+      expect(group).toBeInstanceOf(THREE.Group);
+      expect(group.children.length).toBeGreaterThan(0);
+      expect(group.userData.fallback).not.toBe(true);
+    }
+  });
+
   it('workbench has correct structure', () => {
     const wb = gen.generate('workbench', 'builder');
     expect(wb.children.length).toBeGreaterThanOrEqual(6); // top + 4 legs + shelf + vice

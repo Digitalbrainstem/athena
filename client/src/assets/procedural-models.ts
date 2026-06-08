@@ -119,7 +119,7 @@ type GeneratorFn = (lib: MaterialLibrary, tier: MasteryTier, gen: ProceduralMode
 
 /** Convert snake_case to camelCase for modelId lookup. */
 function toCamel(s: string): string {
-  return s.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
+  return s.replace(/[-_]([a-z])/g, (_, c: string) => c.toUpperCase());
 }
 
 /** Resolve a generator function by objectType, trying exact match then camelCase. */
@@ -393,6 +393,142 @@ const GENERATORS: Record<string, GeneratorFn> = {
     const body = mesh(g.cylinder(0.12, 0.12, 0.8, s), bark, [0, 0.12, 0], [0, 0, Math.PI / 2]);
     const end = mesh(g.cylinder(0.11, 0.11, 0.02, s), inner, [0.4, 0.12, 0], [0, 0, Math.PI / 2]);
     return makeGroup(body, end);
+  },
+
+  rabbit: (lib, tier, g) => {
+    const s = seg(tier);
+    const fur = lib.fromColor(0xf2eee2, 0.85, 0.0);
+    const inner = lib.fromColor(0xffb6c1, 0.8, 0.0);
+    const body = mesh(g.sphere(0.22, s, s), fur, [0, 0.22, 0], undefined, [1.25, 0.85, 0.8]);
+    const head = mesh(g.sphere(0.14, s, s), fur, [0.18, 0.34, 0]);
+    const earL = mesh(g.cone(0.045, 0.35, s), fur, [0.16, 0.62, -0.06], [0.2, 0, -0.1]);
+    const earR = mesh(g.cone(0.045, 0.35, s), fur, [0.16, 0.62, 0.06], [0.2, 0, 0.1]);
+    const nose = mesh(g.sphere(0.025, 6, 6), inner, [0.3, 0.35, 0]);
+    const tail = mesh(g.sphere(0.07, s, s), fur, [-0.25, 0.23, 0]);
+    return makeGroup(body, head, earL, earR, nose, tail);
+  },
+
+  bird: (lib, tier, g) => {
+    const s = seg(tier);
+    const bodyMat = lib.fromColor(0x4f83cc, 0.75, 0.0);
+    const wingMat = lib.fromColor(0x2f5fa8, 0.8, 0.0);
+    const beakMat = lib.fromColor(0xffc145, 0.7, 0.0);
+    const body = mesh(g.sphere(0.14, s, s), bodyMat, [0, 0.28, 0], undefined, [1, 0.85, 1.2]);
+    const head = mesh(g.sphere(0.09, s, s), bodyMat, [0.05, 0.42, 0]);
+    const beak = mesh(g.cone(0.035, 0.12, s), beakMat, [0.16, 0.42, 0], [0, 0, -Math.PI / 2]);
+    const wingL = mesh(g.sphere(0.08, s, s), wingMat, [-0.03, 0.29, -0.11], undefined, [0.35, 0.8, 1.2]);
+    const wingR = mesh(g.sphere(0.08, s, s), wingMat, [-0.03, 0.29, 0.11], undefined, [0.35, 0.8, 1.2]);
+    const perch = mesh(g.cylinder(0.015, 0.015, 0.5, 6), lib.get('bark', tier), [0, 0.12, 0], [0, 0, Math.PI / 2]);
+    return makeGroup(perch, body, head, beak, wingL, wingR);
+  },
+
+  squirrel: (lib, tier, g) => {
+    const s = seg(tier);
+    const fur = lib.fromColor(0x9a5a2e, 0.85, 0.0);
+    const belly = lib.fromColor(0xd7a56a, 0.85, 0.0);
+    const body = mesh(g.sphere(0.18, s, s), fur, [0, 0.25, 0], undefined, [0.9, 1.2, 0.8]);
+    const chest = mesh(g.sphere(0.12, s, s), belly, [0.06, 0.24, 0], undefined, [0.55, 0.8, 0.65]);
+    const head = mesh(g.sphere(0.11, s, s), fur, [0.12, 0.45, 0]);
+    const tail = mesh(g.torus(0.22, 0.045, s, s), fur, [-0.18, 0.42, 0], [Math.PI / 2, 0.4, 0]);
+    const earL = mesh(g.cone(0.035, 0.08, s), fur, [0.08, 0.56, -0.06]);
+    const earR = mesh(g.cone(0.035, 0.08, s), fur, [0.08, 0.56, 0.06]);
+    return makeGroup(body, chest, head, tail, earL, earR);
+  },
+
+  deer: (lib, tier, g) => {
+    const s = seg(tier);
+    const fur = lib.fromColor(0xa66b3d, 0.85, 0.0);
+    const dark = lib.fromColor(0x5c3216, 0.9, 0.0);
+    const body = mesh(g.sphere(0.3, s, s), fur, [0, 0.45, 0], undefined, [1.45, 0.75, 0.8]);
+    const neck = mesh(g.cylinder(0.07, 0.09, 0.38, s), fur, [0.32, 0.72, 0], [0, 0, -0.45]);
+    const head = mesh(g.sphere(0.13, s, s), fur, [0.47, 0.88, 0], undefined, [1.1, 0.8, 0.75]);
+    const legs = [-0.22, 0.22].flatMap(x => [-0.16, 0.16].map(z => mesh(g.cylinder(0.025, 0.03, 0.45, 6), dark, [x, 0.22, z])));
+    const antlerL = mesh(g.cylinder(0.01, 0.012, 0.25, 6), dark, [0.45, 1.04, -0.06], [0.4, 0, 0.2]);
+    const antlerR = mesh(g.cylinder(0.01, 0.012, 0.25, 6), dark, [0.45, 1.04, 0.06], [0.4, 0, -0.2]);
+    return makeGroup(body, neck, head, ...legs, antlerL, antlerR);
+  },
+
+  foodBasket: (lib, tier, g) => {
+    const s = seg(tier);
+    const wicker = lib.get('lightWood', tier);
+    const basket = mesh(g.cylinder(0.28, 0.22, 0.18, s), wicker, [0, 0.09, 0]);
+    const rim = mesh(g.torus(0.27, 0.025, 6, s), wicker, [0, 0.19, 0], [Math.PI / 2, 0, 0]);
+    const carrot = mesh(g.cone(0.045, 0.22, s), lib.fromColor(0xff7f24), [-0.09, 0.27, 0.02], [0.45, 0, -0.7]);
+    const seeds = mesh(g.sphere(0.07, s, s), lib.fromColor(0xd9b25f), [0.04, 0.25, -0.05], undefined, [1.4, 0.45, 1.0]);
+    const acorn = mesh(g.sphere(0.06, s, s), lib.fromColor(0x8b5a2b), [0.12, 0.24, 0.05], undefined, [0.85, 1, 0.85]);
+    const leaves = mesh(g.sphere(0.08, s, s), lib.get('leaf', tier), [-0.02, 0.27, 0.1], undefined, [1.5, 0.35, 0.8]);
+    return makeGroup(basket, rim, carrot, seeds, acorn, leaves);
+  },
+
+  sunflowerSeeds: (lib, tier, g) => {
+    const paper = lib.get('paper', tier);
+    const bag = mesh(g.box(0.25, 0.18, 0.08, 1), paper, [0, 0.09, 0], [0.2, 0, 0]);
+    for (let i = 0; i < 5; i++) {
+      bag.add(mesh(g.sphere(0.018, 6, 6), lib.fromColor(0x4a2c16), [-0.09 + i * 0.045, 0.11, 0.05]));
+    }
+    return makeGroup(bag);
+  },
+
+  acorn: (lib, tier, g) => {
+    const s = seg(tier);
+    const nut = mesh(g.sphere(0.08, s, s), lib.fromColor(0x9b642f), [0, 0.09, 0], undefined, [0.85, 1.1, 0.85]);
+    const cap = mesh(g.sphere(0.075, s, s), lib.fromColor(0x5b3a1c), [0, 0.17, 0], undefined, [1, 0.45, 1]);
+    const stem = mesh(g.cylinder(0.008, 0.01, 0.08, 6), lib.get('bark', tier), [0.02, 0.23, 0], [0, 0, 0.35]);
+    return makeGroup(nut, cap, stem);
+  },
+
+  freshLeaves: (lib, tier, g) => {
+    const s = seg(tier);
+    const leaf = lib.get('leaf', tier);
+    return makeGroup(
+      mesh(g.sphere(0.1, s, s), leaf, [-0.08, 0.09, 0], undefined, [1.6, 0.25, 0.75]),
+      mesh(g.sphere(0.1, s, s), leaf, [0.08, 0.1, 0.04], [0, 0.3, 0], [1.5, 0.25, 0.75]),
+      mesh(g.cylinder(0.01, 0.012, 0.28, 6), lib.get('bark', tier), [0, 0.05, 0], [0, 0, Math.PI / 2]),
+    );
+  },
+
+  gardenPlot: (lib, tier, g) => {
+    const s = seg(tier);
+    const soil = mesh(g.box(1.2, 0.08, 0.8, 1), lib.get('soil', tier), [0, 0.04, 0]);
+    const border1 = mesh(g.cylinder(0.035, 0.035, 1.25, s), lib.get('wood', tier), [0, 0.1, -0.43], [0, 0, Math.PI / 2]);
+    const border2 = mesh(g.cylinder(0.035, 0.035, 1.25, s), lib.get('wood', tier), [0, 0.1, 0.43], [0, 0, Math.PI / 2]);
+    const sprout = mesh(g.cone(0.05, 0.18, s), lib.get('leaf', tier), [0, 0.19, 0]);
+    return makeGroup(soil, border1, border2, sprout);
+  },
+
+  roots: (lib, tier, g) => {
+    const root = lib.get('lightWood', tier);
+    return makeGroup(
+      mesh(g.cylinder(0.012, 0.015, 0.45, 6), root, [0, 0.03, 0], [Math.PI / 2, 0, 0.5]),
+      mesh(g.cylinder(0.01, 0.012, 0.32, 6), root, [0.05, 0.035, 0.02], [Math.PI / 2, 0, -0.5]),
+      mesh(g.cylinder(0.008, 0.01, 0.25, 6), root, [-0.05, 0.035, -0.02], [Math.PI / 2, 0, 0.1]),
+    );
+  },
+
+  plantStem: (lib, tier, g) => {
+    const s = seg(tier);
+    const stem = mesh(g.cylinder(0.025, 0.03, 0.55, s), lib.get('leaf', tier), [0, 0.28, 0]);
+    const leafL = mesh(g.sphere(0.08, s, s), lib.get('leafDark', tier), [-0.08, 0.34, 0], [0, 0, -0.5], [1.6, 0.25, 0.75]);
+    const leafR = mesh(g.sphere(0.08, s, s), lib.get('leafDark', tier), [0.08, 0.44, 0], [0, 0, 0.5], [1.6, 0.25, 0.75]);
+    return makeGroup(stem, leafL, leafR);
+  },
+
+  redButterfly: (lib, tier, g) => {
+    const s = seg(tier);
+    const wing = lib.fromColor(0xff4d6d, 0.55, 0.0);
+    const body = mesh(g.cylinder(0.012, 0.014, 0.12, 6), lib.get('darkWood', tier), [0, 0.18, 0]);
+    const wingL = mesh(g.sphere(0.08, s, s), wing, [-0.06, 0.2, 0], [0, 0, 0.35], [1, 0.08, 0.7]);
+    const wingR = mesh(g.sphere(0.08, s, s), wing, [0.06, 0.2, 0], [0, 0, -0.35], [1, 0.08, 0.7]);
+    return makeGroup(body, wingL, wingR);
+  },
+
+  blueButterfly: (lib, tier, g) => {
+    const s = seg(tier);
+    const wing = lib.fromColor(0x3aa7ff, 0.55, 0.0);
+    const body = mesh(g.cylinder(0.012, 0.014, 0.12, 6), lib.get('darkWood', tier), [0, 0.18, 0]);
+    const wingL = mesh(g.sphere(0.08, s, s), wing, [-0.06, 0.2, 0], [0, 0, 0.35], [1, 0.08, 0.7]);
+    const wingR = mesh(g.sphere(0.08, s, s), wing, [0.06, 0.2, 0], [0, 0, -0.35], [1, 0.08, 0.7]);
+    return makeGroup(body, wingL, wingR);
   },
 
   // -------------------------------------------------------------------
