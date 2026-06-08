@@ -3364,6 +3364,13 @@ export class WorldSystem implements System {
     this.pendingDialogue = { speaker, text };
   }
 
+  /** Clear any pending or active dialogue immediately. */
+  clearDialogue(): void {
+    this.pendingDialogue = null;
+    this.activeDialogue = null;
+    this.dialogueTimer = 0;
+  }
+
   /** Queue a one-shot SFX to play in the next scene graph frame. */
   queueSfx(asset: string, volume = 1.0): void {
     this.pendingSfx.push(playSfx(asset, volume));
@@ -3377,6 +3384,7 @@ export class WorldSystem implements System {
 
     if (!state.discoveredBiomes.includes(biomeId)) return false;
 
+    this.clearDialogue();
     this.worldStateRepo.update(this.activeProfileId, { activeBiome: biomeId });
     this.cachedWorldState = null;
     return true;

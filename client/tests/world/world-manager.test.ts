@@ -147,6 +147,22 @@ describe('WorldManager', () => {
     }
   });
 
+  it('spawns natural biomes away from the immediate exit prompt', () => {
+    const scene = new THREE.Scene();
+    const world = new WorldManager(scene);
+
+    try {
+      world.forceEnterBiome('farm');
+      const entry = world.getEntryPosition('farm');
+      expect(entry).not.toBeNull();
+      world.update(entry!.x, entry!.z, 1 / 60);
+
+      expect(world.isNearDoor).toBe(false);
+    } finally {
+      world.dispose();
+    }
+  });
+
   it('returns from a natural biome to the overworld', () => {
     const scene = new THREE.Scene();
     const world = new WorldManager(scene);
@@ -287,8 +303,9 @@ describe('WorldManager', () => {
     try {
       world.forceEnterBiome('gallery');
 
-      expect(findByName(scene, 'interior-gallery-easel-0')).not.toBeNull();
-      expect(findByName(scene, 'interior-gallery-statue-2')).not.toBeNull();
+      expect(findByName(scene, 'interior-gallery-entry-easel-left')).not.toBeNull();
+      expect(findByName(scene, 'interior-gallery-center-statue')).not.toBeNull();
+      expect(findByName(scene, 'interior-gallery-wall-art-north-center-left')).not.toBeNull();
 
       const graph = world.mergeGameplayObjects({
         camera: {

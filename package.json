@@ -5,7 +5,8 @@
     "playcheck:map-routes": "node e2e/map-routes.mjs",
     "playcheck:mastery-events": "node e2e/mastery-events.mjs",
     "playcheck:npc-dialogue": "node e2e/npc-dialogue.mjs",
-    "playcheck:station-ux": "node e2e/station-ux.mjs"
+    "playcheck:station-ux": "node e2e/station-ux.mjs",
+    "playcheck:visual-scale": "node e2e/visual-scale-audit.mjs"
   },
   "dependencies": {
     "puppeteer": "^24.40.0",

@@ -33,89 +33,89 @@ const BUILDING_CONFIGS: Record<string, BuildingConfig> = {
     doorWall: 'south', lighting: 'warm', style: 'workshop',
   },
   'library-echoes': {
-    width: 16, depth: 14, height: 5,
+    width: 22, depth: 20, height: 6.2,
     wallColor: 0xf5f5dc, floorColor: 0xf5deb3, ceilingColor: 0xe8d5c4,
     doorWall: 'south', lighting: 'warm', style: 'library',
   },
   'gallery': {
-    width: 14, depth: 12, height: 4.5,
+    width: 20, depth: 18, height: 5.8,
     wallColor: 0xf5f5dc, floorColor: 0xf5deb3, ceilingColor: 0xf0f0f0,
     doorWall: 'east', lighting: 'bright', style: 'gallery',
   },
   'observatory': {
-    width: 10, depth: 10, height: 6,
+    width: 17, depth: 17, height: 7.4,
     wallColor: 0x6b6b6b, floorColor: 0x505050, ceilingColor: 0x3a3a3a,
     doorWall: 'south', lighting: 'dim', style: 'observatory',
   },
   'storm-tower': {
-    width: 10, depth: 10, height: 6,
+    width: 16, depth: 16, height: 7,
     wallColor: 0x505050, floorColor: 0x3a3a3a, ceilingColor: 0x404040,
     doorWall: 'south', lighting: 'cool', style: 'storm-tower',
   },
   'code-forge': {
-    width: 12, depth: 10, height: 4,
+    width: 18, depth: 16, height: 5.2,
     wallColor: 0x3a3a3a, floorColor: 0x2a2a2e, ceilingColor: 0x333333,
     doorWall: 'west', lighting: 'cool', style: 'code-forge',
   },
   'alchemist-lab': {
-    width: 12, depth: 10, height: 4,
+    width: 18, depth: 16, height: 5.2,
     wallColor: 0x3d3d3d, floorColor: 0x2f2f2f, ceilingColor: 0x3a3a3a,
     doorWall: 'west', lighting: 'dim', style: 'alchemist',
   },
   'music-hall': {
-    width: 14, depth: 12, height: 5,
+    width: 20, depth: 18, height: 6.2,
     wallColor: 0x5c3317, floorColor: 0x4a2a10, ceilingColor: 0x5a3320,
     doorWall: 'east', lighting: 'warm', style: 'music-hall',
   },
   'arena': {
-    width: 18, depth: 18, height: 5,
+    width: 26, depth: 26, height: 6.2,
     wallColor: 0x8b7355, floorColor: 0x6b5535, ceilingColor: 0x7b6345,
     doorWall: 'south', lighting: 'bright', style: 'arena',
   },
   'hospital': {
-    width: 14, depth: 12, height: 4,
+    width: 20, depth: 18, height: 5.4,
     wallColor: 0xe8e8e8, floorColor: 0xd3d3d3, ceilingColor: 0xf0f0f0,
     doorWall: 'south', lighting: 'bright', style: 'hospital',
   },
   'laboratory': {
-    width: 14, depth: 12, height: 4,
+    width: 20, depth: 18, height: 5.4,
     wallColor: 0xd3d3d3, floorColor: 0xc0c0c0, ceilingColor: 0xe0e0e0,
     doorWall: 'south', lighting: 'bright', style: 'laboratory',
   },
   'debate-hall': {
-    width: 14, depth: 12, height: 5,
+    width: 20, depth: 18, height: 6,
     wallColor: 0xe8d5c4, floorColor: 0xd4b896, ceilingColor: 0xf0e6d4,
     doorWall: 'east', lighting: 'warm', style: 'debate-hall',
   },
   'newsroom': {
-    width: 12, depth: 10, height: 4,
+    width: 18, depth: 16, height: 5.2,
     wallColor: 0xd3d3d3, floorColor: 0xc0c0c0, ceilingColor: 0xe0e0e0,
     doorWall: 'west', lighting: 'bright', style: 'newsroom',
   },
   'theater': {
-    width: 16, depth: 14, height: 6,
+    width: 24, depth: 22, height: 7.2,
     wallColor: 0x3e2a1b, floorColor: 0x2e1a0b, ceilingColor: 0x4e3a2b,
     doorWall: 'east', lighting: 'dim', style: 'theater',
   },
   'architects-domain': {
-    width: 14, depth: 12, height: 5,
+    width: 20, depth: 18, height: 6,
     wallColor: 0xf5deb3, floorColor: 0xe8d5a0, ceilingColor: 0xf5ecd5,
     doorWall: 'west', lighting: 'bright', style: 'architects-domain',
   },
   'space-station': {
-    width: 14, depth: 14, height: 4,
+    width: 20, depth: 20, height: 5.4,
     wallColor: 0x4a4a4a, floorColor: 0x3a3a3a, ceilingColor: 0x505050,
     doorWall: 'south', lighting: 'cool', style: 'space-station',
   },
   'digital-world': {
-    width: 12, depth: 12, height: 4,
+    width: 18, depth: 18, height: 5.4,
     wallColor: 0x2a2a2e, floorColor: 0x1a1a22, ceilingColor: 0x2e2e35,
     doorWall: 'east', lighting: 'cool', style: 'digital-world',
   },
 };
 
-const DOOR_WIDTH = 2;
-const DOOR_HEIGHT = 2.8;
+const DOOR_WIDTH = 2.4;
+const DOOR_HEIGHT = 3.2;
 const WALL_THICKNESS = 0.3;
 
 const LIGHT_PRESETS: Record<string, { color: number; intensity: number }> = {
@@ -201,6 +201,9 @@ export class BuildingInterior implements Disposable {
 
     // Windows with light beams
     this.addWindows(config, hw, hd, h);
+
+    // Architectural detail so rooms read as built spaces, not empty boxes.
+    this.addArchitecturalDetails(config, hw, hd, h);
 
     // Furniture (style-specific)
     this.addFurniture(biome.id, config, hw, hd, h);
@@ -436,9 +439,78 @@ export class BuildingInterior implements Disposable {
 
   // ---- Furniture ---------------------------------------------------------
 
+  private addArchitecturalDetails(config: BuildingConfig, hw: number, hd: number, h: number): void {
+    const trimColor = config.style === 'digital-world' || config.style === 'code-forge'
+      ? 0x22d3ee
+      : config.style === 'observatory' || config.style === 'space-station'
+        ? 0xa78bfa
+        : 0x5a3a1a;
+    const trimMat = this.makeMat(trimColor, trimColor, 0.12);
+    const runnerMat = this.makeMat(config.style === 'gallery' ? 0xf8fafc : 0x6b4423);
+
+    const pieces: Array<{ name: string; size: [number, number, number]; pos: [number, number, number] }> = [
+      { name: 'north-baseboard', size: [config.width, 0.12, 0.08], pos: [0, 0.12, -hd + 0.04] },
+      { name: 'south-baseboard', size: [config.width, 0.12, 0.08], pos: [0, 0.12, hd - 0.04] },
+      { name: 'west-baseboard', size: [0.08, 0.12, config.depth], pos: [-hw + 0.04, 0.12, 0] },
+      { name: 'east-baseboard', size: [0.08, 0.12, config.depth], pos: [hw - 0.04, 0.12, 0] },
+      { name: 'north-crown', size: [config.width, 0.1, 0.08], pos: [0, h - 0.22, -hd + 0.04] },
+      { name: 'south-crown', size: [config.width, 0.1, 0.08], pos: [0, h - 0.22, hd - 0.04] },
+      { name: 'west-crown', size: [0.08, 0.1, config.depth], pos: [-hw + 0.04, h - 0.22, 0] },
+      { name: 'east-crown', size: [0.08, 0.1, config.depth], pos: [hw - 0.04, h - 0.22, 0] },
+    ];
+
+    for (const piece of pieces) {
+      const geo = new THREE.BoxGeometry(...piece.size);
+      this.geometries.push(geo);
+      const mesh = new THREE.Mesh(geo, trimMat);
+      mesh.name = `interior-${config.style}-${piece.name}`;
+      mesh.position.set(...piece.pos);
+      this.group.add(mesh);
+    }
+
+    const panelGeo = new THREE.BoxGeometry(0.08, 1.4, 1.1);
+    this.geometries.push(panelGeo);
+    for (const [index, z] of [-hd * 0.45, 0, hd * 0.45].entries()) {
+      for (const [x, wall] of [[-hw + 0.05, 'west'], [hw - 0.05, 'east']] as const) {
+        if (config.doorWall === wall && Math.abs(z) < 0.01) continue;
+        const panel = new THREE.Mesh(panelGeo, trimMat);
+        panel.name = `interior-${config.style}-wall-panel-${index}-${wall}`;
+        panel.position.set(x, 1.55, z);
+        this.group.add(panel);
+      }
+    }
+
+    const runnerGeo = new THREE.PlaneGeometry(Math.min(config.width * 0.42, 7.5), Math.min(config.depth * 0.22, 4.2));
+    this.geometries.push(runnerGeo);
+    const runner = new THREE.Mesh(runnerGeo, runnerMat);
+    runner.name = `interior-${config.style}-entry-runner`;
+    runner.rotation.x = -Math.PI / 2;
+    switch (config.doorWall) {
+      case 'north':
+        runner.position.set(0, 0.045, -hd * 0.48);
+        break;
+      case 'south':
+        runner.position.set(0, 0.045, hd * 0.48);
+        break;
+      case 'east':
+        runner.position.set(hw * 0.48, 0.045, 0);
+        runner.rotation.z = Math.PI / 2;
+        break;
+      case 'west':
+        runner.position.set(-hw * 0.48, 0.045, 0);
+        runner.rotation.z = Math.PI / 2;
+        break;
+    }
+    this.group.add(runner);
+  }
+
   private addFurniture(biomeId: string, config: BuildingConfig, hw: number, hd: number, _h: number): void {
     if (config.style === 'workshop') {
       this.addWorkshopFurniture(hw, hd);
+    } else if (config.style === 'laboratory') {
+      this.addLaboratoryFurniture(hw, hd);
+    } else if (config.style === 'gallery') {
+      this.addGalleryFurniture(hw, hd);
     } else {
       this.addBiomeLayoutFurniture(biomeId, hw, hd);
     }
@@ -480,14 +552,111 @@ export class BuildingInterior implements Disposable {
     const layout = getBiomeLayout(biomeId);
     const safeX = Math.max(1, hw - 1.0);
     const safeZ = Math.max(1, hd - 1.0);
+    const spread = Math.min(1.45, Math.max(1, Math.min(hw, hd) / 6.5));
 
     for (let i = 0; i < layout.length; i++) {
       const prop = layout[i]!;
       const model = createBiomePropModel(prop, INTERIOR_PROP_TIER, this.propModels);
       model.name = `interior-${biomeId}-${prop.type}-${i}`;
-      model.position.x = THREE.MathUtils.clamp(model.position.x, -safeX, safeX);
-      model.position.z = THREE.MathUtils.clamp(model.position.z, -safeZ, safeZ);
+      model.position.x = THREE.MathUtils.clamp(model.position.x * spread, -safeX, safeX);
+      model.position.z = THREE.MathUtils.clamp(model.position.z * spread, -safeZ, safeZ);
+      model.scale.multiplyScalar(1.08);
       this.group.add(model);
+    }
+  }
+
+  private addGeneratedProp(
+    type: string,
+    name: string,
+    position: [number, number, number],
+    options: { rotY?: number; scale?: number | [number, number, number] } = {},
+  ): THREE.Group {
+    const model = createBiomePropModel({ type, pos: [0, 0, 0] }, INTERIOR_PROP_TIER, this.propModels);
+    model.name = name;
+    model.position.set(...position);
+    if (options.rotY !== undefined) model.rotation.y = options.rotY;
+    if (typeof options.scale === 'number') {
+      model.scale.multiplyScalar(options.scale);
+    } else if (options.scale) {
+      model.scale.multiply(new THREE.Vector3(...options.scale));
+    }
+    this.group.add(model);
+    return model;
+  }
+
+  private addLaboratoryFurniture(hw: number, hd: number): void {
+    this.addGeneratedProp('labBench', 'interior-laboratory-main-bench', [0, 0, -3.2], { scale: 1.08 });
+    this.addGeneratedProp('labBench', 'interior-laboratory-left-bench', [-4.7, 0, -2.8], { rotY: 0.08, scale: 0.92 });
+    this.addGeneratedProp('labBench', 'interior-laboratory-right-bench', [4.7, 0, -2.8], { rotY: -0.08, scale: 0.92 });
+    this.addGeneratedProp('whiteboard', 'interior-laboratory-whiteboard', [0, 0, -hd + 0.42], { scale: 1.12 });
+    this.addGeneratedProp('medicalCabinet', 'interior-laboratory-glass-cabinet-left', [-hw + 0.7, 0, -4.2], { rotY: Math.PI / 2, scale: 0.85 });
+    this.addGeneratedProp('medicalCabinet', 'interior-laboratory-glass-cabinet-right', [hw - 0.7, 0, -4.2], { rotY: -Math.PI / 2, scale: 0.85 });
+    this.addGeneratedProp('microscope', 'interior-laboratory-microscope-main', [-0.55, 0.9, -3.15], { scale: 1.45 });
+    this.addGeneratedProp('bunsenBurner', 'interior-laboratory-burner-main', [0.42, 0.9, -3.18], { scale: 1.55 });
+
+    const stationMat = this.makeMat(0x2f3a40);
+    const glassMat = this.makeMat(0x22d3ee, 0x22d3ee, 0.18);
+    glassMat.transparent = true;
+    glassMat.opacity = 0.45;
+    const stoolMat = this.makeMat(0x4b5563);
+    const stoolGeo = new THREE.CylinderGeometry(0.22, 0.26, 0.12, 16);
+    const postGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.48, 10);
+    const screenGeo = new THREE.BoxGeometry(0.9, 0.55, 0.04);
+    this.geometries.push(stoolGeo, postGeo, screenGeo);
+
+    for (const [index, x] of [-2.2, 2.2].entries()) {
+      const stoolSeat = new THREE.Mesh(stoolGeo, stoolMat);
+      stoolSeat.name = `interior-laboratory-stool-seat-${index}`;
+      stoolSeat.position.set(x, 0.64, -1.55);
+      const stoolPost = new THREE.Mesh(postGeo, stoolMat);
+      stoolPost.name = `interior-laboratory-stool-post-${index}`;
+      stoolPost.position.set(x, 0.32, -1.55);
+      this.group.add(stoolSeat, stoolPost);
+    }
+
+    const dataScreen = new THREE.Mesh(screenGeo, glassMat);
+    dataScreen.name = 'interior-laboratory-floating-data-screen';
+    dataScreen.position.set(0, 1.75, -hd + 0.55);
+    this.group.add(dataScreen);
+
+    const sideRailGeo = new THREE.BoxGeometry(1.35, 0.045, 0.045);
+    this.geometries.push(sideRailGeo);
+    for (const [index, x] of [-4.7, 0, 4.7].entries()) {
+      const rail = new THREE.Mesh(sideRailGeo, stationMat);
+      rail.name = `interior-laboratory-bench-rail-${index}`;
+      rail.position.set(x, 1.02, -3.45);
+      this.group.add(rail);
+    }
+  }
+
+  private addGalleryFurniture(hw: number, hd: number): void {
+    this.addGeneratedProp('statue', 'interior-gallery-center-statue', [0, 0, -3.4], { scale: 1.45 });
+    this.addGeneratedProp('easel', 'interior-gallery-entry-easel-left', [-2.8, 0, -1.1], { rotY: 0.32, scale: 1.18 });
+    this.addGeneratedProp('easel', 'interior-gallery-entry-easel-right', [2.8, 0, -1.1], { rotY: -0.32, scale: 1.18 });
+    this.addGeneratedProp('bench', 'interior-gallery-viewing-bench', [0, 0, 1.4], { scale: [1.35, 1.05, 1.0] });
+
+    const wallPlacements: Array<[string, number, number, number]> = [
+      ['north-left', -5.6, -hd + 0.42, 0],
+      ['north-center-left', -2.0, -hd + 0.42, 0],
+      ['north-center-right', 2.0, -hd + 0.42, 0],
+      ['north-right', 5.6, -hd + 0.42, 0],
+      ['west-front', -hw + 0.42, -3.2, Math.PI / 2],
+      ['west-back', -hw + 0.42, 1.4, Math.PI / 2],
+      ['east-front', hw - 0.42, -3.2, -Math.PI / 2],
+      ['east-back', hw - 0.42, 1.4, -Math.PI / 2],
+    ];
+    for (const [label, x, z, rotY] of wallPlacements) {
+      this.addGeneratedProp('paintingFrame', `interior-gallery-wall-art-${label}`, [x, 0, z], { rotY, scale: 1.35 });
+    }
+
+    const pedestalMat = this.makeMat(0xf0ead6);
+    const plinthGeo = new THREE.CylinderGeometry(0.32, 0.42, 0.58, 18);
+    this.geometries.push(plinthGeo);
+    for (const [index, x] of [-4.2, 4.2].entries()) {
+      const plinth = new THREE.Mesh(plinthGeo, pedestalMat);
+      plinth.name = `interior-gallery-side-plinth-${index}`;
+      plinth.position.set(x, 0.29, -4.8);
+      this.group.add(plinth);
     }
   }
 

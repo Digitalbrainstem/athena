@@ -1,5 +1,6 @@
 import { NexusCore } from '@nexus-academy/core';
 import type { CraftRecipe, CraftResult, Quest, SceneGraph, SceneObject } from '@nexus-academy/core';
+import * as THREE from 'three';
 import { SceneRenderer } from './renderer/scene-renderer.js';
 import { GameLoop } from './game/loop.js';
 import { InputManager } from './input/manager.js';
@@ -351,6 +352,18 @@ async function boot(): Promise<void> {
   sceneRenderer.setWorldManager(worldManager);
   loop.setWorldManager(worldManager);
 
+  const getPlayableBiomeId = (): string => worldManager.activeBiomeId ?? core.getCurrentBiome();
+  const queueQuestOfferDialogue = (biomeId: string, quest: Quest, fallback: string): boolean => {
+    if (quest.biome !== biomeId) return false;
+    if (getPlayableBiomeId() !== biomeId) return false;
+    core.worldSystem.queueDialogue(
+      core.getCompanionState()?.name ?? 'Companion',
+      quest.content.companionIntro ?? fallback,
+    );
+    core.worldSystem.queueSfx('discovery-sparkle', 0.4);
+    return true;
+  };
+
   // Wire NPC proximity detection into the game loop
   loop.setNpcProximityChecker((px, pz) => {
     const biomeId = worldManager.activeBiomeId ?? core.getCurrentBiome();
@@ -466,6 +479,7 @@ async function boot(): Promise<void> {
   // --- Crafting + Map Panels ---
   const handleFastTravel = (biomeId: string): void => {
     // Fast-travel: switch core biome and world manager
+    core.worldSystem.clearDialogue();
     core.worldSystem.discoverBiome(biomeId);
     core.worldSystem.changeBiome(biomeId);
     worldManager.forceEnterBiome(biomeId);
@@ -555,6 +569,31 @@ async function boot(): Promise<void> {
         });
         return names;
       },
+      listSceneObjectDetails(filter = '') {
+        const details: Array<{
+          name: string;
+          fallback: boolean;
+          authoredWorldModel: boolean;
+          position: { x: number; y: number; z: number };
+          size: { x: number; y: number; z: number };
+        }> = [];
+        sceneRenderer.scene.updateMatrixWorld(true);
+        sceneRenderer.scene.traverse((child) => {
+          if (!child.name || (filter && !child.name.includes(filter))) return;
+          const bounds = new THREE.Box3().setFromObject(child);
+          if (bounds.isEmpty()) return;
+          const center = bounds.getCenter(new THREE.Vector3());
+          const size = bounds.getSize(new THREE.Vector3());
+          details.push({
+            name: child.name,
+            fallback: child.userData.fallback === true,
+            authoredWorldModel: child.userData.authoredWorldModel === true,
+            position: { x: center.x, y: center.y, z: center.z },
+            size: { x: size.x, y: size.y, z: size.z },
+          });
+        });
+        return details;
+      },
       get groundColor() { return core.getSceneGraph().ground.color; },
       get skyColor() { return core.getSceneGraph().sky.primaryColor; },
       get fps() { return loop.fps; },
@@ -564,10 +603,16 @@ async function boot(): Promise<void> {
       setPlayerPosition(x: number, z: number) { fpCam.seedPosition(x, z); core.setPlayerPosition(x, z); },
       faceYaw(yaw: number) { fpCam.faceYaw(yaw); },
       changeBiome(biomeId: string) {
+        core.worldSystem.clearDialogue();
         core.worldSystem.discoverBiome(biomeId);
         core.worldSystem.changeBiome(biomeId);
         // Also switch WorldManager to show the biome interior
         worldManager.forceEnterBiome(biomeId);
+        const pos = worldManager.getEntryPosition(biomeId);
+        if (pos) {
+          fpCam.seedPosition(pos.x, pos.z);
+          core.setPlayerPosition(pos.x, pos.z);
+        }
         const yaw = worldManager.getEntryYaw(biomeId);
         if (yaw !== null) fpCam.faceYaw(yaw);
         core.update(1 / 60, []);
@@ -767,14 +812,11 @@ async function boot(): Promise<void> {
     if (available.length > 0) {
       pendingQuestOffer = available;
       const first = available[0]!;
-      const intro = first.content.companionIntro
-        ?? 'I noticed something interesting over by the workbench…';
-      core.worldSystem.queueDialogue(
-        core.getCompanionState()?.name ?? 'Companion',
-        intro,
-      );
-      core.worldSystem.queueSfx('discovery-sparkle', 0.4);
-      debug('quest', `Initial quest offer in ${biome}: ${available.map(q => q.title).join(', ')}`);
+      if (queueQuestOfferDialogue(biome, first, 'I noticed something interesting over by the workbench…')) {
+        debug('quest', `Initial quest offer in ${biome}: ${available.map(q => q.title).join(', ')}`);
+      } else {
+        debug('quest', `Skipped stale initial quest offer in ${biome}: ${first.title}`);
+      }
     }
   }, 5000);
 
@@ -805,20 +847,17 @@ async function boot(): Promise<void> {
   // Quest offer callback — companion announces available quests
   loop.onQuestOffer((quests) => {
     if (activeQuestId) return; // Already in a quest
+    const currentBiome = getPlayableBiomeId();
     pendingQuestOffer = quests;
     const first = quests[0];
-    if (first?.content.companionIntro) {
+    if (first?.content.companionIntro && first.biome === currentBiome) {
       core.companionSystem.queueInteraction({
         type: 'hint',
         profileId,
         context: `quest_offer_${first.id}`,
       });
       // Queue dialogue directly since hint context may not generate the right text
-      core.worldSystem.queueDialogue(
-        core.getCompanionState()?.name ?? 'Companion',
-        first.content.companionIntro,
-      );
-      core.worldSystem.queueSfx('discovery-sparkle', 0.4);
+      queueQuestOfferDialogue(currentBiome, first, first.content.companionIntro);
     }
     debug('quest', `Quest offer: ${quests.map(q => q.title).join(', ')}`);
   });
@@ -1005,6 +1044,7 @@ async function boot(): Promise<void> {
         if (nearby && nearby.entranceDistance <= BIOME_ENTER_RANGE) {
           void worldManager.enterBiome().then((biomeId) => {
             if (biomeId) {
+              core.worldSystem.clearDialogue();
               const pos = worldManager.getEntryPosition(biomeId);
               if (pos) {
                 fpCam.seedPosition(pos.x, pos.z);
@@ -1021,14 +1061,8 @@ async function boot(): Promise<void> {
               if (available.length > 0 && core.getActiveQuests().length === 0) {
                 pendingQuestOffer = available;
                 const first = available[0]!;
-                const intro = first.content.companionIntro
-                  ?? `I noticed something interesting here…`;
                 setTimeout(() => {
-                  core.worldSystem.queueDialogue(
-                    core.getCompanionState()?.name ?? 'Companion',
-                    intro,
-                  );
-                  core.worldSystem.queueSfx('discovery-sparkle', 0.4);
+                  queueQuestOfferDialogue(biomeId, first, `I noticed something interesting here…`);
                 }, 2000);
                 debug('quest', `Biome entry quest offer in ${biomeId}: ${available.map(q => q.title).join(', ')}`);
               }

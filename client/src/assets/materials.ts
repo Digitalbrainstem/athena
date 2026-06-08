@@ -90,6 +90,8 @@ const PRESET_DEFS: Record<string, MaterialDef> = {
   water:       { color: 0x4169e1, roughness: 0.0, metalness: 0.2, transparent: true, opacity: 0.6 },
   lava:        { color: 0xff4500, roughness: 0.3, metalness: 0.1, emissive: 0xff4500, emissiveIntensity: 0.6 },
   potion:      { color: 0x8a2be2, roughness: 0.0, metalness: 0.1, transparent: true, opacity: 0.65 },
+  potionBlue:  { color: 0x4169e1, roughness: 0.0, metalness: 0.1, transparent: true, opacity: 0.65, emissive: 0x4169e1, emissiveIntensity: 0.2 },
+  potionPurple:{ color: 0x8a2be2, roughness: 0.0, metalness: 0.1, transparent: true, opacity: 0.65, emissive: 0x8a2be2, emissiveIntensity: 0.2 },
   potionGreen: { color: 0x32cd32, roughness: 0.0, metalness: 0.1, transparent: true, opacity: 0.65, emissive: 0x32cd32, emissiveIntensity: 0.2 },
 
   // --- Fabric & leather ---
@@ -101,7 +103,9 @@ const PRESET_DEFS: Record<string, MaterialDef> = {
 
   // --- Special ---
   glow:        { color: FROST, roughness: 0.3, metalness: 0.2, emissive: FROST, emissiveIntensity: 0.5 },
+  glowFrost:   { color: FROST, roughness: 0.3, metalness: 0.2, emissive: FROST, emissiveIntensity: 0.5 },
   glowAurora:  { color: AURORA, roughness: 0.3, metalness: 0.2, emissive: AURORA, emissiveIntensity: 0.5 },
+  glowAmber:   { color: 0xffbf00, roughness: 0.3, metalness: 0.2, emissive: 0xffbf00, emissiveIntensity: 0.5 },
   neon:        { color: 0x39ff14, roughness: 0.2, metalness: 0.1, emissive: 0x39ff14, emissiveIntensity: 0.7 },
   neonBlue:    { color: 0x00bfff, roughness: 0.2, metalness: 0.1, emissive: 0x00bfff, emissiveIntensity: 0.7 },
   hologram:    { color: FROST, roughness: 0.0, metalness: 0.0, transparent: true, opacity: 0.4, emissive: FROST, emissiveIntensity: 0.8 },

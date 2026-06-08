@@ -634,11 +634,17 @@ const GENERATORS: Record<string, GeneratorFn> = {
   },
 
   medicalCabinet: (lib, tier, g) => {
+    const s = seg(tier);
     const white = lib.get('ceramic', tier);
     const glass = lib.get('glass', tier);
-    const body = mesh(g.box(0.6, 1.2, 0.35, 1), white, [0, 0.6, 0]);
-    const door = mesh(g.box(0.55, 0.9, 0.02, 1), glass, [0, 0.65, 0.18]);
-    return makeGroup(body, door);
+    const frame = mesh(g.box(0.52, 1.08, 0.18, 1), white, [0, 0.68, 0]);
+    const door = mesh(g.box(0.42, 0.86, 0.025, 1), glass, [0, 0.72, 0.105]);
+    const handle = mesh(g.cylinder(0.012, 0.012, 0.16, s), lib.get('metal', tier), [0.19, 0.72, 0.13]);
+    const shelf1 = mesh(g.box(0.38, 0.025, 0.13, 1), white, [0, 0.55, 0.05]);
+    const shelf2 = mesh(g.box(0.38, 0.025, 0.13, 1), white, [0, 0.86, 0.05]);
+    const bottle1 = mesh(g.cylinder(0.028, 0.028, 0.18, s), lib.get('potionBlue', tier), [-0.12, 0.65, 0.1]);
+    const bottle2 = mesh(g.cylinder(0.024, 0.024, 0.14, s), lib.get('potionGreen', tier), [0.08, 0.93, 0.1]);
+    return makeGroup(frame, door, handle, shelf1, shelf2, bottle1, bottle2);
   },
 
   microscope: (lib, tier, g) => {
@@ -652,9 +658,39 @@ const GENERATORS: Record<string, GeneratorFn> = {
     return makeGroup(base, arm, tube, eyepiece, stage);
   },
 
+  whiteboard: (lib, tier, g) => {
+    const frame = lib.get('metal', tier);
+    const board = lib.get('whiteboard', tier);
+    const panel = mesh(g.box(1.45, 0.78, 0.04, 1), board, [0, 1.15, 0]);
+    const top = mesh(g.box(1.55, 0.05, 0.06, 1), frame, [0, 1.56, 0]);
+    const bottom = mesh(g.box(1.55, 0.05, 0.06, 1), frame, [0, 0.74, 0]);
+    const left = mesh(g.box(0.05, 0.82, 0.06, 1), frame, [-0.78, 1.15, 0]);
+    const right = mesh(g.box(0.05, 0.82, 0.06, 1), frame, [0.78, 1.15, 0]);
+    const marker = mesh(g.cylinder(0.018, 0.018, 0.36, 8), lib.get('darkMetal', tier), [0.42, 0.8, 0.05], [0, 0, Math.PI / 2]);
+    const axis = mesh(g.box(1.0, 0.025, 0.012, 1), lib.get('darkMetal', tier), [0, 1.15, 0.035]);
+    const curve = mesh(g.torus(0.23, 0.008, 6, Math.max(10, seg(tier))), lib.get('glowAurora', tier), [0.2, 1.16, 0.045], [0, 0, Math.PI / 2]);
+    const note = mesh(g.box(0.26, 0.16, 0.012, 1), lib.get('paper', tier), [-0.48, 1.33, 0.045], [0, 0, -0.08]);
+    return makeGroup(panel, top, bottom, left, right, marker, axis, curve, note);
+  },
+
   // -------------------------------------------------------------------
   // Farm objects
   // -------------------------------------------------------------------
+  grass: (lib, tier, g) => {
+    const s = seg(tier);
+    const grass = lib.get('grass', tier);
+    const parts: THREE.Object3D[] = [];
+    for (const [x, z, h] of [
+      [-0.18, -0.08, 0.28],
+      [-0.06, 0.1, 0.34],
+      [0.08, -0.05, 0.24],
+      [0.2, 0.08, 0.3],
+    ] as [number, number, number][]) {
+      parts.push(mesh(g.cone(0.035, h, s), grass, [x, h / 2, z], [0.18, 0, x * 0.8]));
+    }
+    return makeGroup(...parts);
+  },
+
   fence: (lib, tier, g) => {
     const wood = lib.get('wood', tier);
     const post1 = mesh(g.box(0.08, 0.6, 0.08, 1), wood, [-0.5, 0.3, 0]);
@@ -662,6 +698,34 @@ const GENERATORS: Record<string, GeneratorFn> = {
     const rail1 = mesh(g.box(1.0, 0.06, 0.04, 1), wood, [0, 0.45, 0]);
     const rail2 = mesh(g.box(1.0, 0.06, 0.04, 1), wood, [0, 0.25, 0]);
     return makeGroup(post1, post2, rail1, rail2);
+  },
+
+  fenceGate: (lib, tier, g) => {
+    const gate = GENERATORS.fence(lib, tier, g);
+    gate.add(mesh(g.box(0.06, 0.45, 0.04, 1), lib.get('wood', tier), [-0.18, 0.28, 0], [0, 0, 0.4]));
+    gate.add(mesh(g.box(0.06, 0.45, 0.04, 1), lib.get('wood', tier), [0.18, 0.28, 0], [0, 0, -0.4]));
+    return gate;
+  },
+
+  stonePath: (lib, _tier, g) => {
+    const stone = lib.get('stone');
+    const parts: THREE.Object3D[] = [];
+    for (const [x, z, sx, sz] of [
+      [-0.34, -0.18, 0.42, 0.32],
+      [0.12, -0.1, 0.48, 0.34],
+      [-0.12, 0.24, 0.44, 0.3],
+      [0.36, 0.18, 0.36, 0.28],
+    ] as [number, number, number, number][]) {
+      parts.push(mesh(g.box(sx, 0.045, sz, 1), stone, [x, 0.025, z], [0, Math.random() * 0.3, 0]));
+    }
+    return makeGroup(...parts);
+  },
+
+  cropDirt: (lib, _tier, g) => {
+    const soil = lib.get('soil');
+    const rowA = mesh(g.box(1.15, 0.08, 0.28, 1), soil, [0, 0.04, -0.18]);
+    const rowB = mesh(g.box(1.15, 0.08, 0.28, 1), soil, [0, 0.04, 0.18]);
+    return makeGroup(rowA, rowB);
   },
 
   cropRow: (lib, tier, g) => {
@@ -675,6 +739,33 @@ const GENERATORS: Record<string, GeneratorFn> = {
       group.add(plant);
     }
     return group;
+  },
+
+  corn: (lib, tier, g) => {
+    const s = seg(tier);
+    const stalk = lib.get('leaf', tier);
+    const husk = lib.get('leafDark', tier);
+    const cobMat = new THREE.MeshStandardMaterial({ color: 0xffd34d, roughness: 0.75 });
+    const parts: THREE.Object3D[] = [];
+    for (const x of [-0.22, 0, 0.22]) {
+      parts.push(mesh(g.cylinder(0.018, 0.026, 0.75, s), stalk, [x, 0.375, 0]));
+      parts.push(mesh(g.cone(0.12, 0.42, s), husk, [x - 0.06, 0.42, 0], [0, 0, 0.55]));
+      parts.push(mesh(g.cylinder(0.055, 0.05, 0.22, s), cobMat, [x + 0.06, 0.5, 0], [0, 0, -0.25]));
+    }
+    return makeGroup(...parts);
+  },
+
+  carrot: (lib, tier, g) => {
+    const s = seg(tier);
+    const orange = new THREE.MeshStandardMaterial({ color: 0xf97316, roughness: 0.75 });
+    const greens = lib.get('leaf', tier);
+    const root = mesh(g.cone(0.08, 0.42, s), orange, [0, 0.18, 0], [Math.PI, 0, 0]);
+    const leaves = makeGroup(
+      mesh(g.cone(0.035, 0.22, s), greens, [-0.05, 0.46, 0], [0.4, 0, -0.2]),
+      mesh(g.cone(0.035, 0.24, s), greens, [0.03, 0.47, 0.03], [0.25, 0, 0.25]),
+      mesh(g.cone(0.03, 0.2, s), greens, [0.07, 0.44, -0.03], [0.35, 0, 0.4]),
+    );
+    return makeGroup(root, leaves);
   },
 
   barn: (lib, tier, g) => {
@@ -971,9 +1062,28 @@ const GENERATORS: Record<string, GeneratorFn> = {
   // Laboratory objects
   // -------------------------------------------------------------------
   labBench: (lib, tier, g) => {
-    const top = mesh(g.box(2.0, 0.08, 0.8, 1), lib.get('ceramic', tier), [0, 0.82, 0]);
-    const cab = mesh(g.box(1.8, 0.78, 0.7, 1), lib.get('metal', tier), [0, 0.39, 0]);
-    return makeGroup(top, cab);
+    const s = seg(tier);
+    const topMat = lib.get('ceramic', tier);
+    const metal = lib.get('metal', tier);
+    const glass = lib.get('glass', tier);
+    const top = mesh(g.box(1.65, 0.08, 0.62, 1), topMat, [0, 0.82, 0]);
+    const backRail = mesh(g.box(1.62, 0.08, 0.06, 1), metal, [0, 0.93, -0.32]);
+    const sink = mesh(g.cylinder(0.13, 0.13, 0.035, s), metal, [-0.46, 0.87, 0.05]);
+    const faucet = mesh(g.torus(0.08, 0.012, 6, s), metal, [-0.46, 0.96, -0.02], [Math.PI / 2, 0, 0]);
+    const legPositions: Array<[number, number, number]> = [
+      [-0.72, 0.4, -0.24],
+      [0.72, 0.4, -0.24],
+      [-0.72, 0.4, 0.24],
+      [0.72, 0.4, 0.24],
+    ];
+    const legs = legPositions.map((position) => mesh(g.cylinder(0.025, 0.025, 0.78, s), metal, position));
+    const drawerLeft = mesh(g.box(0.4, 0.2, 0.04, 1), metal, [-0.28, 0.62, 0.33]);
+    const drawerRight = mesh(g.box(0.4, 0.2, 0.04, 1), metal, [0.28, 0.62, 0.33]);
+    const vialRack = mesh(g.box(0.32, 0.04, 0.1, 1), lib.get('wood', tier), [0.34, 0.9, -0.06]);
+    const vial1 = mesh(g.cylinder(0.025, 0.025, 0.14, s), glass, [0.24, 0.99, -0.06]);
+    const vial2 = mesh(g.cylinder(0.025, 0.025, 0.14, s), lib.get('potionPurple', tier), [0.34, 0.99, -0.06]);
+    const vial3 = mesh(g.cylinder(0.025, 0.025, 0.14, s), lib.get('potionGreen', tier), [0.44, 0.99, -0.06]);
+    return makeGroup(top, backRail, sink, faucet, drawerLeft, drawerRight, vialRack, vial1, vial2, vial3, ...legs);
   },
 
   beaker: (lib, tier, g) => {
@@ -1123,30 +1233,42 @@ const GENERATORS: Record<string, GeneratorFn> = {
   // Gallery objects
   // -------------------------------------------------------------------
   easel: (lib, tier, g) => {
+    const s = seg(tier);
     const wood = lib.get('wood', tier);
     const canvas = lib.get('canvas', tier);
-    const leg1 = mesh(g.cylinder(0.015, 0.015, 1.2, 6), wood, [-0.15, 0.6, -0.1], [0.1, 0, 0]);
-    const leg2 = mesh(g.cylinder(0.015, 0.015, 1.2, 6), wood, [0.15, 0.6, -0.1], [0.1, 0, 0]);
-    const leg3 = mesh(g.cylinder(0.015, 0.015, 1.0, 6), wood, [0, 0.5, 0.2], [-0.2, 0, 0]);
-    const shelf = mesh(g.box(0.4, 0.02, 0.06, 1), wood, [0, 0.55, -0.08]);
-    const painting = mesh(g.box(0.5, 0.6, 0.02, 1), canvas, [0, 0.9, -0.1], [0.1, 0, 0]);
-    return makeGroup(leg1, leg2, leg3, shelf, painting);
+    const leg1 = mesh(g.cylinder(0.018, 0.018, 1.25, s), wood, [-0.18, 0.62, -0.1], [0.1, 0, 0.08]);
+    const leg2 = mesh(g.cylinder(0.018, 0.018, 1.25, s), wood, [0.18, 0.62, -0.1], [0.1, 0, -0.08]);
+    const leg3 = mesh(g.cylinder(0.016, 0.016, 1.05, s), wood, [0, 0.52, 0.22], [-0.22, 0, 0]);
+    const shelf = mesh(g.box(0.48, 0.025, 0.07, 1), wood, [0, 0.55, -0.08]);
+    const canvasPanel = mesh(g.box(0.46, 0.55, 0.025, 1), canvas, [0, 0.88, -0.12], [0.1, 0, 0]);
+    const skyBand = mesh(g.box(0.4, 0.16, 0.012, 1), lib.get('glowFrost', tier), [0, 0.98, -0.101], [0.1, 0, 0]);
+    const hill = mesh(g.cylinder(0.16, 0.2, 0.02, s), lib.get('leaf', tier), [0.08, 0.78, -0.096], [Math.PI / 2, 0, 0]);
+    return makeGroup(leg1, leg2, leg3, shelf, canvasPanel, skyBand, hill);
   },
 
   statue: (lib, tier, g) => {
     const s = seg(tier);
     const marble = lib.get('marble', tier);
-    const base = mesh(g.box(0.4, 0.15, 0.4, 1), marble, [0, 0.075, 0]);
-    const body = mesh(g.cylinder(0.12, 0.1, 0.8, s), marble, [0, 0.55, 0]);
-    const head = mesh(g.sphere(0.1, s, s), marble, [0, 1.0, 0]);
-    return makeGroup(base, body, head);
+    const base = mesh(g.cylinder(0.26, 0.3, 0.16, s), marble, [0, 0.08, 0]);
+    const plinth = mesh(g.cylinder(0.18, 0.22, 0.12, s), marble, [0, 0.22, 0]);
+    const body = mesh(g.cylinder(0.11, 0.15, 0.56, s), marble, [0, 0.56, 0]);
+    const head = mesh(g.sphere(0.095, s, s), marble, [0, 0.9, 0]);
+    const arm1 = mesh(g.cylinder(0.026, 0.022, 0.36, s), marble, [-0.14, 0.64, 0], [0, 0, -0.55]);
+    const arm2 = mesh(g.cylinder(0.026, 0.022, 0.36, s), marble, [0.14, 0.64, 0], [0, 0, 0.55]);
+    const glow = mesh(g.sphere(0.055, s, s), lib.get('glowAurora', tier), [0, 1.06, 0]);
+    return makeGroup(base, plinth, body, head, arm1, arm2, glow);
   },
 
   paintingFrame: (lib, tier, g) => {
     const gold = lib.get('gold', tier);
-    const frame = mesh(g.box(0.8, 0.6, 0.04, 1), gold, [0, 1.0, 0]);
     const canvas = mesh(g.box(0.7, 0.5, 0.02, 1), lib.get('canvas', tier), [0, 1.0, 0.02]);
-    return makeGroup(frame, canvas);
+    const top = mesh(g.box(0.82, 0.06, 0.055, 1), gold, [0, 1.28, 0.015]);
+    const bottom = mesh(g.box(0.82, 0.06, 0.055, 1), gold, [0, 0.72, 0.015]);
+    const left = mesh(g.box(0.06, 0.56, 0.055, 1), gold, [-0.41, 1.0, 0.015]);
+    const right = mesh(g.box(0.06, 0.56, 0.055, 1), gold, [0.41, 1.0, 0.015]);
+    const horizon = mesh(g.box(0.62, 0.035, 0.012, 1), lib.get('glowFrost', tier), [0, 1.02, 0.04]);
+    const sun = mesh(g.sphere(0.07, Math.max(10, seg(tier)), Math.max(10, seg(tier))), lib.get('glowAmber', tier), [-0.22, 1.12, 0.045]);
+    return makeGroup(canvas, top, bottom, left, right, horizon, sun);
   },
 
   // -------------------------------------------------------------------
@@ -1251,6 +1373,18 @@ const GENERATORS: Record<string, GeneratorFn> = {
     return makeGroup(frame, glass, flame, hook);
   },
 
+  bench: (lib, tier, g) => {
+    const wood = lib.get('wood', tier);
+    const darkWood = lib.get('darkWood', tier);
+    const seat = mesh(g.box(1.25, 0.12, 0.38, 1), wood, [0, 0.48, 0]);
+    const back = mesh(g.box(1.25, 0.12, 0.42, 1), wood, [0, 0.78, -0.2], [-0.22, 0, 0]);
+    const legA = mesh(g.box(0.08, 0.46, 0.08, 1), darkWood, [-0.48, 0.23, -0.12]);
+    const legB = mesh(g.box(0.08, 0.46, 0.08, 1), darkWood, [0.48, 0.23, -0.12]);
+    const legC = mesh(g.box(0.08, 0.46, 0.08, 1), darkWood, [-0.48, 0.23, 0.14]);
+    const legD = mesh(g.box(0.08, 0.46, 0.08, 1), darkWood, [0.48, 0.23, 0.14]);
+    return makeGroup(seat, back, legA, legB, legC, legD);
+  },
+
   chair: (lib, tier, g) => {
     const wood = lib.get('wood', tier);
     const seat = mesh(g.box(0.4, 0.04, 0.4, 1), wood, [0, 0.42, 0]);
@@ -1285,7 +1419,7 @@ const GENERATORS: Record<string, GeneratorFn> = {
   ancientTree: (lib, tier, g) => {
     const s = seg(tier);
     const bark = lib.get('wood', tier);
-    const leaf = lib.get('foliage', tier);
+    const leaf = lib.get('leaf', tier);
     const trunk = mesh(g.cylinder(0.25, 0.35, 2.0, s), bark, [0, 1.0, 0]);
     const roots = mesh(g.cone(0.5, 0.4, s), bark, [0, 0.2, 0]);
     const crown1 = mesh(g.sphere(1.2, s, s), leaf, [0, 2.8, 0]);
@@ -1455,7 +1589,7 @@ const GENERATORS: Record<string, GeneratorFn> = {
   cropField: (lib, tier, g) => {
     const s = seg(tier);
     const dirt = new THREE.MeshStandardMaterial({ color: 0x6B4226, roughness: 0.9 });
-    const green = lib.get('foliage', tier);
+    const green = lib.get('leaf', tier);
     const plot = mesh(g.box(1.5, 0.06, 1.0, 1), dirt, [0, 0.03, 0]);
     const parts: THREE.Object3D[] = [plot];
     for (let row = 0; row < 3; row++) {

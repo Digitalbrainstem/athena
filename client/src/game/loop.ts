@@ -225,9 +225,7 @@ export class GameLoop implements Disposable {
       sceneGraph = { ...sceneGraph, objects: [] };
     } else if (this.worldManager?.isInside()) {
       const offset = this.worldManager.getBiomeOffset();
-      const biomeObjects = this.worldManager.activeBiomeId === 'workshop'
-        ? sceneGraph.objects.filter(obj => obj.renderable.modelId === 'npc')
-        : sceneGraph.objects;
+      const biomeObjects = sceneGraph.objects.filter(obj => obj.renderable.modelId === 'npc');
       sceneGraph = {
         ...sceneGraph,
         objects: biomeObjects.map(obj => ({

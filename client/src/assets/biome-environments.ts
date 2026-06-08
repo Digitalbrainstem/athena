@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import type { MasteryTier } from '@nexus-academy/core';
 import { MaterialLibrary, BIOME_PALETTES } from './materials.js';
-import { ProceduralModelGenerator } from './procedural-models.js';
+import { hasGenerator, ProceduralModelGenerator } from './procedural-models.js';
 import { loadCachedWorldModel } from './world-models.js';
 
 // ---------------------------------------------------------------------------
@@ -46,6 +46,8 @@ export class BiomeEnvironmentGenerator {
     const ground = this.makeGround(palette, tier);
     group.add(ground);
 
+    this.addStructuralEnvironment(group, biomeId, palette, tier);
+
     // Biome-specific ambient props
     const layout = BIOME_LAYOUTS[biomeId];
     if (layout) {
@@ -65,13 +67,302 @@ export class BiomeEnvironmentGenerator {
   /** Build the biome's ground plane with biome-appropriate color. */
   private makeGround(palette: { ground: number }, tier: MasteryTier): THREE.Mesh {
     const s = tier === 'foundation' ? 32 : 64;
-    const geom = new THREE.PlaneGeometry(50, 50, s, s);
+    const size = tier === 'foundation' ? 34 : 46;
+    const geom = new THREE.PlaneGeometry(size, size, s, s);
     const mat = this.lib.fromColor(palette.ground, 0.9, 0.0);
     const m = new THREE.Mesh(geom, mat);
     m.rotation.x = -Math.PI / 2;
     m.receiveShadow = true;
     m.name = 'biome-ground';
     return m;
+  }
+
+  private addStructuralEnvironment(
+    group: THREE.Group,
+    biomeId: string,
+    palette: { dominant: number; accent1: number; accent2: number; shadow: number; ground: number },
+    tier: MasteryTier,
+  ): void {
+    if (biomeId === 'crystal-caverns') this.addCrystalCavernShell(group, palette, tier);
+    if (biomeId === 'living-forest') this.addLivingForestShell(group, palette, tier);
+    if (biomeId === 'farm') this.addFarmStructure(group, palette);
+  }
+
+  private addCrystalCavernShell(
+    group: THREE.Group,
+    palette: { accent1: number; accent2: number; shadow: number },
+    tier: MasteryTier,
+  ): void {
+    const shell = new THREE.Group();
+    shell.name = 'crystal-caverns:constructed-shell';
+
+    const wallMat = this.lib.fromColor(palette.shadow, 0.95, 0.05).clone();
+    wallMat.side = THREE.DoubleSide;
+    const backWall = new THREE.Mesh(
+      new THREE.CylinderGeometry(14, 13, 5.2, tier === 'foundation' ? 24 : 36, 1, true, Math.PI / 2, Math.PI),
+      wallMat,
+    );
+    backWall.name = 'crystal-caverns:curved-cave-wall';
+    backWall.position.set(0, 2.6, -0.5);
+    backWall.receiveShadow = true;
+    shell.add(backWall);
+
+    const ceilingMat = this.lib.fromColor(0x211533, 0.92, 0.05);
+    const ceiling = new THREE.Mesh(new THREE.BoxGeometry(22, 0.35, 13, 1, 1, 1), ceilingMat);
+    ceiling.name = 'crystal-caverns:low-stone-ceiling';
+    ceiling.position.set(0, 4.75, -3.2);
+    ceiling.rotation.x = -0.08;
+    ceiling.receiveShadow = true;
+    shell.add(ceiling);
+
+    const ridgeMat = this.lib.fromColor(0x2c223a, 0.9, 0.04);
+    for (let i = 0; i < 10; i++) {
+      const side = i % 2 === 0 ? -1 : 1;
+      const ridge = new THREE.Mesh(new THREE.ConeGeometry(0.55 + (i % 3) * 0.16, 1.3 + (i % 4) * 0.25, 7), ridgeMat);
+      ridge.name = 'crystal-caverns:wall-ridge';
+      ridge.position.set(side * (7.4 + (i % 3) * 1.1), 0.65, -5.9 + i * 0.65);
+      ridge.rotation.z = side * 0.2;
+      ridge.castShadow = true;
+      ridge.receiveShadow = true;
+      shell.add(ridge);
+    }
+
+    const glowMat = this.lib.fromColor(palette.accent1, 0.2, 0.2).clone();
+    glowMat.emissive = new THREE.Color(palette.accent1);
+    glowMat.emissiveIntensity = 0.45;
+    const veinGeom = new THREE.BoxGeometry(0.05, 0.035, 3.8);
+    for (let i = 0; i < 6; i++) {
+      const vein = new THREE.Mesh(veinGeom, glowMat);
+      vein.name = 'crystal-caverns:glowing-wall-vein';
+      vein.position.set(-5.8 + i * 2.25, 2.2 + (i % 2) * 0.7, -10.9);
+      vein.rotation.z = -0.65 + i * 0.18;
+      shell.add(vein);
+    }
+
+    const poolMat = this.lib.fromColor(palette.accent2, 0.1, 0.05).clone();
+    poolMat.transparent = true;
+    poolMat.opacity = 0.5;
+    const pool = new THREE.Mesh(new THREE.CircleGeometry(1.1, tier === 'foundation' ? 18 : 30), poolMat);
+    pool.name = 'crystal-caverns:glowing-reflection-pool';
+    pool.rotation.x = -Math.PI / 2;
+    pool.position.set(-2.6, 0.025, 1.5);
+    shell.add(pool);
+
+    const pathMat = this.lib.fromColor(0x39264f, 0.88, 0.06);
+    for (let i = 0; i < 6; i++) {
+      const steppingStone = new THREE.Mesh(new THREE.CylinderGeometry(0.62, 0.72, 0.08, tier === 'foundation' ? 8 : 14), pathMat);
+      steppingStone.name = 'crystal-caverns:center-stepping-stone';
+      steppingStone.position.set((i % 2 === 0 ? -0.35 : 0.35), 0.05, 2.2 - i * 1.35);
+      steppingStone.scale.set(1.2, 1, 0.62);
+      steppingStone.castShadow = true;
+      steppingStone.receiveShadow = true;
+      shell.add(steppingStone);
+    }
+
+    const clusterColors = [palette.accent1, palette.accent2, 0xffbf00];
+    for (let i = 0; i < 9; i++) {
+      const color = clusterColors[i % clusterColors.length]!;
+      const mat = this.lib.fromColor(color, 0.12, 0.25).clone();
+      mat.emissive = new THREE.Color(color);
+      mat.emissiveIntensity = 0.35;
+      const shard = new THREE.Mesh(
+        new THREE.ConeGeometry(0.16 + (i % 3) * 0.04, 0.75 + (i % 4) * 0.18, tier === 'foundation' ? 6 : 10),
+        mat,
+      );
+      shard.name = 'crystal-caverns:center-crystal-garden';
+      shard.position.set(-2.6 + (i % 5) * 1.3, 0.38 + (i % 4) * 0.09, -2.2 - Math.floor(i / 5) * 1.6);
+      shard.rotation.z = -0.22 + i * 0.06;
+      shard.castShadow = true;
+      shard.receiveShadow = true;
+      shell.add(shard);
+    }
+
+    const glow = new THREE.PointLight(palette.accent1, 1.2, 12);
+    glow.name = 'crystal-caverns:center-crystal-light';
+    glow.position.set(0, 1.25, -2.6);
+    shell.add(glow);
+
+    group.add(shell);
+  }
+
+  private addLivingForestShell(
+    group: THREE.Group,
+    palette: { dominant: number; accent1: number; shadow: number; ground: number },
+    tier: MasteryTier,
+  ): void {
+    const shell = new THREE.Group();
+    shell.name = 'living-forest:constructed-shell';
+
+    const trunkMat = this.lib.fromColor(0x5b351e, 0.88, 0.0);
+    const leafMat = this.lib.fromColor(palette.dominant, 0.72, 0.0);
+    const darkLeafMat = this.lib.fromColor(palette.shadow, 0.78, 0.0);
+    const segments = tier === 'foundation' ? 8 : 12;
+    const perimeter: Array<[number, number, number]> = [
+      [-8.4, -7.8, 1.2],
+      [-5.8, -8.9, 1.4],
+      [-2.6, -9.5, 1.15],
+      [2.6, -9.4, 1.3],
+      [5.7, -8.8, 1.2],
+      [8.4, -7.6, 1.35],
+      [-9.4, -3.4, 1.05],
+      [9.3, -3.2, 1.1],
+      [-8.8, 2.4, 0.95],
+      [8.8, 2.3, 1.0],
+    ];
+
+    perimeter.forEach(([x, z, scale], index) => {
+      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.12 * scale, 0.18 * scale, 2.8 * scale, segments), trunkMat);
+      trunk.name = 'living-forest:perimeter-trunk';
+      trunk.position.set(x, 1.4 * scale, z);
+      trunk.castShadow = true;
+      trunk.receiveShadow = true;
+      shell.add(trunk);
+
+      const crown = new THREE.Mesh(new THREE.SphereGeometry(1.05 * scale, segments, segments), index % 2 === 0 ? leafMat : darkLeafMat);
+      crown.name = 'living-forest:overhead-canopy';
+      crown.position.set(x, 3.0 * scale, z);
+      crown.scale.set(1.35, 0.72, 1.05);
+      crown.castShadow = true;
+      crown.receiveShadow = true;
+      shell.add(crown);
+    });
+
+    const pathMat = this.lib.fromColor(0xb58b55, 0.95, 0.0);
+    const path = new THREE.Mesh(new THREE.PlaneGeometry(3.2, 10, 8, 8), pathMat);
+    path.name = 'living-forest:leafy-path';
+    path.rotation.x = -Math.PI / 2;
+    path.position.set(0, 0.03, -1.4);
+    shell.add(path);
+
+    const mossMat = this.lib.fromColor(palette.ground, 0.98, 0.0);
+    for (let i = 0; i < 8; i++) {
+      const mound = new THREE.Mesh(new THREE.SphereGeometry(0.65 + (i % 3) * 0.16, segments, segments), mossMat);
+      mound.name = 'living-forest:mossy-terrain-mound';
+      mound.position.set(-6.4 + i * 1.8, 0.08, i % 2 === 0 ? -5.5 : 4.8);
+      mound.scale.set(1.6, 0.18, 0.9);
+      mound.receiveShadow = true;
+      shell.add(mound);
+    }
+
+    const backdropTrunkMat = this.lib.fromColor(0x3d2415, 0.95, 0.0);
+    const backdropLeafMat = this.lib.fromColor(0x064f16, 0.78, 0.0);
+    for (let i = 0; i < 13; i++) {
+      const x = -9 + i * 1.5;
+      const z = -10.2 - (i % 2) * 0.35;
+      const height = 2.6 + (i % 4) * 0.22;
+      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.12, height, segments), backdropTrunkMat);
+      trunk.name = 'living-forest:backdrop-tree-trunk';
+      trunk.position.set(x, height / 2, z);
+      trunk.castShadow = true;
+      trunk.receiveShadow = true;
+      shell.add(trunk);
+
+      const crown = new THREE.Mesh(new THREE.SphereGeometry(0.78 + (i % 3) * 0.1, segments, segments), backdropLeafMat);
+      crown.name = 'living-forest:backdrop-tree-crown';
+      crown.position.set(x, height + 0.35, z);
+      crown.scale.set(1.15, 0.85, 1.0);
+      crown.castShadow = true;
+      crown.receiveShadow = true;
+      shell.add(crown);
+    }
+
+    const hedge = new THREE.Mesh(new THREE.BoxGeometry(18, 1.2, 0.45), this.lib.fromColor(0x052e12, 0.9, 0.0));
+    hedge.name = 'living-forest:distant-hedge-line';
+    hedge.position.set(0, 0.62, -9.7);
+    hedge.castShadow = true;
+    hedge.receiveShadow = true;
+    shell.add(hedge);
+
+    group.add(shell);
+  }
+
+  private addFarmStructure(
+    group: THREE.Group,
+    palette: { accent1: number; ground: number },
+  ): void {
+    const shell = new THREE.Group();
+    shell.name = 'farm:constructed-shell';
+
+    const soilMat = this.lib.fromColor(0x5a341f, 0.98, 0.0);
+    const cropMat = this.lib.fromColor(palette.accent1, 0.84, 0.0);
+    const waterMat = this.lib.fromColor(0x4169e1, 0.08, 0.05).clone();
+    waterMat.transparent = true;
+    waterMat.opacity = 0.55;
+
+    for (let row = 0; row < 5; row++) {
+      const x = -4.8 + row * 1.15;
+      const furrow = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.05, 6.4), soilMat);
+      furrow.name = 'farm:planted-furrow';
+      furrow.position.set(x, 0.045, 1.6);
+      furrow.receiveShadow = true;
+      shell.add(furrow);
+
+      const crops = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.28, 5.7), cropMat);
+      crops.name = 'farm:continuous-crop-row';
+      crops.position.set(x, 0.21, 1.6);
+      crops.castShadow = true;
+      crops.receiveShadow = true;
+      shell.add(crops);
+    }
+
+    const irrigation = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.035, 7.1), waterMat);
+    irrigation.name = 'farm:irrigation-channel';
+    irrigation.position.set(1.0, 0.06, 1.5);
+    shell.add(irrigation);
+
+    const fenceMat = this.lib.fromColor(0x8b5a2b, 0.88, 0.0);
+    const rails: Array<[number, number, number, number, number, number]> = [
+      [0, 0.65, -7.0, 12.5, 0.12, 0.12],
+      [-7.0, 0.65, -1.0, 0.12, 0.12, 11.5],
+      [7.0, 0.65, -1.0, 0.12, 0.12, 11.5],
+    ];
+    rails.forEach(([x, y, z, sx, sy, sz]) => {
+      const rail = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz), fenceMat);
+      rail.name = 'farm:perimeter-fence-rail';
+      rail.position.set(x, y, z);
+      rail.castShadow = true;
+      rail.receiveShadow = true;
+      shell.add(rail);
+    });
+
+    const yardMat = this.lib.fromColor(palette.ground, 0.95, 0.0);
+    const yard = new THREE.Mesh(new THREE.CircleGeometry(3.6, 28), yardMat);
+    yard.name = 'farm:barnyard-packed-earth';
+    yard.rotation.x = -Math.PI / 2;
+    yard.position.set(0, 0.035, -5.2);
+    shell.add(yard);
+
+    const barnMat = this.lib.fromColor(0x8f1f1f, 0.72, 0.02);
+    const trimMat = this.lib.fromColor(0xf5deb3, 0.78, 0.0);
+    const roofMat = this.lib.fromColor(0x4a1e16, 0.85, 0.0);
+    const barn = new THREE.Mesh(new THREE.BoxGeometry(4.6, 2.4, 0.32), barnMat);
+    barn.name = 'farm:backdrop-barn-wall';
+    barn.position.set(0, 1.2, -8.2);
+    barn.castShadow = true;
+    barn.receiveShadow = true;
+    shell.add(barn);
+
+    const roof = new THREE.Mesh(new THREE.ConeGeometry(2.75, 1.05, 4), roofMat);
+    roof.name = 'farm:backdrop-barn-roof';
+    roof.position.set(0, 2.75, -8.2);
+    roof.rotation.y = Math.PI / 4;
+    roof.scale.z = 0.32;
+    roof.castShadow = true;
+    roof.receiveShadow = true;
+    shell.add(roof);
+
+    const door = new THREE.Mesh(new THREE.BoxGeometry(1.15, 1.35, 0.05), trimMat);
+    door.name = 'farm:backdrop-barn-door';
+    door.position.set(0, 0.78, -8.0);
+    shell.add(door);
+    for (const x of [-1.4, 1.4]) {
+      const window = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.45, 0.05), trimMat);
+      window.name = 'farm:backdrop-barn-window';
+      window.position.set(x, 1.55, -7.98);
+      shell.add(window);
+    }
+
+    group.add(shell);
   }
 }
 
@@ -84,7 +375,9 @@ export function createBiomePropModel(
   tier: MasteryTier,
   models: ProceduralModelGenerator,
 ): THREE.Group {
-  const model = loadCachedWorldModel(prop.type) ?? models.generate(prop.type, tier);
+  const model = hasGenerator(prop.type)
+    ? models.generate(prop.type, tier)
+    : loadCachedWorldModel(prop.type) ?? models.generate(prop.type, tier);
   model.userData.biomePropType = prop.type;
   model.position.set(...prop.pos);
   if (prop.rot) model.rotation.set(...prop.rot);

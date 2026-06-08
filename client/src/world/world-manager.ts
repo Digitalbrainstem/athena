@@ -78,6 +78,12 @@ const NON_INTERACTIVE_ENVIRONMENT_PROPS = new Set([
   'banner',
 ]);
 
+const ENTRY_VIEW_OVERRIDES: Record<string, { pos: { x: number; z: number }; target: { x: number; z: number } }> = {
+  'living-forest': { pos: { x: 0, z: 5.8 }, target: { x: 0, z: -4.2 } },
+  'farm': { pos: { x: 0, z: 5.6 }, target: { x: 0, z: -6.4 } },
+  'crystal-caverns': { pos: { x: 0, z: 5.4 }, target: { x: 0, z: -4.4 } },
+};
+
 function landmarkHalfSize(biome: BiomeLocation): number {
   return Math.max(2, Math.min(biome.radius * 0.45, 6));
 }
@@ -90,6 +96,12 @@ function propTypeFromObject(obj: THREE.Object3D): string | null {
 function propIndexFromObject(obj: THREE.Object3D): number {
   const propIndex = obj.userData.biomePropIndex;
   return typeof propIndex === 'number' ? propIndex : 0;
+}
+
+function disposeGeometryTree(root: THREE.Object3D): void {
+  root.traverse((obj) => {
+    if (obj instanceof THREE.Mesh) obj.geometry.dispose();
+  });
 }
 
 function humanizePropType(propType: string): string {
@@ -567,6 +579,19 @@ export class WorldManager implements Disposable {
   getEntryPosition(biomeId: string): { x: number; z: number } | null {
     const loc = getBiomeLocation(biomeId);
     if (!loc) return null;
+    const viewOverride = ENTRY_VIEW_OVERRIDES[biomeId];
+    if (viewOverride) {
+      return {
+        x: loc.worldPosition.x + viewOverride.pos.x,
+        z: loc.worldPosition.z + viewOverride.pos.z,
+      };
+    }
+    if (!hasBuildingInterior(biomeId)) {
+      return {
+        x: loc.worldPosition.x + loc.entranceOffset.x * 0.25,
+        z: loc.worldPosition.z + loc.entranceOffset.z * 0.25,
+      };
+    }
     // Place player clearly inside the building, away from the door prompt zone.
     const entryLength = Math.hypot(loc.entranceOffset.x, loc.entranceOffset.z);
     const interiorFactor = entryLength > 0 ? Math.min(0.6, Math.max(0.35, 4.5 / entryLength)) : 0.3;
@@ -580,6 +605,13 @@ export class WorldManager implements Disposable {
   getEntryYaw(biomeId: string): number | null {
     const loc = getBiomeLocation(biomeId);
     if (!loc) return null;
+    const viewOverride = ENTRY_VIEW_OVERRIDES[biomeId];
+    if (viewOverride) {
+      return yawForDirection(
+        viewOverride.target.x - viewOverride.pos.x,
+        viewOverride.target.z - viewOverride.pos.z,
+      );
+    }
     return yawForDirection(-loc.entranceOffset.x, -loc.entranceOffset.z);
   }
 
@@ -648,6 +680,7 @@ export class WorldManager implements Disposable {
     }
 
     if (this._activeEnvironment) {
+      disposeGeometryTree(this._activeEnvironment);
       this.interiorGroup.remove(this._activeEnvironment);
       this._activeEnvironment = null;
     }
